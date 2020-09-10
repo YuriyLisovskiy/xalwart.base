@@ -44,6 +44,7 @@
  * 	- RuntimeError
  * 	- SocketError
  * 	- SuspiciousOperation
+ * 	- TypeError
  * 	- ValueError
  */
 
@@ -166,5 +167,6 @@ DEF_EXCEPTION_WITH_BASE(NotImplementedException, BaseException, "Not Implemented
 DEF_EXCEPTION_WITH_BASE(NullPointerException, BaseException, "Null Pointer Exception");
 DEF_EXCEPTION_WITH_BASE(SocketError, BaseException, "Socket Error");
 DEF_EXCEPTION_WITH_BASE(ValueError, BaseException, "Value Error");
+DEF_EXCEPTION_WITH_BASE(TypeError, BaseException, "Type Error");
 
 __CORE_END__

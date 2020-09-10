@@ -32,6 +32,8 @@
 
 // Framework modules.
 #include "../object/object.h"
+#include "../utility.h"
+#include "../exceptions.h"
 
 
 __TYPES_BEGIN__
@@ -69,6 +71,24 @@ public:
 	constexpr bool internal_type_is()
 	{
 		return std::is_same<_T, InternalType>::value;
+	}
+
+	short __cmp__(const Object* other) const override
+	{
+		const Value<_T>* other_val = dynamic_cast<const Value<_T>*>(other);
+		if (!other_val)
+		{
+			throw core::TypeError(
+				"'__cmp__' not supported between instances of '" + this->__type__().name() + "' and unknown type"
+			);
+		}
+
+		if (this->get() < other_val->get())
+		{
+			return -1;
+		}
+
+		return this->get() == other_val->get() ? 0 : 1;
 	}
 
 	[[nodiscard]] std::string __str__() const override
