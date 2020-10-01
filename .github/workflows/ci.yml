@@ -21,8 +21,8 @@ jobs:
           sudo mkdir /usr/local/lib/googletest
           sudo ln -s /usr/lib/libgtest.a /usr/local/lib/googletest/libgtest.a
           sudo ln -s /usr/lib/libgtest_main.a /usr/local/lib/googletest/libgtest_main.a
-          mkdir build
+          sudo mkdir build
           cd build
-          cmake ..
-          make
+          sudo cmake ..
+          sudo make
           ./tests/unittests-all
