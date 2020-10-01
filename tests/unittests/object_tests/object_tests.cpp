@@ -17,7 +17,22 @@
 
 #include <gtest/gtest.h>
 
-TEST(TestCase, Test)
+#include "../../../src/object/object.h"
+
+using namespace xw;
+
+namespace test_namespace
 {
-	ASSERT_TRUE(true);
+	class EmptyObject : public core::object::Object
+	{
+	};
+}
+
+TEST(ObjectTestsCase, EmptyObjectTypeTest)
+{
+	auto obj = test_namespace::EmptyObject();
+	auto type = obj.__type__();
+
+	ASSERT_EQ(type.name(), "EmptyObject");
+	ASSERT_EQ(type.namespace_(), "test_namespace");
 }
