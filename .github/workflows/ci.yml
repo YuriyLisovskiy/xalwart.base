@@ -2,6 +2,10 @@ name: CI
 
 on: [push]
 
+env:
+  # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
+  build_type: Release
+
 jobs:
   build:
     name: ${{ matrix.name }}
@@ -10,13 +14,12 @@ jobs:
       matrix:
         name: [Ubuntu 16.04, Ubuntu 18.04, Ubuntu Latest]
         os: [ubuntu-16.04, ubuntu-18.04, ubuntu-latest]
-        compiler: [gcc, g++]
-        build_type: release
     steps:
       - uses: actions/checkout@v2
       - name: Install and Build Google Test Framework
         env:
-          CC: ${{ matrix.compiler }}
+          CC: gcc
+          CXX: g++
         run: |
           sudo apt-get install libgtest-dev
           cd /usr/src/googletest/googletest
