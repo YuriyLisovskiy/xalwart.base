@@ -4,7 +4,42 @@ on: [push]
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    name: ${{ matrix.name }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+#          - {
+#            name: "Windows Latest MSVC",
+#            os: windows-latest,
+#            build_type: "Release", cc: "cl", cxx: "cl",
+#            environment_script: "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build/vcvars64.bat"
+#          }
+#          - {
+#            name: "Windows Latest MinGW",
+#            os: windows-latest,
+#            build_type: "Release", cc: "gcc", cxx: "g++"
+#          }
+        - {
+          name: "Ubuntu Latest",
+          os: ubuntu-latest,
+          build_type: "Release", cc: "gcc", cxx: "g++"
+        }
+        - {
+          name: "Ubuntu 18.04",
+          os: ubuntu-18.04,
+          build_type: "Release", cc: "gcc", cxx: "g++"
+        }
+        - {
+          name: "Ubuntu 16.04",
+          os: ubuntu-16.04,
+          build_type: "Release", cc: "gcc", cxx: "g++"
+        }
+#          - {
+#            name: "macOS Latest Clang",
+#            os: macos-latest,
+#            build_type: "Release", cc: "clang", cxx: "clang++"
+#          }
     steps:
       - uses: actions/checkout@v2
       - name: Install and Build Google Test Framework
@@ -26,4 +61,4 @@ jobs:
           cd lib-build
           sudo cmake ..
           sudo make
-          ./tests/unittests-all
+          sudo ./tests/unittests-all
