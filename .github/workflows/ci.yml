@@ -18,10 +18,11 @@ jobs:
         os: [ubuntu-18.04, ubuntu-latest]
         compiler: [g++]
         experimental: [false]
-          include:
-            - os: ubuntu-16.04
-              experimental: true
-              compiler: g++-7
+        include:
+          - name: Ubuntu
+            os: ubuntu-16.04
+            experimental: true
+            compiler: g++-7
     steps:
       - uses: actions/checkout@v2
       - name: Install and Build Google Test Framework
