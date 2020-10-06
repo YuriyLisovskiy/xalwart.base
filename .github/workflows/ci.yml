@@ -10,12 +10,13 @@ jobs:
       matrix:
         name: [Ubuntu 16.04, Ubuntu 18.04, Ubuntu Latest]
         os: [ubuntu-16.04, ubuntu-18.04, ubuntu-latest]
-        cc: gcc
-        cxx: g++
+        compiler: [gcc, g++]
         build_type: Release
     steps:
       - uses: actions/checkout@v2
       - name: Install and Build Google Test Framework
+        env:
+          CC: ${{ matrix.compiler }}
         run: |
           sudo apt-get install libgtest-dev
           cd /usr/src/googletest/googletest
@@ -29,6 +30,8 @@ jobs:
           sudo ln -s /usr/lib/libgtest.a /usr/local/lib/googletest/libgtest.a
           sudo ln -s /usr/lib/libgtest_main.a /usr/local/lib/googletest/libgtest_main.a
       - name: Build Library
+        env:
+          CC: ${{ matrix.compiler }}
         run: |
           sudo mkdir lib-build
           cd lib-build
