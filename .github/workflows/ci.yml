@@ -12,7 +12,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        name: [Ubuntu 16.04, Ubuntu 18.04, Ubuntu Latest]
+        name: Ubuntu
         os: [ubuntu-16.04, ubuntu-18.04, ubuntu-latest]
     steps:
       - uses: actions/checkout@v2
