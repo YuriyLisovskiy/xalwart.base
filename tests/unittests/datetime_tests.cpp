@@ -30,7 +30,7 @@ TEST(DatetimeTestCase, StrftimeTest)
 		dt::Timedelta(0, 0, 0 ,0 , 0, 2), "EET"
 	));
 
-	const char* expected = "Fri, 15 Nov 2019 14:45:26";
+	const char* expected = "Fri, 15 Nov 2019 14:45:26 EET";
 	auto strf_time = dt.strftime("%a, %e %b %Y %T %Z");
 	ASSERT_EQ(expected, strf_time);
 }
