@@ -5,9 +5,9 @@ UBUNTU_VERSION=$(lsb_release -r -s)
 sudo apt-get install libgtest-dev
 
 if [ "$UBUNTU_VERSION" = "16.04" ]; then
-  cd /usr/src/googletest/googletest || exit
-else
   cd /usr/src/gtest || exit
+else
+  cd /usr/src/googletest/googletest || exit
 fi
 
 sudo mkdir gtest-build
