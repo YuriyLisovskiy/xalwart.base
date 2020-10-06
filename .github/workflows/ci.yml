@@ -4,11 +4,12 @@ on: [push]
 
 jobs:
   build:
-    name: ${{ matrix.name }}
+    name: ${{ matrix.config.name }}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
+        config:
 #          - {
 #            name: "Windows Latest MSVC",
 #            os: windows-latest,
@@ -20,21 +21,15 @@ jobs:
 #            os: windows-latest,
 #            build_type: "Release", cc: "gcc", cxx: "g++"
 #          }
-        - {
-          name: "Ubuntu Latest",
-          os: ubuntu-latest,
-          build_type: "Release", cc: "gcc", cxx: "g++"
-        }
-        - {
-          name: "Ubuntu 18.04",
-          os: ubuntu-18.04,
-          build_type: "Release", cc: "gcc", cxx: "g++"
-        }
-        - {
-          name: "Ubuntu 16.04",
-          os: ubuntu-16.04,
-          build_type: "Release", cc: "gcc", cxx: "g++"
-        }
+          - name: "Ubuntu Latest"
+            os: ubuntu-latest
+            build_type: "Release", cc: "gcc", cxx: "g++"
+          - name: "Ubuntu 18.04",
+            os: ubuntu-18.04,
+            build_type: "Release", cc: "gcc", cxx: "g++"
+          - name: "Ubuntu 16.04",
+            os: ubuntu-16.04,
+            build_type: "Release", cc: "gcc", cxx: "g++"
 #          - {
 #            name: "macOS Latest Clang",
 #            os: macos-latest,
