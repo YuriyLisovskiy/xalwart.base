@@ -2,28 +2,29 @@ name: CI
 
 on: [push]
 
+env:
+  # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
+  build_type: Release
+
 jobs:
   build:
-    runs-on: ubuntu-latest
+    name: ${{ matrix.name }} - ${{ matrix.os }} - ${{ matrix.compiler }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        name: [Ubuntu]
+        os: [ubuntu-18.04, ubuntu-latest]
+        compiler: [g++]
     steps:
       - uses: actions/checkout@v2
       - name: Install and Build Google Test Framework
         run: |
-          sudo apt-get install libgtest-dev
-          cd /usr/src/googletest/googletest
-          sudo mkdir gtest-build
-          cd gtest-build
-          sudo cmake ..
-          sudo make
-          sudo cp libgtest* /usr/lib/
-          cd ..
-          sudo mkdir /usr/local/lib/googletest
-          sudo ln -s /usr/lib/libgtest.a /usr/local/lib/googletest/libgtest.a
-          sudo ln -s /usr/lib/libgtest_main.a /usr/local/lib/googletest/libgtest_main.a
+          sudo bash scripts/install_gtest.sh
       - name: Build Library
         run: |
           sudo mkdir lib-build
           cd lib-build
           sudo cmake ..
           sudo make
-          ./tests/unittests-all
+          sudo ./tests/unittests-all

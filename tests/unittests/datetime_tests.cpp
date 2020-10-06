@@ -24,21 +24,22 @@ using namespace xw::core;
 
 TEST(DatetimeTestCase, StrftimeTest)
 {
-	const char* str_dt = "Fri, 15 Nov 2019 12:45:26 EET";
-	auto dt = dt::Datetime::strptime(str_dt, "%a, %e %b %Y %T %Z");
+	const char* str_dt = "Fri, 15 Nov 2019 12:45:26";
+	auto dt = dt::Datetime::strptime(str_dt, "%a, %e %b %Y %T");
 	dt = dt.as_timezone(std::make_shared<dt::Timezone>(
 		dt::Timedelta(0, 0, 0 ,0 , 0, 2), "EET"
 	));
 
+	const char* expected = "Fri, 15 Nov 2019 14:45:26 EET";
 	auto strf_time = dt.strftime("%a, %e %b %Y %T %Z");
-	ASSERT_EQ(str_dt, strf_time);
+	ASSERT_EQ(expected, strf_time);
 }
 
 TEST(DatetimeTestCase, TimestampTest)
 {
 	const char* str_dt = "Fri, 15 Nov 2019 12:45:26 GMT";
 	auto dt = dt::Datetime::strptime(str_dt, "%a, %e %b %Y %T %Z");
-	double expected = 1573814726.0;
+	double expected = 1573821926.0;
 	ASSERT_EQ(expected, dt.timestamp());
 
 	str_dt = "Fri, 15 Nov 2019 12:45:26 EET";
