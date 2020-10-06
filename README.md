@@ -3,7 +3,7 @@
 ### Requirements
 
 C++ compiler minimum version:
-* Ubuntu: g++ v8.3.0
+* Ubuntu: g++ v7.5.0
 * Microsoft C/C++: Visual Studio 2019 v16.6
 
 ### Testing

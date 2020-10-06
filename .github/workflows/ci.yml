@@ -10,23 +10,24 @@ jobs:
   build:
     name: ${{ matrix.name }} - ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
+    continue-on-error: ${{ matrix.experimental }}
     strategy:
       fail-fast: false
       matrix:
         name: [Ubuntu]
-        os: [ubuntu-16.04, ubuntu-18.04, ubuntu-latest]
+        os: [ubuntu-18.04, ubuntu-latest]
+        compiler: [g++]
+        experimental: [false]
+          include:
+            - os: ubuntu-16.04
+              experimental: true
+              compiler: g++-7
     steps:
       - uses: actions/checkout@v2
       - name: Install and Build Google Test Framework
-        env:
-          CC: gcc
-          CXX: g++
         run: |
           sudo bash scripts/install_gtest.sh
       - name: Build Library
-        env:
-          CC: gcc
-          CXX: g++
         run: |
           sudo mkdir lib-build
           cd lib-build
