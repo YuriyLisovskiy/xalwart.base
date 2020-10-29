@@ -31,10 +31,9 @@ set(FULL_LIBRARY_NAME ${LIBRARY_NAME}-${LIBRARY_VERSION})
 add_library(${FULL_LIBRARY_NAME} SHARED ${SOURCES})
 
 # Install library.
-include(GNUInstallDirs)
 install(
     TARGETS ${FULL_LIBRARY_NAME}
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    LIBRARY DESTINATION /usr/local/lib
 )
 
 add_custom_command(
