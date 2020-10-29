@@ -30,7 +30,7 @@ TEST(DatetimeTestCase, StrftimeTest)
 		dt::Timedelta(0, 0, 0 ,0 , 0, 2), "EET"
 	));
 
-	const char* expected = "Fri, 15 Nov 2019 14:45:26 EET";
+	const char* expected = "Fri, 15 Nov 2019 12:45:26 EET";
 	auto strf_time = dt.strftime("%a, %e %b %Y %T %Z");
 	ASSERT_EQ(expected, strf_time);
 }
@@ -39,8 +39,9 @@ TEST(DatetimeTestCase, TimestampTest)
 {
 	const char* str_dt = "Fri, 15 Nov 2019 12:45:26 GMT";
 	auto dt = dt::Datetime::strptime(str_dt, "%a, %e %b %Y %T %Z");
-	double expected = 1573821926.0;
-	ASSERT_EQ(expected, dt.timestamp());
+	double expected = 1573814726.0;
+	double actual = dt.timestamp();
+	ASSERT_EQ(expected, actual);
 
 	str_dt = "Fri, 15 Nov 2019 12:45:26 EET";
 	dt = dt::Datetime::strptime(str_dt, "%a, %e %b %Y %T %Z");
