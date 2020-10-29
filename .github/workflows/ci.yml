@@ -25,6 +25,6 @@ jobs:
         run: |
           sudo mkdir lib-build
           cd lib-build
-          sudo cmake -DCMAKE_BUILD_TYPE=Release ..
+          sudo cmake -DCMAKE_BUILD_TYPE=Debug ..
           sudo make
           sudo ./tests/unittests-all
