@@ -1,22 +1,7 @@
-/*
- * Copyright (c) 2020 Yuriy Lisovskiy
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 /**
- * An implementation of core/datetime.h
+ * datetime.cpp
+ *
+ * Copyright (c) 2020 Yuriy Lisovskiy
  */
 
 #include "./datetime.h"
@@ -27,7 +12,6 @@
 #include <ctime>
 #include <cstring>
 #include <iomanip>
-#include <sstream>
 
 #ifdef _MSC_VER
 #include <algorithm>
@@ -49,6 +33,16 @@ void _M_Assert(
 		std::cerr << function << ": assertion failed: '"  << expr_str << "'\n\t" << msg << "\n";
 		abort();
 	}
+}
+
+long _true_div(const long& x, const long& y)
+{
+	return std::floor((double)x / (double)y);
+}
+
+std::pair<long long, long long> _div_mod(const long long& x, const long long& y)
+{
+	return {_true_div(x, y), _mod(x, y)};
 }
 
 bool _is_leap(ushort year)
@@ -173,14 +167,23 @@ tm_tuple _build_struct_time(
 )
 {
 	tm_tuple t{};
-	t.tm_year = y - 1900;
-	t.tm_mon = m - 1;
+	t.tm_year = y;
+	t.tm_mon = m;
+
+//	t.tm_year = y - 1900;
+//	t.tm_mon = m - 1;
+
 	t.tm_mday = d;
 	t.tm_hour = hh;
 	t.tm_min = mm;
 	t.tm_sec = ss;
-	t.tm_wday = (internal::_mod((int)(_ymd2ord(y, m, d) + 6), 7) + 1)%7;
-	t.tm_yday = ((int)_days_before_month(y, m) + d) - 1;
+
+//	t.tm_wday = (internal::_mod((int)(_ymd2ord(y, m, d) + 6), 7) + 1)%7;
+//	t.tm_yday = ((int)_days_before_month(y, m) + d) - 1;
+
+	t.tm_wday = internal::_mod((_ymd2ord(y, m, d) + 6), 7);
+//	t.tm_yday = (int)_days_before_month(y, m) + d;
+
 	t.tm_isdst = dst_flag;
 	return t;
 }
@@ -254,6 +257,11 @@ void _strptime(const char* _s, const char* _fmt, tm_tuple* _tp)
 #endif
 
 	_tp->tm_year += 1900;
+	_tp->tm_mon += 1;
+	_tp->tm_wday -= 1;
+	_tp->tm_yday += 1;
+
+//	_tp->tm_year += 1900;
 //	return res;
 }
 
@@ -283,7 +291,7 @@ Datetime _strptime_datetime(
 
 	// !IMPROVEMENT! Calculate microseconds.
 	return Datetime(
-		dt_tm.tm_year, dt_tm.tm_mon + 1, dt_tm.tm_mday,
+		dt_tm.tm_year, dt_tm.tm_mon, dt_tm.tm_mday,
 		dt_tm.tm_hour, dt_tm.tm_min, dt_tm.tm_sec, 0, tz
 	);
 }
@@ -630,14 +638,16 @@ time_t _time()
 tm_tuple _localtime(const time_t* _timer)
 {
 	auto t = ::localtime(_timer);
-	t->tm_year += 1900;
 	return tm_tuple(t);
 }
 
 tm_tuple _gmtime(const time_t* _timer)
 {
 	auto t = ::gmtime(_timer);
-	t->tm_year += 1900;
+//	t->tm_year += 1900;
+//	t->tm_mon += 1;
+//	t->tm_wday -= 1;
+//	t->tm_yday += 1;
 	return tm_tuple(t);
 }
 
@@ -653,10 +663,10 @@ std::string Timedelta::_plural(long n)
 
 long long int Timedelta::_to_microseconds() const
 {
-	return  ((this->_days * (24*3600) + this->_seconds) * 1000000 + this->_microseconds);
+	return ((this->_days * (24*3600) + this->_seconds) * 1000000 + this->_microseconds);
 }
 
-signed char Timedelta::_cmp(const Timedelta& other) const
+signed short Timedelta::_cmp(const Timedelta& other) const
 {
 	const short arr_sz = 3;
 	long long left[arr_sz] = {this->_days, this->_seconds, this->_microseconds};
@@ -678,7 +688,7 @@ Timedelta::Timedelta(
 
 	// Get rid of all fractions, and normalize s and us.
 	// Take a deep breath <wink>.
-	auto day_seconds_frac = 0.0;
+	double day_seconds_frac = 0.0;
 	d = days;
 	assert(std::abs(day_seconds_frac) <= 1.0);
 	assert(std::abs(s) <= 24 * 3600);
@@ -686,7 +696,7 @@ Timedelta::Timedelta(
 	auto seconds_frac = day_seconds_frac;
 	assert(std::abs(seconds_frac) <= 2.0);
 
-	auto d_s = internal::_div_mod(seconds, (long long)24*3600);
+	auto d_s = internal::_div_mod(seconds, 24*3600);
 	days = d_s.first;
 	seconds = d_s.second;
 	d += days;
@@ -696,31 +706,31 @@ Timedelta::Timedelta(
 	auto us_double = seconds_frac * 1e6;
 	assert(std::abs(us_double) < 2.1e6);    // exact value not critical
 
-	auto s_ms = internal::_div_mod(microseconds, (long long)1000000);
+	auto s_ms = internal::_div_mod(microseconds, 1000000);
 	seconds = s_ms.first;
 	microseconds = s_ms.second;
 
-	d_s = internal::_div_mod(seconds, (long long)(24*3600));
+	d_s = internal::_div_mod(seconds, 24*3600);
 	days = d_s.first;
 	seconds = d_s.second;
 	d += days;
 	s += seconds;
-	microseconds = (long long int)((double)microseconds + us_double);
+	microseconds = (long)((double)microseconds + us_double);
 	assert(std::abs(s) <= (3 * 24 * 3600));
 	assert(std::abs(microseconds) < 3.1e6);
 
 	// Just a little bit of carrying possible for microseconds and seconds.
-	auto s_us = internal::_div_mod(microseconds, (long long)1000000);
+	auto s_us = internal::_div_mod(microseconds, 1000000);
 	seconds = s_us.first;
 	us = s_us.second;
 	s += seconds;
 
-	d_s = internal::_div_mod(s, (long long)(24*3600));
+	d_s = internal::_div_mod(s, 24*3600);
 	days = d_s.first;
 	s = d_s.second;
 	d += days;
 
-	assert(s >= 0 && s < (24 * 3600));
+	assert(s >= 0 && s < (24*3600));
 	assert(us >= 0 && us < 1000000);
 
 	if (std::abs(d) > 999999999)
@@ -737,11 +747,11 @@ Timedelta::Timedelta(
 
 std::string Timedelta::str() const
 {
-	auto mm_ss = internal::_div_mod(this->_seconds, (long long)60);
+	auto mm_ss = internal::_div_mod(this->_seconds, (long)60);
 	long long int mm = mm_ss.first;
 	long long int ss = mm_ss.second;
 
-	auto hh_mm = internal::_div_mod(mm, (long long)60);
+	auto hh_mm = internal::_div_mod(mm, (long)60);
 	long long int hh = hh_mm.first;
 	mm = hh_mm.second;
 
@@ -762,7 +772,7 @@ std::string Timedelta::str() const
 double Timedelta::total_seconds() const
 {
 	auto power = std::pow(10, 6);
-	return ((this->_days * 86400.0 + this->_seconds) * power + this->_microseconds) / power;
+	return (((double)this->_days * 86400.0 + (double)this->_seconds) * power + (double)this->_microseconds) / power;
 }
 
 long Timedelta::days() const
@@ -956,7 +966,7 @@ Date::Date(ushort year, ushort month, ushort day)
 Date Date::from_timestamp(time_t t)
 {
 	auto lt = internal::_localtime(&t);
-	return Date(lt.tm_year, lt.tm_mon+1, lt.tm_mday);
+	return Date(lt.tm_year, lt.tm_mon, lt.tm_mday);
 }
 
 Date Date::today()
@@ -1181,14 +1191,14 @@ std::tuple<ushort, ushort, ushort> Date::iso_calendar() const
 	auto today = internal::_ymd2ord(this->_year, this->_month, this->_day);
 
 	// Internally, week and day have origin 0
-	auto w_d = internal::_div_mod(today - week1monday, 7);
+	auto w_d = internal::_div_mod((long long)(today - week1monday), 7);
 	auto week = w_d.first;
 	auto day = w_d.second;
 	if (week < 0)
 	{
 		year--;
 		week1monday = internal::_iso_week1monday(year);
-		w_d = internal::_div_mod(today - week1monday, 7);
+		w_d = internal::_div_mod((long long)(today - week1monday), 7);
 		week = w_d.first;
 		day = w_d.second;
 	}
@@ -1300,7 +1310,7 @@ bool Time::operator > (const Time& other) const
 	return this->_cmp(other) > 0;
 }
 
-signed char Time::_cmp(const Time& other, bool allow_mixed) const
+signed short Time::_cmp(const Time& other, bool allow_mixed) const
 {
 	auto* my_tz = this->_tz_info.get();
 	auto* ot_tz = other._tz_info.get();
@@ -1518,7 +1528,7 @@ Datetime Datetime::_from_timestamp(
 	auto ct = converter(t);
 	ct.tm_sec = std::min(ct.tm_sec, 59);
 	auto result = Datetime(
-		ct.tm_year, ct.tm_mon+1, ct.tm_mday,
+		ct.tm_year, ct.tm_mon, ct.tm_mday,
 		ct.tm_hour, ct.tm_min, ct.tm_sec, us, tz
 	);
 	if (tz == nullptr)
@@ -1541,7 +1551,7 @@ Datetime Datetime::_from_timestamp(
 
 		ct = converter(t - max_fold_seconds);
 		auto probe1 = Datetime(
-			ct.tm_year, ct.tm_mon+1, ct.tm_mday,
+			ct.tm_year, ct.tm_mon, ct.tm_mday,
 			ct.tm_hour, ct.tm_min, ct.tm_sec, us, tz
 		);
 		auto trans = result - probe1 - Timedelta(0, (long long int)max_fold_seconds);
@@ -1549,7 +1559,7 @@ Datetime Datetime::_from_timestamp(
 		{
 			ct = converter(t + trans / Timedelta(0, 1));
 			auto probe2 = Datetime(
-				ct.tm_year, ct.tm_mon+1, ct.tm_mday,
+				ct.tm_year, ct.tm_mon, ct.tm_mday,
 				ct.tm_hour, ct.tm_min, ct.tm_sec, us, tz
 			);
 			if (probe2 == result)
@@ -1569,22 +1579,22 @@ Datetime Datetime::_from_timestamp(
 time_t Datetime::_mk_time() const
 {
 	auto epoch = Datetime(1970, 1, 1);
-	auto max_fold_seconds = 24 * 3600;
+	auto max_fold_seconds = 24*3600;
 	time_t t = (*this - epoch) / Timedelta(0, 1);
 	auto local = [epoch](time_t u) -> double
 	{
 		auto tm_ = internal::_localtime(&u);
-
-		auto sub = Datetime(
-			tm_.tm_year, tm_.tm_mon+1, tm_.tm_mday,
+		auto d = Datetime(
+			tm_.tm_year, tm_.tm_mon, tm_.tm_mday,
 			tm_.tm_hour, tm_.tm_min, tm_.tm_sec
-		) - epoch;
-
+		);
+		auto sub = d - epoch;
 		return sub / Timedelta(0, 1);
 	};
 
 	// Our goal is to solve t = local(u) for u.
-	auto a = local(t) - t;
+	auto l_t = local(t);
+	auto a = l_t - t;
 	auto u1 = t - a;
 	auto t1 = local(u1);
 	double b;
@@ -1659,7 +1669,7 @@ Timezone Datetime::_local_timezone() const
 
 	auto local_tm = internal::_localtime(&ts);
 	auto local = Datetime(
-		local_tm.tm_year, local_tm.tm_mon+1, local_tm.tm_mday,
+		local_tm.tm_year, local_tm.tm_mon, local_tm.tm_mday,
 		local_tm.tm_hour, local_tm.tm_min, local_tm.tm_sec
 	);
 	if (!this->_tz_info)
@@ -2105,7 +2115,7 @@ bool Datetime::operator > (const Datetime& other) const
 	return this->_cmp(other) > 0;
 }
 
-signed char Datetime::_cmp(const Datetime& other, bool allow_mixed) const
+signed short Datetime::_cmp(const Datetime& other, bool allow_mixed) const
 {
 	auto* my_tz = this->_tz_info.get();
 	auto* ot_tz = other._tz_info.get();
@@ -2189,11 +2199,11 @@ Datetime Datetime::operator + (const Timedelta& other) const
 	);
 	delta += other;
 
-	auto h_r = internal::_div_mod(delta.seconds(), (long long)3600);
+	auto h_r = internal::_div_mod(delta.seconds(), (long)3600);
 	auto hour = h_r.first;
 	auto rem = h_r.second;
 
-	auto m_s = internal::_div_mod(rem, (long long)60);
+	auto m_s = internal::_div_mod(rem, (long)60);
 	auto minute = m_s.first;
 	auto second = m_s.second;
 

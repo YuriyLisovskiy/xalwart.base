@@ -1,52 +1,32 @@
-/*
+/**
+ * exceptions.h
+ *
  * Copyright (c) 2019-2020 Yuriy Lisovskiy
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
-/**
- * core/exceptions.h
- *
  * 	- BaseException - main exception class
-
- * 	- AttributeError
- * 	- ArgumentError
- * 	- BadSignature
- * 	- CommandError
- * 	- DictError
- * 	- DisallowedHost
- * 	- DisallowedRedirect
- * 	- EntityTooLargeError
- * 	- EncodingError
- * 	- ErrorResponseException
- * 	- FileDoesNotExistError
- * 	- FileError
- * 	- HttpError
- * 	- ImproperlyConfigured
- * 	- InterruptException
- * 	- MultiPartParserError
- * 	- MultiValueDictError
- * 	- NotImplementedException
- * 	- NullPointerException
- * 	- ParseError
- * 	- PermissionDenied
- * 	- RuntimeError
- * 	- SocketError
- * 	- SuspiciousOperation
- * 	- TypeError
- * 	- ValueError
- */
+ *
+ * Exception-based exceptions:
+ *	- AttributeError
+ *	- ArgumentError
+ *	- BadSignature
+ *	- CommandError
+ *	- DictError
+ *	- EncodingError
+ *	- FileError
+ *	- ImproperlyConfigured
+ *	- InterruptException
+ *	- ParseError
+ *	- RuntimeError
+ *	- NotImplementedException
+ *	- NullPointerException
+ *	- SocketError
+ *	- TypeError
+ *	- ValueError
+ *
+ * DictError-based exceptions:
+ *	- MultiPartParserError
+ *	- MultiValueDictError
+*/
 
 #pragma once
 
@@ -80,7 +60,7 @@ public:
 	[[nodiscard]] virtual int line() const noexcept;
 	[[nodiscard]] virtual const char* function() const noexcept;
 	[[nodiscard]] virtual const char* file() const noexcept;
-	virtual std::string get_message() const noexcept;
+	[[nodiscard]] virtual std::string get_message() const noexcept;
 };
 
 
@@ -89,53 +69,8 @@ DEF_EXCEPTION_WITH_BASE(ArgumentError, BaseException, "Argument Error");
 DEF_EXCEPTION_WITH_BASE(BadSignature, BaseException, "Bad Signature Error");
 DEF_EXCEPTION_WITH_BASE(CommandError, BaseException, "Command Error");
 DEF_EXCEPTION_WITH_BASE(DictError, BaseException, "Dict Error");
-DEF_EXCEPTION_WITH_BASE(HttpError, BaseException, "Http Error");
-
-class ErrorResponseException : public HttpError
-{
-protected:
-	short int _status_code;
-
-	// Use only when initializing of a derived exception!
-	ErrorResponseException(
-		short int status_code,
-		const char* message,
-		int line,
-		const char* function,
-		const char* file,
-		const char* type
-	);
-
-public:
-	explicit ErrorResponseException(
-		short int status_code = -1,
-		const char* message = "Error Response Exception",
-		int line = 0,
-		const char* function = "",
-		const char* file = ""
-	);
-	explicit ErrorResponseException(
-		short int status_code = -1,
-		const std::string& message = "Error Response Exception",
-		int line = 0,
-		const char* function = "",
-		const char* file = ""
-	);
-	[[nodiscard]] short int status_code() const;
-};
-
-// The user did something suspicious.
-DEF_HTTP_EXCEPTION(SuspiciousOperation, 400, "Suspicious Operation");
-
-// Length of request's header is too large.
-DEF_HTTP_EXCEPTION(EntityTooLargeError, 413, "Entity Too Large");
-DEF_HTTP_EXCEPTION(FileDoesNotExistError, 404, "File Does Not Exist");
-DEF_HTTP_EXCEPTION(PermissionDenied, 403, "Permission Denied");
-
-DEF_EXCEPTION_WITH_BASE(DisallowedHost, SuspiciousOperation, "Disallowed Host");
 
 // Redirect to scheme not in allowed list.
-DEF_EXCEPTION_WITH_BASE(DisallowedRedirect, SuspiciousOperation, "Disallowed Redirect");
 DEF_EXCEPTION_WITH_BASE(EncodingError, BaseException, "Encoding Error");
 DEF_EXCEPTION_WITH_BASE(FileError, BaseException, "File Error");
 DEF_EXCEPTION_WITH_BASE(ImproperlyConfigured, BaseException, "Improperly Configured");
