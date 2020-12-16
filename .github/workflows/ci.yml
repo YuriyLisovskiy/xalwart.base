@@ -15,7 +15,7 @@ jobs:
       matrix:
         name: [Ubuntu]
         os: [ubuntu-16.04, ubuntu-18.04]
-        compiler: [g++]
+        compiler: [g++-6]
     steps:
       - uses: actions/checkout@v2
 
