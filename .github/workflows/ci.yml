@@ -1,4 +1,4 @@
-name: CI
+name: Countinues Integrtion
 
 on: [push]
 
@@ -14,7 +14,7 @@ jobs:
       fail-fast: false
       matrix:
         name: [Ubuntu]
-        os: [ubuntu-18.04, ubuntu-latest]
+        os: [ubuntu-16.04, ubuntu-18.04]
         compiler: [g++]
     steps:
       - uses: actions/checkout@v2
@@ -25,16 +25,20 @@ jobs:
 
       - name: Install and Build Google Test Framework
         run: |
-          sudo bash scripts/install_gtest.sh
+          git clone -q https://github.com/google/googletest.git /googletest && \
+          mkdir -p /googletest/build && \
+          cd /googletest/build && \
+          cmake .. && make && make install && \
+          cd / && rm -rf /googletest
 
       - name: Build the Library
         run: |
-          sudo mkdir lib-build
-          cd lib-build
-          sudo cmake -DCMAKE_BUILD_TYPE=Debug ..
+          sudo mkdir build-debug && \
+          cd build-debug && \
+          sudo cmake -DCMAKE_BUILD_TYPE=Debug .. && \
           sudo make
 
-      - name: Run tests
+      - name: Run Tests
         run: |
-          cd lib-build
+          cd build-debug && \
           sudo ./tests/unittests-all
