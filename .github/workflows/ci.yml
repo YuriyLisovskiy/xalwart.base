@@ -25,20 +25,20 @@ jobs:
 
       - name: Install and Build Google Test Framework
         run: |
-          git clone -q https://github.com/google/googletest.git /googletest && \
-          mkdir -p /googletest/build && \
-          cd /googletest/build && \
+          git clone -q https://github.com/google/googletest.git googletest/ && \
+          mkdir -p googletest/build && \
+          cd googletest/build && \
           cmake .. && make && make install && \
-          cd / && rm -rf /googletest
+          cd / && rm -rf googletest/
 
       - name: Build the Library
         run: |
-          sudo mkdir build-debug && \
-          cd build-debug && \
+          sudo mkdir build-debug/ && \
+          cd build-debug/ && \
           sudo cmake -DCMAKE_BUILD_TYPE=Debug .. && \
           sudo make
 
       - name: Run Tests
         run: |
-          cd build-debug && \
+          cd build-debug/ && \
           sudo ./tests/unittests-all
