@@ -1,22 +1,7 @@
-/*
- * Copyright (c) 2019-2020 Yuriy Lisovskiy
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 /**
- * core/_def_.h
+ * _def_.h
+ *
+ * Copyright (c) 2019-2020 Yuriy Lisovskiy
  *
  * Purpose: core module's definitions.
  */
@@ -113,36 +98,6 @@ protected:\
 		const char* message, int line, const char* function, const char* file, const char* type\
 	)\
 		: base(message, line, function, file, type)\
-	{\
-	}\
-\
-public:\
-	explicit name(\
-		const char* message = default_message,\
-		int line = 0, const char* function = "", const char* file = ""\
-	)\
-		: name(message, line, function, file, #name)\
-	{\
-	}\
-\
-	explicit name(\
-		const std::string& message = default_message,\
-		int line = 0, const char* function = "", const char* file = ""\
-	)\
-		: name(message.c_str(), line, function, file)\
-	{\
-	}\
-}
-
-
-#define DEF_HTTP_EXCEPTION(name, status_code, default_message)\
-class name : public ErrorResponseException\
-{\
-protected:\
-	name(\
-		const char* message, int line, const char* function, const char* file, const char* type\
-	)\
-		: ErrorResponseException(status_code, message, line, function, file, type)\
 	{\
 	}\
 \

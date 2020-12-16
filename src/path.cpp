@@ -1,22 +1,7 @@
-/*
- * Copyright (c) 2019-2020 Yuriy Lisovskiy
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 /**
- * An implementation of core/path.h
+ * path.cpp
+ *
+ * Copyright (c) 2019-2020 Yuriy Lisovskiy
  */
 
 #include "./path.h"
@@ -37,7 +22,7 @@
 #include <algorithm>
 #endif
 
-// Framework modules.
+// Core libraries.
 #include "./strings.h"
 #include "./exceptions.h"
 
@@ -95,7 +80,7 @@ size_t get_size(const std::string& path)
 {
 	if (!exists(path))
 	{
-		throw core::FileDoesNotExistError("file '" + path + "' does not exist", _ERROR_DETAILS_);
+		throw core::FileError("file '" + path + "' does not exist", _ERROR_DETAILS_);
 	}
 
 	std::ifstream ifs(path, std::ifstream::ate | std::ifstream::binary);
