@@ -21,19 +21,19 @@ jobs:
 
       - name: Check g++ version
         env:
-          CC: ${{ matrix.compiler }}
+          CXX: ${{ matrix.compiler }}
         run: |
           g++ --version
 
       - name: Install and Build Google Test Framework
         env:
-          CC: ${{ matrix.compiler }}
+          CXX: ${{ matrix.compiler }}
         run: |
           sudo bash scripts/install_gtest.sh
 
       - name: Build the Library
         env:
-          CC: ${{ matrix.compiler }}
+          CXX: ${{ matrix.compiler }}
         run: |
           sudo mkdir build-debug && \
           cd build-debug/ && \
