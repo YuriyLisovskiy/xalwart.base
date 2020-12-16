@@ -25,18 +25,11 @@ jobs:
 
       - name: Install and Build Google Test Framework
         run: |
-          sudo git clone -q https://github.com/google/googletest.git googletest/ && \
-          sudo mkdir -p googletest/build && \
-          cd googletest/build && \
-          sudo cmake .. && \
-          make && \
-          make install && \
-          cd / && \
-          sudo rm -rf googletest/
+          sudo bash scripts/install_gtest.sh
 
       - name: Build the Library
         run: |
-          sudo mkdir build-debug/ && \
+          sudo mkdir build-debug && \
           cd build-debug/ && \
           sudo cmake -DCMAKE_BUILD_TYPE=Debug .. && \
           sudo make
