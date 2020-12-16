@@ -18,13 +18,23 @@ jobs:
         compiler: [g++]
     steps:
       - uses: actions/checkout@v2
+
+      - name: Check g++ version
+        run: |
+          g++ --version
+
       - name: Install and Build Google Test Framework
         run: |
           sudo bash scripts/install_gtest.sh
-      - name: Build Library
+
+      - name: Build the Library
         run: |
           sudo mkdir lib-build
           cd lib-build
           sudo cmake -DCMAKE_BUILD_TYPE=Debug ..
           sudo make
+
+      - name: Run tests
+        run: |
+          cd lib-build
           sudo ./tests/unittests-all
