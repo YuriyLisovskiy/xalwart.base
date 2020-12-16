@@ -43,3 +43,8 @@ cmake-build-*
 # External libraries
 include/
 lib/
+
+# Additional stuff
+Dockerfile*
+.dockerignore
+Makefile

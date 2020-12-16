@@ -4,7 +4,7 @@
  * Copyright (c) 2020 Yuriy Lisovskiy
  *
  * Purpose:
- *  C++ implementation of Python's datetime utilities.
+ *  C++ implementation of Python's datetime module.
  *  (Not finished yet, check "!IMPROVEMENT!" keywords)
  *
  *  Concrete date/time and related types.
@@ -18,6 +18,7 @@
 // C++ libraries.
 #include <memory>
 #include <functional>
+#include <cmath>
 
 // Module definitions.
 #include "./_def_.h"
@@ -73,15 +74,21 @@ struct tm_tuple
 
 	[[nodiscard]] struct tm as_tm() const
 	{
+
+//		_tp->tm_year += 1900;
+//		_tp->tm_mon += 1;
+//		_tp->tm_wday -= 1;
+//		_tp->tm_yday += 1;
+
 		struct tm res{};
 		res.tm_sec = this->tm_sec;
 		res.tm_min = this->tm_min;
 		res.tm_hour = this->tm_hour;
 		res.tm_mday = this->tm_mday;
-		res.tm_mon = this->tm_mon;
-		res.tm_year = this->tm_year;
-		res.tm_wday = this->tm_wday;
-		res.tm_yday = this->tm_yday;
+		res.tm_mon = this->tm_mon - 1;
+		res.tm_year = this->tm_year - 1900;
+		res.tm_wday = this->tm_wday + 1;
+		res.tm_yday = this->tm_yday - 1;
 		res.tm_isdst = this->tm_isdst;
 #if defined(__unix__) || defined(__linux__)
 		res.tm_gmtoff = this->tm_gmtoff;
@@ -98,10 +105,10 @@ struct tm_tuple
 		this->tm_min = t->tm_min;
 		this->tm_hour = t->tm_hour;
 		this->tm_mday = t->tm_mday;
-		this->tm_mon = t->tm_mon;
-		this->tm_year = t->tm_year;
-		this->tm_wday = t->tm_wday;
-		this->tm_yday = t->tm_yday;
+		this->tm_mon = t->tm_mon + 1;
+		this->tm_year = t->tm_year + 1900;
+		this->tm_wday = t->tm_wday - 1;
+		this->tm_yday = t->tm_yday + 1;
 		this->tm_isdst = t->tm_isdst;
 #if defined(_WIN32) || defined(_WIN64)
 		this->tm_gmtoff = 0;
@@ -126,22 +133,12 @@ T1 _mod(const T1& a, const T2& b)
 	return (b + (a % b)) % b;
 }
 
-// !IMPORTANT! Use only integer as ResultT!
-template <typename T1, typename T2, typename ResultT>
-ResultT _true_div(T1 a, T2 b)
-{
-	ResultT r = a / b;
-	return r < 0 ? r - 1 : r;
-}
+long _true_div(const long& x, const long& y);
 
-template <typename T1, typename T2>
-std::pair<T1, T1> _div_mod(const T1& a, const T2& b)
-{
-	return {_true_div<T1, T2, T1>(a, b), _mod(a, b)};
-}
+std::pair<long long, long long> _div_mod(const long long& x, const long long& y);
 
 template <typename T>
-signed char _cmp(T left, T right)
+signed short _cmp(T left, T right)
 {
 	if (left == right)
 	{
@@ -152,7 +149,7 @@ signed char _cmp(T left, T right)
 }
 
 template <typename T>
-signed char _cmp_arr(const T* left, const T* right, size_t n)
+signed short _cmp_arr(const T* left, const T* right, size_t n)
 {
 	for (size_t i = 0; i < n; i++)
 	{
@@ -306,7 +303,7 @@ private:
 private:
 	[[nodiscard]] static std::string _plural(long n) ;
 	[[nodiscard]] long long int _to_microseconds() const;
-	[[nodiscard]] signed char _cmp(const Timedelta& other) const;
+	[[nodiscard]] signed short _cmp(const Timedelta& other) const;
 
 public:
 	static const Timedelta MIN;
@@ -592,7 +589,7 @@ public:
 	bool operator >= (const Time& other) const;
 	bool operator > (const Time& other) const;
 
-	[[nodiscard]] signed char _cmp(
+	[[nodiscard]] signed short _cmp(
 		const Time& other, bool allow_mixed = false
 	) const;
 
@@ -679,7 +676,7 @@ private:
 
 	[[nodiscard]] Timezone _local_timezone() const;
 
-	[[nodiscard]] signed char _cmp(
+	[[nodiscard]] signed short _cmp(
 		const Datetime& other, bool allow_mixed = false
 	) const;
 
