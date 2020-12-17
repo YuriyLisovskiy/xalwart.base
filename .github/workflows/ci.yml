@@ -15,7 +15,7 @@ jobs:
       matrix:
         name: [Ubuntu]
         os: [ubuntu-16.04, ubuntu-18.04]
-        compiler_version: [7.5.0, 8.4.0, 9, 10, 11]
+        compiler_version: [7, 8, 9, 10, 11]
     steps:
       - uses: actions/checkout@v2
 
