@@ -15,14 +15,16 @@ jobs:
       matrix:
         name: [Ubuntu]
         os: [ubuntu-16.04, ubuntu-18.04]
-        compiler: [g++-6]
+        compiler: [g++-7]
     steps:
       - uses: actions/checkout@v2
 
-      - name: Check g++ version
+      - name: Install g++ and Check Version
         env:
           CXX: ${{ matrix.compiler }}
         run: |
+          sudo apt update && \
+          sudo apt install ${{ matrix.compiler }} && \
           g++ --version
 
       - name: Install and Build Google Test Framework
