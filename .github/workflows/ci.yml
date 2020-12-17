@@ -1,4 +1,4 @@
-name: Countinues Integrtion
+name: Continuous Integration
 
 on: [push]
 
@@ -23,8 +23,8 @@ jobs:
         env:
           CXX: ${{ matrix.compiler }}
         run: |
-          sudo apt update && \
-          sudo apt install ${{ matrix.compiler }} && \
+          sudo apt update -y && \
+          sudo apt install -y ${{ matrix.compiler }} && \
           g++ --version
 
       - name: Install and Build Google Test Framework
