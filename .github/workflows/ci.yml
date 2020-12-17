@@ -24,7 +24,12 @@ jobs:
           CXX: ${{ matrix.compiler }}
         run: |
           sudo apt update -y && \
+          sudo update-alternatives --remove-all g++ && \
           sudo apt install -y ${{ matrix.compiler }} && \
+          sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/${{ matrix.compiler }} 10 && \
+          sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/g++ 30 && \
+          sudo update-alternatives --set c++ /usr/bin/g++ && \
+          sudo update-alternatives --config g++ && \
           g++ --version
 
       - name: Install and Build Google Test Framework
