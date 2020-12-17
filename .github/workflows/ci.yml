@@ -22,7 +22,7 @@ jobs:
       - name: Install Compiler and Check Version
         run: |
           sudo apt update -y && \
-          sudo apt install -y ${{ matrix.compiler }} && \
+          sudo apt install -y g++-${{ matrix.compiler_version }} && \
           sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-${{ matrix.compiler_version }} 10 && \
           sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/g++ 30 && \
           sudo update-alternatives --set c++ /usr/bin/g++ && \
