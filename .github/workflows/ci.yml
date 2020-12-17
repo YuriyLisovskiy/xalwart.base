@@ -8,38 +8,43 @@ env:
 
 jobs:
   build:
-    name: ${{ matrix.name }} - ${{ matrix.os }} - ${{ matrix.compiler }}
+    name: "System: ${{ matrix.os }}, Compilers: [gcc-${{ matrix.compiler_version }}, g++-${{ matrix.compiler_version }}]"
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
         name: [Ubuntu]
         os: [ubuntu-16.04, ubuntu-18.04]
-        compiler: [g++-6, g++-7, g++-8]
+        compiler_version: [6, 7, 8]
     steps:
       - uses: actions/checkout@v2
 
       - name: Install g++ and Check Version
         env:
-          CXX: ${{ matrix.compiler }}
+          CC: gcc${{ matrix.compiler_version }}
+          CXX: g++${{ matrix.compiler_version }}
         run: |
           sudo apt update -y && \
           sudo apt install -y ${{ matrix.compiler }} && \
-          sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/${{ matrix.compiler }} 10 && \
+          sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-${{ matrix.compiler_version }} 10 && \
+          sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-${{ matrix.compiler_version }} 10 && \
+          sudo update-alternatives --install /usr/bin/cc cc /usr/bin/gcc 30 && \
+          sudo update-alternatives --set cc /usr/bin/gcc && \
           sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/g++ 30 && \
           sudo update-alternatives --set c++ /usr/bin/g++ && \
-          sudo update-alternatives --config g++ && \
           g++ --version
 
       - name: Install and Build Google Test Framework
         env:
-          CXX: ${{ matrix.compiler }}
+          CC: gcc${{ matrix.compiler_version }}
+          CXX: g++${{ matrix.compiler_version }}
         run: |
           sudo bash scripts/install_gtest.sh
 
       - name: Build the Library
         env:
-          CXX: ${{ matrix.compiler }}
+          CC: gcc${{ matrix.compiler_version }}
+          CXX: g++${{ matrix.compiler_version }}
         run: |
           sudo mkdir build-debug && \
           cd build-debug/ && \

@@ -23,7 +23,7 @@ TEST(ArrayTestCase, AssignTest)
 
 	Array arr;
 	arr = std::vector<int>{10, 2, 5};
-	ASSERT_TRUE(arr);
+	ASSERT_TRUE((bool)arr);
 
 	ASSERT_EQ(*(arr[0]->__cast__<Value<int>>()), 10);
 	ASSERT_EQ(*(arr[1]->__cast__<Value<int>>()), 2);
