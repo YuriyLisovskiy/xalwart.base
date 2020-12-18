@@ -34,57 +34,48 @@ __OBJECT_BEGIN__
 struct Attr
 {
 private:
-	typedef std::function<Object*()> attr_getter;
-	typedef std::function<void(Object*)> attr_setter;
-
-	attr_getter _getter = nullptr;
-	attr_setter _setter = nullptr;
+	void* _field;
 
 public:
 	Attr() = default;
 
-	explicit Attr(attr_getter getter) : _getter(std::move(getter))
+	explicit Attr(void* field_addr)
 	{
+		this->_field = field_addr;
 	}
 
-	explicit Attr(attr_setter setter) : _setter(std::move(setter))
+	[[nodiscard]] void* get() const
 	{
+		return this->_field;
 	}
 
-	Attr(
-		attr_getter getter, attr_setter setter
-	) : _getter(std::move(getter)), _setter(std::move(setter))
+	void set(void* val_ptr)
 	{
-	}
-
-	Object* get()
-	{
-		if (this->_getter)
+		if (this->_field)
 		{
-			return this->_getter();
+			this->_field = val_ptr;
+		}
+	}
+
+	template<typename ObjT>
+	[[nodiscard]] ObjT get() const
+	{
+		if (this->_field)
+		{
+			return *static_cast<ObjT*>(this->_field);
 		}
 
-		return nullptr;
+		return ObjT();
 	}
 
-	[[nodiscard]] Object* get() const
+	template<typename ObjT>
+	void set(ObjT val_ptr)
 	{
-		if (this->_getter)
-		{
-			return this->_getter();
-		}
-
-		return nullptr;
-	}
-
-	void set(Object* val_ptr)
-	{
-		if (this->_setter)
-		{
-			this->_setter(val_ptr);
-		}
+		this->set((void*) val_ptr);
 	}
 };
+
+#define attr(name, field) {name, core::object::Attr(&(field))}
 
 class Object
 {
@@ -100,8 +91,44 @@ public:
 	Object();
 	virtual ~Object() = default;
 
-	virtual Object* __get_attr__(const char* attr_name) const;
-	virtual void __set_attr__(const char* attr_name, Object* ptr);
+	void* __get_attr__(const char* attr_name) const
+	{
+		if (this->__has_attr__(attr_name))
+		{
+			return this->__attrs__.at(attr_name).get();
+		}
+
+		throw AttributeError(
+			"'" + this->__type__().name() + "' object has no attribute '" + std::string(attr_name) + "'"
+		);
+	}
+
+	void __set_attr__(const char* attr_name, void* ptr)
+	{
+		if (this->__has_attr__(attr_name))
+		{
+			this->__attrs__[attr_name].set(ptr);
+		}
+		else
+		{
+			throw AttributeError(
+				"'" + this->__type__().name() + "' object has no attribute '" + std::string(attr_name) + "'"
+			);
+		}
+	}
+
+	template<typename ObjT>
+	ObjT __get_attr__(const char* attr_name) const
+	{
+		return *(ObjT*)this->__get_attr__(attr_name);
+	}
+
+	template<typename ObjT>
+	void __set_attr__(const char* attr_name, ObjT ptr)
+	{
+		this->__set_attr__(attr_name, (void*)ptr);
+	}
+
 	bool __has_attr__(const char* attr_name) const;
 
 	/// Returns 0 if objects are equal, -1 if 'this' is less

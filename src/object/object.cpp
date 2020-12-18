@@ -24,32 +24,6 @@ std::string Object::__address__() const
 	return this->_object_address;
 }
 
-Object* Object::__get_attr__(const char* attr_name) const
-{
-	if (this->__has_attr__(attr_name))
-	{
-		return this->__attrs__.at(attr_name).get();
-	}
-
-	throw AttributeError(
-		"'" + this->__type__().name() + "' object has no attribute '" + std::string(attr_name) + "'"
-	);
-}
-
-void Object::__set_attr__(const char* attr_name, Object* ptr)
-{
-	if (this->__has_attr__(attr_name))
-	{
-		this->__attrs__[attr_name].set(ptr);
-	}
-	else
-	{
-		throw AttributeError(
-			"'" + this->__type__().name() + "' object has no attribute '" + std::string(attr_name) + "'"
-		);
-	}
-}
-
 bool Object::__has_attr__(const char* attr_name) const
 {
 	return this->__attrs__.find(attr_name) != this->__attrs__.end();
@@ -123,16 +97,8 @@ std::ostream& operator<<(std::ostream& out, Object& obj)
 	return out;
 }
 
-Object::operator bool () const
+Object::operator bool() const
 {
-	for (const auto& attr : this->__attrs__)
-	{
-		if (!(bool)(*attr.second.get()))
-		{
-			return false;
-		}
-	}
-
 	return true;
 }
 
