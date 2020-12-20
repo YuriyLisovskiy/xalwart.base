@@ -8,6 +8,9 @@
 
 #pragma once
 
+// C++ libraries.
+#include <cstring>
+
 // Module definitions.
 #include "./_def_.h"
 
@@ -72,6 +75,22 @@ extern std::string format_datetime(
 extern std::string format_date(
 	time_t time_val, bool local_time = false, bool use_gmt = false
 );
+
+template <typename ObjT>
+char* serialize(ObjT src)
+{
+	char* p = new char[sizeof(src)];
+	std::memcpy(p, &src, sizeof(src));
+	return p;
+}
+
+template <typename ObjT>
+ObjT deserialize(char* b)
+{
+	ObjT obj;
+	std::memcpy(&obj, b, sizeof(obj));
+	return obj;
+}
 
 __UTILITY_END__
 

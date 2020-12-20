@@ -26,56 +26,13 @@
 
 // Core libraries.
 #include "./type.h"
+#include "./attribute.h"
 #include "../exceptions.h"
 
 
 __OBJECT_BEGIN__
 
-struct Attr
-{
-private:
-	void* _field;
-
-public:
-	Attr() = default;
-
-	explicit Attr(void* field_addr)
-	{
-		this->_field = field_addr;
-	}
-
-	[[nodiscard]] void* get() const
-	{
-		return this->_field;
-	}
-
-	void set(void* val_ptr)
-	{
-		if (this->_field)
-		{
-			this->_field = val_ptr;
-		}
-	}
-
-	template<typename ObjT>
-	[[nodiscard]] ObjT get() const
-	{
-		if (this->_field)
-		{
-			return *static_cast<ObjT*>(this->_field);
-		}
-
-		return ObjT();
-	}
-
-	template<typename ObjT>
-	void set(ObjT val_ptr)
-	{
-		this->set((void*) val_ptr);
-	}
-};
-
-#define attr(name, field) {name, core::object::Attr(&(field))}
+#define attr(name, field) {name, core::object::Attribute(&(field))}
 
 class Object
 {
@@ -86,12 +43,12 @@ protected:
 	[[nodiscard]] std::string __address__() const;
 
 public:
-	std::map<std::string, Attr> __attrs__;
+	std::map<std::string, Attribute> __attrs__;
 
 	Object();
 	virtual ~Object() = default;
 
-	void* __get_attr__(const char* attr_name) const
+	char* __get_attr__(const char* attr_name) const
 	{
 		if (this->__has_attr__(attr_name))
 		{
@@ -103,7 +60,7 @@ public:
 		);
 	}
 
-	void __set_attr__(const char* attr_name, void* ptr)
+	void __set_attr__(const char* attr_name, char* ptr)
 	{
 		if (this->__has_attr__(attr_name))
 		{
