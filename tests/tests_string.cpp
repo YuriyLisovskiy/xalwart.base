@@ -6,7 +6,7 @@
 
 #include <gtest/gtest.h>
 
-#include "../src/strings.h"
+#include "../src/string_utils.h"
 
 using namespace xw;
 

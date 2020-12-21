@@ -16,7 +16,7 @@
 #endif
 
 // Core libraries.
-#include "./strings.h"
+#include "./string_utils.h"
 
 
 __UTILITY_BEGIN__

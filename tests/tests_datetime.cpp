@@ -11,11 +11,6 @@
 using namespace xw::core;
 
 
-TEST(Datetime_TestCase, _M_Assert_Aborts)
-{
-	EXPECT_DEATH(dt::internal::_M_Assert("", false, "", 0, ""), ": assertion failed: ''");
-}
-
 TEST(Datetime_TestCase, _M_Assert_NotAborts)
 {
 	ASSERT_NO_THROW(dt::internal::_M_Assert("", true, "", 0, ""));

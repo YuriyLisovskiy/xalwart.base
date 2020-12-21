@@ -14,16 +14,17 @@
 // Module definitions.
 #include "./_def_.h"
 
+// Core libraries.
+#include "../utility.h"
+
 
 __OBJECT_BEGIN__
-
-class Object;
 
 class Attribute
 {
 public:
-	typedef std::function<char*()> getter_t;
-	typedef std::function<void(char*)> setter_t;
+	typedef std::function<const std::vector<char>()> getter_t;
+	typedef std::function<void(const std::vector<char>&)> setter_t;
 
 private:
 	getter_t _getter;
@@ -31,44 +32,34 @@ private:
 
 public:
 	Attribute() = default;
+	explicit Attribute(getter_t getter);
+	explicit Attribute(setter_t setter);
+	explicit Attribute(getter_t getter, setter_t setter);
 
-	explicit Attribute(getter_t getter)
-	{
-		this->_getter = getter;
-	}
+	[[nodiscard]] std::vector<char> get() const;
+	void set(const std::vector<char>& val);
 
-	explicit Attribute(setter_t setter)
-	{
-		this->_setter = setter;
-	}
-
-	explicit Attribute(getter_t getter, setter_t setter)
-	{
-		this->_getter = getter;
-		this->_setter = setter;
-	}
-
-	[[nodiscard]] char* get() const
-	{
-		if (this->_getter)
-		{
-			return this->_getter();
-		}
-
-		throw std::runtime_error("unable to get attribute value: logic is not provided");
-	}
-
-	void set(char* val)
-	{
-		if (this->_setter)
-		{
-			this->_setter(val);
-		}
-		else
-		{
-			throw std::runtime_error("unable to set attribute value: logic is not provided");
-		}
-	}
+//	template<typename ObjT>
+//	[[nodiscard]] ObjT get() const
+//	{
+//		if (this->_getter)
+//		{
+//			return utility::deserialize<ObjT>(this->_getter().data());
+//		}
+//
+//		throw std::runtime_error("unable to get attribute value: logic is not provided");
+//	}
+//
+//	template<typename ObjT>
+//	void set(ObjT val)
+//	{
+//		if (!this->_setter)
+//		{
+//			throw std::runtime_error("unable to set attribute value: logic is not provided");
+//		}
+//
+//		this->_setter(utility::serialize(val).data());
+//	}
 };
 
 __OBJECT_END__

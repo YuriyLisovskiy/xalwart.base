@@ -11,7 +11,7 @@
 
 // Core libraries.
 #include "./exceptions.h"
-#include "./strings.h"
+#include "./string_utils.h"
 
 
 __CORE_BEGIN__

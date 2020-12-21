@@ -1,10 +1,10 @@
 /**
- * strings.cpp
+ * string_utils.cpp
  *
  * Copyright (c) 2019-2020 Yuriy Lisovskiy
  */
 
-#include "./strings.h"
+#include "./string_utils.h"
 
 // C++ libraries.
 #include <algorithm>
@@ -46,14 +46,14 @@ void url_split_type(const std::string& url, std::string& scheme, std::string& da
 	}
 }
 
-bool contains(const std::string& _str, char _char)
+bool contains(const std::string& s, char chr)
 {
-	return _str.find(_char) != std::string::npos;
+	return s.find(chr) != std::string::npos;
 }
 
-std::string lower(const std::string& _str)
+std::string lower(const std::string& s)
 {
-	std::string res(_str);
+	std::string res(s);
 	std::transform(
 		res.begin(),
 		res.end(),
@@ -63,9 +63,9 @@ std::string lower(const std::string& _str)
 	return res;
 }
 
-std::string upper(const std::string& _str)
+std::string upper(const std::string& s)
 {
-	std::string res(_str);
+	std::string res(s);
 	std::transform(
 		res.begin(),
 		res.end(),

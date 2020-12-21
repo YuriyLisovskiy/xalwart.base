@@ -16,6 +16,7 @@
 
 // Core libraries.
 #include "./datetime.h"
+#include "./string.h"
 
 
 __UTILITY_BEGIN__
@@ -77,18 +78,49 @@ extern std::string format_date(
 );
 
 template <typename ObjT>
-char* serialize(ObjT src)
+std::vector<char> serialize(ObjT src)
 {
-	char* p = new char[sizeof(src)];
-	std::memcpy(p, &src, sizeof(src));
-	return p;
+	static_assert(
+		!(std::is_same_v<std::wstring, ObjT> ||
+		std::is_same_v<std::u16string, ObjT> ||
+		std::is_same_v<std::u32string_view, ObjT>),
+		"object is not serializable, use std::string or xw::string"
+	);
+	if constexpr (std::is_same_v<std::string, ObjT>)
+	{
+		return std::vector<char>(src.begin(), src.end());
+	}
+	else
+	{
+		std::vector<char> p(sizeof(src));
+		std::memcpy((char*)p.data(), &src, sizeof(src));
+		return p;
+	}
 }
 
 template <typename ObjT>
-ObjT deserialize(char* b)
+ObjT deserialize(const std::vector<char>& b)
 {
+	static_assert(
+		!(std::is_same_v<std::wstring, ObjT> ||
+		std::is_same_v<std::u16string, ObjT> ||
+		std::is_same_v<std::u32string_view, ObjT>),
+		"object is not serializable, use std::string or xw::string"
+	);
 	ObjT obj;
-	std::memcpy(&obj, b, sizeof(obj));
+	if constexpr (std::is_same_v<std::string, ObjT>)
+	{
+		obj = std::string(b.begin(), b.end());
+	}
+	else if constexpr (std::is_same_v<xw::string, ObjT>)
+	{
+		std::memcpy((char*)obj.data(), b.data(), sizeof(obj));
+	}
+	else
+	{
+		std::memcpy(&obj, b.data(), sizeof(obj));
+	}
+
 	return obj;
 }
 

@@ -23,7 +23,7 @@
 #endif
 
 // Core libraries.
-#include "./strings.h"
+#include "./string_utils.h"
 #include "./exceptions.h"
 
 

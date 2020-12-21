@@ -8,18 +8,10 @@
  * 	or for some other purposes.
  */
 
-/**
- * core/
- *
- * Purpose:
-
- */
-
 #pragma once
 
 // C++ libraries.
 #include <map>
-#include <functional>
 
 // Module definitions.
 #include "./_def_.h"
@@ -31,8 +23,6 @@
 
 
 __OBJECT_BEGIN__
-
-#define attr(name, field) {name, core::object::Attribute(&(field))}
 
 class Object
 {
@@ -48,43 +38,9 @@ public:
 	Object();
 	virtual ~Object() = default;
 
-	char* __get_attr__(const char* attr_name) const
-	{
-		if (this->__has_attr__(attr_name))
-		{
-			return this->__attrs__.at(attr_name).get();
-		}
+	std::vector<char> __get_attr__(const char* attr_name) const;
 
-		throw AttributeError(
-			"'" + this->__type__().name() + "' object has no attribute '" + std::string(attr_name) + "'"
-		);
-	}
-
-	void __set_attr__(const char* attr_name, char* ptr)
-	{
-		if (this->__has_attr__(attr_name))
-		{
-			this->__attrs__[attr_name].set(ptr);
-		}
-		else
-		{
-			throw AttributeError(
-				"'" + this->__type__().name() + "' object has no attribute '" + std::string(attr_name) + "'"
-			);
-		}
-	}
-
-	template<typename ObjT>
-	ObjT __get_attr__(const char* attr_name) const
-	{
-		return *(ObjT*)this->__get_attr__(attr_name);
-	}
-
-	template<typename ObjT>
-	void __set_attr__(const char* attr_name, ObjT ptr)
-	{
-		this->__set_attr__(attr_name, (void*)ptr);
-	}
+	void __set_attr__(const char* attr_name, const std::vector<char>& data);
 
 	bool __has_attr__(const char* attr_name) const;
 
@@ -100,10 +56,10 @@ public:
 	template <typename _CastT>
 	_CastT __cast__() const
 	{
-		if constexpr (std::is_pointer<_CastT>::value)
-		{
-			return ((_CastT)this);
-		}
+//		if constexpr (std::is_pointer<_CastT>::value)
+//		{
+//			return ((_CastT)this);
+//		}
 
 		return *((_CastT*)this);
 	}

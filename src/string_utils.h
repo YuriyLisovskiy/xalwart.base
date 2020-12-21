@@ -1,5 +1,5 @@
 /**
- * strings.h
+ * string_utils.h
  *
  * Copyright (c) 2019-2020 Yuriy Lisovskiy
  *
@@ -54,22 +54,22 @@ extern void url_split_type(const std::string& url, std::string& scheme, std::str
 
 /// Checks if string contains char.
 ///
-/// @param _str: string to analyze.
-/// @param _char: symbol to search for in given string
+/// @param s: string to analyze.
+/// @param chr: symbol to search for in given string
 /// @return true if symbol is found, otherwise returns false.
-extern bool contains(const std::string& _str, char _char);
+extern bool contains(const std::string& s, char chr);
 
 /// Converts all uppercase letters to lowercase.
 ///
-/// @param _str: string with uppercase letters.
+/// @param s: string with uppercase letters.
 /// @return converted string.
-extern std::string lower(const std::string& _str);
+extern std::string lower(const std::string& s);
 
 /// Converts all lowercase letters to uppercase.
 ///
-/// @param _str: string with lowercase letters.
+/// @param s: string with lowercase letters.
 /// @return converted string.
-extern std::string upper(const std::string& _str);
+extern std::string upper(const std::string& s);
 
 /// Splits the string to a vector of strings relatively for the character.
 ///

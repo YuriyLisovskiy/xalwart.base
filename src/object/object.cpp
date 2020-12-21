@@ -24,6 +24,32 @@ std::string Object::__address__() const
 	return this->_object_address;
 }
 
+std::vector<char> Object::__get_attr__(const char* attr_name) const
+{
+	if (this->__has_attr__(attr_name))
+	{
+		return this->__attrs__.at(attr_name).get();
+	}
+
+	throw AttributeError(
+		"'" + this->__type__().name() + "' object has no attribute '" + std::string(attr_name) + "'"
+	);
+}
+
+void Object::__set_attr__(const char* attr_name, const std::vector<char>& data)
+{
+	if (this->__has_attr__(attr_name))
+	{
+		this->__attrs__[attr_name].set(data);
+	}
+	else
+	{
+		throw AttributeError(
+			"'" + this->__type__().name() + "' object has no attribute '" + std::string(attr_name) + "'"
+		);
+	}
+}
+
 bool Object::__has_attr__(const char* attr_name) const
 {
 	return this->__attrs__.find(attr_name) != this->__attrs__.end();
