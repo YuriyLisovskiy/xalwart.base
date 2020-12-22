@@ -8,7 +8,7 @@ env:
 
 jobs:
   build:
-    name: "System: ${{ matrix.os }} [gcc-${{ matrix.compiler_version }}, g++-${{ matrix.compiler_version }}]"
+    name: "${{ matrix.os }} [gcc-${{ matrix.compiler_version }}, g++-${{ matrix.compiler_version }}]"
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -62,5 +62,4 @@ jobs:
 
       - name: Run Tests
         run: |
-          cd build-debug/ && \
-          sudo valgrind --leak-check=full ./tests/unittests-all
+          sudo valgrind --leak-check=full ./build-debug/tests/unittests-all

@@ -33,7 +33,7 @@ add_library(${FULL_LIBRARY_NAME} SHARED ${SOURCES})
 # Install library.
 install(
     TARGETS ${FULL_LIBRARY_NAME}
-    LIBRARY DESTINATION /usr/lib
+    LIBRARY DESTINATION /usr/local/lib
 )
 
 add_custom_command(

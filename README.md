@@ -1,5 +1,7 @@
 ## xalwart.core
 
+![Continuous Integration](https://github.com/YuriyLisovskiy/xalwart.core/workflows/Continuous%20Integration/badge.svg)
+
 ### Requirements
 
 C++ compiler minimum version:
