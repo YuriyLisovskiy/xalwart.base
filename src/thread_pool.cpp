@@ -9,14 +9,13 @@
 
 __CORE_INTERNAL_BEGIN__
 
-ThreadPool::ThreadPool(size_t threads_count) : _threads(threads_count)
+ThreadPool::ThreadPool(size_t threads_count)
 {
 	this->_threads_count = threads_count;
 	this->_is_finished = false;
-	int idx = 0;
-	for (auto& thread : this->_threads)
+	for (int idx = 0; idx < threads_count; idx++)
 	{
-		thread = std::thread(&ThreadPool::_thread_handler, this, idx++);
+		this->_threads[idx] = std::thread(&ThreadPool::_thread_handler, this, idx);
 	}
 }
 

@@ -60,7 +60,7 @@ TEST(Attribute_TestCase, SetUTF8String)
 	);
 	ASSERT_EQ(utility::deserialize<xw::string>(attribute.get()), val);
 	attribute.set(utility::serialize<xw::string>("world"));
-	ASSERT_EQ(utility::deserialize<xw::string>(attribute.get()), "world");
+	ASSERT_EQ(utility::deserialize<xw::string>(attribute.get()), xw::string("world"));
 }
 
 struct CustomStruct
