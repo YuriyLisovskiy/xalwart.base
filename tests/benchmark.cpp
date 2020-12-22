@@ -9,6 +9,7 @@
 #include <chrono>
 #include <cstring>
 #include <sys/times.h>
+#include <cstdio>
 
 
 void Benchmark::_init()

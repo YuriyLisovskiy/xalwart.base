@@ -15,5 +15,5 @@
 
 
 __MAIN_NAMESPACE_BEGIN__
-typedef tiny_utf8::string string;
+using string = tiny_utf8::string;
 __MAIN_NAMESPACE_END__

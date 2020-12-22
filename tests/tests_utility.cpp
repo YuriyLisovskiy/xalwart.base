@@ -165,7 +165,7 @@ public:
 
 TEST(UtilityTestCase, CustomTypeToBytesAndViseVersa)
 {
-	auto expected = CustomType(100, u8"!🌍 olleH");
+	auto expected = CustomType(100, "!🌍 olleH");
 	auto bytes = utility::serialize(expected);
 	auto actual = utility::deserialize<CustomType>(bytes);
 	ASSERT_EQ(actual.get_val(), expected.get_val());
