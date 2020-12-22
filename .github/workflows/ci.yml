@@ -23,7 +23,7 @@ jobs:
         run: |
           sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test && \
           sudo apt update -y && \
-          sudo apt install -y gcc-${{ matrix.compiler_version }} g++-${{ matrix.compiler_version }} && \
+          sudo apt install -y gcc-${{ matrix.compiler_version }} g++-${{ matrix.compiler_version }} valgrind && \
           sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-${{ matrix.compiler_version }} 10 && \
           sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-${{ matrix.compiler_version }} 10 && \
           sudo update-alternatives --install /usr/bin/cc cc /usr/bin/gcc 30 && \
@@ -49,7 +49,7 @@ jobs:
           cd build-debug/ && \
           sudo cmake -DCMAKE_TEST_ALL=yes \
                      -DCMAKE_CXX_COMPILER=g++-${{ matrix.compiler_version }} \
-                     -DCMAKE_CC_COMPILER=gcc-${{ matrix.compiler_version }} \
+                     -DCMAKE_C_COMPILER=gcc-${{ matrix.compiler_version }} \
                      -DCMAKE_BUILD_TYPE=$BUILD_TYPE .. && \
           sudo make
 
