@@ -170,3 +170,34 @@ TEST(UtilityTestCase, CustomTypeToBytesAndViseVersa)
 	auto actual = utility::deserialize<CustomType>(bytes);
 	ASSERT_EQ(actual.get_val(), expected.get_val());
 }
+
+TEST(UtilityTestCase, format_datetime)
+{
+	const char* str_dt = "Fri, 15 Nov 2019 12:45:26";
+	auto dt = dt::Datetime::strptime(str_dt, "%a, %e %b %Y %T");
+	dt = dt.as_timezone(std::make_shared<dt::Timezone>(
+		dt::Timedelta(0, 0, 0 ,0 , 0, 2), "EET"
+	));
+	std::string expected = "Fri, 15 Nov 2019 14:45:26 +0200";
+	std::string actual = utility::format_datetime(&dt);
+	ASSERT_EQ(expected, actual);
+}
+
+TEST(UtilityTestCase, format_datetime_NoTimezone)
+{
+	const char* str_dt = "Fri, 15 Nov 2019 12:45:26";
+	auto dt = dt::Datetime::strptime(str_dt, "%a, %e %b %Y %T");
+	std::string expected = "Fri, 15 Nov 2019 12:45:26 -0000";
+	std::string actual = utility::format_datetime(&dt);
+	ASSERT_EQ(expected, actual);
+}
+
+TEST(UtilityTestCase, format_datetime_UseGmt)
+{
+	const char* str_dt = "Fri, 15 Nov 2019 12:45:26";
+	auto dt = dt::Datetime::strptime(str_dt, "%a, %e %b %Y %T");
+	dt = dt.as_timezone(std::make_shared<dt::Timezone>(dt::Timezone::UTC));
+	std::string expected = "Fri, 15 Nov 2019 12:45:26 GMT";
+	std::string actual = utility::format_datetime(&dt, true);
+	ASSERT_EQ(expected, actual);
+}

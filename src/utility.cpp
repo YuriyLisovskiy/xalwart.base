@@ -114,9 +114,9 @@ std::string _format_timetuple_and_zone(
 	dt::tm_tuple* time_tuple, const std::string& zone
 )
 {
-	return dt::internal::_DAY_NAMES[((time_tuple->tm_wday+6)%7)+1] + ", " +
+	return dt::internal::_DAY_NAMES[time_tuple->tm_wday+1] + ", " +
 		dt::internal::_lf(time_tuple->tm_mday) + " " +
-		dt::internal::_MONTH_NAMES[time_tuple->tm_mon+1] + " " +
+		dt::internal::_MONTH_NAMES[time_tuple->tm_mon] + " " +
 		dt::internal::_lf(time_tuple->tm_year, 4) + " " +
 		dt::internal::_lf(time_tuple->tm_hour) + ":" +
 		dt::internal::_lf(time_tuple->tm_min) + ":" +
