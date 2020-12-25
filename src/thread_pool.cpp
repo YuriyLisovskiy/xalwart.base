@@ -15,7 +15,7 @@ ThreadPool::ThreadPool(size_t threads_count)
 	this->_is_finished = false;
 	for (int idx = 0; idx < threads_count; idx++)
 	{
-		this->_threads[idx] = std::thread(&ThreadPool::_thread_handler, this, idx);
+		this->_threads.emplace_back(&ThreadPool::_thread_handler, this, idx);
 	}
 }
 

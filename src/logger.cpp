@@ -100,7 +100,7 @@ std::shared_ptr<ILogger> Logger::get_instance(const LoggerConfig& cfg)
 {
 	if (Logger::_instance == nullptr)
 	{
-		Logger::_instance = std::shared_ptr<Logger>(new Logger(cfg));
+		Logger::_instance = std::shared_ptr<ILogger>(new Logger(cfg));
 	}
 	else
 	{
