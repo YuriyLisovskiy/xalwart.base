@@ -17,12 +17,12 @@ __OBJECT_BEGIN__
 class ICloneable
 {
 private:
-	ICloneable(const IClonable&) = default;
-	IClonable& operator=(const IClonable&) = default;
+	ICloneable(const ICloneable&) = default;
+	ICloneable& operator=(const ICloneable&) = default;
 
 public:
 	ICloneable() = default;
-	virtual IClonable* clone() = 0;
+	virtual ICloneable* clone() = 0;
 };
 
 __OBJECT_END__
