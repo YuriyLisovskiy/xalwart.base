@@ -8,8 +8,8 @@ set(LIBRARY_VERSION "0.0.1")
 
 project(${LIBRARY_NAME})
 
-set(GNU_INCLUDE_DIR /usr/include)
-set(GNU_LIB_DIR /usr/lib)
+set(GNU_INCLUDE_DIR /usr/local/include)
+set(GNU_LIB_DIR /usr/local/lib)
 
 function(print SRC_LIST)
     foreach(entry ${SRC_LIST})

@@ -52,8 +52,8 @@ jobs:
           CXX: g++${{ matrix.compiler_version }}
           CC: gcc-${{ matrix.compiler_version }}
         run: |
-          sudo mkdir build-debug && \
-          cd build-debug/ && \
+          sudo mkdir build && \
+          cd build/ && \
           sudo cmake -DCMAKE_TEST_ALL=yes \
                      -DCMAKE_CXX_COMPILER=g++-${{ matrix.compiler_version }} \
                      -DCMAKE_C_COMPILER=gcc-${{ matrix.compiler_version }} \
@@ -62,4 +62,4 @@ jobs:
 
       - name: Run Tests
         run: |
-          sudo valgrind --leak-check=full ./build-debug/tests/unittests-all
+          sudo valgrind --leak-check=full ./build/tests/unittests-all
