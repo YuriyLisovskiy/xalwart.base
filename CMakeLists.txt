@@ -8,8 +8,8 @@ set(LIBRARY_VERSION "0.0.1")
 
 project(${LIBRARY_NAME})
 
-include(GNUInstallDirs)
-set(GNU_INCLUDE_DIR /usr/local/include)
+set(GNU_INCLUDE_DIR /usr/include)
+set(GNU_LIB_DIR /usr/lib)
 
 function(print SRC_LIST)
     foreach(entry ${SRC_LIST})
@@ -34,9 +34,8 @@ add_library(${FULL_LIBRARY_NAME} SHARED ${SOURCES})
 # Install library.
 install(
     TARGETS ${FULL_LIBRARY_NAME}
-    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+    ARCHIVE DESTINATION ${GNU_LIB_DIR}
+    LIBRARY DESTINATION ${GNU_LIB_DIR}
 )
 
 install(
