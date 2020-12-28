@@ -27,7 +27,7 @@ TEST(UtilityTestCase, UTF8StringToBytesAndViseVersa)
 	xw::string expected("hello, world!");
 	auto bytes = utility::serialize(expected);
 	auto actual = utility::deserialize<xw::string>(bytes);
-	ASSERT_EQ(actual, expected);
+	ASSERT_EQ(std::string(actual.c_str()), std::string(expected.c_str()));
 }
 
 TEST(UtilityTestCase, ShortInt_ToBytesAndViseVersa)

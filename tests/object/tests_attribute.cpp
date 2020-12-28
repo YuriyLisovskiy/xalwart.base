@@ -44,7 +44,7 @@ TEST(Attribute_TestCase, GetUTF8String)
 		return utility::serialize(val);
 	});
 	auto bytes = attribute.get();
-	ASSERT_EQ(utility::deserialize<xw::string>(bytes), val);
+	ASSERT_EQ(utility::deserialize<xw::string>(bytes).c_str(), std::string(val.c_str()));
 }
 
 TEST(Attribute_TestCase, SetUTF8String)
@@ -58,9 +58,15 @@ TEST(Attribute_TestCase, SetUTF8String)
 			val = utility::deserialize<xw::string>(v);
 		}
 	);
-	ASSERT_EQ(utility::deserialize<xw::string>(attribute.get()), val);
+	ASSERT_EQ(
+		std::string(utility::deserialize<xw::string>(attribute.get()).c_str()),
+		std::string(val.c_str())
+	);
 	attribute.set(utility::serialize<xw::string>("world"));
-	ASSERT_EQ(utility::deserialize<xw::string>(attribute.get()), xw::string("world"));
+	ASSERT_EQ(
+		std::string(utility::deserialize<xw::string>(attribute.get()).c_str()),
+		std::string(xw::string("world").c_str())
+	);
 }
 
 struct CustomStruct

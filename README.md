@@ -5,12 +5,12 @@
 ### Requirements
 
 C++ compiler minimum version:
-* Ubuntu: g++ v7.5.0
+* Ubuntu: [see actions](https://github.com/YuriyLisovskiy/xalwart.server/actions)
 * Microsoft C/C++: Visual Studio 2019 v16.6
 
 ### Testing
 
 Use valgrind to check for memory leaks:
 ```
-$ valgrind --leak-check=full ./your-executable
+$ valgrind --leak-check=full ./unittests-all
 ```
