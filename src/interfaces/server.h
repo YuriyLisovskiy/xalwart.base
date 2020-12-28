@@ -1,5 +1,5 @@
 /**
- * interfaces.h
+ * interfaces/server.h
  *
  * Copyright (c) 2020 Yuriy Lisovskiy
  *
@@ -9,7 +9,7 @@
 #pragma once
 
 // Module definitions.
-#include "./_def_.h"
+#include "../_def_.h"
 
 
 __CORE_BEGIN__
