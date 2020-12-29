@@ -11,6 +11,6 @@
 #include "../_def_.h"
 
 
-// core::types
-#define __TYPES_BEGIN__ __CORE_BEGIN__ namespace types {
-#define __TYPES_END__ } __CORE_END__
+// xw::types
+#define __TYPES_BEGIN__ __MAIN_NAMESPACE_BEGIN__ namespace types {
+#define __TYPES_END__ } __MAIN_NAMESPACE_END__

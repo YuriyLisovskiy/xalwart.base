@@ -18,7 +18,7 @@
 #include "./_def_.h"
 
 
-__CORE_INTERNAL_BEGIN__
+__CORE_BEGIN__
 
 class ThreadPool
 {
@@ -64,4 +64,4 @@ private:
 	void _thread_handler(int idx);
 };
 
-__CORE_INTERNAL_END__
+__CORE_END__

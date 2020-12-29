@@ -118,7 +118,7 @@ Logger::Logger(const LoggerConfig& cfg)
 		this->_config.add_console_stream();
 	}
 
-	this->_thread_pool = std::make_shared<internal::ThreadPool>(1);
+	this->_thread_pool = std::make_shared<ThreadPool>(1);
 }
 
 void Logger::info(const std::string& msg, int line, const char* function, const char* file)

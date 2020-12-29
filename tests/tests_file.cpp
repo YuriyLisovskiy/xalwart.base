@@ -39,7 +39,7 @@ void removeFile(const std::string& path)
 class ReadFileTestCase : public ::testing::Test
 {
 protected:
-	const std::string testReadFilePath = core::path::cwd() + "/TestReadFile.txt";
+	const std::string testReadFilePath = path::cwd() + "/TestReadFile.txt";
 	File fileToRead = File(this->testReadFilePath, "r");
 
 	void SetUp() override
@@ -176,7 +176,7 @@ TEST_F(ReadFileTestCase, TestMultipleChunksTrue)
 class WriteFileTestCase : public ::testing::Test
 {
 protected:
-	const std::string testFilePath = core::path::cwd() + "/TestWriteFile.txt";
+	const std::string testFilePath = path::cwd() + "/TestWriteFile.txt";
 	File file = File(this->testFilePath, "w");
 
 	void SetUp() override

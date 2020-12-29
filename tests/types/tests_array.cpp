@@ -15,8 +15,8 @@ using namespace xw;
 
 TEST(ArrayTestCase, AssignTest)
 {
-	using Array = core::types::Array;
-	using namespace core::types;
+	using Array = types::Array;
+	using namespace types;
 
 	Array null_arr;
 	ASSERT_FALSE(null_arr);

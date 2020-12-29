@@ -31,7 +31,7 @@ std::vector<char> Object::__get_attr__(const char* attr_name) const
 		return this->__attrs__.at(attr_name).get();
 	}
 
-	throw AttributeError(
+	throw core::AttributeError(
 		"'" + this->__type__().name() + "' object has no attribute '" + std::string(attr_name) + "'"
 	);
 }
@@ -44,7 +44,7 @@ void Object::__set_attr__(const char* attr_name, const std::vector<char>& data)
 	}
 	else
 	{
-		throw AttributeError(
+		throw core::AttributeError(
 			"'" + this->__type__().name() + "' object has no attribute '" + std::string(attr_name) + "'"
 		);
 	}

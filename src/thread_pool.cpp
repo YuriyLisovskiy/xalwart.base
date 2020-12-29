@@ -7,7 +7,7 @@
 #include "./thread_pool.h"
 
 
-__CORE_INTERNAL_BEGIN__
+__CORE_BEGIN__
 
 ThreadPool::ThreadPool(size_t threads_count)
 {
@@ -107,4 +107,4 @@ void ThreadPool::_thread_handler(int idx)
 	} while (!this->_quit);
 }
 
-__CORE_INTERNAL_END__
+__CORE_END__

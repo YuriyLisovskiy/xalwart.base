@@ -34,60 +34,41 @@ typedef unsigned int uint;
 #define __CORE_INTERNAL_BEGIN__ __CORE_BEGIN__ namespace internal {
 #define __CORE_INTERNAL_END__ } __CORE_END__
 
+// xw::path
+#define __PATH_BEGIN__ __MAIN_NAMESPACE_BEGIN__ namespace path {
+#define __PATH_END__ } __MAIN_NAMESPACE_END__
 
-// core::path
-#define __PATH_BEGIN__ __CORE_BEGIN__ namespace path {
-#define __PATH_END__ } __CORE_END__
-
-// core::path::internal
+// xw::path::internal
 #define __PATH_INTERNAL_BEGIN__ __PATH_BEGIN__ namespace internal {
 #define __PATH_INTERNAL_END__ } __PATH_END__
 
+// xw::dt
+#define __DATETIME_BEGIN__ __MAIN_NAMESPACE_BEGIN__ namespace dt {
+#define __DATETIME_END__ } __MAIN_NAMESPACE_END__
 
-// core::mime
-#define __MIME_BEGIN__ __CORE_BEGIN__ namespace mime {
-#define __MIME_END__ } __CORE_END__
-
-//// core::encoding
-//#define __ENCODING_BEGIN__ __CORE_BEGIN__ namespace encoding {
-//#define __ENCODING_END__ } __CORE_END__
-//
-//// core::encoding::internal
-//#define __ENCODING_INTERNAL_BEGIN__ __CORE_BEGIN__ namespace internal {
-//#define __ENCODING_INTERNAL_END__ } __CORE_END__
-
-
-// dt
-#define __DATETIME_BEGIN__ __CORE_BEGIN__ namespace dt {
-#define __DATETIME_END__ } __CORE_END__
-
-// dt::internal
+// xw::dt::internal
 #define __DATETIME_INTERNAL_BEGIN__ __DATETIME_BEGIN__ namespace internal {
 #define __DATETIME_INTERNAL_END__ } __DATETIME_END__
 
+// xw::rgx
+#define __RGX_BEGIN__ __MAIN_NAMESPACE_BEGIN__ namespace rgx {
+#define __RGX_END__ } __MAIN_NAMESPACE_END__
 
-// core::rgx
-#define __RGX_BEGIN__ __CORE_BEGIN__ namespace rgx {
-#define __RGX_END__ } __CORE_END__
+// xw::str
+#define __STR_BEGIN__ __MAIN_NAMESPACE_BEGIN__ namespace str {
+#define __STR_END__ } __MAIN_NAMESPACE_END__
 
-
-// core::str
-#define __STR_BEGIN__ __CORE_BEGIN__ namespace str {
-#define __STR_END__ } __CORE_END__
-
-// core::str::internal
+// xw::str::internal
 #define __STR_INTERNAL_BEGIN__ __STR_BEGIN__ namespace internal {
 #define __STR_INTERNAL_END__ } __STR_END__
 
+// xw::utility
+#define __UTILITY_BEGIN__ __MAIN_NAMESPACE_BEGIN__ namespace utility {
+#define __UTILITY_END__ } __MAIN_NAMESPACE_END__
 
-// core::utility
-#define __UTILITY_BEGIN__ __CORE_BEGIN__ namespace utility {
-#define __UTILITY_END__ } __CORE_END__
-
-// core::utility::internal
+// xw::utility::internal
 #define __UTILITY_INTERNAL_BEGIN__ __UTILITY_BEGIN__ namespace internal {
 #define __UTILITY_INTERNAL_END__ } __UTILITY_END__
-
 
 // Declares exception's class with given base.
 #define DEF_EXCEPTION_WITH_BASE(name, base, default_message)\

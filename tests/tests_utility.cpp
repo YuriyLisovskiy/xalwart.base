@@ -11,7 +11,7 @@
 #include "./benchmark.h"
 #include "../src/utility.h"
 
-using namespace xw::core;
+using namespace xw;
 
 
 TEST(UtilityTestCase, StringToBytesAndViseVersa)
@@ -27,7 +27,7 @@ TEST(UtilityTestCase, UTF8StringToBytesAndViseVersa)
 	xw::string expected("hello, world!");
 	auto bytes = utility::serialize(expected);
 	auto actual = utility::deserialize<xw::string>(bytes);
-	ASSERT_EQ(std::string(actual.c_str()), std::string(expected.c_str()));
+	ASSERT_EQ(actual, expected);
 }
 
 TEST(UtilityTestCase, ShortInt_ToBytesAndViseVersa)
@@ -149,7 +149,7 @@ private:
 	xw::string _str;
 
 public:
-	CustomType() : _val(0), _str("")
+	CustomType() : _val(0)
 	{
 	}
 

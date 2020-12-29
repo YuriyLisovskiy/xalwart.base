@@ -171,7 +171,7 @@ private:
 
 	LoggerConfig _config;
 
-	std::shared_ptr<internal::ThreadPool> _thread_pool;
+	std::shared_ptr<ThreadPool> _thread_pool;
 
 	static std::shared_ptr<ILogger> _instance;
 

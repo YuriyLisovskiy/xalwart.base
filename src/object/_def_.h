@@ -11,6 +11,6 @@
 #include "../_def_.h"
 
 
-// core::object
-#define __OBJECT_BEGIN__ __CORE_BEGIN__ namespace object {
-#define __OBJECT_END__ } __CORE_END__
+// xw::object
+#define __OBJECT_BEGIN__ __MAIN_NAMESPACE_BEGIN__ namespace object {
+#define __OBJECT_END__ } __MAIN_NAMESPACE_END__

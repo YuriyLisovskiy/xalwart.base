@@ -8,7 +8,7 @@
 
 #include "../src/datetime.h"
 
-using namespace xw::core;
+using namespace xw;
 
 
 TEST(Datetime_TestCase, _M_Assert_NotAborts)
