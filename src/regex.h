@@ -32,11 +32,16 @@ private:
 	std::vector<std::string> _groups;
 
 public:
+	explicit Regex();
 	explicit Regex(const std::string& expr);
 	explicit Regex(
 		const std::string& expr,
 		std::regex_constants::syntax_option_type sot
 	);
+
+	// Copy assignment.
+	Regex& operator= (const Regex& other);
+
 	bool match(const std::string& to_match);
 	bool search(const std::string& to_search);
 	std::vector<std::string> groups();

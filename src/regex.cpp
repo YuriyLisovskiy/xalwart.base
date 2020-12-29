@@ -9,6 +9,10 @@
 
 __RGX_BEGIN__
 
+Regex::Regex() : Regex("")
+{
+}
+
 Regex::Regex(const std::string& expr)
 {
 	this->_expr = std::regex(expr);
@@ -24,6 +28,22 @@ Regex::Regex(
 	this->_expr = std::regex(expr, sot);
 	this->_is_matched = false;
 	this->_is_searched = false;
+}
+
+// Copy assignment.
+Regex& Regex::operator= (const Regex& other)
+{
+	if (this != &other)
+	{
+		this->_is_matched = other._is_matched;
+		this->_is_searched = other._is_searched;
+		this->_to_match = other._to_match;
+		this->_expr = other._expr;
+		this->_matches = other._matches;
+		this->_groups = other._groups;
+	}
+
+	return *this;
 }
 
 bool Regex::match(const std::string& to_match)
