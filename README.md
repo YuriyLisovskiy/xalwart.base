@@ -1,6 +1,6 @@
 ## xalwart.core
 
-![Continuous Integration](https://github.com/YuriyLisovskiy/xalwart.core/workflows/Continuous%20Integration/badge.svg)
+![Continuous Integration](https://github.com/YuriyLisovskiy/xalwart.core/workflows/tests/badge.svg)
 
 ### Requirements
 
