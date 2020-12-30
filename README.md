@@ -5,7 +5,7 @@
 ### Requirements
 
 C++ compiler minimum version:
-* Ubuntu: [see actions](https://github.com/YuriyLisovskiy/xalwart.server/actions)
+* Ubuntu: [see actions](https://github.com/YuriyLisovskiy/xalwart.core/actions)
 * Microsoft C/C++: Visual Studio 2019 v16.6
 
 ### Testing
