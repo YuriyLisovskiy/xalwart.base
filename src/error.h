@@ -46,9 +46,11 @@ enum error_type
 	DisallowedRedirect = 9
 };
 
+extern std::string to_string(error_type et);
+
 struct Error
 {
-	short type{};
+	error_type type{};
 	int line = 0;
 	const char* func = "";
 	const char* file = "";
@@ -71,6 +73,8 @@ struct Error
 	static Error none();
 
 	explicit operator bool() const;
+
+	std::string get_message() const;
 };
 
 __CORE_END__

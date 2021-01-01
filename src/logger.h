@@ -20,6 +20,7 @@
 #include "./exceptions.h"
 #include "./file.h"
 #include "./thread_pool.h"
+#include "./error.h"
 
 
 __CORE_INTERNAL_BEGIN__
@@ -71,6 +72,7 @@ public:
 	bool enable_warning = true;
 	bool enable_error = true;
 	bool enable_fatal = true;
+	bool enable_trace = true;
 	bool enable_print = true;
 	std::vector<std::shared_ptr<internal::LoggerStream>> streams;
 
@@ -108,6 +110,7 @@ public:
 	virtual void warning(const std::string& msg, int line = 0, const char* function = "", const char* file = "") = 0;
 	virtual void error(const std::string& msg, int line = 0, const char* function = "", const char* file = "") = 0;
 	virtual void fatal(const std::string& msg, int line = 0, const char* function = "", const char* file = "") = 0;
+	virtual void trace(const std::string& msg, int line = 0, const char* function = "", const char* file = "") = 0;
 	virtual void print(const std::string& msg, Color colour = Color::DEFAULT, char end = '\n') = 0;
 	virtual void print(const char* msg, Color colour = Color::DEFAULT, char end = '\n') = 0;
 
@@ -116,6 +119,12 @@ public:
 	virtual void warning(const core::BaseException& exc) = 0;
 	virtual void error(const core::BaseException& exc) = 0;
 	virtual void fatal(const core::BaseException& exc) = 0;
+
+	virtual void info(const Error& exc) = 0;
+	virtual void debug(const Error& exc) = 0;
+	virtual void warning(const Error& exc) = 0;
+	virtual void error(const Error& exc) = 0;
+	virtual void fatal(const Error& exc) = 0;
 
 	virtual void set_config(const LoggerConfig& config) = 0;
 };
@@ -130,6 +139,7 @@ public:
 	void warning(const std::string& msg, int line = 0, const char* function = "", const char* file = "") override;
 	void error(const std::string& msg, int line = 0, const char* function = "", const char* file = "") override;
 	void fatal(const std::string& msg, int line = 0, const char* function = "", const char* file = "") override;
+	void trace(const std::string& msg, int line = 0, const char* function = "", const char* file = "") override;
 	void print(const std::string& msg, Color colour = Color::DEFAULT, char end = '\n') override;
 	void print(const char* msg, Color colour = Color::DEFAULT, char end = '\n') override;
 
@@ -139,34 +149,40 @@ public:
 	void error(const core::BaseException& exc) override;
 	void fatal(const core::BaseException& exc) override;
 
+	void info(const Error& exc) override;
+	void debug(const Error& exc) override;
+	void warning(const Error& exc) override;
+	void error(const Error& exc) override;
+	void fatal(const Error& exc) override;
+
 	void set_config(const LoggerConfig& config) override;
 
 private:
-#if defined(__unix__) || defined(__linux__)
-	std::map<Color, const char*> _colors = {
-		{DEFAULT, "\033[0m"},
-		{BLACK, "\033[30m"},
-		{RED, "\033[31m"},
-		{GREEN, "\033[32m"},
-		{YELLOW, "\033[33m"},
-		{BLUE, "\033[34m"},
-		{MAGENTA, "\033[35m"},
-		{CYAN, "\033[36m"},
-		{WHITE, "\033[37m"},
-		{BOLD_BLACK, "\033[1m\033[30m"},
-		{BOLD_RED, "\033[1m\033[31m"},
-		{BOLD_GREEN, "\033[1m\033[32m"},
-		{BOLD_YELLOW, "\033[1m\033[33m"},
-		{BOLD_BLUE, "\033[1m\033[34m"},
-		{BOLD_MAGENTA, "\033[1m\033[35m"},
-		{BOLD_CYAN, "\033[1m\033[36m"},
-		{BOLD_WHITE, "\033[1m\033[37m"},
-	};
-#endif
+//#if defined(__unix__) || defined(__linux__)
+//	std::map<Color, const char*> _colors = {
+//		{DEFAULT, "\033[0m"},
+//		{BLACK, "\033[30m"},
+//		{RED, "\033[31m"},
+//		{GREEN, "\033[32m"},
+//		{YELLOW, "\033[33m"},
+//		{BLUE, "\033[34m"},
+//		{MAGENTA, "\033[35m"},
+//		{CYAN, "\033[36m"},
+//		{WHITE, "\033[37m"},
+//		{BOLD_BLACK, "\033[1m\033[30m"},
+//		{BOLD_RED, "\033[1m\033[31m"},
+//		{BOLD_GREEN, "\033[1m\033[32m"},
+//		{BOLD_YELLOW, "\033[1m\033[33m"},
+//		{BOLD_BLUE, "\033[1m\033[34m"},
+//		{BOLD_MAGENTA, "\033[1m\033[35m"},
+//		{BOLD_CYAN, "\033[1m\033[36m"},
+//		{BOLD_WHITE, "\033[1m\033[37m"},
+//	};
+//#endif
 
 	enum log_level_enum
 	{
-		ll_info, ll_debug, ll_warning, ll_error, ll_fatal
+		ll_info, ll_debug, ll_warning, ll_error, ll_fatal, ll_trace
 	};
 
 	LoggerConfig _config;
