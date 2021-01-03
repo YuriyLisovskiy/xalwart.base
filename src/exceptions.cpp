@@ -1,7 +1,7 @@
 /**
  * exceptions.cpp
  *
- * Copyright (c) 2019-2020 Yuriy Lisovskiy
+ * Copyright (c) 2019-2021 Yuriy Lisovskiy
  */
 
 #include "./exceptions.h"
@@ -87,6 +87,29 @@ void InterruptException::initialize()
 #else
 #error Library is not supported on this platform
 #endif
+}
+
+SocketError::SocketError(
+	int err_no, const char* message, int line, const char* function, const char* file, const char* type
+) : BaseException(message, line, function, file, type), _errno(err_no)
+{
+}
+
+SocketError::SocketError(
+	int err_no, const char* message, int line, const char* function, const char* file
+) : SocketError(err_no, message, line, function, file, "SocketError")
+{
+}
+
+SocketError::SocketError(
+	int err_no, const std::string& message, int line, const char* function, const char* file
+) : SocketError(err_no, message.c_str(), line, function, file)
+{
+}
+
+int SocketError::err_no() const
+{
+	return this->_errno;
 }
 
 __CORE_END__

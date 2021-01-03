@@ -1,7 +1,7 @@
 /**
  * exceptions.h
  *
- * Copyright (c) 2019-2020 Yuriy Lisovskiy
+ * Copyright (c) 2019-2021 Yuriy Lisovskiy
  *
  * 	- BaseException - main exception class
  *
@@ -100,7 +100,30 @@ DEF_EXCEPTION_WITH_BASE(MultiPartParserError, ParseError, "Multipart Parser Erro
 DEF_EXCEPTION_WITH_BASE(MultiValueDictError, DictError, "Multi-Value Dict Error");
 DEF_EXCEPTION_WITH_BASE(NotImplementedException, BaseException, "Not Implemented");
 DEF_EXCEPTION_WITH_BASE(NullPointerException, BaseException, "Null Pointer Exception");
-DEF_EXCEPTION_WITH_BASE(SocketError, BaseException, "Socket Error");
+
+class SocketError : public BaseException
+{
+private:
+	int _errno;
+
+protected:
+	SocketError(
+		int err_no, const char* message, int line, const char* function, const char* file, const char* type
+	);
+
+public:
+	explicit SocketError(
+		int err_no, const char* message, int line = 0, const char* function = "", const char* file = ""
+	);
+
+	explicit SocketError(
+		int err_no, const std::string& message, int line = 0, const char* function = "", const char* file = ""
+	);
+
+	[[nodiscard]]
+	int err_no() const;
+};
+
 DEF_EXCEPTION_WITH_BASE(ValueError, BaseException, "Value Error");
 DEF_EXCEPTION_WITH_BASE(TypeError, BaseException, "Type Error");
 
