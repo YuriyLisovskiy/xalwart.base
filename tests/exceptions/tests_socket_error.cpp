@@ -1,7 +1,7 @@
 /**
  * tests/exceptions/tests_.cpp
  *
- * Copyright (c) 2019 Yuriy Lisovskiy
+ * Copyright (c) 2019, 2021 Yuriy Lisovskiy
  */
 
 #include <gtest/gtest.h>
@@ -24,8 +24,8 @@ public:
 	core::SocketError StringConstructorError;
 
 	explicit SocketErrorTestCase()
-		: ConstCharConstructorError("Test error message from SocketErrorTestCase", this->ErrorLine, this->ErrorFunction, this->ErrorFile),
-		  StringConstructorError(std::string("Test error message from SocketErrorTestCase"), this->ErrorLine, this->ErrorFunction, this->ErrorFile)
+		: ConstCharConstructorError(1, "Test error message from SocketErrorTestCase", this->ErrorLine, this->ErrorFunction, this->ErrorFile),
+		  StringConstructorError(1, std::string("Test error message from SocketErrorTestCase"), this->ErrorLine, this->ErrorFunction, this->ErrorFile)
 	{
 	}
 };
