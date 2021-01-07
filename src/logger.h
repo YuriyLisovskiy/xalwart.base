@@ -134,6 +134,8 @@ class Logger : public ILogger
 public:
 	static std::shared_ptr<ILogger> get_instance(const LoggerConfig& cfg);
 
+	~Logger() override;
+
 	void info(const std::string& msg, int line = 0, const char* function = "", const char* file = "") override;
 	void debug(const std::string& msg, int line = 0, const char* function = "", const char* file = "") override;
 	void warning(const std::string& msg, int line = 0, const char* function = "", const char* file = "") override;

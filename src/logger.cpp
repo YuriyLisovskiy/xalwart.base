@@ -110,6 +110,11 @@ std::shared_ptr<ILogger> Logger::get_instance(const LoggerConfig& cfg)
 	return Logger::_instance;
 }
 
+Logger::~Logger()
+{
+	this->_thread_pool->wait();
+}
+
 Logger::Logger(const LoggerConfig& cfg)
 {
 	this->_config = cfg;
@@ -118,7 +123,7 @@ Logger::Logger(const LoggerConfig& cfg)
 		this->_config.add_console_stream();
 	}
 
-	this->_thread_pool = std::make_shared<ThreadPool>(1);
+	this->_thread_pool = std::make_shared<ThreadPool>("logger", 1);
 }
 
 void Logger::info(const std::string& msg, int line, const char* function, const char* file)

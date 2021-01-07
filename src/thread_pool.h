@@ -33,7 +33,7 @@ private:
 	bool _is_finished;
 
 public:
-	explicit ThreadPool(size_t threads_count = 1);
+	explicit ThreadPool(std::string name, size_t threads_count = 1);
 	~ThreadPool();
 
 	/// Pushes and copies function to queue.
