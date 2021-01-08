@@ -7,7 +7,6 @@
 #include "./thread_pool.h"
 
 #include <iostream>
-#include <utility>
 
 
 __CORE_BEGIN__
@@ -15,8 +14,11 @@ __CORE_BEGIN__
 ThreadPool::ThreadPool(std::string name, size_t threads_count) : _name(std::move(name))
 {
 	this->_threads_count = threads_count;
+
+//	std::cerr << "THREADS: " << this->_threads_count << '\n';
+
 	this->_is_finished = false;
-	for (int idx = 0; idx < threads_count; idx++)
+	for (size_t idx = 0; idx < threads_count; idx++)
 	{
 		this->_threads.emplace_back(&ThreadPool::_thread_handler, this, idx);
 	}
@@ -128,6 +130,8 @@ void ThreadPool::_thread_handler(int idx)
 
 	while (!this->_quit)
 	{
+//		std::cerr << "[" << this->_name << "] LOCKED [" << idx << "]\n";
+
 		std::unique_lock<std::mutex> guard(this->_lock_guard);
 //		std::cerr << "Locked [" << idx << "]\n";
 
@@ -135,6 +139,8 @@ void ThreadPool::_thread_handler(int idx)
 		this->_cond_var.wait(guard, [this] {
 			return (!this->_queue.empty() || this->_quit);
 		});
+
+//		std::cerr << "[" << this->_name << "] " << (this->_quit ? "RELEASED" : "NOTIFIED") << " [" << idx << "]\n";
 
 //		std::cerr << "[" << this->_name << "] NOTIFIED [" << idx << "], QUIT: " << this->_quit << ", SIZE: " << this->_queue.size() << "\n";
 
@@ -154,21 +160,24 @@ void ThreadPool::_thread_handler(int idx)
 //		if (!this->_quit && !this->_queue.empty())
 //		{
 //			std::unique_lock<std::mutex> guard(this->_lock_guard);
-			auto func = this->_queue.front();
-			this->_queue.pop();
+		auto func = this->_queue.front();
+
+//		std::cerr << "[" << this->_name << "] GOT NEW JOB [" << idx << "]\n";
+
+		this->_queue.pop();
 
 //			std::cerr << "[" << this->_name << "] Q SIZE: " << this->_queue.size() << '\n';
 
-			std::cerr << "[" << this->_name << "] job started in [" << idx << "]\n";
+//			std::cerr << "[" << this->_name << "] job started in [" << idx << "]\n";
 			// Unlock now that we're done messing with the queue.
 			guard.unlock();
 //			std::cerr << "STARTED [" << idx << "]\n";
 
 			func();
 
-			guard.lock();
-			std::cerr << "[" << this->_name << "] job finished in [" << idx << "]\n";
-			guard.unlock();
+//			guard.lock();
+//			std::cerr << "[" << this->_name << "] job finished in [" << idx << "]\n";
+//			guard.unlock();
 
 //			std::cerr << "FINISHED [" << idx << "]\n";
 //			guard.lock();
