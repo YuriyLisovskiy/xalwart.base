@@ -48,6 +48,8 @@ public:
 	/// Waits until all threads finishes.
 	void wait();
 
+	void close();
+
 	void join();
 
 	/// Deleted constructors.

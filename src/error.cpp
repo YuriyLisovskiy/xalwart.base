@@ -38,6 +38,9 @@ std::string to_string(error_type et)
 		case xw::core::error_type::NotFound:
 			repr = "NotFound";
 			break;
+		case xw::core::error_type::RequestTimeout:
+			repr = "RequestTimeout";
+			break;
 		case xw::core::error_type::SuspiciousOperation:
 			repr = "SuspiciousOperation";
 			break;

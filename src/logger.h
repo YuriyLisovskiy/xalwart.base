@@ -127,12 +127,14 @@ public:
 	virtual void fatal(const Error& exc) = 0;
 
 	virtual void set_config(const LoggerConfig& config) = 0;
+	virtual void clean() = 0;
 };
 
 class Logger : public ILogger
 {
 public:
 	static std::shared_ptr<ILogger> get_instance(const LoggerConfig& cfg);
+	static void finalize();
 
 	~Logger() override;
 
@@ -158,6 +160,7 @@ public:
 	void fatal(const Error& exc) override;
 
 	void set_config(const LoggerConfig& config) override;
+	void clean() override;
 
 private:
 //#if defined(__unix__) || defined(__linux__)

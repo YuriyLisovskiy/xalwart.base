@@ -19,10 +19,10 @@
 __CORE_INTERNAL_BEGIN__
 
 const short ERROR_T_HTTP_LOWER = 2;
-const short ERROR_T_HTTP_UPPER = 7;
+const short ERROR_T_HTTP_UPPER = 8;
 
-const short ERROR_T_SO_LOWER = 8;
-const short ERROR_T_SO_UPPER = 9;
+const short ERROR_T_SO_LOWER = 9;
+const short ERROR_T_SO_UPPER = 10;
 
 __CORE_INTERNAL_END__
 
@@ -39,11 +39,12 @@ enum error_type
 	PermissionDenied = 4,
 	NotFound = 5,
 	InternalServerError = 6,
-	SuspiciousOperation = 7,
+	RequestTimeout = 7,
+	SuspiciousOperation = 8,
 
 	// SuspiciousOperation-based exceptions.
-	DisallowedHost = 8,
-	DisallowedRedirect = 9
+	DisallowedHost = 9,
+	DisallowedRedirect = 10
 };
 
 extern std::string to_string(error_type et);
@@ -74,6 +75,7 @@ struct Error
 
 	explicit operator bool() const;
 
+	[[nodiscard]]
 	std::string get_message() const;
 };
 

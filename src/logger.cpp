@@ -110,6 +110,14 @@ std::shared_ptr<ILogger> Logger::get_instance(const LoggerConfig& cfg)
 	return Logger::_instance;
 }
 
+void Logger::finalize()
+{
+	if (Logger::_instance)
+	{
+		Logger::_instance->clean();
+	}
+}
+
 Logger::~Logger()
 {
 	this->_thread_pool->wait();
@@ -159,6 +167,11 @@ void Logger::trace(const std::string& msg, int line, const char* function, const
 void Logger::set_config(const LoggerConfig& config)
 {
 	this->_config = config;
+}
+
+void Logger::clean()
+{
+	this->_thread_pool->close();
 }
 
 void Logger::print(const std::string& msg, Color colour, char end)

@@ -37,7 +37,7 @@ void ThreadPool::push(const std::function<void(void)>& func)
 	// Manual unlocking is done before notifying, to avoid waking up
 	// the waiting thread only to block again (see notify_one for details)
 //	lock.unlock();
-	this->_cond_var.notify_one();
+	this->_cond_var.notify_all();
 }
 
 void ThreadPool::push(std::function<void(void)>&& func)
@@ -50,7 +50,7 @@ void ThreadPool::push(std::function<void(void)>&& func)
 	// Manual unlocking is done before notifying, to avoid waking up
 	// the waiting thread only to block again (see notify_one for details)
 //	lock.unlock();
-	this->_cond_var.notify_one();
+	this->_cond_var.notify_all();
 }
 
 size_t ThreadPool::threads_count() const
@@ -65,7 +65,7 @@ void ThreadPool::wait()
 		return;
 	}
 
-	std::cerr << "Waiting [" << this->_name << "]...\n";
+//	std::cerr << "Waiting [" << this->_name << "]...\n";
 
 	// Signal to dispatch threads that it's time to wrap up.
 	{
@@ -81,12 +81,18 @@ void ThreadPool::wait()
 
 	this->_is_finished = true;
 
-	std::cerr << "Waited [" << this->_name << "].\n";
+//	std::cerr << "Waited [" << this->_name << "].\n";
+}
+
+void ThreadPool::close()
+{
+	this->wait();
 }
 
 void ThreadPool::join()
 {
 	std::cerr << "Joining [" << this->_name << "]...\n";
+
 	// Wait for threads to finish before we exit.
 	for (auto& thread : this->_threads)
 	{
@@ -119,7 +125,8 @@ void ThreadPool::_thread_handler(int idx)
 //	}
 
 //	std::unique_lock<std::mutex> guard(this->_lock_guard);
-	do
+
+	while (!this->_quit)
 	{
 		std::unique_lock<std::mutex> guard(this->_lock_guard);
 //		std::cerr << "Locked [" << idx << "]\n";
@@ -129,11 +136,16 @@ void ThreadPool::_thread_handler(int idx)
 			return (!this->_queue.empty() || this->_quit);
 		});
 
-		std::cerr << "NOTIFIED [" << idx << "], QUIT: " << this->_quit << ", SIZE: " << this->_queue.size() << "\n";
+//		std::cerr << "[" << this->_name << "] NOTIFIED [" << idx << "], QUIT: " << this->_quit << ", SIZE: " << this->_queue.size() << "\n";
 
-		if (this->_quit && this->_queue.empty())
+		if (this->_quit)
 		{
-			return;
+			break;
+		}
+
+		if (this->_queue.empty())
+		{
+			continue;
 		}
 
 //		std::cerr << '[' << idx << "]QUEUE SIZE: " << this->_queue.size() << '\n';
@@ -145,17 +157,27 @@ void ThreadPool::_thread_handler(int idx)
 			auto func = this->_queue.front();
 			this->_queue.pop();
 
+//			std::cerr << "[" << this->_name << "] Q SIZE: " << this->_queue.size() << '\n';
+
+			std::cerr << "[" << this->_name << "] job started in [" << idx << "]\n";
 			// Unlock now that we're done messing with the queue.
 			guard.unlock();
 //			std::cerr << "STARTED [" << idx << "]\n";
+
 			func();
+
+			guard.lock();
+			std::cerr << "[" << this->_name << "] job finished in [" << idx << "]\n";
+			guard.unlock();
+
 //			std::cerr << "FINISHED [" << idx << "]\n";
 //			guard.lock();
 //		}
 
 //		std::cerr << '[' << idx << "]QUEUE SIZE: " << this->_queue.size() << '\n';
 	}
-	while (!this->_quit);
+
+//	std::cerr << "FINISHED [" << idx << "]\n";
 }
 
 __CORE_END__
