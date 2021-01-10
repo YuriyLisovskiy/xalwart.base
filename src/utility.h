@@ -16,7 +16,7 @@
 
 // Core libraries.
 #include "./datetime.h"
-#include "./string.h"
+#include "./str.h"
 
 
 __UTILITY_BEGIN__

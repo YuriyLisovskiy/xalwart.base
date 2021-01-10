@@ -1,5 +1,5 @@
 /**
- * string.h
+ * str.h
  *
  * Copyright (c) 2020 Yuriy Lisovskiy
  *

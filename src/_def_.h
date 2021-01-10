@@ -70,6 +70,10 @@ typedef unsigned int uint;
 #define __UTILITY_INTERNAL_BEGIN__ __UTILITY_BEGIN__ namespace internal {
 #define __UTILITY_INTERNAL_END__ } __UTILITY_END__
 
+// xw::sys
+#define __SYS_BEGIN__ __MAIN_NAMESPACE_BEGIN__ namespace sys {
+#define __SYS_END__ } __MAIN_NAMESPACE_END__
+
 // Declares exception's class with given base.
 #define DEF_EXCEPTION_WITH_BASE(name, base, default_message)\
 class name : public base\

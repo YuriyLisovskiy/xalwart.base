@@ -8,6 +8,8 @@
 
 // C++ libraries.
 #include <fstream>
+#include <cstring>
+#include <filesystem>
 
 #if defined(_WIN32) || defined(_WIN64)
 #include <io.h>
@@ -128,9 +130,7 @@ std::string join(const std::vector<std::string>& paths)
 
 std::string cwd()
 {
-	char buffer[FILENAME_MAX];
-	getcwd(buffer, FILENAME_MAX);
-	return std::string(buffer);
+	return std::filesystem::current_path();
 }
 
 bool is_absolute(const std::string& p)
