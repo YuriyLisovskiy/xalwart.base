@@ -178,9 +178,7 @@ void Logger::print(const std::string& msg, Color colour, char end)
 {
 	if (this->_config.enable_print)
 	{
-		this->_set_colour(colour);
-		std::cout << msg << end;
-		this->_set_colour(Color::DEFAULT);
+		this->_write_to_stream(msg, colour, end);
 	}
 }
 
@@ -311,7 +309,7 @@ void Logger::_log(
 	});
 }
 
-void Logger::_write_to_stream(const std::string& msg, Color colour)
+void Logger::_write_to_stream(const std::string& msg, Color colour, char end)
 {
 	for (auto& stream : this->_config.streams)
 	{
@@ -321,7 +319,7 @@ void Logger::_write_to_stream(const std::string& msg, Color colour)
 			this->_set_colour(colour);
 		}
 
-		stream->write(msg + "\n");
+		stream->write(msg + std::string(1, end));
 		if (is_console)
 		{
 			this->_set_colour(Color::DEFAULT);

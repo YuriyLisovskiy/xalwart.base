@@ -105,14 +105,14 @@ public:
 	};
 
 	virtual ~ILogger() = default;
-	virtual void info(const std::string& msg, int line = 0, const char* function = "", const char* file = "") = 0;
-	virtual void debug(const std::string& msg, int line = 0, const char* function = "", const char* file = "") = 0;
-	virtual void warning(const std::string& msg, int line = 0, const char* function = "", const char* file = "") = 0;
-	virtual void error(const std::string& msg, int line = 0, const char* function = "", const char* file = "") = 0;
-	virtual void fatal(const std::string& msg, int line = 0, const char* function = "", const char* file = "") = 0;
-	virtual void trace(const std::string& msg, int line = 0, const char* function = "", const char* file = "") = 0;
-	virtual void print(const std::string& msg, Color colour = Color::DEFAULT, char end = '\n') = 0;
-	virtual void print(const char* msg, Color colour = Color::DEFAULT, char end = '\n') = 0;
+	virtual void info(const std::string& msg, int line=0, const char* function="", const char* file="") = 0;
+	virtual void debug(const std::string& msg, int line=0, const char* function="", const char* file="") = 0;
+	virtual void warning(const std::string& msg, int line=0, const char* function="", const char* file="") = 0;
+	virtual void error(const std::string& msg, int line=0, const char* function="", const char* file="") = 0;
+	virtual void fatal(const std::string& msg, int line=0, const char* function="", const char* file="") = 0;
+	virtual void trace(const std::string& msg, int line=0, const char* function="", const char* file="") = 0;
+	virtual void print(const std::string& msg, Color colour = Color::DEFAULT, char end='\n') = 0;
+	virtual void print(const char* msg, Color colour = Color::DEFAULT, char end='\n') = 0;
 
 	virtual void info(const core::BaseException& exc) = 0;
 	virtual void debug(const core::BaseException& exc) = 0;
@@ -138,14 +138,14 @@ public:
 
 	~Logger() override;
 
-	void info(const std::string& msg, int line = 0, const char* function = "", const char* file = "") override;
-	void debug(const std::string& msg, int line = 0, const char* function = "", const char* file = "") override;
-	void warning(const std::string& msg, int line = 0, const char* function = "", const char* file = "") override;
-	void error(const std::string& msg, int line = 0, const char* function = "", const char* file = "") override;
-	void fatal(const std::string& msg, int line = 0, const char* function = "", const char* file = "") override;
-	void trace(const std::string& msg, int line = 0, const char* function = "", const char* file = "") override;
-	void print(const std::string& msg, Color colour = Color::DEFAULT, char end = '\n') override;
-	void print(const char* msg, Color colour = Color::DEFAULT, char end = '\n') override;
+	void info(const std::string& msg, int line=0, const char* function="", const char* file="") override;
+	void debug(const std::string& msg, int line=0, const char* function="", const char* file="") override;
+	void warning(const std::string& msg, int line=0, const char* function="", const char* file="") override;
+	void error(const std::string& msg, int line=0, const char* function="", const char* file="") override;
+	void fatal(const std::string& msg, int line=0, const char* function="", const char* file="") override;
+	void trace(const std::string& msg, int line=0, const char* function="", const char* file="") override;
+	void print(const std::string& msg, Color colour = Color::DEFAULT, char end='\n') override;
+	void print(const char* msg, Color colour = Color::DEFAULT, char end='\n') override;
 
 	void info(const core::BaseException& exc) override;
 	void debug(const core::BaseException& exc) override;
@@ -201,7 +201,7 @@ private:
 		const std::string& msg, int line, const char* function,
 		const char* file, Logger::log_level_enum level
 	);
-	void _write_to_stream(const std::string& msg, Color colour);
+	void _write_to_stream(const std::string& msg, Color colour, char end='\n');
 	void _set_colour(Color colour);
 };
 

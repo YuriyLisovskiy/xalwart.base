@@ -1,5 +1,5 @@
 /**
- * server.h
+ * net/server.h
  *
  * Copyright (c) 2020-2021 Yuriy Lisovskiy
  *
@@ -15,10 +15,10 @@
 #include "./_def_.h"
 
 // Core libraries.
-#include "./collections/dict.h"
+#include "../collections/dict.h"
 
 
-__CORE_BEGIN__
+__NET_BEGIN__
 
 class IServer
 {
@@ -32,16 +32,10 @@ public:
 	// Shutdown and close server socket.
 	virtual void close() = 0;
 
-	// Send all bytes.
-	virtual core::Error send(int sock, const char* data) = 0;
-
-	// Write n bytes from data array.
-	virtual core::Error write(int sock, const char* data, size_t n) = 0;
-
 	virtual void init_environ() = 0;
 
 	[[nodiscard]]
 	virtual collections::Dict<std::string, std::string> environ() const = 0;
 };
 
-__CORE_END__
+__NET_END__
