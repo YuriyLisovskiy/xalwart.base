@@ -104,17 +104,20 @@ std::string quote(const std::string& _str, const std::string& safe)
 }
 
 // TODO: add more encodings.
-xw::string encode(const xw::string& _str, encoding_set enc, Mode mode)
+xw::string encode(const xw::string& s, encoding_set enc, Mode mode)
 {
 	xw::string result;
 	switch (enc)
 	{
 		case ascii:
-			result = encode_ascii(_str, mode);
+			result = encode_ascii(s, mode);
 			break;
 		case latin_1:
 		case iso_8859_1:
-			result = encode_iso_8859_1(_str, mode);
+			result = encode_iso_8859_1(s, mode);
+			break;
+		case utf_8:
+			result = encode_utf_8(s, mode);
 			break;
 		default:
 			throw core::EncodingError("unknown encoding", _ERROR_DETAILS_);
@@ -123,12 +126,12 @@ xw::string encode(const xw::string& _str, encoding_set enc, Mode mode)
 	return result;
 }
 
-std::string encode_ascii(const xw::string& _str, Mode mode)
+std::string encode_ascii(const xw::string& s, Mode mode)
 {
 	std::string res;
-	for (size_t i = 0; i < _str.size(); i++)
+	for (size_t i = 0; i < s.size(); i++)
 	{
-		auto _char = static_cast<unsigned char>(_str[i]);
+		auto _char = static_cast<unsigned char>(s[i]);
 		switch (mode)
 		{
 			case Mode::STRICT:
@@ -153,13 +156,13 @@ std::string encode_ascii(const xw::string& _str, Mode mode)
 	return res;
 }
 
-std::string encode_iso_8859_1(const xw::string& str, Mode mode)
+std::string encode_iso_8859_1(const xw::string& s, Mode mode)
 {
 	std::string out;
-	out.reserve(str.length());
+	out.reserve(s.length());
 	std::transform(
-		str.cbegin(),
-		str.cend(),
+		s.cbegin(),
+		s.cend(),
 		std::back_inserter(out),
 		[mode](const wchar_t c) {
 			switch (mode)
@@ -184,6 +187,12 @@ std::string encode_iso_8859_1(const xw::string& str, Mode mode)
 	);
 
 	return out;
+}
+
+std::string encode_utf_8(const xw::string& s, Mode mode)
+{
+	// TODO: encode_utf_8(const xw::string& str, Mode mode)
+	return s;
 }
 
 __ENCODING_END__

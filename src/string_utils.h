@@ -15,6 +15,9 @@
 // Module definitions.
 #include "./_def_.h"
 
+// Core libraries.
+#include "./str.h"
+
 
 __STR_BEGIN__
 
@@ -84,6 +87,13 @@ extern std::vector<std::string> split(const std::string& str, char delimiter = '
 /// @param delimiter: delimiter where to split string.
 /// @return std::vector of strings.
 extern std::vector<std::string> rsplit(const std::string& str, char delimiter = ' ', size_t n = -1);
+
+/// Splits the string to a std::pair of strings starting from left.
+///
+/// @param str: string to split.
+/// @param delimiter: delimiter where to split string.
+/// @return std::pair of strings.
+extern std::pair<xw::string, xw::string> lsplit_one(const xw::string& str, char delimiter = ' ');
 
 /// Checks if string starts with some string prefix.
 ///

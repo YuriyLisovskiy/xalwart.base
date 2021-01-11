@@ -146,6 +146,31 @@ std::vector<std::string> rsplit(const std::string& str, char delimiter, size_t n
 	return result;
 }
 
+std::pair<xw::string, xw::string> lsplit_one(const xw::string& s, char delimiter)
+{
+	std::pair<xw::string, xw::string> result;
+	size_t len = s.size();
+	for (size_t i = 0; i < len; i++)
+	{
+		auto ch = s[i];
+		if (ch == delimiter)
+		{
+			if (i + 1 < len)
+			{
+				result.second = std::string(s.begin() + i + 1, s.end());
+			}
+
+			break;
+		}
+		else
+		{
+			result.first += ch;
+		}
+	}
+
+	return result;
+}
+
 bool starts_with(const std::string& src, const std::string& prefix)
 {
 	if (src.size() < prefix.size())

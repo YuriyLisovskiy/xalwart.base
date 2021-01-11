@@ -82,6 +82,10 @@ typedef unsigned int uint;
 #define __SYS_BEGIN__ __MAIN_NAMESPACE_BEGIN__ namespace sys {
 #define __SYS_END__ } __MAIN_NAMESPACE_END__
 
+// xw::html
+#define __HTML_BEGIN__ __MAIN_NAMESPACE_BEGIN__ namespace html {
+#define __HTML_END__ } __MAIN_NAMESPACE_END__
+
 // Declares exception's class with given base.
 #define DEF_EXCEPTION_WITH_BASE(name, base, default_message)\
 class name : public base\

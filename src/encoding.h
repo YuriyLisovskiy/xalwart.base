@@ -27,7 +27,7 @@ extern std::string quote(const std::string& _str, const std::string& safe = "");
 
 enum encoding_set
 {
-	ascii, latin_1, iso_8859_1
+	ascii, latin_1, iso_8859_1, utf_8
 };
 
 enum Mode
@@ -45,12 +45,14 @@ enum Mode
 ///  - strict: throws EncodingError if string violates encoding rules;
 ///  - ignore: removes offending symbols from string;
 ///  - replace: replaces offending symbols by question mark ('?').
-extern xw::string encode(const xw::string& _str, encoding_set enc, Mode mode = Mode::STRICT);
+extern xw::string encode(const xw::string& s, encoding_set enc, Mode mode = Mode::STRICT);
 
-extern std::string encode_ascii(const xw::string& _str, Mode mode);
+extern std::string encode_ascii(const xw::string& s, Mode mode);
 
 // latin-1 encoding.
-extern xw::string encode_iso_8859_1(const xw::string& str, Mode mode);
+extern xw::string encode_iso_8859_1(const xw::string& s, Mode mode);
+
+extern xw::string encode_utf_8(const xw::string& s, Mode mode);
 
 __ENCODING_END__
 
