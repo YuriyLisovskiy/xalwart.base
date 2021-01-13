@@ -15,6 +15,7 @@
 #include "./_def_.h"
 
 // Core libraries.
+#include "./request_context.h"
 #include "../collections/dict.h"
 
 
@@ -23,6 +24,8 @@ __NET_BEGIN__
 class IServer
 {
 public:
+	virtual void setup_handler(net::HandlerFunc handler) = 0;
+
 	// Bind socket.
 	virtual void bind(const std::string& address, uint16_t port) = 0;
 
@@ -32,10 +35,11 @@ public:
 	// Shutdown and close server socket.
 	virtual void close() = 0;
 
-	virtual void init_environ() = 0;
-
 	[[nodiscard]]
 	virtual collections::Dict<std::string, std::string> environ() const = 0;
+
+protected:
+	virtual void init_environ() = 0;
 };
 
 __NET_END__
