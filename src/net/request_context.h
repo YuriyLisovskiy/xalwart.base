@@ -12,12 +12,12 @@
 #include <map>
 #include <functional>
 
-// Core libraries.
-#include <xalwart.core/str.h>
-#include <xalwart.core/collections/dict.h>
-
 // Module definitions.
 #include "./_def_.h"
+
+// Core libraries.
+#include "../str.h"
+#include "../collections/dict.h"
 
 
 __NET_BEGIN__
