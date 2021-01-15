@@ -61,6 +61,7 @@ class YAML_CPP_API Node {
   // bool conversions
   YAML_CPP_OPERATOR_BOOL()
   bool operator!() const { return !IsDefined(); }
+  explicit operator bool() const { return IsDefined(); }
 
   // access
   template <typename T>
