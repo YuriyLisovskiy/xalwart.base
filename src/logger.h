@@ -104,6 +104,8 @@ public:
 		BOLD_WHITE,
 	};
 
+	virtual void use_colors(bool use) = 0;
+
 	virtual ~ILogger() = default;
 	virtual void info(const std::string& msg, int line=0, const char* function="", const char* file="") = 0;
 	virtual void debug(const std::string& msg, int line=0, const char* function="", const char* file="") = 0;
@@ -132,9 +134,14 @@ public:
 
 class Logger : public ILogger
 {
+protected:
+	bool use_output_colors;
+
 public:
 	static std::shared_ptr<ILogger> get_instance(const LoggerConfig& cfg);
 	static void finalize();
+
+	void use_colors(bool use) final;
 
 	~Logger() override;
 
@@ -163,27 +170,27 @@ public:
 	void clean() override;
 
 private:
-//#if defined(__unix__) || defined(__linux__)
-//	std::map<Color, const char*> _colors = {
-//		{DEFAULT, "\033[0m"},
-//		{BLACK, "\033[30m"},
-//		{RED, "\033[31m"},
-//		{GREEN, "\033[32m"},
-//		{YELLOW, "\033[33m"},
-//		{BLUE, "\033[34m"},
-//		{MAGENTA, "\033[35m"},
-//		{CYAN, "\033[36m"},
-//		{WHITE, "\033[37m"},
-//		{BOLD_BLACK, "\033[1m\033[30m"},
-//		{BOLD_RED, "\033[1m\033[31m"},
-//		{BOLD_GREEN, "\033[1m\033[32m"},
-//		{BOLD_YELLOW, "\033[1m\033[33m"},
-//		{BOLD_BLUE, "\033[1m\033[34m"},
-//		{BOLD_MAGENTA, "\033[1m\033[35m"},
-//		{BOLD_CYAN, "\033[1m\033[36m"},
-//		{BOLD_WHITE, "\033[1m\033[37m"},
-//	};
-//#endif
+#if defined(__unix__) || defined(__linux__)
+	std::map<Color, const char*> _colors = {
+		{DEFAULT, "\033[0m"},
+		{BLACK, "\033[30m"},
+		{RED, "\033[31m"},
+		{GREEN, "\033[32m"},
+		{YELLOW, "\033[33m"},
+		{BLUE, "\033[34m"},
+		{MAGENTA, "\033[35m"},
+		{CYAN, "\033[36m"},
+		{WHITE, "\033[37m"},
+		{BOLD_BLACK, "\033[1m\033[30m"},
+		{BOLD_RED, "\033[1m\033[31m"},
+		{BOLD_GREEN, "\033[1m\033[32m"},
+		{BOLD_YELLOW, "\033[1m\033[33m"},
+		{BOLD_BLUE, "\033[1m\033[34m"},
+		{BOLD_MAGENTA, "\033[1m\033[35m"},
+		{BOLD_CYAN, "\033[1m\033[36m"},
+		{BOLD_WHITE, "\033[1m\033[37m"},
+	};
+#endif
 
 	enum log_level_enum
 	{

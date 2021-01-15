@@ -80,7 +80,9 @@ public:
 	template<typename NewType>
 	Result<NewType> forward()
 	{
-		return Result<NewType>(this->err);
+		auto result = Result<NewType>();
+		result.err = this->err;
+		return result;
 	}
 
 	static Result<ValueT> null()

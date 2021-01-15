@@ -118,12 +118,17 @@ void Logger::finalize()
 	}
 }
 
+void Logger::use_colors(bool use)
+{
+	this->use_output_colors = use;
+}
+
 Logger::~Logger()
 {
 	this->_thread_pool->wait();
 }
 
-Logger::Logger(const LoggerConfig& cfg)
+Logger::Logger(const LoggerConfig& cfg) : use_output_colors(false)
 {
 	this->_config = cfg;
 	if (cfg.streams.empty())
@@ -331,14 +336,17 @@ void Logger::_write_to_stream(const std::string& msg, Color colour, char end)
 
 void Logger::_set_colour(Color colour)
 {
-//#if defined(__unix__) || defined(__linux__)
-//	if (this->_colors.find(colour) == this->_colors.end())
-//	{
-//		colour = Color::DEFAULT;
-//	}
-//
-//	std::cout << this->_colors[colour];
-//#endif
+#if defined(__unix__) || defined(__linux__)
+	if (this->use_output_colors)
+	{
+		if (this->_colors.find(colour) == this->_colors.end())
+		{
+			colour = Color::DEFAULT;
+		}
+
+		std::cout << this->_colors[colour];
+	}
+#endif
 }
 
 __CORE_END__

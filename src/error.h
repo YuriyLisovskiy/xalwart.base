@@ -51,7 +51,7 @@ extern std::string to_string(error_type et);
 
 struct Error
 {
-	error_type type{};
+	error_type type = None;
 	int line = 0;
 	const char* func = "";
 	const char* file = "";
