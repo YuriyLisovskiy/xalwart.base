@@ -50,6 +50,7 @@ private:
 
 public:
 	explicit LoggerFileStream(const std::string& fp);
+	~LoggerFileStream() override;
 	void write(const std::string& text) override;
 	bool is_file() override;
 	void flush() override;

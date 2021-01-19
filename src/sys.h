@@ -36,4 +36,21 @@ const std::string compiler_version =
 	"NaN.NaN.NaN";
 #endif
 
+#ifdef _WIN32
+	#define __windows32__
+#elif defined(_WIN64)
+	#define __windows64__
+#endif
+
+#if defined(_WIN32) || defined(_WIN64)
+	#define __windows__
+#endif
+
+const char dir_separator =
+#if defined(__unix__)
+	'/';
+#elif defined(__windows__)
+	'\\';
+#endif
+
 __SYS_END__

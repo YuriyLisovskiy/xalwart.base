@@ -48,6 +48,11 @@ LoggerFileStream::LoggerFileStream(const std::string& fp)
 	this->_file->open();
 }
 
+LoggerFileStream::~LoggerFileStream()
+{
+	this->_file->close();
+}
+
 void LoggerFileStream::write(const std::string& text)
 {
 	if (this->_file->is_open())
@@ -131,10 +136,10 @@ Logger::~Logger()
 Logger::Logger(const LoggerConfig& cfg) : use_output_colors(false)
 {
 	this->_config = cfg;
-	if (cfg.streams.empty())
-	{
-		this->_config.add_console_stream();
-	}
+//	if (cfg.streams.empty())
+//	{
+//		this->_config.add_console_stream();
+//	}
 
 	this->_thread_pool = std::make_shared<ThreadPool>("logger", 1);
 }

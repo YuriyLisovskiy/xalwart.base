@@ -13,7 +13,7 @@ Regex::Regex() : Regex("")
 {
 }
 
-Regex::Regex(const std::string& expr)
+Regex::Regex(const std::string& expr) : _raw_expr(expr)
 {
 	this->_expr = std::regex(expr);
 	this->_is_matched = false;
@@ -99,6 +99,11 @@ std::string Regex::group(size_t pos)
 	}
 
 	return "";
+}
+
+xw::string Regex::str() const
+{
+	return this->_raw_expr;
 }
 
 std::string Regex::escape(const std::string& input)

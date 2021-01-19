@@ -18,6 +18,9 @@
 // Module definitions.
 #include "./_def_.h"
 
+// Core libraries.
+#include "./str.h"
+
 
 __RGX_BEGIN__
 
@@ -28,6 +31,7 @@ private:
 	bool _is_searched;
 	std::string _to_match;
 	std::regex _expr;
+	std::string _raw_expr;
 	std::smatch _matches;
 	std::vector<std::string> _groups;
 
@@ -46,6 +50,9 @@ public:
 	bool search(const std::string& to_search);
 	std::vector<std::string> groups();
 	std::string group(size_t pos);
+
+	[[nodiscard]]
+	std::string str() const;
 
 	static std::string escape(const std::string& input);
 };
