@@ -23,7 +23,7 @@ Regex::Regex(const std::string& expr) : _raw_expr(expr)
 Regex::Regex(
 	const std::string& expr,
 	std::regex_constants::syntax_option_type sot
-)
+) : _raw_expr(expr)
 {
 	this->_expr = std::regex(expr, sot);
 	this->_is_matched = false;
@@ -39,6 +39,7 @@ Regex& Regex::operator= (const Regex& other)
 		this->_is_searched = other._is_searched;
 		this->_to_match = other._to_match;
 		this->_expr = other._expr;
+		this->_raw_expr = other._raw_expr;
 		this->_matches = other._matches;
 		this->_groups = other._groups;
 	}
