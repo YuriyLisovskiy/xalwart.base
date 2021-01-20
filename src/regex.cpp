@@ -84,11 +84,6 @@ bool Regex::search(const std::string& to_search)
 
 std::vector<std::string> Regex::groups()
 {
-	if (this->_is_matched)
-	{
-		this->search(this->_to_match);
-	}
-
 	return this->_groups;
 }
 
