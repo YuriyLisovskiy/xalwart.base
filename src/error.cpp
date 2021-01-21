@@ -6,6 +6,8 @@
 
 #include "./error.h"
 
+#include <utility>
+
 
 __CORE_BEGIN__
 
@@ -53,18 +55,8 @@ std::string to_string(error_type et)
 }
 
 Error::Error(
-	error_type type, const char* msg, int line, const char* func, const char* file
-) : type(type), msg(msg), line(line), func(func), file(file)
-{
-}
-
-Error::Error(
-	error_type type, const std::string& msg, int line, const char* func, const char* file
-) : type(type), msg(msg.c_str()), line(line), func(func), file(file)
-{
-}
-
-Error::Error(error_type type, const char* msg) : Error(type, msg, 0, "", "")
+	error_type type, std::string msg, int line, const char* func, const char* file
+) : type(type), msg(std::move(msg)), line(line), func(func), file(file)
 {
 }
 

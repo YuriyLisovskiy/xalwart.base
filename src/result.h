@@ -18,9 +18,9 @@
 __CORE_BEGIN__
 
 template <typename T>
-concept ResultValue = std::is_default_constructible_v<T> && !std::is_pointer_v<T>;
+concept ResultType = std::is_default_constructible_v<T> && !std::is_pointer_v<T>;
 
-template <ResultValue ValueT>
+template <ResultType ValueT>
 class Result
 {
 private:
@@ -92,21 +92,9 @@ public:
 };
 
 template <error_type err_type, typename ValueT>
-Result<ValueT> raise(const char* msg)
-{
-	return Result<ValueT>(Error(err_type, msg, 0, "", ""));
-}
-
-template <error_type err_type, typename ValueT>
 Result<ValueT> raise(const std::string& msg)
 {
 	return Result<ValueT>(Error(err_type, msg.c_str(), 0, "", ""));
-}
-
-template <error_type err_type, typename ValueT>
-Result<ValueT> raise(const char* msg, int line, const char* func, const char* file)
-{
-	return Result<ValueT>(Error(err_type, msg, line, func, file));
 }
 
 template <error_type err_type, typename ValueT>

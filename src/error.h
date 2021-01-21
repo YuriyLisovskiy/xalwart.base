@@ -53,19 +53,13 @@ struct Error
 {
 	error_type type = None;
 	int line = 0;
-	const char* func = "";
-	const char* file = "";
-	const char* msg = "";
+	std::string func;
+	std::string file;
+	std::string msg;
 
 	Error(
-		error_type type, const char* msg, int line, const char* func, const char* file
+		error_type type, std::string msg, int line, const char* func, const char* file
 	);
-
-	Error(
-		error_type type, const std::string& msg, int line, const char* func, const char* file
-	);
-
-	explicit Error(error_type type, const char* msg);
 
 	explicit Error(error_type type, const std::string& msg);
 

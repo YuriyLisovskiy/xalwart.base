@@ -136,11 +136,6 @@ Logger::~Logger()
 Logger::Logger(const LoggerConfig& cfg) : use_output_colors(false)
 {
 	this->_config = cfg;
-//	if (cfg.streams.empty())
-//	{
-//		this->_config.add_console_stream();
-//	}
-
 	this->_thread_pool = std::make_shared<ThreadPool>("logger", 1);
 }
 
@@ -224,27 +219,27 @@ void Logger::fatal(const core::BaseException& exc)
 
 void Logger::info(const Error& exc)
 {
-	this->info(exc.get_message(), exc.line, exc.func, exc.file);
+	this->info(exc.get_message(), exc.line, exc.func.c_str(), exc.file.c_str());
 }
 
 void Logger::debug(const Error& exc)
 {
-	this->debug(exc.get_message(), exc.line, exc.func, exc.file);
+	this->debug(exc.get_message(), exc.line, exc.func.c_str(), exc.file.c_str());
 }
 
 void Logger::warning(const Error& exc)
 {
-	this->warning(exc.get_message(), exc.line, exc.func, exc.file);
+	this->warning(exc.get_message(), exc.line, exc.func.c_str(), exc.file.c_str());
 }
 
 void Logger::error(const Error& exc)
 {
-	this->error(exc.get_message(), exc.line, exc.func, exc.file);
+	this->error(exc.get_message(), exc.line, exc.func.c_str(), exc.file.c_str());
 }
 
 void Logger::fatal(const Error& exc)
 {
-	this->fatal(exc.get_message(), exc.line, exc.func, exc.file);
+	this->fatal(exc.get_message(), exc.line, exc.func.c_str(), exc.file.c_str());
 }
 
 void Logger::_log(
