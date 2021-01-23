@@ -6,9 +6,13 @@
 
 #include "./regex.h"
 
+// Core libraries.
+#include "./exceptions.h"
+
 
 __RGX_BEGIN__
 
+// Regex
 Regex::Regex() : Regex("")
 {
 }
@@ -119,7 +123,7 @@ std::string Regex::escape(const std::string& input)
 	return escaped;
 }
 
-
+// ArgRegex
 ArgRegex::ArgRegex(const std::string& rgx)
 {
 	this->_orig = rgx;
@@ -276,6 +280,99 @@ std::string ArgRegex::_parse(const std::string& pattern)
 	}
 
 	return new_pattern;
+}
+
+// IterRegex
+IterRegex::IterRegex() : IterRegex("")
+{
+}
+
+IterRegex::IterRegex(const std::string& expr) : _raw_expr(expr), _is_initialized(false)
+{
+	this->_expr = std::regex(expr);
+}
+
+IterRegex::IterRegex(
+	const std::string& expr,
+	std::regex_constants::syntax_option_type sot
+) : _raw_expr(expr), _is_initialized(false)
+{
+	this->_expr = std::regex(expr, sot);
+}
+
+// Copy assignment.
+IterRegex& IterRegex::operator= (const IterRegex& other)
+{
+	if (this != &other)
+	{
+		this->_start = other._start;
+		this->_end = other._end;
+		this->_is_initialized = other._is_initialized;
+		this->_to_search = other._to_search;
+		this->_expr = other._expr;
+		this->_raw_expr = other._raw_expr;
+		this->_groups = other._groups;
+	}
+
+	return *this;
+}
+
+void IterRegex::setup(std::string to_search)
+{
+	this->_to_search = std::move(to_search);
+	this->_start = this->_to_search.cbegin();
+	this->_end = this->_to_search.cend();
+	this->_is_initialized = true;
+}
+
+bool IterRegex::search_next()
+{
+	if (!this->_is_initialized)
+	{
+		throw core::RuntimeError(
+			"IterRegex instance is not initialized with string to search in",
+			_ERROR_DETAILS_
+		);
+	}
+
+	this->_groups.clear();
+	std::smatch matches;
+	bool is_found = false;
+	if (std::regex_search(this->_start, this->_end, matches, this->_expr))
+	{
+		for (const auto & match : matches)
+		{
+			if (match.matched)
+			{
+				this->_groups.push_back(match.str());
+			}
+		}
+
+		this->_start = matches.suffix().first;
+		is_found = true;
+	}
+
+	return is_found;
+}
+
+std::vector<std::string> IterRegex::groups()
+{
+	return this->_groups;
+}
+
+std::string IterRegex::group(size_t pos)
+{
+	if (pos >= 0 && pos < this->_groups.size())
+	{
+		return this->_groups[pos];
+	}
+
+	return "";
+}
+
+xw::string IterRegex::str() const
+{
+	return this->_raw_expr;
 }
 
 __RGX_END__

@@ -99,4 +99,35 @@ private:
 	virtual std::string _parse(const std::string& pattern);
 };
 
+class IterRegex final
+{
+private:
+	std::string::const_iterator _start;
+	std::string::const_iterator _end;
+	bool _is_initialized;
+	std::string _to_search;
+	std::regex _expr;
+	std::string _raw_expr;
+	std::vector<std::string> _groups;
+
+public:
+	explicit IterRegex();
+	explicit IterRegex(const std::string& expr);
+	explicit IterRegex(
+		const std::string& expr,
+		std::regex_constants::syntax_option_type sot
+	);
+
+	// Copy assignment.
+	IterRegex& operator= (const IterRegex& other);
+
+	void setup(std::string to_search);
+	bool search_next();
+	std::vector<std::string> groups();
+	std::string group(size_t pos);
+
+	[[nodiscard]]
+	std::string str() const;
+};
+
 __RGX_END__

@@ -1,7 +1,7 @@
 /**
  * _def_.h
  *
- * Copyright (c) 2019-2020 Yuriy Lisovskiy
+ * Copyright (c) 2019-2021 Yuriy Lisovskiy
  *
  * Purpose: core module's definitions.
  */
@@ -61,6 +61,10 @@ typedef unsigned int uint;
 // xw::rgx
 #define __RGX_BEGIN__ __MAIN_NAMESPACE_BEGIN__ namespace rgx {
 #define __RGX_END__ } __MAIN_NAMESPACE_END__
+
+// xw::text
+#define __TEXT_BEGIN__ __MAIN_NAMESPACE_BEGIN__ namespace text {
+#define __TEXT_END__ } __MAIN_NAMESPACE_END__
 
 // xw::str
 #define __STR_BEGIN__ __MAIN_NAMESPACE_BEGIN__ namespace str {
