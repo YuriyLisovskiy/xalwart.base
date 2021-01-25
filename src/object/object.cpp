@@ -87,36 +87,6 @@ std::string Object::__repr__() const
 	return this->__str__();
 }
 
-bool Object::operator<(const Object& other) const
-{
-	return this->__cmp__(&other) == -1;
-}
-
-bool Object::operator==(const Object& other) const
-{
-	return this->__cmp__(&other) == 0;
-}
-
-bool Object::operator!=(const Object& other) const
-{
-	return this->__cmp__(&other) != 0;
-}
-
-bool Object::operator>(const Object& other) const
-{
-	return this->__cmp__(&other) == 1;
-}
-
-bool Object::operator<=(const Object& other) const
-{
-	return *this < other || *this == other;
-}
-
-bool Object::operator>=(const Object& other) const
-{
-	return *this > other || *this == other;
-}
-
 std::ostream& operator<<(std::ostream& out, Object& obj)
 {
 	out << obj.__str__();

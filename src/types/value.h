@@ -12,6 +12,8 @@
 
 #pragma once
 
+#include <iostream>
+
 // Module definitions.
 #include "./_def_.h"
 
@@ -190,6 +192,7 @@ public:
 	{
 		if constexpr (std::is_fundamental<_T>::value)
 		{
+			std::cerr << "is_fundamental: " << this->_internal_value << '\n';
 			return this->_internal_value;
 		}
 		else if constexpr (
@@ -197,12 +200,16 @@ public:
 			std::is_base_of<Object, _T>::value
 		)
 		{
+			std::cerr << "const char* || Object: " << this->_internal_value << '\n';
 			return this->_internal_value != nullptr;
 		}
 		else if constexpr (std::is_same<std::string, _T>::value)
 		{
+			std::cerr << "std::string: " << this->_internal_value << '\n';
 			return !this->_internal_value.empty();
 		}
+
+		std::cerr << "other: " << this->_internal_value << '\n';
 
 		return Object::operator bool();
 	}
