@@ -1,19 +1,10 @@
 /**
  * object/type.cpp
  *
- * Copyright (c) 2020 Yuriy Lisovskiy
+ * Copyright (c) 2020-2021 Yuriy Lisovskiy
  */
 
 #include "./type.h"
-
-// C++ libraries
-#include <memory>
-
-#ifdef _MSC_VER
-#include <stdexcept>
-#else
-#include <cxxabi.h>
-#endif
 
 // Core libraries.
 #include "../string_utils.h"
@@ -34,9 +25,9 @@ Type::Type(const Object& obj)
 	}
 
 	this->_name = full_name.back();
-	for (const auto& attr : obj.__attrs__)
+	for (auto attr_it = obj.attrs_begin(); attr_it != obj.attrs_end(); attr_it++)
 	{
-		this->_attrs.push_back(attr.first);
+		this->_attrs.push_back(attr_it->first);
 	}
 
 	using T = decltype(obj);
@@ -46,75 +37,9 @@ Type::Type(const Object& obj)
 	this->_is_rvalue_ref = std::is_rvalue_reference<T>::value;
 }
 
-// Statuses:
-// 0 - operation succeeded
-// 1 - a memory allocation failure occurred
-// 2 - mangled_name is not a valid name under the C++ ABI mangling rules
-// 3 - one of the arguments is invalid
-std::string Type::demangle(const char* name)
-{
-#ifdef _MSC_VER
-	return core::str::ltrim(core::str::ltrim(name, "class"));
-#else
-	int status = -4;
-	std::unique_ptr<char, void(*)(void*)> res {
-		abi::__cxa_demangle(name, nullptr, nullptr, &status),
-		std::free
-	};
-
-	return status == 0 ? res.get() : name;
-#endif
-}
-
-std::string Type::name() const
-{
-	return this->_name;
-}
-
-bool Type::is_const() const
-{
-	return this->_is_const;
-}
-
-bool Type::is_volatile() const
-{
-	return this->_is_volatile;
-}
-
-bool Type::is_lvalue_ref() const
-{
-	return this->_is_lvalue_ref;
-}
-
-bool Type::is_rvalue_ref() const
-{
-	return this->_is_rvalue_ref;
-}
-
-std::string Type::namespace_() const
-{
-	return this->_namespace;
-}
-
-std::vector<std::string> Type::attributes() const
-{
-	return this->_attrs;
-}
-
-bool Type::operator==(const Type& other) const
-{
-	return this->_name == other._name;
-}
-
-std::ostream& operator<<(std::ostream& out, const Type& obj)
-{
-	out << "<class '" + obj._name + "'>";
-	return out;
-}
-
 [[nodiscard]] std::string Type::type_name(const Object& obj)
 {
-	return Type::demangle(typeid(obj).name());
+	return utility::demangle(typeid(obj).name());
 }
 
 __OBJECT_END__

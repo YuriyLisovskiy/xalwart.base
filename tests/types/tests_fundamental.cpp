@@ -4,505 +4,3311 @@
  * Copyright (c) 2021 Yuriy Lisovskiy
  */
 
-#include <sstream>
-
 #include <gtest/gtest.h>
 
 #include "../../src/types/fundamental.h"
 
 using namespace xw;
 
-
-TEST(TestCase_Fundamental_Int, Test_Get)
+TEST(TestCase_Fundamental, Test_Cmp_ShortInt_Less_ShortInt)
 {
-	auto int_obj = types::Fundamental<int>(10);
-	ASSERT_EQ(*int_obj, 10);
+	auto short_int_value1 = std::make_shared<types::Fundamental<short int>>(68);
+	auto short_int_value2 = std::make_shared<types::Fundamental<short int>>(69);
+	auto actual = short_int_value1->__cmp__(short_int_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
 }
 
-TEST(TestCase_Fundamental_Int, Test_HoldsType_True)
+TEST(TestCase_Fundamental, Test_Cmp_ShortInt_Equals_ShortInt)
 {
-	auto int_obj = types::Fundamental<int>(10);
-	ASSERT_TRUE(int_obj.holds_type<int>());
+	auto short_int_value1 = std::make_shared<types::Fundamental<short int>>(68);
+	auto short_int_value2 = std::make_shared<types::Fundamental<short int>>(68);
+	auto actual = short_int_value1->__cmp__(short_int_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
 }
 
-TEST(TestCase_Fundamental_Int, Test_HoldsType_False)
+TEST(TestCase_Fundamental, Test_Cmp_ShortInt_Greater_ShortInt)
 {
-	auto int_obj = types::Fundamental<int>(10);
-	ASSERT_FALSE(int_obj.holds_type<long>());
+	auto short_int_value1 = std::make_shared<types::Fundamental<short int>>(69);
+	auto short_int_value2 = std::make_shared<types::Fundamental<short int>>(68);
+	auto actual = short_int_value1->__cmp__(short_int_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
 }
 
-TEST(TestCase_Fundamental_Int, Test_OperatorBool_True)
+TEST(TestCase_Fundamental, Test_Cmp_ShortInt_Less_UnsignedShortInt)
 {
-	auto int_obj = types::Fundamental<int>(10);
-	ASSERT_TRUE(int_obj.operator bool());
+	auto short_int_value1 = std::make_shared<types::Fundamental<short int>>(68);
+	auto unsigned_short_int_value2 = std::make_shared<types::Fundamental<unsigned short int>>(69);
+	auto actual = short_int_value1->__cmp__(unsigned_short_int_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
 }
 
-TEST(TestCase_Fundamental_Int, Test_OperatorBool_False)
+TEST(TestCase_Fundamental, Test_Cmp_ShortInt_Equals_UnsignedShortInt)
 {
-	auto int_obj = types::Fundamental<int>(0);
-	ASSERT_FALSE(int_obj.operator bool());
+	auto short_int_value1 = std::make_shared<types::Fundamental<short int>>(68);
+	auto unsigned_short_int_value2 = std::make_shared<types::Fundamental<unsigned short int>>(68);
+	auto actual = short_int_value1->__cmp__(unsigned_short_int_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
 }
 
-TEST(TestCase_Fundamental_Int, Test___str__)
+TEST(TestCase_Fundamental, Test_Cmp_ShortInt_Greater_UnsignedShortInt)
 {
-	auto int_obj = types::Fundamental<int>(10);
-	ASSERT_EQ(int_obj.__str__(), "10");
+	auto short_int_value1 = std::make_shared<types::Fundamental<short int>>(69);
+	auto unsigned_short_int_value2 = std::make_shared<types::Fundamental<unsigned short int>>(68);
+	auto actual = short_int_value1->__cmp__(unsigned_short_int_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
 }
 
-TEST(TestCase_Fundamental_Int, Test___repr__)
+TEST(TestCase_Fundamental, Test_Cmp_ShortInt_Less_Int)
 {
-	auto int_obj = types::Fundamental<int>(10);
-	ASSERT_EQ(int_obj.__repr__(), "10");
+	auto short_int_value1 = std::make_shared<types::Fundamental<short int>>(68);
+	auto int_value2 = std::make_shared<types::Fundamental<int>>(69);
+	auto actual = short_int_value1->__cmp__(int_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
 }
 
-TEST(TestCase_Fundamental_Int, Test_AssignmentOperator)
+TEST(TestCase_Fundamental, Test_Cmp_ShortInt_Equals_Int)
 {
-	auto int_obj = types::Fundamental<int>(10);
-	auto int_obj_copy = int_obj;
-	ASSERT_EQ(*int_obj, *int_obj_copy);
+	auto short_int_value1 = std::make_shared<types::Fundamental<short int>>(68);
+	auto int_value2 = std::make_shared<types::Fundamental<int>>(68);
+	auto actual = short_int_value1->__cmp__(int_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
 }
 
-TEST(TestCase_Fundamental_Int, Test_OperatorPlus)
+TEST(TestCase_Fundamental, Test_Cmp_ShortInt_Greater_Int)
 {
-	auto left = types::Fundamental<int>(10);
-	auto right = types::Fundamental<int>(35);
-	ASSERT_EQ(*(left + right), 10 + 35);
+	auto short_int_value1 = std::make_shared<types::Fundamental<short int>>(69);
+	auto int_value2 = std::make_shared<types::Fundamental<int>>(68);
+	auto actual = short_int_value1->__cmp__(int_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
 }
 
-TEST(TestCase_Fundamental_Int, Test_OperatorMinus)
+TEST(TestCase_Fundamental, Test_Cmp_ShortInt_Less_UnsignedInt)
 {
-	auto left = types::Fundamental<int>(10);
-	auto right = types::Fundamental<int>(35);
-	ASSERT_EQ(*(left - right), 10 - 35);
+	auto short_int_value1 = std::make_shared<types::Fundamental<short int>>(68);
+	auto unsigned_int_value2 = std::make_shared<types::Fundamental<unsigned int>>(69);
+	auto actual = short_int_value1->__cmp__(unsigned_int_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
 }
 
-TEST(TestCase_Fundamental_Int, Test_OperatorUnaryPlus)
+TEST(TestCase_Fundamental, Test_Cmp_ShortInt_Equals_UnsignedInt)
 {
-	auto value = types::Fundamental<int>(-10);
-	ASSERT_EQ(*(+value), -10);
+	auto short_int_value1 = std::make_shared<types::Fundamental<short int>>(68);
+	auto unsigned_int_value2 = std::make_shared<types::Fundamental<unsigned int>>(68);
+	auto actual = short_int_value1->__cmp__(unsigned_int_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
 }
 
-TEST(TestCase_Fundamental_Int, Test_OperatorUnaryMinus)
+TEST(TestCase_Fundamental, Test_Cmp_ShortInt_Greater_UnsignedInt)
 {
-	auto value = types::Fundamental<int>(10);
-	ASSERT_EQ(*-value, -10);
+	auto short_int_value1 = std::make_shared<types::Fundamental<short int>>(69);
+	auto unsigned_int_value2 = std::make_shared<types::Fundamental<unsigned int>>(68);
+	auto actual = short_int_value1->__cmp__(unsigned_int_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
 }
 
-TEST(TestCase_Fundamental_Int, Test_OperatorMultiply)
+TEST(TestCase_Fundamental, Test_Cmp_ShortInt_Less_LongInt)
 {
-	auto left = types::Fundamental<int>(7);
-	auto right = types::Fundamental<int>(35);
-	ASSERT_EQ(*(left * right), 7 * 35);
+	auto short_int_value1 = std::make_shared<types::Fundamental<short int>>(68);
+	auto long_int_value2 = std::make_shared<types::Fundamental<long int>>(69);
+	auto actual = short_int_value1->__cmp__(long_int_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
 }
 
-TEST(TestCase_Fundamental_Int, Test_OperatorDivision)
+TEST(TestCase_Fundamental, Test_Cmp_ShortInt_Equals_LongInt)
 {
-	auto left = types::Fundamental<int>(11);
-	auto right = types::Fundamental<int>(35);
-	ASSERT_EQ(*(left / right), 11 / 35);
+	auto short_int_value1 = std::make_shared<types::Fundamental<short int>>(68);
+	auto long_int_value2 = std::make_shared<types::Fundamental<long int>>(68);
+	auto actual = short_int_value1->__cmp__(long_int_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
 }
 
-TEST(TestCase_Fundamental_Int, Test_OperatorMod)
+TEST(TestCase_Fundamental, Test_Cmp_ShortInt_Greater_LongInt)
 {
-	auto left = types::Fundamental<int>(35);
-	auto right = types::Fundamental<int>(11);
-	ASSERT_EQ(*(left % right), 35 % 11);
+	auto short_int_value1 = std::make_shared<types::Fundamental<short int>>(69);
+	auto long_int_value2 = std::make_shared<types::Fundamental<long int>>(68);
+	auto actual = short_int_value1->__cmp__(long_int_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
 }
 
-TEST(TestCase_Fundamental_Int, Test_OperatorEquals_True)
+TEST(TestCase_Fundamental, Test_Cmp_ShortInt_Less_UnsignedLongInt)
 {
-	auto left = types::Fundamental<int>(11);
-	auto right = types::Fundamental<int>(11);
-	ASSERT_TRUE(left == right);
+	auto short_int_value1 = std::make_shared<types::Fundamental<short int>>(68);
+	auto unsigned_long_int_value2 = std::make_shared<types::Fundamental<unsigned long int>>(69);
+	auto actual = short_int_value1->__cmp__(unsigned_long_int_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
 }
 
-TEST(TestCase_Fundamental_Int, Test_OperatorEquals_False)
+TEST(TestCase_Fundamental, Test_Cmp_ShortInt_Equals_UnsignedLongInt)
 {
-	auto left = types::Fundamental<int>(11);
-	auto right = types::Fundamental<int>(35);
-	ASSERT_FALSE(left == right);
+	auto short_int_value1 = std::make_shared<types::Fundamental<short int>>(68);
+	auto unsigned_long_int_value2 = std::make_shared<types::Fundamental<unsigned long int>>(68);
+	auto actual = short_int_value1->__cmp__(unsigned_long_int_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
 }
 
-TEST(TestCase_Fundamental_Int, Test_OperatorNotEquals_False)
+TEST(TestCase_Fundamental, Test_Cmp_ShortInt_Greater_UnsignedLongInt)
 {
-	auto left = types::Fundamental<int>(11);
-	auto right = types::Fundamental<int>(11);
-	ASSERT_FALSE(left != right);
+	auto short_int_value1 = std::make_shared<types::Fundamental<short int>>(69);
+	auto unsigned_long_int_value2 = std::make_shared<types::Fundamental<unsigned long int>>(68);
+	auto actual = short_int_value1->__cmp__(unsigned_long_int_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
 }
 
-TEST(TestCase_Fundamental_Int, Test_OperatorNotEquals_True)
+TEST(TestCase_Fundamental, Test_Cmp_ShortInt_Less_LongLongInt)
 {
-	auto left = types::Fundamental<int>(11);
-	auto right = types::Fundamental<int>(35);
-	ASSERT_TRUE(left != right);
+	auto short_int_value1 = std::make_shared<types::Fundamental<short int>>(68);
+	auto long_long_int_value2 = std::make_shared<types::Fundamental<long long int>>(69);
+	auto actual = short_int_value1->__cmp__(long_long_int_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
 }
 
-TEST(TestCase_Fundamental_Int, Test_OperatorLess_True)
+TEST(TestCase_Fundamental, Test_Cmp_ShortInt_Equals_LongLongInt)
 {
-	auto left = types::Fundamental<int>(11);
-	auto right = types::Fundamental<int>(12);
-	ASSERT_TRUE(left < right);
+	auto short_int_value1 = std::make_shared<types::Fundamental<short int>>(68);
+	auto long_long_int_value2 = std::make_shared<types::Fundamental<long long int>>(68);
+	auto actual = short_int_value1->__cmp__(long_long_int_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
 }
 
-TEST(TestCase_Fundamental_Int, Test_OperatorLess_False)
+TEST(TestCase_Fundamental, Test_Cmp_ShortInt_Greater_LongLongInt)
 {
-	auto left = types::Fundamental<int>(37);
-	auto right = types::Fundamental<int>(35);
-	ASSERT_FALSE(left < right);
+	auto short_int_value1 = std::make_shared<types::Fundamental<short int>>(69);
+	auto long_long_int_value2 = std::make_shared<types::Fundamental<long long int>>(68);
+	auto actual = short_int_value1->__cmp__(long_long_int_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
 }
 
-TEST(TestCase_Fundamental_Int, Test_OperatorLessEq_True)
+TEST(TestCase_Fundamental, Test_Cmp_ShortInt_Less_UnsignedLongLongInt)
 {
-	auto left = types::Fundamental<int>(11);
-	auto right = types::Fundamental<int>(11);
-	ASSERT_TRUE(left <= right);
+	auto short_int_value1 = std::make_shared<types::Fundamental<short int>>(68);
+	auto unsigned_long_long_int_value2 = std::make_shared<types::Fundamental<unsigned long long int>>(69);
+	auto actual = short_int_value1->__cmp__(unsigned_long_long_int_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
 }
 
-TEST(TestCase_Fundamental_Int, Test_OperatorLessEq_False)
+TEST(TestCase_Fundamental, Test_Cmp_ShortInt_Equals_UnsignedLongLongInt)
 {
-	auto left = types::Fundamental<int>(37);
-	auto right = types::Fundamental<int>(35);
-	ASSERT_FALSE(left <= right);
+	auto short_int_value1 = std::make_shared<types::Fundamental<short int>>(68);
+	auto unsigned_long_long_int_value2 = std::make_shared<types::Fundamental<unsigned long long int>>(68);
+	auto actual = short_int_value1->__cmp__(unsigned_long_long_int_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
 }
 
-TEST(TestCase_Fundamental_Int, Test_OperatorGreater_True)
+TEST(TestCase_Fundamental, Test_Cmp_ShortInt_Greater_UnsignedLongLongInt)
 {
-	auto left = types::Fundamental<int>(12);
-	auto right = types::Fundamental<int>(11);
-	ASSERT_TRUE(left > right);
+	auto short_int_value1 = std::make_shared<types::Fundamental<short int>>(69);
+	auto unsigned_long_long_int_value2 = std::make_shared<types::Fundamental<unsigned long long int>>(68);
+	auto actual = short_int_value1->__cmp__(unsigned_long_long_int_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
 }
 
-TEST(TestCase_Fundamental_Int, Test_OperatorGreater_False)
+TEST(TestCase_Fundamental, Test_Cmp_ShortInt_Less_SignedChar)
 {
-	auto left = types::Fundamental<int>(11);
-	auto right = types::Fundamental<int>(35);
-	ASSERT_FALSE(left > right);
+	auto short_int_value1 = std::make_shared<types::Fundamental<short int>>(68);
+	auto signed_char_value2 = std::make_shared<types::Fundamental<signed char>>(69);
+	auto actual = short_int_value1->__cmp__(signed_char_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
 }
 
-TEST(TestCase_Fundamental_Int, Test_OperatorGreaterEq_True)
+TEST(TestCase_Fundamental, Test_Cmp_ShortInt_Equals_SignedChar)
 {
-	auto left = types::Fundamental<int>(11);
-	auto right = types::Fundamental<int>(11);
-	ASSERT_TRUE(left >= right);
+	auto short_int_value1 = std::make_shared<types::Fundamental<short int>>(68);
+	auto signed_char_value2 = std::make_shared<types::Fundamental<signed char>>(68);
+	auto actual = short_int_value1->__cmp__(signed_char_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
 }
 
-TEST(TestCase_Fundamental_Int, Test_OperatorGreaterEq_False)
+TEST(TestCase_Fundamental, Test_Cmp_ShortInt_Greater_SignedChar)
 {
-	auto left = types::Fundamental<int>(11);
-	auto right = types::Fundamental<int>(35);
-	ASSERT_FALSE(left >= right);
+	auto short_int_value1 = std::make_shared<types::Fundamental<short int>>(69);
+	auto signed_char_value2 = std::make_shared<types::Fundamental<signed char>>(68);
+	auto actual = short_int_value1->__cmp__(signed_char_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
 }
 
-TEST(TestCase_Fundamental_Int, Test_OperatorBitwiseAnd)
+TEST(TestCase_Fundamental, Test_Cmp_ShortInt_Less_UnsignedChar)
 {
-	auto left = types::Fundamental<int>(11);
-	auto right = types::Fundamental<int>(35);
-	ASSERT_EQ(*(left & right), 11 & 35);
+	auto short_int_value1 = std::make_shared<types::Fundamental<short int>>(68);
+	auto unsigned_char_value2 = std::make_shared<types::Fundamental<unsigned char>>(69);
+	auto actual = short_int_value1->__cmp__(unsigned_char_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
 }
 
-TEST(TestCase_Fundamental_Int, Test_OperatorNot_True)
+TEST(TestCase_Fundamental, Test_Cmp_ShortInt_Equals_UnsignedChar)
 {
-	auto value = types::Fundamental<int>(0);
-	ASSERT_TRUE(!value);
+	auto short_int_value1 = std::make_shared<types::Fundamental<short int>>(68);
+	auto unsigned_char_value2 = std::make_shared<types::Fundamental<unsigned char>>(68);
+	auto actual = short_int_value1->__cmp__(unsigned_char_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
 }
 
-TEST(TestCase_Fundamental_Int, Test_OperatorNot_False)
+TEST(TestCase_Fundamental, Test_Cmp_ShortInt_Greater_UnsignedChar)
 {
-	auto value = types::Fundamental<int>(11);
-	ASSERT_FALSE(!value);
+	auto short_int_value1 = std::make_shared<types::Fundamental<short int>>(69);
+	auto unsigned_char_value2 = std::make_shared<types::Fundamental<unsigned char>>(68);
+	auto actual = short_int_value1->__cmp__(unsigned_char_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
 }
 
-TEST(TestCase_Fundamental_Int, Test_OperatorBitwiseOr)
+TEST(TestCase_Fundamental, Test_Cmp_ShortInt_Less_Wchar_T)
 {
-	auto left = types::Fundamental<int>(11);
-	auto right = types::Fundamental<int>(35);
-	ASSERT_EQ(*(left | right), 11 | 35);
+	auto short_int_value1 = std::make_shared<types::Fundamental<short int>>(68);
+	auto wchar_t_value2 = std::make_shared<types::Fundamental<wchar_t>>(69);
+	auto actual = short_int_value1->__cmp__(wchar_t_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
 }
 
-TEST(TestCase_Fundamental_Int, Test_OperatorBitwiseNot)
+TEST(TestCase_Fundamental, Test_Cmp_ShortInt_Equals_Wchar_T)
 {
-	auto value = types::Fundamental<int>(35);
-	ASSERT_EQ(*~value, ~35);
+	auto short_int_value1 = std::make_shared<types::Fundamental<short int>>(68);
+	auto wchar_t_value2 = std::make_shared<types::Fundamental<wchar_t>>(68);
+	auto actual = short_int_value1->__cmp__(wchar_t_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
 }
 
-TEST(TestCase_Fundamental_Int, Test_OperatorBitwiseXor)
+TEST(TestCase_Fundamental, Test_Cmp_ShortInt_Greater_Wchar_T)
 {
-	auto left = types::Fundamental<int>(11);
-	auto right = types::Fundamental<int>(35);
-	ASSERT_EQ(*(left ^ right), 11 ^ 35);
+	auto short_int_value1 = std::make_shared<types::Fundamental<short int>>(69);
+	auto wchar_t_value2 = std::make_shared<types::Fundamental<wchar_t>>(68);
+	auto actual = short_int_value1->__cmp__(wchar_t_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
 }
 
-TEST(TestCase_Fundamental_Int, Test_OperatorLeftShiftIntegral)
+TEST(TestCase_Fundamental, Test_Cmp_ShortInt_Less_Char8_T)
 {
-	auto value = types::Fundamental<int>(11);
-	auto ic = 5;
-	ASSERT_EQ(*(value << ic), 11 << 5);
+	auto short_int_value1 = std::make_shared<types::Fundamental<short int>>(68);
+	auto char8_t_value2 = std::make_shared<types::Fundamental<char8_t>>(69);
+	auto actual = short_int_value1->__cmp__(char8_t_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
 }
 
-TEST(TestCase_Fundamental_Int, Test_OperatorLeftShift)
+TEST(TestCase_Fundamental, Test_Cmp_ShortInt_Equals_Char8_T)
 {
-	auto left = types::Fundamental<int>(11);
-	auto right = types::Fundamental<int>(5);
-	ASSERT_EQ(*(left << right), 11 << 5);
+	auto short_int_value1 = std::make_shared<types::Fundamental<short int>>(68);
+	auto char8_t_value2 = std::make_shared<types::Fundamental<char8_t>>(68);
+	auto actual = short_int_value1->__cmp__(char8_t_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
 }
 
-TEST(TestCase_Fundamental_Int, Test_OperatorRightShiftIntegral)
+TEST(TestCase_Fundamental, Test_Cmp_ShortInt_Greater_Char8_T)
 {
-	auto value = types::Fundamental<int>(11);
-	auto ic = 5;
-	ASSERT_EQ(*(value >> ic), 11 >> 5);
+	auto short_int_value1 = std::make_shared<types::Fundamental<short int>>(69);
+	auto char8_t_value2 = std::make_shared<types::Fundamental<char8_t>>(68);
+	auto actual = short_int_value1->__cmp__(char8_t_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
 }
 
-TEST(TestCase_Fundamental_Int, Test_OperatorRightShift)
+TEST(TestCase_Fundamental, Test_Cmp_ShortInt_Less_Char16_T)
 {
-	auto left = types::Fundamental<int>(11);
-	auto right = types::Fundamental<int>(5);
-	ASSERT_EQ(*(left >> right), 11 >> 5);
+	auto short_int_value1 = std::make_shared<types::Fundamental<short int>>(68);
+	auto char16_t_value2 = std::make_shared<types::Fundamental<char16_t>>(69);
+	auto actual = short_int_value1->__cmp__(char16_t_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
 }
 
-TEST(TestCase_Fundamental_Int, Test_OperatorOstream)
+TEST(TestCase_Fundamental, Test_Cmp_ShortInt_Equals_Char16_T)
 {
-	auto value = types::Fundamental<int>(11);
-	std::stringstream ss;
-	ss << value;
-	ASSERT_EQ(ss.str(), "11");
+	auto short_int_value1 = std::make_shared<types::Fundamental<short int>>(68);
+	auto char16_t_value2 = std::make_shared<types::Fundamental<char16_t>>(68);
+	auto actual = short_int_value1->__cmp__(char16_t_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
 }
 
-TEST(TestCase_Fundamental_Int, Test_OperatorAddEq)
+TEST(TestCase_Fundamental, Test_Cmp_ShortInt_Greater_Char16_T)
 {
-	auto left = types::Fundamental<int>(11);
-	auto right = types::Fundamental<int>(35);
-	ASSERT_EQ(*left, 11);
-	left += right;
-	ASSERT_EQ(*left, 11 + 35);
+	auto short_int_value1 = std::make_shared<types::Fundamental<short int>>(69);
+	auto char16_t_value2 = std::make_shared<types::Fundamental<char16_t>>(68);
+	auto actual = short_int_value1->__cmp__(char16_t_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
 }
 
-TEST(TestCase_Fundamental_Int, Test_OperatorAddEqFundamental)
+TEST(TestCase_Fundamental, Test_Cmp_ShortInt_Less_Char32_T)
 {
-	auto left = types::Fundamental<int>(11);
-	float right = 35.4f;
-
-	ASSERT_EQ(*left, 11);
-	left += right;
-
-	int expected = 11;
-	expected += right;
-
-	ASSERT_EQ(*left, expected);
+	auto short_int_value1 = std::make_shared<types::Fundamental<short int>>(68);
+	auto char32_t_value2 = std::make_shared<types::Fundamental<char32_t>>(69);
+	auto actual = short_int_value1->__cmp__(char32_t_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
 }
 
-TEST(TestCase_Fundamental_Int, Test_OperatorSubEq)
+TEST(TestCase_Fundamental, Test_Cmp_ShortInt_Equals_Char32_T)
 {
-	auto left = types::Fundamental<int>(11);
-	auto right = types::Fundamental<int>(35);
-	ASSERT_EQ(*left, 11);
-	left -= right;
-	ASSERT_EQ(*left, 11 - 35);
+	auto short_int_value1 = std::make_shared<types::Fundamental<short int>>(68);
+	auto char32_t_value2 = std::make_shared<types::Fundamental<char32_t>>(68);
+	auto actual = short_int_value1->__cmp__(char32_t_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
 }
 
-TEST(TestCase_Fundamental_Int, Test_OperatorSubEqFundamental)
+TEST(TestCase_Fundamental, Test_Cmp_ShortInt_Greater_Char32_T)
 {
-	auto left = types::Fundamental<int>(11);
-	float right = 35.4f;
-
-	ASSERT_EQ(*left, 11);
-	left -= right;
-
-	int expected = 11;
-	expected -= right;
-
-	ASSERT_EQ(*left, expected);
+	auto short_int_value1 = std::make_shared<types::Fundamental<short int>>(69);
+	auto char32_t_value2 = std::make_shared<types::Fundamental<char32_t>>(68);
+	auto actual = short_int_value1->__cmp__(char32_t_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
 }
 
-TEST(TestCase_Fundamental_Int, Test_OperatorMulEq)
+TEST(TestCase_Fundamental, Test_Cmp_ShortInt_Less_Float)
 {
-	auto left = types::Fundamental<int>(11);
-	auto right = types::Fundamental<int>(35);
-	ASSERT_EQ(*left, 11);
-	left *= right;
-	ASSERT_EQ(*left, 11 * 35);
+	auto short_int_value1 = std::make_shared<types::Fundamental<short int>>(68);
+	auto float_value2 = std::make_shared<types::Fundamental<float>>(69);
+	auto actual = short_int_value1->__cmp__(float_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
 }
 
-TEST(TestCase_Fundamental_Int, Test_OperatorMulEqFundamental)
+TEST(TestCase_Fundamental, Test_Cmp_ShortInt_Equals_Float)
 {
-	auto left = types::Fundamental<int>(11);
-	float right = 35.4f;
-
-	ASSERT_EQ(*left, 11);
-	left *= right;
-
-	int expected = 11;
-	expected *= right;
-
-	ASSERT_EQ(*left, expected);
+	auto short_int_value1 = std::make_shared<types::Fundamental<short int>>(68);
+	auto float_value2 = std::make_shared<types::Fundamental<float>>(68);
+	auto actual = short_int_value1->__cmp__(float_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
 }
 
-TEST(TestCase_Fundamental_Int, Test_OperatorDivEq)
+TEST(TestCase_Fundamental, Test_Cmp_ShortInt_Greater_Float)
 {
-	auto left = types::Fundamental<int>(11);
-	auto right = types::Fundamental<int>(35);
-	ASSERT_EQ(*left, 11);
-	left /= right;
-	ASSERT_EQ(*left, 11 / 35);
+	auto short_int_value1 = std::make_shared<types::Fundamental<short int>>(69);
+	auto float_value2 = std::make_shared<types::Fundamental<float>>(68);
+	auto actual = short_int_value1->__cmp__(float_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
 }
 
-TEST(TestCase_Fundamental_Int, Test_OperatorDivEqFundamental)
+TEST(TestCase_Fundamental, Test_Cmp_ShortInt_Less_Double)
 {
-	auto left = types::Fundamental<int>(11);
-	float right = 35.4f;
-
-	ASSERT_EQ(*left, 11);
-	left /= right;
-
-	int expected = 11;
-	expected /= right;
-
-	ASSERT_EQ(*left, expected);
+	auto short_int_value1 = std::make_shared<types::Fundamental<short int>>(68);
+	auto double_value2 = std::make_shared<types::Fundamental<double>>(69);
+	auto actual = short_int_value1->__cmp__(double_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
 }
 
-TEST(TestCase_Fundamental_Int, Test_OperatorModEq)
+TEST(TestCase_Fundamental, Test_Cmp_ShortInt_Equals_Double)
 {
-	auto left = types::Fundamental<int>(11);
-	auto right = types::Fundamental<int>(35);
-	ASSERT_EQ(*left, 11);
-	left %= right;
-	ASSERT_EQ(*left, 11 % 35);
+	auto short_int_value1 = std::make_shared<types::Fundamental<short int>>(68);
+	auto double_value2 = std::make_shared<types::Fundamental<double>>(68);
+	auto actual = short_int_value1->__cmp__(double_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
 }
 
-TEST(TestCase_Fundamental_Int, Test_OperatorModEqFundamental)
+TEST(TestCase_Fundamental, Test_Cmp_ShortInt_Greater_Double)
 {
-	auto left = types::Fundamental<int>(11);
-	long long right = 7;
-
-	ASSERT_EQ(*left, 11);
-	left %= right;
-
-	int expected = 11;
-	expected %= right;
-
-	ASSERT_EQ(*left, expected);
+	auto short_int_value1 = std::make_shared<types::Fundamental<short int>>(69);
+	auto double_value2 = std::make_shared<types::Fundamental<double>>(68);
+	auto actual = short_int_value1->__cmp__(double_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
 }
 
-TEST(TestCase_Fundamental_Int, Test_OperatorBitwiseAndEq)
+TEST(TestCase_Fundamental, Test_Cmp_ShortInt_Less_LongDouble)
 {
-	auto left = types::Fundamental<int>(11);
-	auto right = types::Fundamental<int>(35);
-	ASSERT_EQ(*left, 11);
-	left &= right;
-	ASSERT_EQ(*left, 11 & 35);
+	auto short_int_value1 = std::make_shared<types::Fundamental<short int>>(68);
+	auto long_double_value2 = std::make_shared<types::Fundamental<long double>>(69);
+	auto actual = short_int_value1->__cmp__(long_double_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
 }
 
-TEST(TestCase_Fundamental_Int, Test_OperatorBitwiseAndEqFundamental)
+TEST(TestCase_Fundamental, Test_Cmp_ShortInt_Equals_LongDouble)
 {
-	auto left = types::Fundamental<int>(11);
-	signed right = 35;
-
-	ASSERT_EQ(*left, 11);
-	left &= right;
-
-	int expected = 11;
-	expected &= right;
-
-	ASSERT_EQ(*left, expected);
+	auto short_int_value1 = std::make_shared<types::Fundamental<short int>>(68);
+	auto long_double_value2 = std::make_shared<types::Fundamental<long double>>(68);
+	auto actual = short_int_value1->__cmp__(long_double_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
 }
 
-TEST(TestCase_Fundamental_Int, Test_OperatorBitwiseOrEq)
+TEST(TestCase_Fundamental, Test_Cmp_ShortInt_Greater_LongDouble)
 {
-	auto left = types::Fundamental<int>(11);
-	auto right = types::Fundamental<int>(35);
-	ASSERT_EQ(*left, 11);
-	left |= right;
-	ASSERT_EQ(*left, 11 | 35);
+	auto short_int_value1 = std::make_shared<types::Fundamental<short int>>(69);
+	auto long_double_value2 = std::make_shared<types::Fundamental<long double>>(68);
+	auto actual = short_int_value1->__cmp__(long_double_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
 }
 
-TEST(TestCase_Fundamental_Int, Test_OperatorBitwiseOrEqFundamental)
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedShortInt_Less_UnsignedShortInt)
 {
-	auto left = types::Fundamental<int>(11);
-	unsigned right = 35;
-
-	ASSERT_EQ(*left, 11);
-	left |= right;
-
-	int expected = 11;
-	expected |= right;
-
-	ASSERT_EQ(*left, expected);
+	auto unsigned_short_int_value1 = std::make_shared<types::Fundamental<unsigned short int>>(68);
+	auto unsigned_short_int_value2 = std::make_shared<types::Fundamental<unsigned short int>>(69);
+	auto actual = unsigned_short_int_value1->__cmp__(unsigned_short_int_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
 }
 
-TEST(TestCase_Fundamental_Int, Test_OperatorBitwiseXorEq)
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedShortInt_Equals_UnsignedShortInt)
 {
-	auto left = types::Fundamental<int>(11);
-	auto right = types::Fundamental<int>(4);
-	ASSERT_EQ(*left, 11);
-	left ^= right;
-	ASSERT_EQ(*left, 11 ^ 4);
+	auto unsigned_short_int_value1 = std::make_shared<types::Fundamental<unsigned short int>>(68);
+	auto unsigned_short_int_value2 = std::make_shared<types::Fundamental<unsigned short int>>(68);
+	auto actual = unsigned_short_int_value1->__cmp__(unsigned_short_int_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
 }
 
-TEST(TestCase_Fundamental_Int, Test_OperatorBitwiseXorEqFundamental)
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedShortInt_Greater_UnsignedShortInt)
 {
-	auto left = types::Fundamental<int>(11);
-	short right = 4;
-
-	ASSERT_EQ(*left, 11);
-	left ^= right;
-
-	int expected = 11;
-	expected ^= right;
-
-	ASSERT_EQ(*left, expected);
+	auto unsigned_short_int_value1 = std::make_shared<types::Fundamental<unsigned short int>>(69);
+	auto unsigned_short_int_value2 = std::make_shared<types::Fundamental<unsigned short int>>(68);
+	auto actual = unsigned_short_int_value1->__cmp__(unsigned_short_int_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
 }
 
-TEST(TestCase_Fundamental_Int, Test_OperatorBitwiseLeftShiftEq)
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedShortInt_Less_Int)
 {
-	auto left = types::Fundamental<int>(11);
-	auto right = types::Fundamental<int>(3);
-	ASSERT_EQ(*left, 11);
-	left <<= right;
-	ASSERT_EQ(*left, 11 << 3);
+	auto unsigned_short_int_value1 = std::make_shared<types::Fundamental<unsigned short int>>(68);
+	auto int_value2 = std::make_shared<types::Fundamental<int>>(69);
+	auto actual = unsigned_short_int_value1->__cmp__(int_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
 }
 
-TEST(TestCase_Fundamental_Int, Test_OperatorBitwiseLeftShiftEqFundamental)
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedShortInt_Equals_Int)
 {
-	auto left = types::Fundamental<int>(11);
-	char right = 'c';
-
-	ASSERT_EQ(*left, 11);
-	left <<= right;
-
-	int expected = 11;
-	expected <<= right;
-
-	ASSERT_EQ(*left, expected);
+	auto unsigned_short_int_value1 = std::make_shared<types::Fundamental<unsigned short int>>(68);
+	auto int_value2 = std::make_shared<types::Fundamental<int>>(68);
+	auto actual = unsigned_short_int_value1->__cmp__(int_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
 }
 
-TEST(TestCase_Fundamental_Int, Test_OperatorBitwiseRightShiftEq)
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedShortInt_Greater_Int)
 {
-	auto left = types::Fundamental<int>(11);
-	auto right = types::Fundamental<int>(2);
-	ASSERT_EQ(*left, 11);
-	left >>= right;
-	ASSERT_EQ(*left, 11 >> 2);
+	auto unsigned_short_int_value1 = std::make_shared<types::Fundamental<unsigned short int>>(69);
+	auto int_value2 = std::make_shared<types::Fundamental<int>>(68);
+	auto actual = unsigned_short_int_value1->__cmp__(int_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
 }
 
-TEST(TestCase_Fundamental_Int, Test_OperatorBitwiseRightShiftEqFundamental)
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedShortInt_Less_UnsignedInt)
 {
-	auto left = types::Fundamental<int>(11);
-	long right = 2;
-
-	ASSERT_EQ(*left, 11);
-	left >>= right;
-
-	int expected = 11;
-	expected >>= right;
-
-	ASSERT_EQ(*left, expected);
+	auto unsigned_short_int_value1 = std::make_shared<types::Fundamental<unsigned short int>>(68);
+	auto unsigned_int_value2 = std::make_shared<types::Fundamental<unsigned int>>(69);
+	auto actual = unsigned_short_int_value1->__cmp__(unsigned_int_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
 }
 
-TEST(TestCase_Fundamental_Int, Test_FitTo)
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedShortInt_Equals_UnsignedInt)
 {
-	auto value = types::Fundamental<float>(10.5f);
-	ASSERT_EQ(*value, 10.5f);
+	auto unsigned_short_int_value1 = std::make_shared<types::Fundamental<unsigned short int>>(68);
+	auto unsigned_int_value2 = std::make_shared<types::Fundamental<unsigned int>>(68);
+	auto actual = unsigned_short_int_value1->__cmp__(unsigned_int_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
 
-	auto fitted_value = value.fit_to<unsigned long>();
-	ASSERT_EQ(*fitted_value, 10);
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedShortInt_Greater_UnsignedInt)
+{
+	auto unsigned_short_int_value1 = std::make_shared<types::Fundamental<unsigned short int>>(69);
+	auto unsigned_int_value2 = std::make_shared<types::Fundamental<unsigned int>>(68);
+	auto actual = unsigned_short_int_value1->__cmp__(unsigned_int_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedShortInt_Less_LongInt)
+{
+	auto unsigned_short_int_value1 = std::make_shared<types::Fundamental<unsigned short int>>(68);
+	auto long_int_value2 = std::make_shared<types::Fundamental<long int>>(69);
+	auto actual = unsigned_short_int_value1->__cmp__(long_int_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedShortInt_Equals_LongInt)
+{
+	auto unsigned_short_int_value1 = std::make_shared<types::Fundamental<unsigned short int>>(68);
+	auto long_int_value2 = std::make_shared<types::Fundamental<long int>>(68);
+	auto actual = unsigned_short_int_value1->__cmp__(long_int_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedShortInt_Greater_LongInt)
+{
+	auto unsigned_short_int_value1 = std::make_shared<types::Fundamental<unsigned short int>>(69);
+	auto long_int_value2 = std::make_shared<types::Fundamental<long int>>(68);
+	auto actual = unsigned_short_int_value1->__cmp__(long_int_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedShortInt_Less_UnsignedLongInt)
+{
+	auto unsigned_short_int_value1 = std::make_shared<types::Fundamental<unsigned short int>>(68);
+	auto unsigned_long_int_value2 = std::make_shared<types::Fundamental<unsigned long int>>(69);
+	auto actual = unsigned_short_int_value1->__cmp__(unsigned_long_int_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedShortInt_Equals_UnsignedLongInt)
+{
+	auto unsigned_short_int_value1 = std::make_shared<types::Fundamental<unsigned short int>>(68);
+	auto unsigned_long_int_value2 = std::make_shared<types::Fundamental<unsigned long int>>(68);
+	auto actual = unsigned_short_int_value1->__cmp__(unsigned_long_int_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedShortInt_Greater_UnsignedLongInt)
+{
+	auto unsigned_short_int_value1 = std::make_shared<types::Fundamental<unsigned short int>>(69);
+	auto unsigned_long_int_value2 = std::make_shared<types::Fundamental<unsigned long int>>(68);
+	auto actual = unsigned_short_int_value1->__cmp__(unsigned_long_int_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedShortInt_Less_LongLongInt)
+{
+	auto unsigned_short_int_value1 = std::make_shared<types::Fundamental<unsigned short int>>(68);
+	auto long_long_int_value2 = std::make_shared<types::Fundamental<long long int>>(69);
+	auto actual = unsigned_short_int_value1->__cmp__(long_long_int_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedShortInt_Equals_LongLongInt)
+{
+	auto unsigned_short_int_value1 = std::make_shared<types::Fundamental<unsigned short int>>(68);
+	auto long_long_int_value2 = std::make_shared<types::Fundamental<long long int>>(68);
+	auto actual = unsigned_short_int_value1->__cmp__(long_long_int_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedShortInt_Greater_LongLongInt)
+{
+	auto unsigned_short_int_value1 = std::make_shared<types::Fundamental<unsigned short int>>(69);
+	auto long_long_int_value2 = std::make_shared<types::Fundamental<long long int>>(68);
+	auto actual = unsigned_short_int_value1->__cmp__(long_long_int_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedShortInt_Less_UnsignedLongLongInt)
+{
+	auto unsigned_short_int_value1 = std::make_shared<types::Fundamental<unsigned short int>>(68);
+	auto unsigned_long_long_int_value2 = std::make_shared<types::Fundamental<unsigned long long int>>(69);
+	auto actual = unsigned_short_int_value1->__cmp__(unsigned_long_long_int_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedShortInt_Equals_UnsignedLongLongInt)
+{
+	auto unsigned_short_int_value1 = std::make_shared<types::Fundamental<unsigned short int>>(68);
+	auto unsigned_long_long_int_value2 = std::make_shared<types::Fundamental<unsigned long long int>>(68);
+	auto actual = unsigned_short_int_value1->__cmp__(unsigned_long_long_int_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedShortInt_Greater_UnsignedLongLongInt)
+{
+	auto unsigned_short_int_value1 = std::make_shared<types::Fundamental<unsigned short int>>(69);
+	auto unsigned_long_long_int_value2 = std::make_shared<types::Fundamental<unsigned long long int>>(68);
+	auto actual = unsigned_short_int_value1->__cmp__(unsigned_long_long_int_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedShortInt_Less_SignedChar)
+{
+	auto unsigned_short_int_value1 = std::make_shared<types::Fundamental<unsigned short int>>(68);
+	auto signed_char_value2 = std::make_shared<types::Fundamental<signed char>>(69);
+	auto actual = unsigned_short_int_value1->__cmp__(signed_char_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedShortInt_Equals_SignedChar)
+{
+	auto unsigned_short_int_value1 = std::make_shared<types::Fundamental<unsigned short int>>(68);
+	auto signed_char_value2 = std::make_shared<types::Fundamental<signed char>>(68);
+	auto actual = unsigned_short_int_value1->__cmp__(signed_char_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedShortInt_Greater_SignedChar)
+{
+	auto unsigned_short_int_value1 = std::make_shared<types::Fundamental<unsigned short int>>(69);
+	auto signed_char_value2 = std::make_shared<types::Fundamental<signed char>>(68);
+	auto actual = unsigned_short_int_value1->__cmp__(signed_char_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedShortInt_Less_UnsignedChar)
+{
+	auto unsigned_short_int_value1 = std::make_shared<types::Fundamental<unsigned short int>>(68);
+	auto unsigned_char_value2 = std::make_shared<types::Fundamental<unsigned char>>(69);
+	auto actual = unsigned_short_int_value1->__cmp__(unsigned_char_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedShortInt_Equals_UnsignedChar)
+{
+	auto unsigned_short_int_value1 = std::make_shared<types::Fundamental<unsigned short int>>(68);
+	auto unsigned_char_value2 = std::make_shared<types::Fundamental<unsigned char>>(68);
+	auto actual = unsigned_short_int_value1->__cmp__(unsigned_char_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedShortInt_Greater_UnsignedChar)
+{
+	auto unsigned_short_int_value1 = std::make_shared<types::Fundamental<unsigned short int>>(69);
+	auto unsigned_char_value2 = std::make_shared<types::Fundamental<unsigned char>>(68);
+	auto actual = unsigned_short_int_value1->__cmp__(unsigned_char_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedShortInt_Less_Wchar_T)
+{
+	auto unsigned_short_int_value1 = std::make_shared<types::Fundamental<unsigned short int>>(68);
+	auto wchar_t_value2 = std::make_shared<types::Fundamental<wchar_t>>(69);
+	auto actual = unsigned_short_int_value1->__cmp__(wchar_t_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedShortInt_Equals_Wchar_T)
+{
+	auto unsigned_short_int_value1 = std::make_shared<types::Fundamental<unsigned short int>>(68);
+	auto wchar_t_value2 = std::make_shared<types::Fundamental<wchar_t>>(68);
+	auto actual = unsigned_short_int_value1->__cmp__(wchar_t_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedShortInt_Greater_Wchar_T)
+{
+	auto unsigned_short_int_value1 = std::make_shared<types::Fundamental<unsigned short int>>(69);
+	auto wchar_t_value2 = std::make_shared<types::Fundamental<wchar_t>>(68);
+	auto actual = unsigned_short_int_value1->__cmp__(wchar_t_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedShortInt_Less_Char8_T)
+{
+	auto unsigned_short_int_value1 = std::make_shared<types::Fundamental<unsigned short int>>(68);
+	auto char8_t_value2 = std::make_shared<types::Fundamental<char8_t>>(69);
+	auto actual = unsigned_short_int_value1->__cmp__(char8_t_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedShortInt_Equals_Char8_T)
+{
+	auto unsigned_short_int_value1 = std::make_shared<types::Fundamental<unsigned short int>>(68);
+	auto char8_t_value2 = std::make_shared<types::Fundamental<char8_t>>(68);
+	auto actual = unsigned_short_int_value1->__cmp__(char8_t_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedShortInt_Greater_Char8_T)
+{
+	auto unsigned_short_int_value1 = std::make_shared<types::Fundamental<unsigned short int>>(69);
+	auto char8_t_value2 = std::make_shared<types::Fundamental<char8_t>>(68);
+	auto actual = unsigned_short_int_value1->__cmp__(char8_t_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedShortInt_Less_Char16_T)
+{
+	auto unsigned_short_int_value1 = std::make_shared<types::Fundamental<unsigned short int>>(68);
+	auto char16_t_value2 = std::make_shared<types::Fundamental<char16_t>>(69);
+	auto actual = unsigned_short_int_value1->__cmp__(char16_t_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedShortInt_Equals_Char16_T)
+{
+	auto unsigned_short_int_value1 = std::make_shared<types::Fundamental<unsigned short int>>(68);
+	auto char16_t_value2 = std::make_shared<types::Fundamental<char16_t>>(68);
+	auto actual = unsigned_short_int_value1->__cmp__(char16_t_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedShortInt_Greater_Char16_T)
+{
+	auto unsigned_short_int_value1 = std::make_shared<types::Fundamental<unsigned short int>>(69);
+	auto char16_t_value2 = std::make_shared<types::Fundamental<char16_t>>(68);
+	auto actual = unsigned_short_int_value1->__cmp__(char16_t_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedShortInt_Less_Char32_T)
+{
+	auto unsigned_short_int_value1 = std::make_shared<types::Fundamental<unsigned short int>>(68);
+	auto char32_t_value2 = std::make_shared<types::Fundamental<char32_t>>(69);
+	auto actual = unsigned_short_int_value1->__cmp__(char32_t_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedShortInt_Equals_Char32_T)
+{
+	auto unsigned_short_int_value1 = std::make_shared<types::Fundamental<unsigned short int>>(68);
+	auto char32_t_value2 = std::make_shared<types::Fundamental<char32_t>>(68);
+	auto actual = unsigned_short_int_value1->__cmp__(char32_t_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedShortInt_Greater_Char32_T)
+{
+	auto unsigned_short_int_value1 = std::make_shared<types::Fundamental<unsigned short int>>(69);
+	auto char32_t_value2 = std::make_shared<types::Fundamental<char32_t>>(68);
+	auto actual = unsigned_short_int_value1->__cmp__(char32_t_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedShortInt_Less_Float)
+{
+	auto unsigned_short_int_value1 = std::make_shared<types::Fundamental<unsigned short int>>(68);
+	auto float_value2 = std::make_shared<types::Fundamental<float>>(69);
+	auto actual = unsigned_short_int_value1->__cmp__(float_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedShortInt_Equals_Float)
+{
+	auto unsigned_short_int_value1 = std::make_shared<types::Fundamental<unsigned short int>>(68);
+	auto float_value2 = std::make_shared<types::Fundamental<float>>(68);
+	auto actual = unsigned_short_int_value1->__cmp__(float_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedShortInt_Greater_Float)
+{
+	auto unsigned_short_int_value1 = std::make_shared<types::Fundamental<unsigned short int>>(69);
+	auto float_value2 = std::make_shared<types::Fundamental<float>>(68);
+	auto actual = unsigned_short_int_value1->__cmp__(float_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedShortInt_Less_Double)
+{
+	auto unsigned_short_int_value1 = std::make_shared<types::Fundamental<unsigned short int>>(68);
+	auto double_value2 = std::make_shared<types::Fundamental<double>>(69);
+	auto actual = unsigned_short_int_value1->__cmp__(double_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedShortInt_Equals_Double)
+{
+	auto unsigned_short_int_value1 = std::make_shared<types::Fundamental<unsigned short int>>(68);
+	auto double_value2 = std::make_shared<types::Fundamental<double>>(68);
+	auto actual = unsigned_short_int_value1->__cmp__(double_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedShortInt_Greater_Double)
+{
+	auto unsigned_short_int_value1 = std::make_shared<types::Fundamental<unsigned short int>>(69);
+	auto double_value2 = std::make_shared<types::Fundamental<double>>(68);
+	auto actual = unsigned_short_int_value1->__cmp__(double_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedShortInt_Less_LongDouble)
+{
+	auto unsigned_short_int_value1 = std::make_shared<types::Fundamental<unsigned short int>>(68);
+	auto long_double_value2 = std::make_shared<types::Fundamental<long double>>(69);
+	auto actual = unsigned_short_int_value1->__cmp__(long_double_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedShortInt_Equals_LongDouble)
+{
+	auto unsigned_short_int_value1 = std::make_shared<types::Fundamental<unsigned short int>>(68);
+	auto long_double_value2 = std::make_shared<types::Fundamental<long double>>(68);
+	auto actual = unsigned_short_int_value1->__cmp__(long_double_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedShortInt_Greater_LongDouble)
+{
+	auto unsigned_short_int_value1 = std::make_shared<types::Fundamental<unsigned short int>>(69);
+	auto long_double_value2 = std::make_shared<types::Fundamental<long double>>(68);
+	auto actual = unsigned_short_int_value1->__cmp__(long_double_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_Int_Less_Int)
+{
+	auto int_value1 = std::make_shared<types::Fundamental<int>>(68);
+	auto int_value2 = std::make_shared<types::Fundamental<int>>(69);
+	auto actual = int_value1->__cmp__(int_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_Int_Equals_Int)
+{
+	auto int_value1 = std::make_shared<types::Fundamental<int>>(68);
+	auto int_value2 = std::make_shared<types::Fundamental<int>>(68);
+	auto actual = int_value1->__cmp__(int_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_Int_Greater_Int)
+{
+	auto int_value1 = std::make_shared<types::Fundamental<int>>(69);
+	auto int_value2 = std::make_shared<types::Fundamental<int>>(68);
+	auto actual = int_value1->__cmp__(int_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_Int_Less_UnsignedInt)
+{
+	auto int_value1 = std::make_shared<types::Fundamental<int>>(68);
+	auto unsigned_int_value2 = std::make_shared<types::Fundamental<unsigned int>>(69);
+	auto actual = int_value1->__cmp__(unsigned_int_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_Int_Equals_UnsignedInt)
+{
+	auto int_value1 = std::make_shared<types::Fundamental<int>>(68);
+	auto unsigned_int_value2 = std::make_shared<types::Fundamental<unsigned int>>(68);
+	auto actual = int_value1->__cmp__(unsigned_int_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_Int_Greater_UnsignedInt)
+{
+	auto int_value1 = std::make_shared<types::Fundamental<int>>(69);
+	auto unsigned_int_value2 = std::make_shared<types::Fundamental<unsigned int>>(68);
+	auto actual = int_value1->__cmp__(unsigned_int_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_Int_Less_LongInt)
+{
+	auto int_value1 = std::make_shared<types::Fundamental<int>>(68);
+	auto long_int_value2 = std::make_shared<types::Fundamental<long int>>(69);
+	auto actual = int_value1->__cmp__(long_int_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_Int_Equals_LongInt)
+{
+	auto int_value1 = std::make_shared<types::Fundamental<int>>(68);
+	auto long_int_value2 = std::make_shared<types::Fundamental<long int>>(68);
+	auto actual = int_value1->__cmp__(long_int_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_Int_Greater_LongInt)
+{
+	auto int_value1 = std::make_shared<types::Fundamental<int>>(69);
+	auto long_int_value2 = std::make_shared<types::Fundamental<long int>>(68);
+	auto actual = int_value1->__cmp__(long_int_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_Int_Less_UnsignedLongInt)
+{
+	auto int_value1 = std::make_shared<types::Fundamental<int>>(68);
+	auto unsigned_long_int_value2 = std::make_shared<types::Fundamental<unsigned long int>>(69);
+	auto actual = int_value1->__cmp__(unsigned_long_int_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_Int_Equals_UnsignedLongInt)
+{
+	auto int_value1 = std::make_shared<types::Fundamental<int>>(68);
+	auto unsigned_long_int_value2 = std::make_shared<types::Fundamental<unsigned long int>>(68);
+	auto actual = int_value1->__cmp__(unsigned_long_int_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_Int_Greater_UnsignedLongInt)
+{
+	auto int_value1 = std::make_shared<types::Fundamental<int>>(69);
+	auto unsigned_long_int_value2 = std::make_shared<types::Fundamental<unsigned long int>>(68);
+	auto actual = int_value1->__cmp__(unsigned_long_int_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_Int_Less_LongLongInt)
+{
+	auto int_value1 = std::make_shared<types::Fundamental<int>>(68);
+	auto long_long_int_value2 = std::make_shared<types::Fundamental<long long int>>(69);
+	auto actual = int_value1->__cmp__(long_long_int_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_Int_Equals_LongLongInt)
+{
+	auto int_value1 = std::make_shared<types::Fundamental<int>>(68);
+	auto long_long_int_value2 = std::make_shared<types::Fundamental<long long int>>(68);
+	auto actual = int_value1->__cmp__(long_long_int_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_Int_Greater_LongLongInt)
+{
+	auto int_value1 = std::make_shared<types::Fundamental<int>>(69);
+	auto long_long_int_value2 = std::make_shared<types::Fundamental<long long int>>(68);
+	auto actual = int_value1->__cmp__(long_long_int_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_Int_Less_UnsignedLongLongInt)
+{
+	auto int_value1 = std::make_shared<types::Fundamental<int>>(68);
+	auto unsigned_long_long_int_value2 = std::make_shared<types::Fundamental<unsigned long long int>>(69);
+	auto actual = int_value1->__cmp__(unsigned_long_long_int_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_Int_Equals_UnsignedLongLongInt)
+{
+	auto int_value1 = std::make_shared<types::Fundamental<int>>(68);
+	auto unsigned_long_long_int_value2 = std::make_shared<types::Fundamental<unsigned long long int>>(68);
+	auto actual = int_value1->__cmp__(unsigned_long_long_int_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_Int_Greater_UnsignedLongLongInt)
+{
+	auto int_value1 = std::make_shared<types::Fundamental<int>>(69);
+	auto unsigned_long_long_int_value2 = std::make_shared<types::Fundamental<unsigned long long int>>(68);
+	auto actual = int_value1->__cmp__(unsigned_long_long_int_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_Int_Less_SignedChar)
+{
+	auto int_value1 = std::make_shared<types::Fundamental<int>>(68);
+	auto signed_char_value2 = std::make_shared<types::Fundamental<signed char>>(69);
+	auto actual = int_value1->__cmp__(signed_char_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_Int_Equals_SignedChar)
+{
+	auto int_value1 = std::make_shared<types::Fundamental<int>>(68);
+	auto signed_char_value2 = std::make_shared<types::Fundamental<signed char>>(68);
+	auto actual = int_value1->__cmp__(signed_char_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_Int_Greater_SignedChar)
+{
+	auto int_value1 = std::make_shared<types::Fundamental<int>>(69);
+	auto signed_char_value2 = std::make_shared<types::Fundamental<signed char>>(68);
+	auto actual = int_value1->__cmp__(signed_char_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_Int_Less_UnsignedChar)
+{
+	auto int_value1 = std::make_shared<types::Fundamental<int>>(68);
+	auto unsigned_char_value2 = std::make_shared<types::Fundamental<unsigned char>>(69);
+	auto actual = int_value1->__cmp__(unsigned_char_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_Int_Equals_UnsignedChar)
+{
+	auto int_value1 = std::make_shared<types::Fundamental<int>>(68);
+	auto unsigned_char_value2 = std::make_shared<types::Fundamental<unsigned char>>(68);
+	auto actual = int_value1->__cmp__(unsigned_char_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_Int_Greater_UnsignedChar)
+{
+	auto int_value1 = std::make_shared<types::Fundamental<int>>(69);
+	auto unsigned_char_value2 = std::make_shared<types::Fundamental<unsigned char>>(68);
+	auto actual = int_value1->__cmp__(unsigned_char_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_Int_Less_Wchar_T)
+{
+	auto int_value1 = std::make_shared<types::Fundamental<int>>(68);
+	auto wchar_t_value2 = std::make_shared<types::Fundamental<wchar_t>>(69);
+	auto actual = int_value1->__cmp__(wchar_t_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_Int_Equals_Wchar_T)
+{
+	auto int_value1 = std::make_shared<types::Fundamental<int>>(68);
+	auto wchar_t_value2 = std::make_shared<types::Fundamental<wchar_t>>(68);
+	auto actual = int_value1->__cmp__(wchar_t_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_Int_Greater_Wchar_T)
+{
+	auto int_value1 = std::make_shared<types::Fundamental<int>>(69);
+	auto wchar_t_value2 = std::make_shared<types::Fundamental<wchar_t>>(68);
+	auto actual = int_value1->__cmp__(wchar_t_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_Int_Less_Char8_T)
+{
+	auto int_value1 = std::make_shared<types::Fundamental<int>>(68);
+	auto char8_t_value2 = std::make_shared<types::Fundamental<char8_t>>(69);
+	auto actual = int_value1->__cmp__(char8_t_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_Int_Equals_Char8_T)
+{
+	auto int_value1 = std::make_shared<types::Fundamental<int>>(68);
+	auto char8_t_value2 = std::make_shared<types::Fundamental<char8_t>>(68);
+	auto actual = int_value1->__cmp__(char8_t_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_Int_Greater_Char8_T)
+{
+	auto int_value1 = std::make_shared<types::Fundamental<int>>(69);
+	auto char8_t_value2 = std::make_shared<types::Fundamental<char8_t>>(68);
+	auto actual = int_value1->__cmp__(char8_t_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_Int_Less_Char16_T)
+{
+	auto int_value1 = std::make_shared<types::Fundamental<int>>(68);
+	auto char16_t_value2 = std::make_shared<types::Fundamental<char16_t>>(69);
+	auto actual = int_value1->__cmp__(char16_t_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_Int_Equals_Char16_T)
+{
+	auto int_value1 = std::make_shared<types::Fundamental<int>>(68);
+	auto char16_t_value2 = std::make_shared<types::Fundamental<char16_t>>(68);
+	auto actual = int_value1->__cmp__(char16_t_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_Int_Greater_Char16_T)
+{
+	auto int_value1 = std::make_shared<types::Fundamental<int>>(69);
+	auto char16_t_value2 = std::make_shared<types::Fundamental<char16_t>>(68);
+	auto actual = int_value1->__cmp__(char16_t_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_Int_Less_Char32_T)
+{
+	auto int_value1 = std::make_shared<types::Fundamental<int>>(68);
+	auto char32_t_value2 = std::make_shared<types::Fundamental<char32_t>>(69);
+	auto actual = int_value1->__cmp__(char32_t_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_Int_Equals_Char32_T)
+{
+	auto int_value1 = std::make_shared<types::Fundamental<int>>(68);
+	auto char32_t_value2 = std::make_shared<types::Fundamental<char32_t>>(68);
+	auto actual = int_value1->__cmp__(char32_t_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_Int_Greater_Char32_T)
+{
+	auto int_value1 = std::make_shared<types::Fundamental<int>>(69);
+	auto char32_t_value2 = std::make_shared<types::Fundamental<char32_t>>(68);
+	auto actual = int_value1->__cmp__(char32_t_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_Int_Less_Float)
+{
+	auto int_value1 = std::make_shared<types::Fundamental<int>>(68);
+	auto float_value2 = std::make_shared<types::Fundamental<float>>(69);
+	auto actual = int_value1->__cmp__(float_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_Int_Equals_Float)
+{
+	auto int_value1 = std::make_shared<types::Fundamental<int>>(68);
+	auto float_value2 = std::make_shared<types::Fundamental<float>>(68);
+	auto actual = int_value1->__cmp__(float_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_Int_Greater_Float)
+{
+	auto int_value1 = std::make_shared<types::Fundamental<int>>(69);
+	auto float_value2 = std::make_shared<types::Fundamental<float>>(68);
+	auto actual = int_value1->__cmp__(float_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_Int_Less_Double)
+{
+	auto int_value1 = std::make_shared<types::Fundamental<int>>(68);
+	auto double_value2 = std::make_shared<types::Fundamental<double>>(69);
+	auto actual = int_value1->__cmp__(double_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_Int_Equals_Double)
+{
+	auto int_value1 = std::make_shared<types::Fundamental<int>>(68);
+	auto double_value2 = std::make_shared<types::Fundamental<double>>(68);
+	auto actual = int_value1->__cmp__(double_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_Int_Greater_Double)
+{
+	auto int_value1 = std::make_shared<types::Fundamental<int>>(69);
+	auto double_value2 = std::make_shared<types::Fundamental<double>>(68);
+	auto actual = int_value1->__cmp__(double_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_Int_Less_LongDouble)
+{
+	auto int_value1 = std::make_shared<types::Fundamental<int>>(68);
+	auto long_double_value2 = std::make_shared<types::Fundamental<long double>>(69);
+	auto actual = int_value1->__cmp__(long_double_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_Int_Equals_LongDouble)
+{
+	auto int_value1 = std::make_shared<types::Fundamental<int>>(68);
+	auto long_double_value2 = std::make_shared<types::Fundamental<long double>>(68);
+	auto actual = int_value1->__cmp__(long_double_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_Int_Greater_LongDouble)
+{
+	auto int_value1 = std::make_shared<types::Fundamental<int>>(69);
+	auto long_double_value2 = std::make_shared<types::Fundamental<long double>>(68);
+	auto actual = int_value1->__cmp__(long_double_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedInt_Less_UnsignedInt)
+{
+	auto unsigned_int_value1 = std::make_shared<types::Fundamental<unsigned int>>(68);
+	auto unsigned_int_value2 = std::make_shared<types::Fundamental<unsigned int>>(69);
+	auto actual = unsigned_int_value1->__cmp__(unsigned_int_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedInt_Equals_UnsignedInt)
+{
+	auto unsigned_int_value1 = std::make_shared<types::Fundamental<unsigned int>>(68);
+	auto unsigned_int_value2 = std::make_shared<types::Fundamental<unsigned int>>(68);
+	auto actual = unsigned_int_value1->__cmp__(unsigned_int_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedInt_Greater_UnsignedInt)
+{
+	auto unsigned_int_value1 = std::make_shared<types::Fundamental<unsigned int>>(69);
+	auto unsigned_int_value2 = std::make_shared<types::Fundamental<unsigned int>>(68);
+	auto actual = unsigned_int_value1->__cmp__(unsigned_int_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedInt_Less_LongInt)
+{
+	auto unsigned_int_value1 = std::make_shared<types::Fundamental<unsigned int>>(68);
+	auto long_int_value2 = std::make_shared<types::Fundamental<long int>>(69);
+	auto actual = unsigned_int_value1->__cmp__(long_int_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedInt_Equals_LongInt)
+{
+	auto unsigned_int_value1 = std::make_shared<types::Fundamental<unsigned int>>(68);
+	auto long_int_value2 = std::make_shared<types::Fundamental<long int>>(68);
+	auto actual = unsigned_int_value1->__cmp__(long_int_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedInt_Greater_LongInt)
+{
+	auto unsigned_int_value1 = std::make_shared<types::Fundamental<unsigned int>>(69);
+	auto long_int_value2 = std::make_shared<types::Fundamental<long int>>(68);
+	auto actual = unsigned_int_value1->__cmp__(long_int_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedInt_Less_UnsignedLongInt)
+{
+	auto unsigned_int_value1 = std::make_shared<types::Fundamental<unsigned int>>(68);
+	auto unsigned_long_int_value2 = std::make_shared<types::Fundamental<unsigned long int>>(69);
+	auto actual = unsigned_int_value1->__cmp__(unsigned_long_int_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedInt_Equals_UnsignedLongInt)
+{
+	auto unsigned_int_value1 = std::make_shared<types::Fundamental<unsigned int>>(68);
+	auto unsigned_long_int_value2 = std::make_shared<types::Fundamental<unsigned long int>>(68);
+	auto actual = unsigned_int_value1->__cmp__(unsigned_long_int_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedInt_Greater_UnsignedLongInt)
+{
+	auto unsigned_int_value1 = std::make_shared<types::Fundamental<unsigned int>>(69);
+	auto unsigned_long_int_value2 = std::make_shared<types::Fundamental<unsigned long int>>(68);
+	auto actual = unsigned_int_value1->__cmp__(unsigned_long_int_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedInt_Less_LongLongInt)
+{
+	auto unsigned_int_value1 = std::make_shared<types::Fundamental<unsigned int>>(68);
+	auto long_long_int_value2 = std::make_shared<types::Fundamental<long long int>>(69);
+	auto actual = unsigned_int_value1->__cmp__(long_long_int_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedInt_Equals_LongLongInt)
+{
+	auto unsigned_int_value1 = std::make_shared<types::Fundamental<unsigned int>>(68);
+	auto long_long_int_value2 = std::make_shared<types::Fundamental<long long int>>(68);
+	auto actual = unsigned_int_value1->__cmp__(long_long_int_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedInt_Greater_LongLongInt)
+{
+	auto unsigned_int_value1 = std::make_shared<types::Fundamental<unsigned int>>(69);
+	auto long_long_int_value2 = std::make_shared<types::Fundamental<long long int>>(68);
+	auto actual = unsigned_int_value1->__cmp__(long_long_int_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedInt_Less_UnsignedLongLongInt)
+{
+	auto unsigned_int_value1 = std::make_shared<types::Fundamental<unsigned int>>(68);
+	auto unsigned_long_long_int_value2 = std::make_shared<types::Fundamental<unsigned long long int>>(69);
+	auto actual = unsigned_int_value1->__cmp__(unsigned_long_long_int_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedInt_Equals_UnsignedLongLongInt)
+{
+	auto unsigned_int_value1 = std::make_shared<types::Fundamental<unsigned int>>(68);
+	auto unsigned_long_long_int_value2 = std::make_shared<types::Fundamental<unsigned long long int>>(68);
+	auto actual = unsigned_int_value1->__cmp__(unsigned_long_long_int_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedInt_Greater_UnsignedLongLongInt)
+{
+	auto unsigned_int_value1 = std::make_shared<types::Fundamental<unsigned int>>(69);
+	auto unsigned_long_long_int_value2 = std::make_shared<types::Fundamental<unsigned long long int>>(68);
+	auto actual = unsigned_int_value1->__cmp__(unsigned_long_long_int_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedInt_Less_SignedChar)
+{
+	auto unsigned_int_value1 = std::make_shared<types::Fundamental<unsigned int>>(68);
+	auto signed_char_value2 = std::make_shared<types::Fundamental<signed char>>(69);
+	auto actual = unsigned_int_value1->__cmp__(signed_char_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedInt_Equals_SignedChar)
+{
+	auto unsigned_int_value1 = std::make_shared<types::Fundamental<unsigned int>>(68);
+	auto signed_char_value2 = std::make_shared<types::Fundamental<signed char>>(68);
+	auto actual = unsigned_int_value1->__cmp__(signed_char_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedInt_Greater_SignedChar)
+{
+	auto unsigned_int_value1 = std::make_shared<types::Fundamental<unsigned int>>(69);
+	auto signed_char_value2 = std::make_shared<types::Fundamental<signed char>>(68);
+	auto actual = unsigned_int_value1->__cmp__(signed_char_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedInt_Less_UnsignedChar)
+{
+	auto unsigned_int_value1 = std::make_shared<types::Fundamental<unsigned int>>(68);
+	auto unsigned_char_value2 = std::make_shared<types::Fundamental<unsigned char>>(69);
+	auto actual = unsigned_int_value1->__cmp__(unsigned_char_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedInt_Equals_UnsignedChar)
+{
+	auto unsigned_int_value1 = std::make_shared<types::Fundamental<unsigned int>>(68);
+	auto unsigned_char_value2 = std::make_shared<types::Fundamental<unsigned char>>(68);
+	auto actual = unsigned_int_value1->__cmp__(unsigned_char_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedInt_Greater_UnsignedChar)
+{
+	auto unsigned_int_value1 = std::make_shared<types::Fundamental<unsigned int>>(69);
+	auto unsigned_char_value2 = std::make_shared<types::Fundamental<unsigned char>>(68);
+	auto actual = unsigned_int_value1->__cmp__(unsigned_char_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedInt_Less_Wchar_T)
+{
+	auto unsigned_int_value1 = std::make_shared<types::Fundamental<unsigned int>>(68);
+	auto wchar_t_value2 = std::make_shared<types::Fundamental<wchar_t>>(69);
+	auto actual = unsigned_int_value1->__cmp__(wchar_t_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedInt_Equals_Wchar_T)
+{
+	auto unsigned_int_value1 = std::make_shared<types::Fundamental<unsigned int>>(68);
+	auto wchar_t_value2 = std::make_shared<types::Fundamental<wchar_t>>(68);
+	auto actual = unsigned_int_value1->__cmp__(wchar_t_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedInt_Greater_Wchar_T)
+{
+	auto unsigned_int_value1 = std::make_shared<types::Fundamental<unsigned int>>(69);
+	auto wchar_t_value2 = std::make_shared<types::Fundamental<wchar_t>>(68);
+	auto actual = unsigned_int_value1->__cmp__(wchar_t_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedInt_Less_Char8_T)
+{
+	auto unsigned_int_value1 = std::make_shared<types::Fundamental<unsigned int>>(68);
+	auto char8_t_value2 = std::make_shared<types::Fundamental<char8_t>>(69);
+	auto actual = unsigned_int_value1->__cmp__(char8_t_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedInt_Equals_Char8_T)
+{
+	auto unsigned_int_value1 = std::make_shared<types::Fundamental<unsigned int>>(68);
+	auto char8_t_value2 = std::make_shared<types::Fundamental<char8_t>>(68);
+	auto actual = unsigned_int_value1->__cmp__(char8_t_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedInt_Greater_Char8_T)
+{
+	auto unsigned_int_value1 = std::make_shared<types::Fundamental<unsigned int>>(69);
+	auto char8_t_value2 = std::make_shared<types::Fundamental<char8_t>>(68);
+	auto actual = unsigned_int_value1->__cmp__(char8_t_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedInt_Less_Char16_T)
+{
+	auto unsigned_int_value1 = std::make_shared<types::Fundamental<unsigned int>>(68);
+	auto char16_t_value2 = std::make_shared<types::Fundamental<char16_t>>(69);
+	auto actual = unsigned_int_value1->__cmp__(char16_t_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedInt_Equals_Char16_T)
+{
+	auto unsigned_int_value1 = std::make_shared<types::Fundamental<unsigned int>>(68);
+	auto char16_t_value2 = std::make_shared<types::Fundamental<char16_t>>(68);
+	auto actual = unsigned_int_value1->__cmp__(char16_t_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedInt_Greater_Char16_T)
+{
+	auto unsigned_int_value1 = std::make_shared<types::Fundamental<unsigned int>>(69);
+	auto char16_t_value2 = std::make_shared<types::Fundamental<char16_t>>(68);
+	auto actual = unsigned_int_value1->__cmp__(char16_t_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedInt_Less_Char32_T)
+{
+	auto unsigned_int_value1 = std::make_shared<types::Fundamental<unsigned int>>(68);
+	auto char32_t_value2 = std::make_shared<types::Fundamental<char32_t>>(69);
+	auto actual = unsigned_int_value1->__cmp__(char32_t_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedInt_Equals_Char32_T)
+{
+	auto unsigned_int_value1 = std::make_shared<types::Fundamental<unsigned int>>(68);
+	auto char32_t_value2 = std::make_shared<types::Fundamental<char32_t>>(68);
+	auto actual = unsigned_int_value1->__cmp__(char32_t_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedInt_Greater_Char32_T)
+{
+	auto unsigned_int_value1 = std::make_shared<types::Fundamental<unsigned int>>(69);
+	auto char32_t_value2 = std::make_shared<types::Fundamental<char32_t>>(68);
+	auto actual = unsigned_int_value1->__cmp__(char32_t_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedInt_Less_Float)
+{
+	auto unsigned_int_value1 = std::make_shared<types::Fundamental<unsigned int>>(68);
+	auto float_value2 = std::make_shared<types::Fundamental<float>>(69);
+	auto actual = unsigned_int_value1->__cmp__(float_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedInt_Equals_Float)
+{
+	auto unsigned_int_value1 = std::make_shared<types::Fundamental<unsigned int>>(68);
+	auto float_value2 = std::make_shared<types::Fundamental<float>>(68);
+	auto actual = unsigned_int_value1->__cmp__(float_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedInt_Greater_Float)
+{
+	auto unsigned_int_value1 = std::make_shared<types::Fundamental<unsigned int>>(69);
+	auto float_value2 = std::make_shared<types::Fundamental<float>>(68);
+	auto actual = unsigned_int_value1->__cmp__(float_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedInt_Less_Double)
+{
+	auto unsigned_int_value1 = std::make_shared<types::Fundamental<unsigned int>>(68);
+	auto double_value2 = std::make_shared<types::Fundamental<double>>(69);
+	auto actual = unsigned_int_value1->__cmp__(double_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedInt_Equals_Double)
+{
+	auto unsigned_int_value1 = std::make_shared<types::Fundamental<unsigned int>>(68);
+	auto double_value2 = std::make_shared<types::Fundamental<double>>(68);
+	auto actual = unsigned_int_value1->__cmp__(double_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedInt_Greater_Double)
+{
+	auto unsigned_int_value1 = std::make_shared<types::Fundamental<unsigned int>>(69);
+	auto double_value2 = std::make_shared<types::Fundamental<double>>(68);
+	auto actual = unsigned_int_value1->__cmp__(double_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedInt_Less_LongDouble)
+{
+	auto unsigned_int_value1 = std::make_shared<types::Fundamental<unsigned int>>(68);
+	auto long_double_value2 = std::make_shared<types::Fundamental<long double>>(69);
+	auto actual = unsigned_int_value1->__cmp__(long_double_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedInt_Equals_LongDouble)
+{
+	auto unsigned_int_value1 = std::make_shared<types::Fundamental<unsigned int>>(68);
+	auto long_double_value2 = std::make_shared<types::Fundamental<long double>>(68);
+	auto actual = unsigned_int_value1->__cmp__(long_double_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedInt_Greater_LongDouble)
+{
+	auto unsigned_int_value1 = std::make_shared<types::Fundamental<unsigned int>>(69);
+	auto long_double_value2 = std::make_shared<types::Fundamental<long double>>(68);
+	auto actual = unsigned_int_value1->__cmp__(long_double_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_LongInt_Less_LongInt)
+{
+	auto long_int_value1 = std::make_shared<types::Fundamental<long int>>(68);
+	auto long_int_value2 = std::make_shared<types::Fundamental<long int>>(69);
+	auto actual = long_int_value1->__cmp__(long_int_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_LongInt_Equals_LongInt)
+{
+	auto long_int_value1 = std::make_shared<types::Fundamental<long int>>(68);
+	auto long_int_value2 = std::make_shared<types::Fundamental<long int>>(68);
+	auto actual = long_int_value1->__cmp__(long_int_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_LongInt_Greater_LongInt)
+{
+	auto long_int_value1 = std::make_shared<types::Fundamental<long int>>(69);
+	auto long_int_value2 = std::make_shared<types::Fundamental<long int>>(68);
+	auto actual = long_int_value1->__cmp__(long_int_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_LongInt_Less_UnsignedLongInt)
+{
+	auto long_int_value1 = std::make_shared<types::Fundamental<long int>>(68);
+	auto unsigned_long_int_value2 = std::make_shared<types::Fundamental<unsigned long int>>(69);
+	auto actual = long_int_value1->__cmp__(unsigned_long_int_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_LongInt_Equals_UnsignedLongInt)
+{
+	auto long_int_value1 = std::make_shared<types::Fundamental<long int>>(68);
+	auto unsigned_long_int_value2 = std::make_shared<types::Fundamental<unsigned long int>>(68);
+	auto actual = long_int_value1->__cmp__(unsigned_long_int_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_LongInt_Greater_UnsignedLongInt)
+{
+	auto long_int_value1 = std::make_shared<types::Fundamental<long int>>(69);
+	auto unsigned_long_int_value2 = std::make_shared<types::Fundamental<unsigned long int>>(68);
+	auto actual = long_int_value1->__cmp__(unsigned_long_int_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_LongInt_Less_LongLongInt)
+{
+	auto long_int_value1 = std::make_shared<types::Fundamental<long int>>(68);
+	auto long_long_int_value2 = std::make_shared<types::Fundamental<long long int>>(69);
+	auto actual = long_int_value1->__cmp__(long_long_int_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_LongInt_Equals_LongLongInt)
+{
+	auto long_int_value1 = std::make_shared<types::Fundamental<long int>>(68);
+	auto long_long_int_value2 = std::make_shared<types::Fundamental<long long int>>(68);
+	auto actual = long_int_value1->__cmp__(long_long_int_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_LongInt_Greater_LongLongInt)
+{
+	auto long_int_value1 = std::make_shared<types::Fundamental<long int>>(69);
+	auto long_long_int_value2 = std::make_shared<types::Fundamental<long long int>>(68);
+	auto actual = long_int_value1->__cmp__(long_long_int_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_LongInt_Less_UnsignedLongLongInt)
+{
+	auto long_int_value1 = std::make_shared<types::Fundamental<long int>>(68);
+	auto unsigned_long_long_int_value2 = std::make_shared<types::Fundamental<unsigned long long int>>(69);
+	auto actual = long_int_value1->__cmp__(unsigned_long_long_int_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_LongInt_Equals_UnsignedLongLongInt)
+{
+	auto long_int_value1 = std::make_shared<types::Fundamental<long int>>(68);
+	auto unsigned_long_long_int_value2 = std::make_shared<types::Fundamental<unsigned long long int>>(68);
+	auto actual = long_int_value1->__cmp__(unsigned_long_long_int_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_LongInt_Greater_UnsignedLongLongInt)
+{
+	auto long_int_value1 = std::make_shared<types::Fundamental<long int>>(69);
+	auto unsigned_long_long_int_value2 = std::make_shared<types::Fundamental<unsigned long long int>>(68);
+	auto actual = long_int_value1->__cmp__(unsigned_long_long_int_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_LongInt_Less_SignedChar)
+{
+	auto long_int_value1 = std::make_shared<types::Fundamental<long int>>(68);
+	auto signed_char_value2 = std::make_shared<types::Fundamental<signed char>>(69);
+	auto actual = long_int_value1->__cmp__(signed_char_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_LongInt_Equals_SignedChar)
+{
+	auto long_int_value1 = std::make_shared<types::Fundamental<long int>>(68);
+	auto signed_char_value2 = std::make_shared<types::Fundamental<signed char>>(68);
+	auto actual = long_int_value1->__cmp__(signed_char_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_LongInt_Greater_SignedChar)
+{
+	auto long_int_value1 = std::make_shared<types::Fundamental<long int>>(69);
+	auto signed_char_value2 = std::make_shared<types::Fundamental<signed char>>(68);
+	auto actual = long_int_value1->__cmp__(signed_char_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_LongInt_Less_UnsignedChar)
+{
+	auto long_int_value1 = std::make_shared<types::Fundamental<long int>>(68);
+	auto unsigned_char_value2 = std::make_shared<types::Fundamental<unsigned char>>(69);
+	auto actual = long_int_value1->__cmp__(unsigned_char_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_LongInt_Equals_UnsignedChar)
+{
+	auto long_int_value1 = std::make_shared<types::Fundamental<long int>>(68);
+	auto unsigned_char_value2 = std::make_shared<types::Fundamental<unsigned char>>(68);
+	auto actual = long_int_value1->__cmp__(unsigned_char_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_LongInt_Greater_UnsignedChar)
+{
+	auto long_int_value1 = std::make_shared<types::Fundamental<long int>>(69);
+	auto unsigned_char_value2 = std::make_shared<types::Fundamental<unsigned char>>(68);
+	auto actual = long_int_value1->__cmp__(unsigned_char_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_LongInt_Less_Wchar_T)
+{
+	auto long_int_value1 = std::make_shared<types::Fundamental<long int>>(68);
+	auto wchar_t_value2 = std::make_shared<types::Fundamental<wchar_t>>(69);
+	auto actual = long_int_value1->__cmp__(wchar_t_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_LongInt_Equals_Wchar_T)
+{
+	auto long_int_value1 = std::make_shared<types::Fundamental<long int>>(68);
+	auto wchar_t_value2 = std::make_shared<types::Fundamental<wchar_t>>(68);
+	auto actual = long_int_value1->__cmp__(wchar_t_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_LongInt_Greater_Wchar_T)
+{
+	auto long_int_value1 = std::make_shared<types::Fundamental<long int>>(69);
+	auto wchar_t_value2 = std::make_shared<types::Fundamental<wchar_t>>(68);
+	auto actual = long_int_value1->__cmp__(wchar_t_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_LongInt_Less_Char8_T)
+{
+	auto long_int_value1 = std::make_shared<types::Fundamental<long int>>(68);
+	auto char8_t_value2 = std::make_shared<types::Fundamental<char8_t>>(69);
+	auto actual = long_int_value1->__cmp__(char8_t_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_LongInt_Equals_Char8_T)
+{
+	auto long_int_value1 = std::make_shared<types::Fundamental<long int>>(68);
+	auto char8_t_value2 = std::make_shared<types::Fundamental<char8_t>>(68);
+	auto actual = long_int_value1->__cmp__(char8_t_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_LongInt_Greater_Char8_T)
+{
+	auto long_int_value1 = std::make_shared<types::Fundamental<long int>>(69);
+	auto char8_t_value2 = std::make_shared<types::Fundamental<char8_t>>(68);
+	auto actual = long_int_value1->__cmp__(char8_t_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_LongInt_Less_Char16_T)
+{
+	auto long_int_value1 = std::make_shared<types::Fundamental<long int>>(68);
+	auto char16_t_value2 = std::make_shared<types::Fundamental<char16_t>>(69);
+	auto actual = long_int_value1->__cmp__(char16_t_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_LongInt_Equals_Char16_T)
+{
+	auto long_int_value1 = std::make_shared<types::Fundamental<long int>>(68);
+	auto char16_t_value2 = std::make_shared<types::Fundamental<char16_t>>(68);
+	auto actual = long_int_value1->__cmp__(char16_t_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_LongInt_Greater_Char16_T)
+{
+	auto long_int_value1 = std::make_shared<types::Fundamental<long int>>(69);
+	auto char16_t_value2 = std::make_shared<types::Fundamental<char16_t>>(68);
+	auto actual = long_int_value1->__cmp__(char16_t_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_LongInt_Less_Char32_T)
+{
+	auto long_int_value1 = std::make_shared<types::Fundamental<long int>>(68);
+	auto char32_t_value2 = std::make_shared<types::Fundamental<char32_t>>(69);
+	auto actual = long_int_value1->__cmp__(char32_t_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_LongInt_Equals_Char32_T)
+{
+	auto long_int_value1 = std::make_shared<types::Fundamental<long int>>(68);
+	auto char32_t_value2 = std::make_shared<types::Fundamental<char32_t>>(68);
+	auto actual = long_int_value1->__cmp__(char32_t_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_LongInt_Greater_Char32_T)
+{
+	auto long_int_value1 = std::make_shared<types::Fundamental<long int>>(69);
+	auto char32_t_value2 = std::make_shared<types::Fundamental<char32_t>>(68);
+	auto actual = long_int_value1->__cmp__(char32_t_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_LongInt_Less_Float)
+{
+	auto long_int_value1 = std::make_shared<types::Fundamental<long int>>(68);
+	auto float_value2 = std::make_shared<types::Fundamental<float>>(69);
+	auto actual = long_int_value1->__cmp__(float_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_LongInt_Equals_Float)
+{
+	auto long_int_value1 = std::make_shared<types::Fundamental<long int>>(68);
+	auto float_value2 = std::make_shared<types::Fundamental<float>>(68);
+	auto actual = long_int_value1->__cmp__(float_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_LongInt_Greater_Float)
+{
+	auto long_int_value1 = std::make_shared<types::Fundamental<long int>>(69);
+	auto float_value2 = std::make_shared<types::Fundamental<float>>(68);
+	auto actual = long_int_value1->__cmp__(float_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_LongInt_Less_Double)
+{
+	auto long_int_value1 = std::make_shared<types::Fundamental<long int>>(68);
+	auto double_value2 = std::make_shared<types::Fundamental<double>>(69);
+	auto actual = long_int_value1->__cmp__(double_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_LongInt_Equals_Double)
+{
+	auto long_int_value1 = std::make_shared<types::Fundamental<long int>>(68);
+	auto double_value2 = std::make_shared<types::Fundamental<double>>(68);
+	auto actual = long_int_value1->__cmp__(double_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_LongInt_Greater_Double)
+{
+	auto long_int_value1 = std::make_shared<types::Fundamental<long int>>(69);
+	auto double_value2 = std::make_shared<types::Fundamental<double>>(68);
+	auto actual = long_int_value1->__cmp__(double_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_LongInt_Less_LongDouble)
+{
+	auto long_int_value1 = std::make_shared<types::Fundamental<long int>>(68);
+	auto long_double_value2 = std::make_shared<types::Fundamental<long double>>(69);
+	auto actual = long_int_value1->__cmp__(long_double_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_LongInt_Equals_LongDouble)
+{
+	auto long_int_value1 = std::make_shared<types::Fundamental<long int>>(68);
+	auto long_double_value2 = std::make_shared<types::Fundamental<long double>>(68);
+	auto actual = long_int_value1->__cmp__(long_double_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_LongInt_Greater_LongDouble)
+{
+	auto long_int_value1 = std::make_shared<types::Fundamental<long int>>(69);
+	auto long_double_value2 = std::make_shared<types::Fundamental<long double>>(68);
+	auto actual = long_int_value1->__cmp__(long_double_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedLongInt_Less_UnsignedLongInt)
+{
+	auto unsigned_long_int_value1 = std::make_shared<types::Fundamental<unsigned long int>>(68);
+	auto unsigned_long_int_value2 = std::make_shared<types::Fundamental<unsigned long int>>(69);
+	auto actual = unsigned_long_int_value1->__cmp__(unsigned_long_int_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedLongInt_Equals_UnsignedLongInt)
+{
+	auto unsigned_long_int_value1 = std::make_shared<types::Fundamental<unsigned long int>>(68);
+	auto unsigned_long_int_value2 = std::make_shared<types::Fundamental<unsigned long int>>(68);
+	auto actual = unsigned_long_int_value1->__cmp__(unsigned_long_int_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedLongInt_Greater_UnsignedLongInt)
+{
+	auto unsigned_long_int_value1 = std::make_shared<types::Fundamental<unsigned long int>>(69);
+	auto unsigned_long_int_value2 = std::make_shared<types::Fundamental<unsigned long int>>(68);
+	auto actual = unsigned_long_int_value1->__cmp__(unsigned_long_int_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedLongInt_Less_LongLongInt)
+{
+	auto unsigned_long_int_value1 = std::make_shared<types::Fundamental<unsigned long int>>(68);
+	auto long_long_int_value2 = std::make_shared<types::Fundamental<long long int>>(69);
+	auto actual = unsigned_long_int_value1->__cmp__(long_long_int_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedLongInt_Equals_LongLongInt)
+{
+	auto unsigned_long_int_value1 = std::make_shared<types::Fundamental<unsigned long int>>(68);
+	auto long_long_int_value2 = std::make_shared<types::Fundamental<long long int>>(68);
+	auto actual = unsigned_long_int_value1->__cmp__(long_long_int_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedLongInt_Greater_LongLongInt)
+{
+	auto unsigned_long_int_value1 = std::make_shared<types::Fundamental<unsigned long int>>(69);
+	auto long_long_int_value2 = std::make_shared<types::Fundamental<long long int>>(68);
+	auto actual = unsigned_long_int_value1->__cmp__(long_long_int_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedLongInt_Less_UnsignedLongLongInt)
+{
+	auto unsigned_long_int_value1 = std::make_shared<types::Fundamental<unsigned long int>>(68);
+	auto unsigned_long_long_int_value2 = std::make_shared<types::Fundamental<unsigned long long int>>(69);
+	auto actual = unsigned_long_int_value1->__cmp__(unsigned_long_long_int_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedLongInt_Equals_UnsignedLongLongInt)
+{
+	auto unsigned_long_int_value1 = std::make_shared<types::Fundamental<unsigned long int>>(68);
+	auto unsigned_long_long_int_value2 = std::make_shared<types::Fundamental<unsigned long long int>>(68);
+	auto actual = unsigned_long_int_value1->__cmp__(unsigned_long_long_int_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedLongInt_Greater_UnsignedLongLongInt)
+{
+	auto unsigned_long_int_value1 = std::make_shared<types::Fundamental<unsigned long int>>(69);
+	auto unsigned_long_long_int_value2 = std::make_shared<types::Fundamental<unsigned long long int>>(68);
+	auto actual = unsigned_long_int_value1->__cmp__(unsigned_long_long_int_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedLongInt_Less_SignedChar)
+{
+	auto unsigned_long_int_value1 = std::make_shared<types::Fundamental<unsigned long int>>(68);
+	auto signed_char_value2 = std::make_shared<types::Fundamental<signed char>>(69);
+	auto actual = unsigned_long_int_value1->__cmp__(signed_char_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedLongInt_Equals_SignedChar)
+{
+	auto unsigned_long_int_value1 = std::make_shared<types::Fundamental<unsigned long int>>(68);
+	auto signed_char_value2 = std::make_shared<types::Fundamental<signed char>>(68);
+	auto actual = unsigned_long_int_value1->__cmp__(signed_char_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedLongInt_Greater_SignedChar)
+{
+	auto unsigned_long_int_value1 = std::make_shared<types::Fundamental<unsigned long int>>(69);
+	auto signed_char_value2 = std::make_shared<types::Fundamental<signed char>>(68);
+	auto actual = unsigned_long_int_value1->__cmp__(signed_char_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedLongInt_Less_UnsignedChar)
+{
+	auto unsigned_long_int_value1 = std::make_shared<types::Fundamental<unsigned long int>>(68);
+	auto unsigned_char_value2 = std::make_shared<types::Fundamental<unsigned char>>(69);
+	auto actual = unsigned_long_int_value1->__cmp__(unsigned_char_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedLongInt_Equals_UnsignedChar)
+{
+	auto unsigned_long_int_value1 = std::make_shared<types::Fundamental<unsigned long int>>(68);
+	auto unsigned_char_value2 = std::make_shared<types::Fundamental<unsigned char>>(68);
+	auto actual = unsigned_long_int_value1->__cmp__(unsigned_char_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedLongInt_Greater_UnsignedChar)
+{
+	auto unsigned_long_int_value1 = std::make_shared<types::Fundamental<unsigned long int>>(69);
+	auto unsigned_char_value2 = std::make_shared<types::Fundamental<unsigned char>>(68);
+	auto actual = unsigned_long_int_value1->__cmp__(unsigned_char_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedLongInt_Less_Wchar_T)
+{
+	auto unsigned_long_int_value1 = std::make_shared<types::Fundamental<unsigned long int>>(68);
+	auto wchar_t_value2 = std::make_shared<types::Fundamental<wchar_t>>(69);
+	auto actual = unsigned_long_int_value1->__cmp__(wchar_t_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedLongInt_Equals_Wchar_T)
+{
+	auto unsigned_long_int_value1 = std::make_shared<types::Fundamental<unsigned long int>>(68);
+	auto wchar_t_value2 = std::make_shared<types::Fundamental<wchar_t>>(68);
+	auto actual = unsigned_long_int_value1->__cmp__(wchar_t_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedLongInt_Greater_Wchar_T)
+{
+	auto unsigned_long_int_value1 = std::make_shared<types::Fundamental<unsigned long int>>(69);
+	auto wchar_t_value2 = std::make_shared<types::Fundamental<wchar_t>>(68);
+	auto actual = unsigned_long_int_value1->__cmp__(wchar_t_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedLongInt_Less_Char8_T)
+{
+	auto unsigned_long_int_value1 = std::make_shared<types::Fundamental<unsigned long int>>(68);
+	auto char8_t_value2 = std::make_shared<types::Fundamental<char8_t>>(69);
+	auto actual = unsigned_long_int_value1->__cmp__(char8_t_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedLongInt_Equals_Char8_T)
+{
+	auto unsigned_long_int_value1 = std::make_shared<types::Fundamental<unsigned long int>>(68);
+	auto char8_t_value2 = std::make_shared<types::Fundamental<char8_t>>(68);
+	auto actual = unsigned_long_int_value1->__cmp__(char8_t_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedLongInt_Greater_Char8_T)
+{
+	auto unsigned_long_int_value1 = std::make_shared<types::Fundamental<unsigned long int>>(69);
+	auto char8_t_value2 = std::make_shared<types::Fundamental<char8_t>>(68);
+	auto actual = unsigned_long_int_value1->__cmp__(char8_t_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedLongInt_Less_Char16_T)
+{
+	auto unsigned_long_int_value1 = std::make_shared<types::Fundamental<unsigned long int>>(68);
+	auto char16_t_value2 = std::make_shared<types::Fundamental<char16_t>>(69);
+	auto actual = unsigned_long_int_value1->__cmp__(char16_t_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedLongInt_Equals_Char16_T)
+{
+	auto unsigned_long_int_value1 = std::make_shared<types::Fundamental<unsigned long int>>(68);
+	auto char16_t_value2 = std::make_shared<types::Fundamental<char16_t>>(68);
+	auto actual = unsigned_long_int_value1->__cmp__(char16_t_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedLongInt_Greater_Char16_T)
+{
+	auto unsigned_long_int_value1 = std::make_shared<types::Fundamental<unsigned long int>>(69);
+	auto char16_t_value2 = std::make_shared<types::Fundamental<char16_t>>(68);
+	auto actual = unsigned_long_int_value1->__cmp__(char16_t_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedLongInt_Less_Char32_T)
+{
+	auto unsigned_long_int_value1 = std::make_shared<types::Fundamental<unsigned long int>>(68);
+	auto char32_t_value2 = std::make_shared<types::Fundamental<char32_t>>(69);
+	auto actual = unsigned_long_int_value1->__cmp__(char32_t_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedLongInt_Equals_Char32_T)
+{
+	auto unsigned_long_int_value1 = std::make_shared<types::Fundamental<unsigned long int>>(68);
+	auto char32_t_value2 = std::make_shared<types::Fundamental<char32_t>>(68);
+	auto actual = unsigned_long_int_value1->__cmp__(char32_t_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedLongInt_Greater_Char32_T)
+{
+	auto unsigned_long_int_value1 = std::make_shared<types::Fundamental<unsigned long int>>(69);
+	auto char32_t_value2 = std::make_shared<types::Fundamental<char32_t>>(68);
+	auto actual = unsigned_long_int_value1->__cmp__(char32_t_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedLongInt_Less_Float)
+{
+	auto unsigned_long_int_value1 = std::make_shared<types::Fundamental<unsigned long int>>(68);
+	auto float_value2 = std::make_shared<types::Fundamental<float>>(69);
+	auto actual = unsigned_long_int_value1->__cmp__(float_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedLongInt_Equals_Float)
+{
+	auto unsigned_long_int_value1 = std::make_shared<types::Fundamental<unsigned long int>>(68);
+	auto float_value2 = std::make_shared<types::Fundamental<float>>(68);
+	auto actual = unsigned_long_int_value1->__cmp__(float_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedLongInt_Greater_Float)
+{
+	auto unsigned_long_int_value1 = std::make_shared<types::Fundamental<unsigned long int>>(69);
+	auto float_value2 = std::make_shared<types::Fundamental<float>>(68);
+	auto actual = unsigned_long_int_value1->__cmp__(float_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedLongInt_Less_Double)
+{
+	auto unsigned_long_int_value1 = std::make_shared<types::Fundamental<unsigned long int>>(68);
+	auto double_value2 = std::make_shared<types::Fundamental<double>>(69);
+	auto actual = unsigned_long_int_value1->__cmp__(double_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedLongInt_Equals_Double)
+{
+	auto unsigned_long_int_value1 = std::make_shared<types::Fundamental<unsigned long int>>(68);
+	auto double_value2 = std::make_shared<types::Fundamental<double>>(68);
+	auto actual = unsigned_long_int_value1->__cmp__(double_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedLongInt_Greater_Double)
+{
+	auto unsigned_long_int_value1 = std::make_shared<types::Fundamental<unsigned long int>>(69);
+	auto double_value2 = std::make_shared<types::Fundamental<double>>(68);
+	auto actual = unsigned_long_int_value1->__cmp__(double_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedLongInt_Less_LongDouble)
+{
+	auto unsigned_long_int_value1 = std::make_shared<types::Fundamental<unsigned long int>>(68);
+	auto long_double_value2 = std::make_shared<types::Fundamental<long double>>(69);
+	auto actual = unsigned_long_int_value1->__cmp__(long_double_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedLongInt_Equals_LongDouble)
+{
+	auto unsigned_long_int_value1 = std::make_shared<types::Fundamental<unsigned long int>>(68);
+	auto long_double_value2 = std::make_shared<types::Fundamental<long double>>(68);
+	auto actual = unsigned_long_int_value1->__cmp__(long_double_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedLongInt_Greater_LongDouble)
+{
+	auto unsigned_long_int_value1 = std::make_shared<types::Fundamental<unsigned long int>>(69);
+	auto long_double_value2 = std::make_shared<types::Fundamental<long double>>(68);
+	auto actual = unsigned_long_int_value1->__cmp__(long_double_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_LongLongInt_Less_LongLongInt)
+{
+	auto long_long_int_value1 = std::make_shared<types::Fundamental<long long int>>(68);
+	auto long_long_int_value2 = std::make_shared<types::Fundamental<long long int>>(69);
+	auto actual = long_long_int_value1->__cmp__(long_long_int_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_LongLongInt_Equals_LongLongInt)
+{
+	auto long_long_int_value1 = std::make_shared<types::Fundamental<long long int>>(68);
+	auto long_long_int_value2 = std::make_shared<types::Fundamental<long long int>>(68);
+	auto actual = long_long_int_value1->__cmp__(long_long_int_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_LongLongInt_Greater_LongLongInt)
+{
+	auto long_long_int_value1 = std::make_shared<types::Fundamental<long long int>>(69);
+	auto long_long_int_value2 = std::make_shared<types::Fundamental<long long int>>(68);
+	auto actual = long_long_int_value1->__cmp__(long_long_int_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_LongLongInt_Less_UnsignedLongLongInt)
+{
+	auto long_long_int_value1 = std::make_shared<types::Fundamental<long long int>>(68);
+	auto unsigned_long_long_int_value2 = std::make_shared<types::Fundamental<unsigned long long int>>(69);
+	auto actual = long_long_int_value1->__cmp__(unsigned_long_long_int_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_LongLongInt_Equals_UnsignedLongLongInt)
+{
+	auto long_long_int_value1 = std::make_shared<types::Fundamental<long long int>>(68);
+	auto unsigned_long_long_int_value2 = std::make_shared<types::Fundamental<unsigned long long int>>(68);
+	auto actual = long_long_int_value1->__cmp__(unsigned_long_long_int_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_LongLongInt_Greater_UnsignedLongLongInt)
+{
+	auto long_long_int_value1 = std::make_shared<types::Fundamental<long long int>>(69);
+	auto unsigned_long_long_int_value2 = std::make_shared<types::Fundamental<unsigned long long int>>(68);
+	auto actual = long_long_int_value1->__cmp__(unsigned_long_long_int_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_LongLongInt_Less_SignedChar)
+{
+	auto long_long_int_value1 = std::make_shared<types::Fundamental<long long int>>(68);
+	auto signed_char_value2 = std::make_shared<types::Fundamental<signed char>>(69);
+	auto actual = long_long_int_value1->__cmp__(signed_char_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_LongLongInt_Equals_SignedChar)
+{
+	auto long_long_int_value1 = std::make_shared<types::Fundamental<long long int>>(68);
+	auto signed_char_value2 = std::make_shared<types::Fundamental<signed char>>(68);
+	auto actual = long_long_int_value1->__cmp__(signed_char_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_LongLongInt_Greater_SignedChar)
+{
+	auto long_long_int_value1 = std::make_shared<types::Fundamental<long long int>>(69);
+	auto signed_char_value2 = std::make_shared<types::Fundamental<signed char>>(68);
+	auto actual = long_long_int_value1->__cmp__(signed_char_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_LongLongInt_Less_UnsignedChar)
+{
+	auto long_long_int_value1 = std::make_shared<types::Fundamental<long long int>>(68);
+	auto unsigned_char_value2 = std::make_shared<types::Fundamental<unsigned char>>(69);
+	auto actual = long_long_int_value1->__cmp__(unsigned_char_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_LongLongInt_Equals_UnsignedChar)
+{
+	auto long_long_int_value1 = std::make_shared<types::Fundamental<long long int>>(68);
+	auto unsigned_char_value2 = std::make_shared<types::Fundamental<unsigned char>>(68);
+	auto actual = long_long_int_value1->__cmp__(unsigned_char_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_LongLongInt_Greater_UnsignedChar)
+{
+	auto long_long_int_value1 = std::make_shared<types::Fundamental<long long int>>(69);
+	auto unsigned_char_value2 = std::make_shared<types::Fundamental<unsigned char>>(68);
+	auto actual = long_long_int_value1->__cmp__(unsigned_char_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_LongLongInt_Less_Wchar_T)
+{
+	auto long_long_int_value1 = std::make_shared<types::Fundamental<long long int>>(68);
+	auto wchar_t_value2 = std::make_shared<types::Fundamental<wchar_t>>(69);
+	auto actual = long_long_int_value1->__cmp__(wchar_t_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_LongLongInt_Equals_Wchar_T)
+{
+	auto long_long_int_value1 = std::make_shared<types::Fundamental<long long int>>(68);
+	auto wchar_t_value2 = std::make_shared<types::Fundamental<wchar_t>>(68);
+	auto actual = long_long_int_value1->__cmp__(wchar_t_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_LongLongInt_Greater_Wchar_T)
+{
+	auto long_long_int_value1 = std::make_shared<types::Fundamental<long long int>>(69);
+	auto wchar_t_value2 = std::make_shared<types::Fundamental<wchar_t>>(68);
+	auto actual = long_long_int_value1->__cmp__(wchar_t_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_LongLongInt_Less_Char8_T)
+{
+	auto long_long_int_value1 = std::make_shared<types::Fundamental<long long int>>(68);
+	auto char8_t_value2 = std::make_shared<types::Fundamental<char8_t>>(69);
+	auto actual = long_long_int_value1->__cmp__(char8_t_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_LongLongInt_Equals_Char8_T)
+{
+	auto long_long_int_value1 = std::make_shared<types::Fundamental<long long int>>(68);
+	auto char8_t_value2 = std::make_shared<types::Fundamental<char8_t>>(68);
+	auto actual = long_long_int_value1->__cmp__(char8_t_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_LongLongInt_Greater_Char8_T)
+{
+	auto long_long_int_value1 = std::make_shared<types::Fundamental<long long int>>(69);
+	auto char8_t_value2 = std::make_shared<types::Fundamental<char8_t>>(68);
+	auto actual = long_long_int_value1->__cmp__(char8_t_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_LongLongInt_Less_Char16_T)
+{
+	auto long_long_int_value1 = std::make_shared<types::Fundamental<long long int>>(68);
+	auto char16_t_value2 = std::make_shared<types::Fundamental<char16_t>>(69);
+	auto actual = long_long_int_value1->__cmp__(char16_t_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_LongLongInt_Equals_Char16_T)
+{
+	auto long_long_int_value1 = std::make_shared<types::Fundamental<long long int>>(68);
+	auto char16_t_value2 = std::make_shared<types::Fundamental<char16_t>>(68);
+	auto actual = long_long_int_value1->__cmp__(char16_t_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_LongLongInt_Greater_Char16_T)
+{
+	auto long_long_int_value1 = std::make_shared<types::Fundamental<long long int>>(69);
+	auto char16_t_value2 = std::make_shared<types::Fundamental<char16_t>>(68);
+	auto actual = long_long_int_value1->__cmp__(char16_t_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_LongLongInt_Less_Char32_T)
+{
+	auto long_long_int_value1 = std::make_shared<types::Fundamental<long long int>>(68);
+	auto char32_t_value2 = std::make_shared<types::Fundamental<char32_t>>(69);
+	auto actual = long_long_int_value1->__cmp__(char32_t_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_LongLongInt_Equals_Char32_T)
+{
+	auto long_long_int_value1 = std::make_shared<types::Fundamental<long long int>>(68);
+	auto char32_t_value2 = std::make_shared<types::Fundamental<char32_t>>(68);
+	auto actual = long_long_int_value1->__cmp__(char32_t_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_LongLongInt_Greater_Char32_T)
+{
+	auto long_long_int_value1 = std::make_shared<types::Fundamental<long long int>>(69);
+	auto char32_t_value2 = std::make_shared<types::Fundamental<char32_t>>(68);
+	auto actual = long_long_int_value1->__cmp__(char32_t_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_LongLongInt_Less_Float)
+{
+	auto long_long_int_value1 = std::make_shared<types::Fundamental<long long int>>(68);
+	auto float_value2 = std::make_shared<types::Fundamental<float>>(69);
+	auto actual = long_long_int_value1->__cmp__(float_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_LongLongInt_Equals_Float)
+{
+	auto long_long_int_value1 = std::make_shared<types::Fundamental<long long int>>(68);
+	auto float_value2 = std::make_shared<types::Fundamental<float>>(68);
+	auto actual = long_long_int_value1->__cmp__(float_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_LongLongInt_Greater_Float)
+{
+	auto long_long_int_value1 = std::make_shared<types::Fundamental<long long int>>(69);
+	auto float_value2 = std::make_shared<types::Fundamental<float>>(68);
+	auto actual = long_long_int_value1->__cmp__(float_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_LongLongInt_Less_Double)
+{
+	auto long_long_int_value1 = std::make_shared<types::Fundamental<long long int>>(68);
+	auto double_value2 = std::make_shared<types::Fundamental<double>>(69);
+	auto actual = long_long_int_value1->__cmp__(double_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_LongLongInt_Equals_Double)
+{
+	auto long_long_int_value1 = std::make_shared<types::Fundamental<long long int>>(68);
+	auto double_value2 = std::make_shared<types::Fundamental<double>>(68);
+	auto actual = long_long_int_value1->__cmp__(double_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_LongLongInt_Greater_Double)
+{
+	auto long_long_int_value1 = std::make_shared<types::Fundamental<long long int>>(69);
+	auto double_value2 = std::make_shared<types::Fundamental<double>>(68);
+	auto actual = long_long_int_value1->__cmp__(double_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_LongLongInt_Less_LongDouble)
+{
+	auto long_long_int_value1 = std::make_shared<types::Fundamental<long long int>>(68);
+	auto long_double_value2 = std::make_shared<types::Fundamental<long double>>(69);
+	auto actual = long_long_int_value1->__cmp__(long_double_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_LongLongInt_Equals_LongDouble)
+{
+	auto long_long_int_value1 = std::make_shared<types::Fundamental<long long int>>(68);
+	auto long_double_value2 = std::make_shared<types::Fundamental<long double>>(68);
+	auto actual = long_long_int_value1->__cmp__(long_double_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_LongLongInt_Greater_LongDouble)
+{
+	auto long_long_int_value1 = std::make_shared<types::Fundamental<long long int>>(69);
+	auto long_double_value2 = std::make_shared<types::Fundamental<long double>>(68);
+	auto actual = long_long_int_value1->__cmp__(long_double_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedLongLongInt_Less_UnsignedLongLongInt)
+{
+	auto unsigned_long_long_int_value1 = std::make_shared<types::Fundamental<unsigned long long int>>(68);
+	auto unsigned_long_long_int_value2 = std::make_shared<types::Fundamental<unsigned long long int>>(69);
+	auto actual = unsigned_long_long_int_value1->__cmp__(unsigned_long_long_int_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedLongLongInt_Equals_UnsignedLongLongInt)
+{
+	auto unsigned_long_long_int_value1 = std::make_shared<types::Fundamental<unsigned long long int>>(68);
+	auto unsigned_long_long_int_value2 = std::make_shared<types::Fundamental<unsigned long long int>>(68);
+	auto actual = unsigned_long_long_int_value1->__cmp__(unsigned_long_long_int_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedLongLongInt_Greater_UnsignedLongLongInt)
+{
+	auto unsigned_long_long_int_value1 = std::make_shared<types::Fundamental<unsigned long long int>>(69);
+	auto unsigned_long_long_int_value2 = std::make_shared<types::Fundamental<unsigned long long int>>(68);
+	auto actual = unsigned_long_long_int_value1->__cmp__(unsigned_long_long_int_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedLongLongInt_Less_SignedChar)
+{
+	auto unsigned_long_long_int_value1 = std::make_shared<types::Fundamental<unsigned long long int>>(68);
+	auto signed_char_value2 = std::make_shared<types::Fundamental<signed char>>(69);
+	auto actual = unsigned_long_long_int_value1->__cmp__(signed_char_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedLongLongInt_Equals_SignedChar)
+{
+	auto unsigned_long_long_int_value1 = std::make_shared<types::Fundamental<unsigned long long int>>(68);
+	auto signed_char_value2 = std::make_shared<types::Fundamental<signed char>>(68);
+	auto actual = unsigned_long_long_int_value1->__cmp__(signed_char_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedLongLongInt_Greater_SignedChar)
+{
+	auto unsigned_long_long_int_value1 = std::make_shared<types::Fundamental<unsigned long long int>>(69);
+	auto signed_char_value2 = std::make_shared<types::Fundamental<signed char>>(68);
+	auto actual = unsigned_long_long_int_value1->__cmp__(signed_char_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedLongLongInt_Less_UnsignedChar)
+{
+	auto unsigned_long_long_int_value1 = std::make_shared<types::Fundamental<unsigned long long int>>(68);
+	auto unsigned_char_value2 = std::make_shared<types::Fundamental<unsigned char>>(69);
+	auto actual = unsigned_long_long_int_value1->__cmp__(unsigned_char_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedLongLongInt_Equals_UnsignedChar)
+{
+	auto unsigned_long_long_int_value1 = std::make_shared<types::Fundamental<unsigned long long int>>(68);
+	auto unsigned_char_value2 = std::make_shared<types::Fundamental<unsigned char>>(68);
+	auto actual = unsigned_long_long_int_value1->__cmp__(unsigned_char_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedLongLongInt_Greater_UnsignedChar)
+{
+	auto unsigned_long_long_int_value1 = std::make_shared<types::Fundamental<unsigned long long int>>(69);
+	auto unsigned_char_value2 = std::make_shared<types::Fundamental<unsigned char>>(68);
+	auto actual = unsigned_long_long_int_value1->__cmp__(unsigned_char_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedLongLongInt_Less_Wchar_T)
+{
+	auto unsigned_long_long_int_value1 = std::make_shared<types::Fundamental<unsigned long long int>>(68);
+	auto wchar_t_value2 = std::make_shared<types::Fundamental<wchar_t>>(69);
+	auto actual = unsigned_long_long_int_value1->__cmp__(wchar_t_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedLongLongInt_Equals_Wchar_T)
+{
+	auto unsigned_long_long_int_value1 = std::make_shared<types::Fundamental<unsigned long long int>>(68);
+	auto wchar_t_value2 = std::make_shared<types::Fundamental<wchar_t>>(68);
+	auto actual = unsigned_long_long_int_value1->__cmp__(wchar_t_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedLongLongInt_Greater_Wchar_T)
+{
+	auto unsigned_long_long_int_value1 = std::make_shared<types::Fundamental<unsigned long long int>>(69);
+	auto wchar_t_value2 = std::make_shared<types::Fundamental<wchar_t>>(68);
+	auto actual = unsigned_long_long_int_value1->__cmp__(wchar_t_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedLongLongInt_Less_Char8_T)
+{
+	auto unsigned_long_long_int_value1 = std::make_shared<types::Fundamental<unsigned long long int>>(68);
+	auto char8_t_value2 = std::make_shared<types::Fundamental<char8_t>>(69);
+	auto actual = unsigned_long_long_int_value1->__cmp__(char8_t_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedLongLongInt_Equals_Char8_T)
+{
+	auto unsigned_long_long_int_value1 = std::make_shared<types::Fundamental<unsigned long long int>>(68);
+	auto char8_t_value2 = std::make_shared<types::Fundamental<char8_t>>(68);
+	auto actual = unsigned_long_long_int_value1->__cmp__(char8_t_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedLongLongInt_Greater_Char8_T)
+{
+	auto unsigned_long_long_int_value1 = std::make_shared<types::Fundamental<unsigned long long int>>(69);
+	auto char8_t_value2 = std::make_shared<types::Fundamental<char8_t>>(68);
+	auto actual = unsigned_long_long_int_value1->__cmp__(char8_t_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedLongLongInt_Less_Char16_T)
+{
+	auto unsigned_long_long_int_value1 = std::make_shared<types::Fundamental<unsigned long long int>>(68);
+	auto char16_t_value2 = std::make_shared<types::Fundamental<char16_t>>(69);
+	auto actual = unsigned_long_long_int_value1->__cmp__(char16_t_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedLongLongInt_Equals_Char16_T)
+{
+	auto unsigned_long_long_int_value1 = std::make_shared<types::Fundamental<unsigned long long int>>(68);
+	auto char16_t_value2 = std::make_shared<types::Fundamental<char16_t>>(68);
+	auto actual = unsigned_long_long_int_value1->__cmp__(char16_t_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedLongLongInt_Greater_Char16_T)
+{
+	auto unsigned_long_long_int_value1 = std::make_shared<types::Fundamental<unsigned long long int>>(69);
+	auto char16_t_value2 = std::make_shared<types::Fundamental<char16_t>>(68);
+	auto actual = unsigned_long_long_int_value1->__cmp__(char16_t_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedLongLongInt_Less_Char32_T)
+{
+	auto unsigned_long_long_int_value1 = std::make_shared<types::Fundamental<unsigned long long int>>(68);
+	auto char32_t_value2 = std::make_shared<types::Fundamental<char32_t>>(69);
+	auto actual = unsigned_long_long_int_value1->__cmp__(char32_t_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedLongLongInt_Equals_Char32_T)
+{
+	auto unsigned_long_long_int_value1 = std::make_shared<types::Fundamental<unsigned long long int>>(68);
+	auto char32_t_value2 = std::make_shared<types::Fundamental<char32_t>>(68);
+	auto actual = unsigned_long_long_int_value1->__cmp__(char32_t_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedLongLongInt_Greater_Char32_T)
+{
+	auto unsigned_long_long_int_value1 = std::make_shared<types::Fundamental<unsigned long long int>>(69);
+	auto char32_t_value2 = std::make_shared<types::Fundamental<char32_t>>(68);
+	auto actual = unsigned_long_long_int_value1->__cmp__(char32_t_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedLongLongInt_Less_Float)
+{
+	auto unsigned_long_long_int_value1 = std::make_shared<types::Fundamental<unsigned long long int>>(68);
+	auto float_value2 = std::make_shared<types::Fundamental<float>>(69);
+	auto actual = unsigned_long_long_int_value1->__cmp__(float_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedLongLongInt_Equals_Float)
+{
+	auto unsigned_long_long_int_value1 = std::make_shared<types::Fundamental<unsigned long long int>>(68);
+	auto float_value2 = std::make_shared<types::Fundamental<float>>(68);
+	auto actual = unsigned_long_long_int_value1->__cmp__(float_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedLongLongInt_Greater_Float)
+{
+	auto unsigned_long_long_int_value1 = std::make_shared<types::Fundamental<unsigned long long int>>(69);
+	auto float_value2 = std::make_shared<types::Fundamental<float>>(68);
+	auto actual = unsigned_long_long_int_value1->__cmp__(float_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedLongLongInt_Less_Double)
+{
+	auto unsigned_long_long_int_value1 = std::make_shared<types::Fundamental<unsigned long long int>>(68);
+	auto double_value2 = std::make_shared<types::Fundamental<double>>(69);
+	auto actual = unsigned_long_long_int_value1->__cmp__(double_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedLongLongInt_Equals_Double)
+{
+	auto unsigned_long_long_int_value1 = std::make_shared<types::Fundamental<unsigned long long int>>(68);
+	auto double_value2 = std::make_shared<types::Fundamental<double>>(68);
+	auto actual = unsigned_long_long_int_value1->__cmp__(double_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedLongLongInt_Greater_Double)
+{
+	auto unsigned_long_long_int_value1 = std::make_shared<types::Fundamental<unsigned long long int>>(69);
+	auto double_value2 = std::make_shared<types::Fundamental<double>>(68);
+	auto actual = unsigned_long_long_int_value1->__cmp__(double_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedLongLongInt_Less_LongDouble)
+{
+	auto unsigned_long_long_int_value1 = std::make_shared<types::Fundamental<unsigned long long int>>(68);
+	auto long_double_value2 = std::make_shared<types::Fundamental<long double>>(69);
+	auto actual = unsigned_long_long_int_value1->__cmp__(long_double_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedLongLongInt_Equals_LongDouble)
+{
+	auto unsigned_long_long_int_value1 = std::make_shared<types::Fundamental<unsigned long long int>>(68);
+	auto long_double_value2 = std::make_shared<types::Fundamental<long double>>(68);
+	auto actual = unsigned_long_long_int_value1->__cmp__(long_double_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_UnsignedLongLongInt_Greater_LongDouble)
+{
+	auto unsigned_long_long_int_value1 = std::make_shared<types::Fundamental<unsigned long long int>>(69);
+	auto long_double_value2 = std::make_shared<types::Fundamental<long double>>(68);
+	auto actual = unsigned_long_long_int_value1->__cmp__(long_double_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_SignedChar_Less_SignedChar)
+{
+	auto signed_char_value1 = std::make_shared<types::Fundamental<signed char>>(68);
+	auto signed_char_value2 = std::make_shared<types::Fundamental<signed char>>(69);
+	auto actual = signed_char_value1->__cmp__(signed_char_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_SignedChar_Equals_SignedChar)
+{
+	auto signed_char_value1 = std::make_shared<types::Fundamental<signed char>>(68);
+	auto signed_char_value2 = std::make_shared<types::Fundamental<signed char>>(68);
+	auto actual = signed_char_value1->__cmp__(signed_char_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_SignedChar_Greater_SignedChar)
+{
+	auto signed_char_value1 = std::make_shared<types::Fundamental<signed char>>(69);
+	auto signed_char_value2 = std::make_shared<types::Fundamental<signed char>>(68);
+	auto actual = signed_char_value1->__cmp__(signed_char_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_SignedChar_Less_UnsignedChar)
+{
+	auto signed_char_value1 = std::make_shared<types::Fundamental<signed char>>(68);
+	auto unsigned_char_value2 = std::make_shared<types::Fundamental<unsigned char>>(69);
+	auto actual = signed_char_value1->__cmp__(unsigned_char_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_SignedChar_Equals_UnsignedChar)
+{
+	auto signed_char_value1 = std::make_shared<types::Fundamental<signed char>>(68);
+	auto unsigned_char_value2 = std::make_shared<types::Fundamental<unsigned char>>(68);
+	auto actual = signed_char_value1->__cmp__(unsigned_char_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_SignedChar_Greater_UnsignedChar)
+{
+	auto signed_char_value1 = std::make_shared<types::Fundamental<signed char>>(69);
+	auto unsigned_char_value2 = std::make_shared<types::Fundamental<unsigned char>>(68);
+	auto actual = signed_char_value1->__cmp__(unsigned_char_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_SignedChar_Less_Wchar_T)
+{
+	auto signed_char_value1 = std::make_shared<types::Fundamental<signed char>>(68);
+	auto wchar_t_value2 = std::make_shared<types::Fundamental<wchar_t>>(69);
+	auto actual = signed_char_value1->__cmp__(wchar_t_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_SignedChar_Equals_Wchar_T)
+{
+	auto signed_char_value1 = std::make_shared<types::Fundamental<signed char>>(68);
+	auto wchar_t_value2 = std::make_shared<types::Fundamental<wchar_t>>(68);
+	auto actual = signed_char_value1->__cmp__(wchar_t_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_SignedChar_Greater_Wchar_T)
+{
+	auto signed_char_value1 = std::make_shared<types::Fundamental<signed char>>(69);
+	auto wchar_t_value2 = std::make_shared<types::Fundamental<wchar_t>>(68);
+	auto actual = signed_char_value1->__cmp__(wchar_t_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_SignedChar_Less_Char8_T)
+{
+	auto signed_char_value1 = std::make_shared<types::Fundamental<signed char>>(68);
+	auto char8_t_value2 = std::make_shared<types::Fundamental<char8_t>>(69);
+	auto actual = signed_char_value1->__cmp__(char8_t_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_SignedChar_Equals_Char8_T)
+{
+	auto signed_char_value1 = std::make_shared<types::Fundamental<signed char>>(68);
+	auto char8_t_value2 = std::make_shared<types::Fundamental<char8_t>>(68);
+	auto actual = signed_char_value1->__cmp__(char8_t_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_SignedChar_Greater_Char8_T)
+{
+	auto signed_char_value1 = std::make_shared<types::Fundamental<signed char>>(69);
+	auto char8_t_value2 = std::make_shared<types::Fundamental<char8_t>>(68);
+	auto actual = signed_char_value1->__cmp__(char8_t_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_SignedChar_Less_Char16_T)
+{
+	auto signed_char_value1 = std::make_shared<types::Fundamental<signed char>>(68);
+	auto char16_t_value2 = std::make_shared<types::Fundamental<char16_t>>(69);
+	auto actual = signed_char_value1->__cmp__(char16_t_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_SignedChar_Equals_Char16_T)
+{
+	auto signed_char_value1 = std::make_shared<types::Fundamental<signed char>>(68);
+	auto char16_t_value2 = std::make_shared<types::Fundamental<char16_t>>(68);
+	auto actual = signed_char_value1->__cmp__(char16_t_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_SignedChar_Greater_Char16_T)
+{
+	auto signed_char_value1 = std::make_shared<types::Fundamental<signed char>>(69);
+	auto char16_t_value2 = std::make_shared<types::Fundamental<char16_t>>(68);
+	auto actual = signed_char_value1->__cmp__(char16_t_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_SignedChar_Less_Char32_T)
+{
+	auto signed_char_value1 = std::make_shared<types::Fundamental<signed char>>(68);
+	auto char32_t_value2 = std::make_shared<types::Fundamental<char32_t>>(69);
+	auto actual = signed_char_value1->__cmp__(char32_t_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_SignedChar_Equals_Char32_T)
+{
+	auto signed_char_value1 = std::make_shared<types::Fundamental<signed char>>(68);
+	auto char32_t_value2 = std::make_shared<types::Fundamental<char32_t>>(68);
+	auto actual = signed_char_value1->__cmp__(char32_t_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_SignedChar_Greater_Char32_T)
+{
+	auto signed_char_value1 = std::make_shared<types::Fundamental<signed char>>(69);
+	auto char32_t_value2 = std::make_shared<types::Fundamental<char32_t>>(68);
+	auto actual = signed_char_value1->__cmp__(char32_t_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_SignedChar_Less_Float)
+{
+	auto signed_char_value1 = std::make_shared<types::Fundamental<signed char>>(68);
+	auto float_value2 = std::make_shared<types::Fundamental<float>>(69);
+	auto actual = signed_char_value1->__cmp__(float_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_SignedChar_Equals_Float)
+{
+	auto signed_char_value1 = std::make_shared<types::Fundamental<signed char>>(68);
+	auto float_value2 = std::make_shared<types::Fundamental<float>>(68);
+	auto actual = signed_char_value1->__cmp__(float_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_SignedChar_Greater_Float)
+{
+	auto signed_char_value1 = std::make_shared<types::Fundamental<signed char>>(69);
+	auto float_value2 = std::make_shared<types::Fundamental<float>>(68);
+	auto actual = signed_char_value1->__cmp__(float_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_SignedChar_Less_Double)
+{
+	auto signed_char_value1 = std::make_shared<types::Fundamental<signed char>>(68);
+	auto double_value2 = std::make_shared<types::Fundamental<double>>(69);
+	auto actual = signed_char_value1->__cmp__(double_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_SignedChar_Equals_Double)
+{
+	auto signed_char_value1 = std::make_shared<types::Fundamental<signed char>>(68);
+	auto double_value2 = std::make_shared<types::Fundamental<double>>(68);
+	auto actual = signed_char_value1->__cmp__(double_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_SignedChar_Greater_Double)
+{
+	auto signed_char_value1 = std::make_shared<types::Fundamental<signed char>>(69);
+	auto double_value2 = std::make_shared<types::Fundamental<double>>(68);
+	auto actual = signed_char_value1->__cmp__(double_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_SignedChar_Less_LongDouble)
+{
+	auto signed_char_value1 = std::make_shared<types::Fundamental<signed char>>(68);
+	auto long_double_value2 = std::make_shared<types::Fundamental<long double>>(69);
+	auto actual = signed_char_value1->__cmp__(long_double_value2.get());
+	short expected = -1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_SignedChar_Equals_LongDouble)
+{
+	auto signed_char_value1 = std::make_shared<types::Fundamental<signed char>>(68);
+	auto long_double_value2 = std::make_shared<types::Fundamental<long double>>(68);
+	auto actual = signed_char_value1->__cmp__(long_double_value2.get());
+	short expected = 0;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Cmp_SignedChar_Greater_LongDouble)
+{
+	auto signed_char_value1 = std::make_shared<types::Fundamental<signed char>>(69);
+	auto long_double_value2 = std::make_shared<types::Fundamental<long double>>(68);
+	auto actual = signed_char_value1->__cmp__(long_double_value2.get());
+	short expected = 1;
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Str_Bool)
+{
+	auto value = types::Fundamental<bool>(true);
+	auto actual = value.__str__();
+	auto expected = std::string("true");
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Str_ShortInt)
+{
+	auto value = types::Fundamental<short int>(-34);
+	auto actual = value.__str__();
+	auto expected = std::string("-34");
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Str_UnsignedShortInt)
+{
+	auto value = types::Fundamental<unsigned short int>(22);
+	auto actual = value.__str__();
+	auto expected = std::string("22");
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Str_Int)
+{
+	auto value = types::Fundamental<int>(-9876);
+	auto actual = value.__str__();
+	auto expected = std::string("-9876");
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Str_UnsignedInt)
+{
+	auto value = types::Fundamental<unsigned int>(977);
+	auto actual = value.__str__();
+	auto expected = std::string("977");
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Str_LongInt)
+{
+	auto value = types::Fundamental<long int>(-8765434567);
+	auto actual = value.__str__();
+	auto expected = std::string("-8765434567");
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Str_UnsignedLongInt)
+{
+	auto value = types::Fundamental<unsigned long int>(34567898765);
+	auto actual = value.__str__();
+	auto expected = std::string("34567898765");
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Str_LongLongInt)
+{
+	auto value = types::Fundamental<long long int>(-876565623456745);
+	auto actual = value.__str__();
+	auto expected = std::string("-876565623456745");
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Str_UnsignedLongLongInt)
+{
+	auto value = types::Fundamental<unsigned long long int>(4567454567);
+	auto actual = value.__str__();
+	auto expected = std::string("4567454567");
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Str_SignedChar)
+{
+	auto value = types::Fundamental<signed char>('h');
+	auto actual = value.__str__();
+	auto expected = std::string("h");
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Str_UnsignedChar)
+{
+	auto value = types::Fundamental<unsigned char>('z');
+	auto actual = value.__str__();
+	auto expected = std::string("z");
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Str_Wchar_T)
+{
+	auto value = types::Fundamental<wchar_t>(234);
+	auto actual = value.__str__();
+	auto expected = std::string("234");
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Str_Char8_T)
+{
+	auto value = types::Fundamental<char8_t>(68);
+	auto actual = value.__str__();
+	auto expected = std::string("68");
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Str_Char16_T)
+{
+	auto value = types::Fundamental<char16_t>(222);
+	auto actual = value.__str__();
+	auto expected = std::string("222");
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Str_Char32_T)
+{
+	auto value = types::Fundamental<char32_t>(333);
+	auto actual = value.__str__();
+	auto expected = std::string("333");
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Str_Float)
+{
+	auto value = types::Fundamental<float>(34567.0f);
+	auto actual = value.__str__();
+	auto expected = std::string("34567.0");
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Str_Double)
+{
+	auto value = types::Fundamental<double>(34567.34);
+	auto actual = value.__str__();
+	auto expected = std::string("34567.34");
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_Fundamental, Test_Str_LongDouble)
+{
+	auto value = types::Fundamental<long double>(345784567.00000);
+	auto actual = value.__str__();
+	auto expected = std::string("345784567.0");
+	ASSERT_EQ(actual, expected);
 }

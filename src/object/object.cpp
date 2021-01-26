@@ -1,13 +1,16 @@
 /**
  * object/object.cpp
  *
- * Copyright (c) 2020 Yuriy Lisovskiy
+ * Copyright (c) 2020-2021 Yuriy Lisovskiy
  */
 
 #include "./object.h"
 
 // C++ libraries.
 #include <sstream>
+
+// Core libraries.
+#include "../exceptions.h"
 
 
 __OBJECT_BEGIN__
@@ -17,11 +20,6 @@ Object::Object()
 	std::stringstream oss;
 	oss << static_cast<const void*>(this);
 	this->_object_address = oss.str();
-}
-
-std::string Object::__address__() const
-{
-	return this->_object_address;
 }
 
 std::vector<char> Object::__get_attr__(const char* attr_name) const
@@ -50,28 +48,6 @@ void Object::__set_attr__(const char* attr_name, const std::vector<char>& data)
 	}
 }
 
-bool Object::__has_attr__(const char* attr_name) const
-{
-	return this->__attrs__.find(attr_name) != this->__attrs__.end();
-}
-
-short Object::__cmp__(const Object* other) const
-{
-	auto this_hash = this->__hash__();
-	auto other_hash = other->__hash__();
-	if (this_hash < other_hash)
-	{
-		return -1;
-	}
-
-	return this_hash == other_hash ? 0 : 1;
-}
-
-unsigned long Object::__hash__() const
-{
-	return reinterpret_cast<std::uintptr_t>(this);
-}
-
 Type Object::__type__() const
 {
 	return Type(*this);
@@ -87,15 +63,14 @@ std::string Object::__repr__() const
 	return this->__str__();
 }
 
-std::ostream& operator<<(std::ostream& out, Object& obj)
-{
-	out << obj.__str__();
-	return out;
-}
-
 Object::operator bool() const
 {
-	return true;
+	return !this->__attrs__.empty();
+}
+
+bool Object::operator! () const
+{
+	return this->__attrs__.empty();
 }
 
 __OBJECT_END__
