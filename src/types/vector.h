@@ -306,24 +306,6 @@ public:
 		return this->_arr.insert(position, val);
 	}
 
-	// single element (fundamentals or Object-inherited) (2)
-	template <class T>
-	inline iterator insert(const_iterator position, const T& val)
-	{
-		if constexpr (std::is_fundamental_v<T>)
-		{
-			return this->_arr.insert(position, std::make_shared<Fundamental<T>>(val));
-		}
-		else if constexpr (std::is_base_of<Object, T>::value)
-		{
-			return this->_arr.insert(position, std::make_shared<T>(val));
-		}
-		else
-		{
-			throw std::invalid_argument("type mismatch");
-		}
-	}
-
 	// single element (c-string) (3)
 // TODO: change const char* to std::string
 //	inline iterator insert(const_iterator position, const char* val)
@@ -337,30 +319,19 @@ public:
 		return this->_arr.insert(position, n, val);
 	}
 
-	// fill (fundamental or Object-inherited) (5)
-	template <class T>
+	// fill (fundamental) (5)
+	template <fundamental_type T>
 	inline iterator insert(const_iterator position, size_type n, const T& val)
 	{
-		if constexpr (std::is_fundamental_v<T>)
-		{
-			return this->_arr.insert(position, n, std::make_shared<Fundamental<T>>(val));
-		}
-		else if constexpr (std::is_base_of<Object, T>::value)
-		{
-			return this->_arr.insert(position, n, std::make_shared<T>(val));
-		}
-		else
-		{
-			throw std::invalid_argument("type mismatch");
-		}
+		return this->_arr.insert(position, n, std::make_shared<Fundamental<T>>(val));
 	}
 
-	// fill (c-string) (6)
-// TODO: change const char* to std::string
-//	inline iterator insert(const_iterator position, size_type n, const char* val)
-//	{
-//		return this->_arr->insert(position, n, std::make_shared<Fundamental<const char*>>(val));
-//	}
+	// fill (Object-inherited) (6)
+	template <typename T, typename = std::enable_if<std::is_base_of<Object, T>::value>>
+	inline iterator insert(const_iterator position, size_type n, const T& val)
+	{
+		return this->_arr.insert(position, n, std::make_shared<T>(val));
+	}
 
 	// range (7)
 	template <class InputIterator>
@@ -375,7 +346,22 @@ public:
 		return this->_arr.insert(position, std::forward<value_type>(val));
 	}
 
-	// initializer list (9)
+	// move (fundamental) (9)
+// TODO:
+//	template <fundamental_type T>
+//	inline iterator insert(const_iterator position, size_type n, T&& val)
+//	{
+//		return this->_arr.insert(position, n, std::make_shared<Fundamental<T>>(std::forward<value_type>(val)));
+//	}
+
+	// move (Object-inherited) (10)
+	template <typename T, typename = std::enable_if<std::is_base_of<Object, T>::value>>
+	inline iterator insert(const_iterator position, size_type n, T&& val)
+	{
+		return this->_arr.insert(position, n, std::forward<T>(val));
+	}
+
+	// initializer list (11)
 	inline iterator insert(const_iterator position, std::initializer_list<value_type> il)
 	{
 		return this->_arr.insert(position, il);
@@ -404,18 +390,6 @@ public:
 	inline void clear() noexcept
 	{
 		this->_arr.clear();
-	}
-
-	template <class... Args>
-	inline iterator emplace(const_iterator position, Args&&... args)
-	{
-		return this->_arr.emplace(position, std::forward<Args>(args)...);
-	}
-
-	template <class... Args>
-	inline void emplace_back(Args&&... args)
-	{
-		this->_arr.emplace_back(std::forward<Args>(args)...);
 	}
 
 	[[nodiscard]]

@@ -16,7 +16,10 @@
 
 __SYS_BEGIN__
 
-extern std::string _version_string(int major, int minor, int patch);
+inline std::string _version_string(int major, int minor, int patch)
+{
+	return std::to_string(major) + "." + std::to_string(minor) + "." + std::to_string(patch);
+}
 
 const std::string compiler =
 #ifdef __clang__

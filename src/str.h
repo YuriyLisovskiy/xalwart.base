@@ -14,18 +14,25 @@
 // Module definitions.
 #include "./_def_.h"
 
+// Core libraries.
+#include "./sys.h"
+
 
 __MAIN_NAMESPACE_BEGIN__
 
-using string = std::string;
+#ifdef __windows__
+	using string = std::wstring;
+#else
+	using string = std::string;
+#endif
 
 template<size_t N>
-struct fixed_string
+struct fixed_std_string
 {
 	char value[N + 1]{};
 	size_t length = N;
 
-	constexpr fixed_string(char const* s)
+	constexpr fixed_std_string(char const* s)
 	{
 		for (size_t i = 0; i < N; i++)
 		{
@@ -40,6 +47,6 @@ struct fixed_string
 };
 
 template<size_t N>
-fixed_string(char const (&)[N]) -> fixed_string<N - 1>;
+fixed_std_string(char const (&)[N]) -> fixed_std_string<N - 1>;
 
 __MAIN_NAMESPACE_END__
