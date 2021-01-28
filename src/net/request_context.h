@@ -11,12 +11,12 @@
 // C++ libraries.
 #include <map>
 #include <functional>
+#include <string>
 
 // Module definitions.
 #include "./_def_.h"
 
 // Core libraries.
-#include "../str.h"
 #include "../collections/dict.h"
 
 
@@ -44,7 +44,7 @@ struct RequestContext
 	bool keep_alive{};
 
 	// Contains body of http request.
-	xw::string content;
+	std::string content;
 
 	// Accumulates request's headers.
 	collections::Dict<std::string, std::string> headers;

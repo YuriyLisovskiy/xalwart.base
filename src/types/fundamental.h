@@ -176,7 +176,7 @@ public:
 	}
 
 	[[nodiscard]]
-	inline xw::string __str__() const override
+	inline std::string __str__() const override
 	{
 		if constexpr (std::is_same_v<internal_type, bool>)
 		{
@@ -207,7 +207,7 @@ public:
 	}
 
 	[[nodiscard]]
-	inline xw::string __repr__() const override
+	inline std::string __repr__() const override
 	{
 		return "xw::types::Fundamental<" + utility::demangle(
 			typeid(internal_type).name()

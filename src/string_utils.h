@@ -15,9 +15,6 @@
 // Module definitions.
 #include "./_def_.h"
 
-// Core libraries.
-#include "./str.h"
-
 
 __STR_BEGIN__
 
@@ -93,7 +90,7 @@ extern std::vector<std::string> rsplit(const std::string& str, char delimiter = 
 /// @param str: string to split.
 /// @param delimiter: delimiter where to split string.
 /// @return std::pair of strings.
-extern std::pair<xw::string, xw::string> lsplit_one(const xw::string& str, char delimiter = ' ');
+extern std::pair<std::string, std::string> lsplit_one(const std::string& str, char delimiter = ' ');
 
 /// Checks if string starts with some string prefix.
 ///
@@ -174,6 +171,30 @@ extern std::string ftoa_fixed(double value);
 /// @param value: value to convert
 /// @return	std::string representation of converted value.
 extern std::string ftoa_sci(double value);
+
+// Used as template argument.
+template<size_t N>
+struct fixed_string
+{
+	char value[N + 1]{};
+	size_t length = N;
+
+	constexpr fixed_string(char const* s)
+	{
+		for (size_t i = 0; i < N; i++)
+		{
+			this->value[i] = s[i];
+		}
+	}
+
+	constexpr explicit operator char const* () const
+	{
+		return this->value;
+	}
+};
+
+template<size_t N>
+fixed_string(char const (&)[N]) -> fixed_string<N - 1>;
 
 __STR_END__
 

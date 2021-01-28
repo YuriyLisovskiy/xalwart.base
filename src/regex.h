@@ -18,9 +18,6 @@
 // Module definitions.
 #include "./_def_.h"
 
-// Core libraries.
-#include "./str.h"
-
 
 __RGX_BEGIN__
 

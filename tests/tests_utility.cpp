@@ -24,9 +24,9 @@ TEST(UtilityTestCase, StringToBytesAndViseVersa)
 
 TEST(UtilityTestCase, UTF8StringToBytesAndViseVersa)
 {
-	xw::string expected("hello, world!");
+	std::string expected("hello, world!");
 	auto bytes = utility::serialize(expected);
-	auto actual = utility::deserialize<xw::string>(bytes);
+	auto actual = utility::deserialize<std::string>(bytes);
 	ASSERT_EQ(actual, expected);
 }
 
@@ -146,14 +146,14 @@ class CustomType
 {
 private:
 	int _val;
-	xw::string _str;
+	std::string _str;
 
 public:
 	CustomType() : _val(0)
 	{
 	}
 
-	explicit CustomType(int val, xw::string str) : _val(val), _str(std::move(str))
+	explicit CustomType(int val, std::string str) : _val(val), _str(std::move(str))
 	{
 	}
 

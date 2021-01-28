@@ -15,7 +15,7 @@
 
 __HTML_BEGIN__
 
-xw::string escape(const xw::string& s, bool quote)
+std::string escape(const std::string& s, bool quote)
 {
 	auto escaped = s;
 	str::replace(escaped, "&", "&amp;");    // Must be done first!

@@ -9,7 +9,7 @@
 #pragma once
 
 // C++ libraries.
-#include <iostream>
+// TODO
 
 // Module definitions.
 #include "./_def_.h"
@@ -23,34 +23,23 @@ __TYPES_BEGIN__
 class String final : public object::Object
 {
 protected:
-	xw::string internal_value;
+	std::string value;
 
 public:
-	inline explicit String(xw::string s) : internal_value(std::move(s))
-	{
-	}
-
-	inline explicit String(xw::string&& s) : internal_value(std::forward<xw::string>(s))
+	inline explicit String(std::string s) : value(std::move(s))
 	{
 	}
 
 	[[nodiscard]]
-	inline xw::string get() const
+	inline std::string __str__() const override
 	{
-		return this->internal_value;
+		return this->value;
 	}
 
 	[[nodiscard]]
-	inline xw::string __str__() const override
+	std::string __repr__() const override
 	{
-		return this->internal_value;
-	}
-
-	[[nodiscard]]
-	xw::string __repr__() const override
-	{
-		std::cout << std::string("sss");
-		return "xw::types::String{" + this->internal_value + "}";
+		return "xw::types::String{" + this->value + "}";
 	}
 
 	[[nodiscard]]
@@ -59,6 +48,11 @@ public:
 	explicit operator bool () const override;
 
 	bool operator! () const override;
+
+	inline std::string& operator* ()
+	{
+		return this->value;
+	}
 };
 
 __TYPES_END__

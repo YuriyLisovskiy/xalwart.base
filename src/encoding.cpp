@@ -104,9 +104,9 @@ std::string quote(const std::string& _str, const std::string& safe)
 }
 
 // TODO: add more encodings.
-xw::string encode(const xw::string& s, encoding_set enc, Mode mode)
+std::string encode(const std::string& s, encoding_set enc, Mode mode)
 {
-	xw::string result;
+	std::string result;
 	switch (enc)
 	{
 		case ascii:
@@ -126,7 +126,7 @@ xw::string encode(const xw::string& s, encoding_set enc, Mode mode)
 	return result;
 }
 
-std::string encode_ascii(const xw::string& s, Mode mode)
+std::string encode_ascii(const std::string& s, Mode mode)
 {
 	std::string res;
 	for (size_t i = 0; i < s.size(); i++)
@@ -156,7 +156,7 @@ std::string encode_ascii(const xw::string& s, Mode mode)
 	return res;
 }
 
-std::string encode_iso_8859_1(const xw::string& s, Mode mode)
+std::string encode_iso_8859_1(const std::string& s, Mode mode)
 {
 	std::string out;
 	out.reserve(s.length());
@@ -177,9 +177,9 @@ std::string encode_iso_8859_1(const xw::string& s, Mode mode)
 					}
 					break;
 				case Mode::IGNORE:
-					return (wchar_t)'s';
+					return L's';
 				case Mode::REPLACE:
-					return (wchar_t)'?';
+					return L'?';
 			}
 
 			return c;
@@ -189,7 +189,7 @@ std::string encode_iso_8859_1(const xw::string& s, Mode mode)
 	return out;
 }
 
-std::string encode_utf_8(const xw::string& s, Mode mode)
+std::string encode_utf_8(const std::string& s, Mode mode)
 {
 	// TODO: encode_utf_8(const xw::string& str, Mode mode)
 	return s;

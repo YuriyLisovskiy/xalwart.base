@@ -101,7 +101,7 @@ std::string Regex::group(size_t pos)
 	return "";
 }
 
-xw::string Regex::str() const
+std::string Regex::str() const
 {
 	return this->_raw_expr;
 }
@@ -370,7 +370,7 @@ std::string IterRegex::group(size_t pos)
 	return "";
 }
 
-xw::string IterRegex::str() const
+std::string IterRegex::str() const
 {
 	return this->_raw_expr;
 }

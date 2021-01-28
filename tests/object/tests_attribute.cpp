@@ -39,33 +39,33 @@ TEST(Attribute_TestCase, SetInt)
 
 TEST(Attribute_TestCase, GetUTF8String)
 {
-	xw::string val = "hello";
+	std::string val = "hello";
 	object::Attribute attribute([&val]() -> std::vector<char> {
 		return utility::serialize(val);
 	});
 	auto bytes = attribute.get();
-	ASSERT_EQ(utility::deserialize<xw::string>(bytes), val);
+	ASSERT_EQ(utility::deserialize<std::string>(bytes), val);
 }
 
 TEST(Attribute_TestCase, SetUTF8String)
 {
-	xw::string val = "hello";
+	std::string val = "hello";
 	object::Attribute attribute(
 		[&val]() -> std::vector<char> {
 			return utility::serialize(val);
 		},
 		[&val](const std::vector<char>& v) -> void {
-			val = utility::deserialize<xw::string>(v);
+			val = utility::deserialize<std::string>(v);
 		}
 	);
 	ASSERT_EQ(
-		utility::deserialize<xw::string>(attribute.get()),
+		utility::deserialize<std::string>(attribute.get()),
 		val
 	);
-	attribute.set(utility::serialize<xw::string>("world"));
+	attribute.set(utility::serialize<std::string>("world"));
 	ASSERT_EQ(
-		utility::deserialize<xw::string>(attribute.get()),
-		xw::string("world")
+		utility::deserialize<std::string>(attribute.get()),
+		std::string("world")
 	);
 }
 

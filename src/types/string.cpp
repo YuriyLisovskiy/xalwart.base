@@ -23,12 +23,12 @@ short String::__cmp__(const Object* other) const
 
 String::operator bool() const
 {
-	return !this->internal_value.empty();
+	return !this->value.empty();
 }
 
 bool String::operator! () const
 {
-	return this->internal_value.empty();
+	return this->value.empty();
 }
 
 __TYPES_END__

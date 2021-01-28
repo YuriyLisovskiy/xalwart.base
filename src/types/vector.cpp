@@ -17,9 +17,9 @@ void Vector::_check_index(size_type i) const
 	}
 }
 
-xw::string Vector::_aggregate(const std::function<xw::string(const value_type&)>& func) const
+std::string Vector::_aggregate(const std::function<std::string(const value_type&)>& func) const
 {
-	xw::string res;
+	std::string res;
 	for (auto it = this->_arr.begin(); it != this->_arr.end(); it++)
 	{
 		res += func(*it);
@@ -56,17 +56,17 @@ Vector::const_reference Vector::at(size_type i) const
 	return this->_arr.at(i);
 }
 
-xw::string Vector::__str__() const
+std::string Vector::__str__() const
 {
 	return "{" + this->_aggregate(
-		[](const value_type& item) -> xw::string { return item->__str__(); }
+		[](const value_type& item) -> std::string { return item->__str__(); }
 	) + "}";
 }
 
-xw::string Vector::__repr__() const
+std::string Vector::__repr__() const
 {
 	return "xw::types::Vector{" + this->_aggregate(
-		[](const value_type& item) -> xw::string { return item->__repr__(); }
+		[](const value_type& item) -> std::string { return item->__repr__(); }
 	) + "}";
 }
 

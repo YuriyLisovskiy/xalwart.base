@@ -6,9 +6,6 @@
 
 #include "./string_utils.h"
 
-// C++ libraries.
-#include <algorithm>
-
 
 __STR_BEGIN__
 
@@ -146,9 +143,9 @@ std::vector<std::string> rsplit(const std::string& str, char delimiter, size_t n
 	return result;
 }
 
-std::pair<xw::string, xw::string> lsplit_one(const xw::string& s, char delimiter)
+std::pair<std::string, std::string> lsplit_one(const std::string& s, char delimiter)
 {
-	std::pair<xw::string, xw::string> result;
+	std::pair<std::string, std::string> result;
 	size_t len = s.size();
 	for (size_t i = 0; i < len; i++)
 	{
@@ -295,9 +292,7 @@ std::string cut_edges(
 }
 
 std::string replace(
-	const std::string& src,
-	const std::string& old_sub,
-	const std::string& new_sub
+	const std::string& src, const std::string& old_sub, const std::string& new_sub
 )
 {
 	std::string copy = src;

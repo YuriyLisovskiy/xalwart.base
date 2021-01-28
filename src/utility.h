@@ -16,7 +16,6 @@
 
 // Core libraries.
 #include "./datetime.h"
-#include "./str.h"
 
 
 __UTILITY_BEGIN__
@@ -77,15 +76,16 @@ extern std::string format_date(
 	time_t time_val, bool local_time = false, bool use_gmt = false
 );
 
-template <typename ObjT>
+template <typename T>
+concept serializable_type = !(
+	std::is_same_v<std::wstring, T> ||
+	std::is_same_v<std::u16string, T> ||
+	std::is_same_v<std::u32string, T>
+);
+
+template <serializable_type ObjT>
 std::vector<char> serialize(ObjT src)
 {
-	static_assert(
-		!(std::is_same_v<std::wstring, ObjT> ||
-		std::is_same_v<std::u16string, ObjT> ||
-		std::is_same_v<std::u32string_view, ObjT>),
-		"object is not serializable, use std::string or xw::string"
-	);
 	if constexpr (std::is_same_v<std::string, ObjT>)
 	{
 		return std::vector<char>(src.begin(), src.end());
@@ -98,23 +98,13 @@ std::vector<char> serialize(ObjT src)
 	}
 }
 
-template <typename ObjT>
+template <serializable_type ObjT>
 ObjT deserialize(const std::vector<char>& b)
 {
-	static_assert(
-		!(std::is_same_v<std::wstring, ObjT> ||
-		std::is_same_v<std::u16string, ObjT> ||
-		std::is_same_v<std::u32string_view, ObjT>),
-		"object is not serializable, use std::string or xw::string"
-	);
 	ObjT obj;
 	if constexpr (std::is_same_v<std::string, ObjT>)
 	{
 		obj = std::string(b.begin(), b.end());
-	}
-	else if constexpr (std::is_same_v<xw::string, ObjT>)
-	{
-		std::memcpy((char*)obj.data(), b.data(), sizeof(obj));
 	}
 	else
 	{

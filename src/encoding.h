@@ -14,9 +14,6 @@
 // Module definitions.
 #include "./_def_.h"
 
-// Core libraries.
-#include "./str.h"
-
 
 __ENCODING_BEGIN__
 
@@ -45,14 +42,14 @@ enum Mode
 ///  - strict: throws EncodingError if string violates encoding rules;
 ///  - ignore: removes offending symbols from string;
 ///  - replace: replaces offending symbols by question mark ('?').
-extern xw::string encode(const xw::string& s, encoding_set enc, Mode mode = Mode::STRICT);
+extern std::string encode(const std::string& s, encoding_set enc, Mode mode = Mode::STRICT);
 
-extern std::string encode_ascii(const xw::string& s, Mode mode);
+extern std::string encode_ascii(const std::string& s, Mode mode);
 
 // latin-1 encoding.
-extern xw::string encode_iso_8859_1(const xw::string& s, Mode mode);
+extern std::string encode_iso_8859_1(const std::string& s, Mode mode);
 
-extern xw::string encode_utf_8(const xw::string& s, Mode mode);
+extern std::string encode_utf_8(const std::string& s, Mode mode);
 
 __ENCODING_END__
 

@@ -46,7 +46,7 @@ public:
 private:
 	void _check_index(size_type i) const;
 
-	xw::string _aggregate(const std::function<xw::string(const value_type&)>& func) const;
+	std::string _aggregate(const std::function<std::string(const value_type&)>& func) const;
 
 public:
 	inline explicit Vector(size_type size=0)
@@ -439,10 +439,10 @@ public:
 	}
 
 	[[nodiscard]]
-	xw::string __str__() const;
+	std::string __str__() const;
 
 	[[nodiscard]]
-	xw::string __repr__() const;
+	std::string __repr__() const;
 
 	[[nodiscard]]
 	short __cmp__(const Object* other) const override;

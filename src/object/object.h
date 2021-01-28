@@ -89,13 +89,13 @@ public:
 	//
 	// Can be overridden.
 	[[nodiscard]]
-	virtual xw::string __str__() const;
+	virtual std::string __str__() const;
 
 	// Used for debugging. By default returns '__str__()'.
 	//
 	// Can be overridden.
 	[[nodiscard]]
-	virtual xw::string __repr__() const;
+	virtual std::string __repr__() const;
 
 	// Returns 0 if objects are equal, -1 if 'this' is less
 	// than 'other' otherwise returns 1.
