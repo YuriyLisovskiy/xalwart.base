@@ -81,93 +81,131 @@ public:
 	{
 		if (auto other_v = dynamic_cast<const Fundamental<bool>*>(other))
 		{
+			std::cerr << "1\n";
+
 			return this->_cmp_result(other_v->get());
 		}
 
 		if (auto other_v = dynamic_cast<const Fundamental<short int>*>(other))
 		{
+			std::cerr << "2\n";
+
 			return this->_cmp_result(other_v->get());
 		}
 
 		if (auto other_v = dynamic_cast<const Fundamental<unsigned short int>*>(other))
 		{
+			std::cerr << "3\n";
+
 			return this->_cmp_result(other_v->get());
 		}
 
 		if (auto other_v = dynamic_cast<const Fundamental<int>*>(other))
 		{
+			std::cerr << "4\n";
+
 			return this->_cmp_result(other_v->get());
 		}
 
 		if (auto other_v = dynamic_cast<const Fundamental<unsigned int>*>(other))
 		{
+			std::cerr << "5\n";
+
 			return this->_cmp_result(other_v->get());
 		}
 
 		if (auto other_v = dynamic_cast<const Fundamental<long int>*>(other))
 		{
+			std::cerr << "6\n";
+
 			return this->_cmp_result(other_v->get());
 		}
 
 		if (auto other_v = dynamic_cast<const Fundamental<unsigned long int>*>(other))
 		{
+			std::cerr << "7\n";
+
 			return this->_cmp_result(other_v->get());
 		}
 
 		if (auto other_v = dynamic_cast<const Fundamental<long long int>*>(other))
 		{
+			std::cerr << "8\n";
+
 			return this->_cmp_result(other_v->get());
 		}
 
 		if (auto other_v = dynamic_cast<const Fundamental<unsigned long long int>*>(other))
 		{
+			std::cerr << "9\n";
+
 			return this->_cmp_result(other_v->get());
 		}
 
 		if (auto other_v = dynamic_cast<const Fundamental<signed char>*>(other))
 		{
+			std::cerr << "10\n";
+
 			return this->_cmp_result(other_v->get());
 		}
 
 		if (auto other_v = dynamic_cast<const Fundamental<unsigned char>*>(other))
 		{
+			std::cerr << "11\n";
+
 			return this->_cmp_result(other_v->get());
 		}
 
 		if (auto other_v = dynamic_cast<const Fundamental<wchar_t>*>(other))
 		{
+			std::cerr << "12\n";
+
 			return this->_cmp_result(other_v->get());
 		}
 
 		if (auto other_v = dynamic_cast<const Fundamental<char8_t>*>(other))
 		{
+			std::cerr << "13\n";
+
 			return this->_cmp_result(other_v->get());
 		}
 
 		if (auto other_v = dynamic_cast<const Fundamental<char16_t>*>(other))
 		{
+			std::cerr << "14\n";
+
 			return this->_cmp_result(other_v->get());
 		}
 
 		if (auto other_v = dynamic_cast<const Fundamental<char32_t>*>(other))
 		{
+			std::cerr << "15\n";
+
 			return this->_cmp_result(other_v->get());
 		}
 
 		if (auto other_v = dynamic_cast<const Fundamental<float>*>(other))
 		{
+			std::cerr << "16\n";
+
 			return this->_cmp_result(other_v->get());
 		}
 
 		if (auto other_v = dynamic_cast<const Fundamental<double>*>(other))
 		{
+			std::cerr << "17\n";
+
 			return this->_cmp_result(other_v->get());
 		}
 
 		if (auto other_v = dynamic_cast<const Fundamental<long double>*>(other))
 		{
+			std::cerr << "18\n";
+
 			return this->_cmp_result(other_v->get());
 		}
+
+		std::cerr << "else\n";
 
 		throw core::TypeError(
 			"'__cmp__' not supported between instances of '" + this->__type__().name() + "' and '" + other->__type__().name() + "'",

@@ -9,7 +9,8 @@
 #pragma once
 
 // C++ libraries.
-// TODO
+#include <string_view>
+#include <utility>
 
 // Module definitions.
 #include "./_def_.h"
@@ -37,7 +38,7 @@ public:
 	}
 
 	[[nodiscard]]
-	std::string __repr__() const override
+	inline std::string __repr__() const override
 	{
 		return "xw::types::String{" + this->value + "}";
 	}
