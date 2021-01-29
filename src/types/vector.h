@@ -8,6 +8,9 @@
 
 #pragma once
 
+// C++ libraries.
+#include <vector>
+
 // Module definitions.
 #include "./_def_.h"
 
@@ -23,9 +26,15 @@ public:
 	inline explicit Vector() = default;
 
 	inline explicit Vector(
-		std::vector<std::shared_ptr<object::Object>> value
-	) : IterableContainer<std::vector<std::shared_ptr<object::Object>>>(std::move(value))
+		std::vector<std::shared_ptr<object::Object>, Alloc> value
+	) : IterableContainer<std::vector<std::shared_ptr<object::Object>, Alloc>>(std::move(value))
 	{
+	}
+
+	[[nodiscard]]
+	inline constexpr bool is_vector() const override
+	{
+		return true;
 	}
 };
 

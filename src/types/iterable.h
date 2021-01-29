@@ -17,15 +17,9 @@
 // Core libraries.
 #include "../exceptions.h"
 #include "../object/object.h"
-#include "../types/string.h"
 
 
 __TYPES_BEGIN__
-
-template <typename ContainerT>
-concept ContainerType = (
-	std::is_same_v<typename ContainerT::value_type, std::shared_ptr<object::Object>>
-);
 
 class Iterable
 {
@@ -35,9 +29,64 @@ public:
 		const std::string& separator,
 		const std::function<std::string(const std::shared_ptr<object::Object>&)>& func
 	) const = 0;
+
+	virtual std::shared_ptr<object::Object>& at(size_t i) = 0;
+
+	[[nodiscard]]
+	virtual const std::shared_ptr<object::Object>& at(size_t i) const = 0;
+
+	virtual void reverse() = 0;
+
+	[[nodiscard]]
+	virtual size_t size() const = 0;
+
+	// Sequence containers.
+	[[nodiscard]]
+	inline virtual constexpr bool is_array() const
+	{
+		return false;
+	}
+
+	[[nodiscard]]
+	inline virtual constexpr bool is_vector() const
+	{
+		return false;
+	}
+
+	[[nodiscard]]
+	inline virtual constexpr bool is_dequeue() const
+	{
+		return false;
+	}
+
+	[[nodiscard]]
+	inline virtual constexpr bool is_forward_list() const
+	{
+		return false;
+	}
+
+	[[nodiscard]]
+	inline virtual constexpr bool is_list() const
+	{
+		return false;
+	}
+
+	[[nodiscard]]
+	inline virtual constexpr bool is_sequence() const
+	{
+		return this->is_array() || this->is_vector() ||
+			this->is_dequeue() || this->is_forward_list() || this->is_list();
+	};
+
+	// Associative containers.
+	[[nodiscard]]
+	inline virtual constexpr bool is_map() const
+	{
+		return false;
+	}
 };
 
-template <ContainerType ContainerT>
+template <class ContainerT>
 class IterableContainer : public object::Object, public Iterable
 {
 protected:
@@ -46,7 +95,7 @@ protected:
 public:
 	typedef typename ContainerT::value_type value_type;
 
-	typedef std::allocator<value_type> allocator_type;
+	typedef typename ContainerT::allocator_type allocator_type;
 
 	typedef value_type& reference;
 	typedef const value_type& const_reference;
@@ -68,6 +117,17 @@ public:
 
 	inline explicit IterableContainer(ContainerT value) : internal_value(std::move(value))
 	{
+	}
+
+	inline reference at(size_t i) override
+	{
+		return this->at(i);
+	}
+
+	[[nodiscard]]
+	inline const_reference at(size_t i) const override
+	{
+		return this->at(i);
 	}
 
 	inline ContainerT& value()
@@ -94,9 +154,15 @@ public:
 		return res;
 	}
 
-	inline void reverse()
+	inline void reverse() override
 	{
 		std::reverse(this->internal_value.begin(), this->internal_value.end());
+	}
+
+	[[nodiscard]]
+	inline size_t size() const override
+	{
+		this->internal_value.size();
 	}
 
 	[[nodiscard]]
