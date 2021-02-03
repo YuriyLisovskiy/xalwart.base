@@ -21,13 +21,13 @@
 __TYPES_BEGIN__
 
 template <ObjectPointerType T = object::Object>
-class Vector : public SequenceIterable<std::vector<std::shared_ptr<T>>>
+class Vector : public SequenceIterableContainer<std::vector<std::shared_ptr<T>>>
 {
 public:
 	inline explicit Vector() = default;
 
 	inline explicit Vector(std::vector<std::shared_ptr<T>> value)
-		: SequenceIterable<std::vector<std::shared_ptr<T>>>(std::move(value))
+		: SequenceIterableContainer<std::vector<std::shared_ptr<T>>>(std::move(value))
 	{
 	}
 };
