@@ -24,111 +24,59 @@ __TYPES_BEGIN__
 class Iterable
 {
 public:
-	[[nodiscard]]
-	virtual std::string aggregate(
-		const std::string& separator,
-		const std::function<std::string(const std::shared_ptr<object::Object>&)>& func
-	) const = 0;
-
-	virtual std::shared_ptr<object::Object>& at(size_t i) = 0;
-
-	[[nodiscard]]
-	virtual const std::shared_ptr<object::Object>& at(size_t i) const = 0;
-
 	virtual void reverse() = 0;
 
 	[[nodiscard]]
 	virtual size_t size() const = 0;
 
-	// Sequence containers.
 	[[nodiscard]]
-	inline virtual constexpr bool is_array() const
-	{
-		return false;
-	}
+	virtual std::shared_ptr<object::Object> at(size_t i) const = 0;
 
 	[[nodiscard]]
-	inline virtual constexpr bool is_vector() const
+	inline virtual bool is_sequence() const
 	{
 		return false;
-	}
-
-	[[nodiscard]]
-	inline virtual constexpr bool is_dequeue() const
-	{
-		return false;
-	}
-
-	[[nodiscard]]
-	inline virtual constexpr bool is_forward_list() const
-	{
-		return false;
-	}
-
-	[[nodiscard]]
-	inline virtual constexpr bool is_list() const
-	{
-		return false;
-	}
-
-	[[nodiscard]]
-	inline virtual constexpr bool is_sequence() const
-	{
-		return this->is_array() || this->is_vector() ||
-			this->is_dequeue() || this->is_forward_list() || this->is_list();
 	};
 
-	// Associative containers.
 	[[nodiscard]]
-	inline virtual constexpr bool is_map() const
+	inline virtual bool is_map() const
 	{
 		return false;
 	}
 };
 
+// Requirements for derived class:
+//
+//  ContainerT::value_type must be std::shared_ptr<object::Object>
+//
+//  Methods:
+//  - const std::shared_ptr<object::Object>& at(size_t i) const     - (otherwise, override it from this class)
+//  - ContainerT::iterator begin()
+//  - ContainerT::iterator end()
 template <class ContainerT>
-class IterableContainer : public object::Object, public Iterable
+class SequenceIterable : public object::Object, public Iterable
 {
 protected:
 	ContainerT internal_value;
 
 public:
-	typedef typename ContainerT::value_type value_type;
+	inline explicit SequenceIterable() = default;
 
-	typedef typename ContainerT::allocator_type allocator_type;
-
-	typedef value_type& reference;
-	typedef const value_type& const_reference;
-
-	typedef typename std::allocator_traits<allocator_type>::pointer pointer;
-	typedef typename std::allocator_traits<allocator_type>::const_pointer const_pointer;
-
-	typedef typename ContainerT::iterator iterator;
-	typedef typename ContainerT::const_iterator const_iterator;
-
-	typedef typename std::reverse_iterator<iterator> reverse_iterator;
-	typedef typename std::reverse_iterator<const_iterator> const_reverse_iterator;
-
-	typedef typename std::iterator_traits<iterator>::difference_type difference_type;
-	typedef typename ContainerT::size_type size_type;
-
-public:
-	inline explicit IterableContainer() = default;
-
-	inline explicit IterableContainer(ContainerT value) : internal_value(std::move(value))
+	inline explicit SequenceIterable(ContainerT value) : internal_value(std::move(value))
 	{
-	}
-
-	inline reference at(size_t i) override
-	{
-		return this->at(i);
 	}
 
 	[[nodiscard]]
-	inline const_reference at(size_t i) const override
+	inline std::shared_ptr<object::Object> at(size_t i) const override
 	{
-		return this->at(i);
+		return this->internal_value.at(i);
 	}
+
+	[[nodiscard]]
+	inline bool is_sequence() const override
+	{
+		return true;
+	};
 
 	inline ContainerT& value()
 	{
@@ -139,7 +87,7 @@ public:
 	inline std::string aggregate(
 		const std::string& separator,
 		const std::function<std::string(const std::shared_ptr<object::Object>&)>& func
-	) const override
+	) const
 	{
 		std::string res;
 		for (auto it = this->internal_value.begin(); it != this->internal_value.end(); it++)
@@ -162,13 +110,13 @@ public:
 	[[nodiscard]]
 	inline size_t size() const override
 	{
-		this->internal_value.size();
+		return this->internal_value.size();
 	}
 
 	[[nodiscard]]
 	inline short __cmp__(const Object* other) const override
 	{
-		if (auto other_v = dynamic_cast<const IterableContainer<ContainerT>*>(other))
+		if (auto other_v = dynamic_cast<const SequenceIterable<ContainerT>*>(other))
 		{
 			if (this->internal_value == other_v->internal_value)
 			{
@@ -189,18 +137,27 @@ public:
 	{
 		return "{" + this->aggregate(
 			", ",
-			[](const value_type& item) -> std::string { return item->__str__(); }
+			[](const std::shared_ptr<object::Object>& item) -> std::string { return item->__str__(); }
 		) + "}";
 	}
 
 	[[nodiscard]]
 	inline std::string __repr__() const override
 	{
-		return "xw::types::Vector{" + this->aggregate(
+		auto type = this->__type__();
+		return type.namespace_() + "::" + type.name() + "{" + this->aggregate(
 			", ",
-			[](const value_type& item) -> std::string { return item->__repr__(); }
+			[](const std::shared_ptr<object::Object>& item) -> std::string { return item->__repr__(); }
 		) + "}";
 	}
 };
+
+class MapIterable : public Iterable
+{
+	// TODO: MapIterable
+};
+
+template <typename T>
+concept ObjectPointerType = std::is_base_of_v<object::Object, T>;
 
 __TYPES_END__

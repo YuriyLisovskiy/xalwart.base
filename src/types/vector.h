@@ -20,21 +20,15 @@
 
 __TYPES_BEGIN__
 
-class Vector : public IterableContainer<std::vector<std::shared_ptr<object::Object>>>
+template <ObjectPointerType T = object::Object>
+class Vector : public SequenceIterable<std::vector<std::shared_ptr<T>>>
 {
 public:
 	inline explicit Vector() = default;
 
-	inline explicit Vector(
-		std::vector<std::shared_ptr<object::Object>, Alloc> value
-	) : IterableContainer<std::vector<std::shared_ptr<object::Object>, Alloc>>(std::move(value))
+	inline explicit Vector(std::vector<std::shared_ptr<T>> value)
+		: SequenceIterable<std::vector<std::shared_ptr<T>>>(std::move(value))
 	{
-	}
-
-	[[nodiscard]]
-	inline constexpr bool is_vector() const override
-	{
-		return true;
 	}
 };
 
