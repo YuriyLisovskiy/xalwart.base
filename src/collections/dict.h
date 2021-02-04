@@ -31,6 +31,9 @@ public:
 	typedef typename std::map<_Key, _Val>::iterator iterator;
 	typedef typename std::map<_Key, _Val>::reverse_iterator reverse_iterator;
 
+	typedef typename std::map<_Key, _Val>::const_iterator const_iterator;
+	typedef typename std::map<_Key, _Val>::const_reverse_iterator const_reverse_iterator;
+
 	/// Constructs empty dictionary.
 	Dict()
 	{
@@ -121,25 +124,49 @@ public:
 	}
 
 	/// Returns begin iterator.
-	iterator begin()
+	iterator begin() noexcept
+	{
+		return this->_map.begin();
+	}
+
+	/// Returns constant begin iterator.
+	const_iterator begin() const noexcept
 	{
 		return this->_map.begin();
 	}
 
 	/// Returns end iterator.
-	iterator end()
+	iterator end() noexcept
+	{
+		return this->_map.end();
+	}
+
+	/// Returns constant end iterator.
+	const_iterator end() const noexcept
 	{
 		return this->_map.end();
 	}
 
 	/// Returns reversed begin iterator.
-	reverse_iterator rbegin()
+	reverse_iterator rbegin() noexcept
+	{
+		return this->_map.rbegin();
+	}
+
+	/// Returns constant reversed begin iterator.
+	const_reverse_iterator rbegin() const noexcept
 	{
 		return this->_map.rbegin();
 	}
 
 	/// Returns reversed end iterator.
-	reverse_iterator rend()
+	reverse_iterator rend() noexcept
+	{
+		return this->_map.rend();
+	}
+
+	/// Returns constant reversed end iterator.
+	const_reverse_iterator rend() const noexcept
 	{
 		return this->_map.rend();
 	}
