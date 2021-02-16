@@ -110,7 +110,7 @@ public:
 			auto end = this->internal_value.rend();
 			for (auto it = begin; it != end; it++)
 			{
-				func(i, *it);
+				func(i++, *it);
 			}
 		}
 		else
@@ -119,7 +119,7 @@ public:
 			auto end = this->internal_value.end();
 			for (auto it = begin; it != end; it++)
 			{
-				func(i, *it);
+				func(i++, *it);
 			}
 		}
 	}
@@ -248,7 +248,7 @@ public:
 			auto end = this->internal_value.rend();
 			for (auto it = begin; it != end; it++)
 			{
-				func(i, *it);
+				func(i++, *it);
 			}
 		}
 		else
@@ -257,7 +257,7 @@ public:
 			auto end = this->internal_value.end();
 			for (auto it = begin; it != end; it++)
 			{
-				func(i, *it);
+				func(i++, *it);
 			}
 		}
 	}

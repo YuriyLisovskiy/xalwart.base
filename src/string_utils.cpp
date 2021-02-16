@@ -187,10 +187,7 @@ void rtrim(std::string& s, const std::string& to_trim)
 {
 	while (s.ends_with(to_trim))
 	{
-		s.erase(
-			s.end() - to_trim.size(),
-			s.end()
-		);
+		s.erase(s.end() - to_trim.size(), s.end());
 	}
 }
 
