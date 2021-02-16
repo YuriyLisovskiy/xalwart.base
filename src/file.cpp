@@ -26,7 +26,9 @@ File::File(const std::string& name, const std::string& mode)
 	this->_init_mode(mode);
 }
 
-File::File(const std::vector<byte>& data, const std::string& name, const std::string& mode) : File(name, mode)
+File::File(
+	const std::vector<unsigned char>& data, const std::string& name, const std::string& mode
+) : File(name, mode)
 {
 	this->_data = data;
 }
@@ -127,7 +129,7 @@ bool File::is_open()
 	return this->_file.is_open();
 }
 
-std::vector<byte> File::read(size_t n)
+std::vector<unsigned char> File::read(size_t n)
 {
 	if (!this->_file.is_open())
 	{
@@ -145,7 +147,7 @@ std::vector<byte> File::read(size_t n)
 		n = actual_size;
 	}
 
-	std::vector<byte> bytes;
+	std::vector<unsigned char> bytes;
 	if (n > 0)
 	{
 		char* buffer = new char[n];
@@ -164,11 +166,11 @@ std::vector<byte> File::read(size_t n)
 
 std::string File::read_str(size_t n)
 {
-	std::vector<byte> bytes = this->read(n);
+	std::vector<unsigned char> bytes = this->read(n);
 	return std::string(bytes.begin(), bytes.end());
 }
 
-void File::write(std::vector<byte> bytes)
+void File::write(std::vector<unsigned char> bytes)
 {
 	if (!this->_file.is_open())
 	{
@@ -185,7 +187,7 @@ void File::write(std::vector<byte> bytes)
 
 void File::write_str(const std::string& str)
 {
-	this->write(std::vector<byte>(str.begin(), str.end()));
+	this->write(std::vector<unsigned char>(str.begin(), str.end()));
 }
 
 void File::flush()
@@ -207,7 +209,7 @@ size_t File::size()
 	return file_size;
 }
 
-std::vector<std::vector<byte>> File::chunks(size_t chunk_size)
+std::vector<std::vector<unsigned char>> File::chunks(size_t chunk_size)
 {
 	if (this->_name.empty())
 	{
@@ -220,10 +222,10 @@ std::vector<std::vector<byte>> File::chunks(size_t chunk_size)
 	}
 
 	this->seek(0);
-	std::vector<std::vector<byte>> result;
+	std::vector<std::vector<unsigned char>> result;
 	while (true)
 	{
-		std::vector<byte> chunk = this->read(chunk_size);
+		std::vector<unsigned char> chunk = this->read(chunk_size);
 		if (chunk.empty())
 		{
 			break;

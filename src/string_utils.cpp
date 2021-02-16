@@ -168,46 +168,9 @@ std::pair<std::string, std::string> lsplit_one(const std::string& s, char delimi
 	return result;
 }
 
-bool starts_with(const std::string& src, const std::string& prefix)
-{
-	if (src.size() < prefix.size())
-	{
-		return false;
-	}
-
-	for (size_t i = 0 ; i < prefix.size(); i++)
-	{
-		if (src[i] != prefix[i])
-		{
-			return false;
-		}
-	}
-
-	return true;
-}
-
-bool ends_with(const std::string& src, const std::string& suffix)
-{
-	if (src.size() < suffix.size())
-	{
-		return false;
-	}
-
-	size_t j = src.size() - 1;
-	for (long i = (long)suffix.size() - 1; i >= 0; i--)
-	{
-		if (src[j--] != suffix[i])
-		{
-			return false;
-		}
-	}
-
-	return true;
-}
-
 void ltrim(std::string& s, const std::string& to_trim)
 {
-	while (starts_with(s, to_trim))
+	while (s.starts_with(to_trim))
 	{
 		s.erase(s.begin(), s.begin() + to_trim.size());
 	}
@@ -222,7 +185,7 @@ std::string ltrim(const std::string& s, const std::string& to_trim)
 
 void rtrim(std::string& s, const std::string& to_trim)
 {
-	while (ends_with(s, to_trim))
+	while (s.ends_with(to_trim))
 	{
 		s.erase(
 			s.end() - to_trim.size(),

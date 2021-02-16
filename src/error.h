@@ -68,6 +68,7 @@ struct Error
 	static Error none();
 
 	explicit operator bool() const;
+	bool operator !() const;
 
 	[[nodiscard]]
 	std::string get_message() const;

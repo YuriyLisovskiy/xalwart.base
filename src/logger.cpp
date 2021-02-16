@@ -15,7 +15,7 @@
 #include "./path.h"
 
 
-__CORE_INTERNAL_BEGIN__
+__CORE_BEGIN__
 
 bool LoggerStream::is_file()
 {
@@ -76,23 +76,18 @@ bool LoggerFileStream::is_valid()
 	return this->_file && this->_file->is_open();
 }
 
-__CORE_INTERNAL_END__
-
-
-__CORE_BEGIN__
-
 void LoggerConfig::add_console_stream()
 {
 	if (!this->_has_cout)
 	{
-		this->streams.push_back(std::make_shared<internal::LoggerConsoleStream>());
+		this->streams.push_back(std::make_shared<LoggerConsoleStream>());
 		this->_has_cout = true;
 	}
 }
 
 void LoggerConfig::add_file_stream(const std::string& fp)
 {
-	auto fs = std::make_shared<internal::LoggerFileStream>(fp);
+	auto fs = std::make_shared<LoggerFileStream>(fp);
 	if (fs->is_valid())
 	{
 		this->streams.push_back(fs);
@@ -293,7 +288,6 @@ void Logger::_log(
 		std::string full_msg;
 		if (line != 0 && std::strlen(file) > 0 && std::strlen(function) > 0)
 		{
-
 			full_msg = "\n\tFile \"" + std::string(file) + "\", line "
 			           + std::to_string(line) + ", in "
 			           + std::string(function) + "\n" + msg;

@@ -23,7 +23,7 @@
 #include "./error.h"
 
 
-__CORE_INTERNAL_BEGIN__
+__CORE_BEGIN__
 
 class LoggerStream
 {
@@ -57,11 +57,6 @@ public:
 	bool is_valid();
 };
 
-__CORE_INTERNAL_END__
-
-
-__CORE_BEGIN__
-
 class LoggerConfig
 {
 private:
@@ -75,7 +70,7 @@ public:
 	bool enable_fatal = true;
 	bool enable_trace = true;
 	bool enable_print = true;
-	std::vector<std::shared_ptr<internal::LoggerStream>> streams;
+	std::vector<std::shared_ptr<LoggerStream>> streams;
 
 	void add_console_stream();
 	void add_file_stream(const std::string& fp);

@@ -64,16 +64,16 @@ public:
 };
 
 
-DEF_EXCEPTION_WITH_BASE(AttributeError, BaseException, "Attribute Error");
-DEF_EXCEPTION_WITH_BASE(ArgumentError, BaseException, "Argument Error");
-DEF_EXCEPTION_WITH_BASE(BadSignature, BaseException, "Bad Signature Error");
-DEF_EXCEPTION_WITH_BASE(CommandError, BaseException, "Command Error");
-DEF_EXCEPTION_WITH_BASE(DictError, BaseException, "Dict Error");
+DEF_EXCEPTION_WITH_BASE(AttributeError, BaseException, "attribute error");
+DEF_EXCEPTION_WITH_BASE(ArgumentError, BaseException, "argument error");
+DEF_EXCEPTION_WITH_BASE(BadSignature, BaseException, "bad signature error");
+DEF_EXCEPTION_WITH_BASE(CommandError, BaseException, "command error");
+DEF_EXCEPTION_WITH_BASE(DictError, BaseException, "dict error");
 
 // Redirect to scheme not in allowed list.
-DEF_EXCEPTION_WITH_BASE(EncodingError, BaseException, "Encoding Error");
-DEF_EXCEPTION_WITH_BASE(FileError, BaseException, "File Error");
-DEF_EXCEPTION_WITH_BASE(ImproperlyConfigured, BaseException, "Improperly Configured");
+DEF_EXCEPTION_WITH_BASE(EncodingError, BaseException, "encoding error");
+DEF_EXCEPTION_WITH_BASE(FileError, BaseException, "file error");
+DEF_EXCEPTION_WITH_BASE(ImproperlyConfigured, BaseException, "improperly configured");
 
 class InterruptException : public BaseException
 {
@@ -94,12 +94,12 @@ public:
 	static void initialize();
 };
 
-DEF_EXCEPTION_WITH_BASE(ParseError, BaseException, "Parse Error");
-DEF_EXCEPTION_WITH_BASE(RuntimeError, BaseException, "Runtime Error");
-DEF_EXCEPTION_WITH_BASE(MultiPartParserError, ParseError, "Multipart Parser Error");
-DEF_EXCEPTION_WITH_BASE(MultiValueDictError, DictError, "Multi-Value Dict Error");
-DEF_EXCEPTION_WITH_BASE(NotImplementedException, BaseException, "Not Implemented");
-DEF_EXCEPTION_WITH_BASE(NullPointerException, BaseException, "Null Pointer Exception");
+DEF_EXCEPTION_WITH_BASE(ParseError, BaseException, "parse error");
+DEF_EXCEPTION_WITH_BASE(RuntimeError, BaseException, "runtime error");
+DEF_EXCEPTION_WITH_BASE(MultiPartParserError, ParseError, "multipart parser error");
+DEF_EXCEPTION_WITH_BASE(MultiValueDictError, DictError, "multi-value dict error");
+DEF_EXCEPTION_WITH_BASE(NotImplementedException, BaseException, "not implemented");
+DEF_EXCEPTION_WITH_BASE(NullPointerException, BaseException, "null pointer exception");
 
 class SocketError : public BaseException
 {
@@ -124,7 +124,7 @@ public:
 	int err_no() const;
 };
 
-DEF_EXCEPTION_WITH_BASE(ValueError, BaseException, "Value Error");
-DEF_EXCEPTION_WITH_BASE(TypeError, BaseException, "Type Error");
+DEF_EXCEPTION_WITH_BASE(ValueError, BaseException, "value error");
+DEF_EXCEPTION_WITH_BASE(TypeError, BaseException, "type error");
 
 __CORE_END__

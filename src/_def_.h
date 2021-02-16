@@ -8,11 +8,9 @@
 
 #pragma once
 
-
 // xw
 #define __MAIN_NAMESPACE_BEGIN__ namespace xw {
 #define __MAIN_NAMESPACE_END__ }
-
 
 // Required parameters for built-in logger.
 #ifdef _MSC_VER
@@ -25,12 +23,11 @@
 typedef unsigned int uint;
 #endif
 
-
-// core
+// xw::core
 #define __CORE_BEGIN__ __MAIN_NAMESPACE_BEGIN__ namespace core {
 #define __CORE_END__ } __MAIN_NAMESPACE_END__
 
-// core::internal
+// xw::core::internal
 #define __CORE_INTERNAL_BEGIN__ __CORE_BEGIN__ namespace internal {
 #define __CORE_INTERNAL_END__ } __CORE_END__
 

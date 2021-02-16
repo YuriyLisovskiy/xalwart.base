@@ -53,7 +53,7 @@ std::string dirname(const std::string& path)
 	if (result.size() > 1)
 	{
 		str::rtrim(result, "/");
-		while (str::ends_with(result, "/."))
+		while (result.ends_with("/."))
 		{
 			str::rtrim(result, ".");
 			str::rtrim(result, "/");

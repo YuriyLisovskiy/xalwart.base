@@ -13,7 +13,6 @@
 #include <vector>
 
 #if defined(__unix__) || defined(__linux__)
-//#include <sys/types.h>
 #include <sys/stat.h>
 #endif
 
@@ -31,8 +30,6 @@
 
 __CORE_BEGIN__
 
-typedef unsigned char byte;
-
 class File
 {
 protected:
@@ -47,7 +44,7 @@ protected:
 	file_mode_enum _file_mode;
 	std::string _str_mode;
 	std::ios_base::openmode _mode;
-	std::vector<byte> _data;
+	std::vector<unsigned char> _data;
 
 	void _init_mode(const std::string& mode);
 	void seek(size_t n, std::ios_base::seekdir seek_dir);
@@ -61,7 +58,7 @@ public:
 	);
 
 	File(
-		const std::vector<byte>& data,
+		const std::vector<unsigned char>& data,
 		const std::string& name,
 		const std::string& mode = "wb"
 	);
@@ -81,13 +78,13 @@ public:
 
 	void close();
 	bool is_open();
-	std::vector<byte> read(size_t n = -1);
+	std::vector<unsigned char> read(size_t n = -1);
 	std::string read_str(size_t n = -1);
-	void write(std::vector<byte> bytes);
+	void write(std::vector<unsigned char> bytes);
 	void write_str(const std::string& str);
 	void flush();
 	size_t size();
-	std::vector<std::vector<byte>> chunks(size_t chunk_size = -1);
+	std::vector<std::vector<unsigned char>> chunks(size_t chunk_size = -1);
 	bool multiple_chunks(size_t chunk_size = -1);
 	std::string path() const;
 

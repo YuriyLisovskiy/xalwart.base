@@ -92,20 +92,6 @@ extern std::vector<std::string> rsplit(const std::string& str, char delimiter = 
 /// @return std::pair of strings.
 extern std::pair<std::string, std::string> lsplit_one(const std::string& str, char delimiter = ' ');
 
-/// Checks if string starts with some string prefix.
-///
-/// @param src: string to check.
-/// @param prefix: possible string beginning.
-/// @return true if string starts with given prefix, otherwise returns false.
-extern bool starts_with(const std::string& src, const std::string& prefix);
-
-/// Checks if string ends with some string suffix.
-///
-/// @param src: string to check.
-/// @param suffix: possible string ending.
-/// @return true if string ends with given suffix, otherwise returns false.
-extern bool ends_with(const std::string& src, const std::string& suffix);
-
 /// Trims left part of string in-place.
 ///
 /// @param s: string to trim.

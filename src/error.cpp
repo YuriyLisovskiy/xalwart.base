@@ -78,6 +78,11 @@ Error::operator bool() const
 	return this->type != None;
 }
 
+bool Error::operator !() const
+{
+	return this->type == None;
+}
+
 std::string Error::get_message() const
 {
 	return to_string(this->type) + ": " + this->msg;

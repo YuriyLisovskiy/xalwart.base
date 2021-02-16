@@ -18,7 +18,7 @@
 using namespace xw;
 
 
-using byte = core::byte;
+using byte = unsigned char;
 using File = core::File;
 
 
