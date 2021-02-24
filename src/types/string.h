@@ -40,7 +40,7 @@ public:
 	[[nodiscard]]
 	inline std::string __repr__() const override
 	{
-		return "xw::types::String{" + this->value + "}";
+		return "'" + this->value + "'";
 	}
 
 	[[nodiscard]]

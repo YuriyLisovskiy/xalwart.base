@@ -1,7 +1,7 @@
 /**
  * object/attribute.cpp
  *
- * Copyright (c) 2020 Yuriy Lisovskiy
+ * Copyright (c) 2020-2021 Yuriy Lisovskiy
  */
 
 #include "./attribute.h"
@@ -22,7 +22,7 @@ Attribute::Attribute(getter_t getter, setter_t setter)
 {
 }
 
-std::vector<char> Attribute::get() const
+std::shared_ptr<Object> Attribute::get() const
 {
 	if (this->_getter)
 	{
@@ -32,7 +32,7 @@ std::vector<char> Attribute::get() const
 	throw std::runtime_error("unable to get attribute value: logic is not provided");
 }
 
-void Attribute::set(const std::vector<char>& data)
+void Attribute::set(const std::shared_ptr<Object>& data)
 {
 	if (!this->_setter)
 	{

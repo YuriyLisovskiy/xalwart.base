@@ -71,9 +71,9 @@ public:
 	virtual ~Object() = default;
 
 	[[nodiscard]]
-	std::vector<char> __get_attr__(const char* attr_name) const;
+	std::shared_ptr<Object> __get_attr__(const char* attr_name) const;
 
-	void __set_attr__(const char* attr_name, const std::vector<char>& data);
+	void __set_attr__(const char* attr_name, const std::shared_ptr<Object>& data);
 
 	[[nodiscard]]
 	inline bool __has_attr__(const char* attr_name) const

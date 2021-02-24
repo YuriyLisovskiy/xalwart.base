@@ -1,7 +1,7 @@
 /**
  * object/attribute.h
  *
- * Copyright (c) 2020 Yuriy Lisovskiy
+ * Copyright (c) 2020-2021 Yuriy Lisovskiy
  *
  * Purpose: holds address to a variable/class field and allows get and set it's value.
  */
@@ -20,11 +20,13 @@
 
 __OBJECT_BEGIN__
 
+class Object;
+
 class Attribute
 {
 public:
-	typedef std::function<const std::vector<char>()> getter_t;
-	typedef std::function<void(const std::vector<char>&)> setter_t;
+	typedef std::function<std::shared_ptr<Object>()> getter_t;
+	typedef std::function<void(const std::shared_ptr<Object>&)> setter_t;
 
 private:
 	getter_t _getter;
@@ -36,8 +38,10 @@ public:
 	explicit Attribute(setter_t setter);
 	explicit Attribute(getter_t getter, setter_t setter);
 
-	[[nodiscard]] std::vector<char> get() const;
-	void set(const std::vector<char>& val);
+	[[nodiscard]]
+	std::shared_ptr<Object> get() const;
+
+	void set(const std::shared_ptr<Object>& val);
 
 //	template<typename ObjT>
 //	[[nodiscard]] ObjT get() const
