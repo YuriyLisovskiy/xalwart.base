@@ -49,22 +49,21 @@ std::string as<std::string>(const void* data)
 }
 
 template <typename T>
-inline xw::object::Attribute set_only(T* field)
+inline xw::object::Attribute get_only(T* field)
 {
 	return xw::object::Attribute(
-		[field](const std::shared_ptr<object::Object>& val) -> void {
-			const auto str_val = val->__str__();
-			*field = as<T>(str_val.c_str());
+		[field]() -> std::shared_ptr<object::Object> {
+			return std::make_shared<types::Fundamental<T>>(*field);
 		}
 	);
 }
 
 template<>
-xw::object::Attribute set_only<std::string>(std::string* field)
+xw::object::Attribute get_only<std::string>(std::string* field)
 {
 	return xw::object::Attribute(
-		[field](const std::shared_ptr<object::Object>& val) -> void {
-			*field = val->__str__();
+		[field]() -> std::shared_ptr<object::Object> {
+			return std::make_shared<types::String>(*field);
 		}
 	);
 }
