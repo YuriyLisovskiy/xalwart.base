@@ -27,7 +27,7 @@ typename item_return<T>::type as(const void*);
 template<>
 struct item_return<int>{ typedef int type; };
 template<>
-int as<int>(const void* data)
+inline int as<int>(const void* data)
 {
 	return std::stoi((const char*)data);
 }
@@ -35,7 +35,7 @@ int as<int>(const void* data)
 template<>
 struct item_return<double>{ typedef double type; };
 template<>
-double as<double>(const void* data)
+inline double as<double>(const void* data)
 {
 	return std::stod((const char*)data);
 }
@@ -43,7 +43,7 @@ double as<double>(const void* data)
 template<>
 struct item_return<std::string>{ typedef std::string type; };
 template<>
-std::string as<std::string>(const void* data)
+inline std::string as<std::string>(const void* data)
 {
 	return std::string((const char*)data);
 }
@@ -59,7 +59,7 @@ inline xw::object::Attribute get_only(T* field)
 }
 
 template<>
-xw::object::Attribute get_only<std::string>(std::string* field)
+inline xw::object::Attribute get_only<std::string>(std::string* field)
 {
 	return xw::object::Attribute(
 		[field]() -> std::shared_ptr<object::Object> {
@@ -69,7 +69,7 @@ xw::object::Attribute get_only<std::string>(std::string* field)
 }
 
 template <typename T>
-xw::object::Attribute set_only(T* field)
+inline xw::object::Attribute set_only(T* field)
 {
 	return xw::object::Attribute(
 		[field](const std::shared_ptr<object::Object>& val) -> void {
@@ -93,7 +93,7 @@ inline xw::object::Attribute full_access(T* field)
 }
 
 template<>
-xw::object::Attribute full_access<std::string>(std::string* field)
+inline xw::object::Attribute full_access<std::string>(std::string* field)
 {
 	return xw::object::Attribute(
 		[field]() -> std::shared_ptr<object::Object> {
