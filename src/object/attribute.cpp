@@ -32,7 +32,7 @@ std::shared_ptr<Object> Attribute::get() const
 	throw std::runtime_error("unable to get attribute value: logic is not provided");
 }
 
-void Attribute::set(const std::shared_ptr<Object>& data)
+void Attribute::set(const void* data)
 {
 	if (!this->_setter)
 	{

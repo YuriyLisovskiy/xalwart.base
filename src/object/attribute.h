@@ -26,7 +26,7 @@ class Attribute
 {
 public:
 	typedef std::function<std::shared_ptr<Object>()> getter_t;
-	typedef std::function<void(const std::shared_ptr<Object>&)> setter_t;
+	typedef std::function<void(const void*)> setter_t;
 
 private:
 	getter_t _getter;
@@ -41,29 +41,7 @@ public:
 	[[nodiscard]]
 	std::shared_ptr<Object> get() const;
 
-	void set(const std::shared_ptr<Object>& val);
-
-//	template<typename ObjT>
-//	[[nodiscard]] ObjT get() const
-//	{
-//		if (this->_getter)
-//		{
-//			return utility::deserialize<ObjT>(this->_getter().data());
-//		}
-//
-//		throw std::runtime_error("unable to get attribute value: logic is not provided");
-//	}
-//
-//	template<typename ObjT>
-//	void set(ObjT val)
-//	{
-//		if (!this->_setter)
-//		{
-//			throw std::runtime_error("unable to set attribute value: logic is not provided");
-//		}
-//
-//		this->_setter(utility::serialize(val).data());
-//	}
+	void set(const void* val);
 };
 
 __OBJECT_END__

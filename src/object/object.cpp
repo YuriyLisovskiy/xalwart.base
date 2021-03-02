@@ -34,7 +34,7 @@ std::shared_ptr<Object> Object::__get_attr__(const char* attr_name) const
 	);
 }
 
-void Object::__set_attr__(const char* attr_name, const std::shared_ptr<Object>& data)
+void Object::__set_attr__(const char* attr_name, const void* data)
 {
 	if (this->__has_attr__(attr_name))
 	{

@@ -321,6 +321,6 @@ public:
 };
 
 template <typename T>
-concept ObjectPointerType = std::is_base_of_v<object::Object, T>;
+concept ObjectBasedType = std::is_base_of_v<object::Object, T>;
 
 __TYPES_END__

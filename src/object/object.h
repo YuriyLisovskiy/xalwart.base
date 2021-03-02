@@ -73,7 +73,7 @@ public:
 	[[nodiscard]]
 	std::shared_ptr<Object> __get_attr__(const char* attr_name) const;
 
-	void __set_attr__(const char* attr_name, const std::shared_ptr<Object>& data);
+	void __set_attr__(const char* attr_name, const void* data);
 
 	[[nodiscard]]
 	inline bool __has_attr__(const char* attr_name) const
