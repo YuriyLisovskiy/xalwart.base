@@ -23,7 +23,7 @@ class Lazy final
 private:
 	T _value{};
 	bool _loaded = false;
-	const std::function<T(Args...)> _initializer = nullptr;
+	std::function<T(Args...)> _initializer = nullptr;
 
 public:
 	Lazy() = default;
@@ -36,21 +36,6 @@ public:
 				"lambda function for lazy initialization is required but not set"
 			);
 		}
-	}
-
-	Lazy& operator= (Lazy&& other)
-	{
-		if (this != &other)
-		{
-			this->_loaded = other._loaded;
-			this->_initializer = std::move(other._initializer);
-			if (this->_loaded)
-			{
-				this->_value = std::move(other._value);
-			}
-		}
-
-		return *this;
 	}
 
 	inline T& value(Args&& ...args)
