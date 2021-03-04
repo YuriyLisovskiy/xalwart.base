@@ -31,13 +31,14 @@ TEST(Attribute_TestCase, SetInt)
 		[&val]() -> std::shared_ptr<object::Object> {
 			return std::make_shared<types::Fundamental<int>>(val);
 		},
-		[&val](const std::shared_ptr<object::Object>& v) -> void {
-			val = (*(types::Fundamental<int>*)v.get()).get();
+		[&val](const void* v) -> void {
+			val = (*(int*)v);
 		}
 	);
 	auto& expected = *(types::Fundamental<int>*)attribute.get().get();
 	ASSERT_EQ(expected.get(), 1);
-	attribute.set(std::make_shared<types::Fundamental<int>>(7));
+	auto seven = 7;
+	attribute.set(&seven);
 
 	expected = *(types::Fundamental<int>*)attribute.get().get();
 	ASSERT_EQ(expected.get(), 7);
@@ -60,13 +61,14 @@ TEST(Attribute_TestCase, SetUTF8String)
 		[&val]() -> std::shared_ptr<object::Object> {
 			return std::make_shared<types::String>(val);
 		},
-		[&val](const std::shared_ptr<object::Object>& v) -> void {
-			val = *(*(types::String*)v.get());
+		[&val](const void* v) -> void {
+			val = *(*(types::String*)v);
 		}
 	);
 	auto expected = (*(types::String*)attribute.get().get());
 	ASSERT_EQ(*expected, val);
-	attribute.set(std::make_shared<types::String>("world"));
+	auto world = types::String("world");
+	attribute.set(&world);
 
 	expected = (*(types::String*)attribute.get().get());
 	ASSERT_EQ(*expected, std::string("world"));
@@ -103,14 +105,14 @@ TEST(Attribute_TestCase, SetCustomStruct)
 		[&custom]() -> std::shared_ptr<object::Object> {
 			return std::make_shared<CustomStruct>(custom);
 		},
-		[&custom](const std::shared_ptr<object::Object>& v) -> void {
-			custom = (*(CustomStruct*)v.get());
+		[&custom](const void* v) -> void {
+			custom = *(CustomStruct*)v;
 		}
 	);
 	auto expected = (*(CustomStruct*)attribute.get().get());
 	ASSERT_EQ(expected.field, custom.field);
 	CustomStruct another_custom(2077);
-	attribute.set(std::make_shared<CustomStruct>(another_custom));
+	attribute.set(&another_custom);
 
 	expected = (*(CustomStruct*)attribute.get().get());
 	ASSERT_EQ(expected.field, another_custom.field);
