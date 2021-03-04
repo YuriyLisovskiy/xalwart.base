@@ -1,7 +1,7 @@
 /**
  * logger.cpp
  *
- * Copyright (c) 2019-2020 Yuriy Lisovskiy
+ * Copyright (c) 2019-2021 Yuriy Lisovskiy
  */
 
 #include "./logger.h"
@@ -15,45 +15,45 @@
 #include "./path.h"
 
 
-__CORE_BEGIN__
+__LOG_BEGIN__
 
-bool LoggerStream::is_file()
+bool Stream::is_file()
 {
 	return false;
 }
 
-bool LoggerStream::is_console()
+bool Stream::is_console()
 {
 	return false;
 }
 
-void LoggerConsoleStream::write(const std::string& text)
+void ConsoleStream::write(const std::string& text)
 {
 	std::cout << text;
 }
 
-void LoggerConsoleStream::flush()
+void ConsoleStream::flush()
 {
 	std::cout.flush();
 }
 
-bool LoggerConsoleStream::is_console()
+bool ConsoleStream::is_console()
 {
 	return true;
 }
 
-LoggerFileStream::LoggerFileStream(const std::string& fp)
+FileStream::FileStream(const std::string& fp)
 {
-	this->_file = std::make_shared<File>(fp, "a");
+	this->_file = std::make_shared<core::File>(fp, "a");
 	this->_file->open();
 }
 
-LoggerFileStream::~LoggerFileStream()
+FileStream::~FileStream()
 {
 	this->_file->close();
 }
 
-void LoggerFileStream::write(const std::string& text)
+void FileStream::write(const std::string& text)
 {
 	if (this->_file->is_open())
 	{
@@ -61,60 +61,36 @@ void LoggerFileStream::write(const std::string& text)
 	}
 }
 
-bool LoggerFileStream::is_file()
+bool FileStream::is_file()
 {
 	return true;
 }
 
-void LoggerFileStream::flush()
+void FileStream::flush()
 {
 	this->_file->flush();
 }
 
-bool LoggerFileStream::is_valid()
+bool FileStream::is_valid()
 {
 	return this->_file && this->_file->is_open();
 }
 
-void LoggerConfig::add_console_stream()
+void Config::add_console_stream()
 {
 	if (!this->_has_cout)
 	{
-		this->streams.push_back(std::make_shared<LoggerConsoleStream>());
+		this->streams.push_back(std::make_shared<ConsoleStream>());
 		this->_has_cout = true;
 	}
 }
 
-void LoggerConfig::add_file_stream(const std::string& fp)
+void Config::add_file_stream(const std::string& fp)
 {
-	auto fs = std::make_shared<LoggerFileStream>(fp);
+	auto fs = std::make_shared<FileStream>(fp);
 	if (fs->is_valid())
 	{
 		this->streams.push_back(fs);
-	}
-}
-
-std::shared_ptr<ILogger> Logger::_instance = nullptr;
-
-std::shared_ptr<ILogger> Logger::get_instance(const LoggerConfig& cfg)
-{
-	if (Logger::_instance == nullptr)
-	{
-		Logger::_instance = std::shared_ptr<ILogger>(new Logger(cfg));
-	}
-	else
-	{
-		Logger::_instance->set_config(cfg);
-	}
-
-	return Logger::_instance;
-}
-
-void Logger::finalize()
-{
-	if (Logger::_instance)
-	{
-		Logger::_instance->clean();
 	}
 }
 
@@ -128,10 +104,12 @@ Logger::~Logger()
 	this->_thread_pool->wait();
 }
 
-Logger::Logger(const LoggerConfig& cfg) : use_output_colors(false)
+Logger::Logger(const Config& cfg) : use_output_colors(false)
 {
+	std::cerr << "Logger initialized\n";
+
 	this->_config = cfg;
-	this->_thread_pool = std::make_shared<ThreadPool>("logger", 1);
+	this->_thread_pool = std::make_shared<core::ThreadPool>("logger", 1);
 }
 
 void Logger::info(const std::string& msg, int line, const char* function, const char* file)
@@ -164,14 +142,9 @@ void Logger::trace(const std::string& msg, int line, const char* function, const
 	this->_log(msg, line, function, file, Logger::log_level_enum::ll_trace);
 }
 
-void Logger::set_config(const LoggerConfig& config)
+void Logger::set_config(const Config& config)
 {
 	this->_config = config;
-}
-
-void Logger::clean()
-{
-	this->_thread_pool->close();
 }
 
 void Logger::print(const std::string& msg, Color colour, char end)
@@ -212,27 +185,27 @@ void Logger::fatal(const core::BaseException& exc)
 	this->fatal(exc.get_message(), exc.line(), exc.function(), exc.file());
 }
 
-void Logger::info(const Error& exc)
+void Logger::info(const core::Error& exc)
 {
 	this->info(exc.get_message(), exc.line, exc.func.c_str(), exc.file.c_str());
 }
 
-void Logger::debug(const Error& exc)
+void Logger::debug(const core::Error& exc)
 {
 	this->debug(exc.get_message(), exc.line, exc.func.c_str(), exc.file.c_str());
 }
 
-void Logger::warning(const Error& exc)
+void Logger::warning(const core::Error& exc)
 {
 	this->warning(exc.get_message(), exc.line, exc.func.c_str(), exc.file.c_str());
 }
 
-void Logger::error(const Error& exc)
+void Logger::error(const core::Error& exc)
 {
 	this->error(exc.get_message(), exc.line, exc.func.c_str(), exc.file.c_str());
 }
 
-void Logger::fatal(const Error& exc)
+void Logger::fatal(const core::Error& exc)
 {
 	this->fatal(exc.get_message(), exc.line, exc.func.c_str(), exc.file.c_str());
 }
@@ -343,4 +316,4 @@ void Logger::_set_colour(Color colour)
 #endif
 }
 
-__CORE_END__
+__LOG_END__

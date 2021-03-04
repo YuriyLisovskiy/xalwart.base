@@ -1,7 +1,7 @@
 /**
  * logger.h
  *
- * Copyright (c) 2019-2020 Yuriy Lisovskiy
+ * Copyright (c) 2019-2021 Yuriy Lisovskiy
  *
  * Purpose: TODO
  */
@@ -23,19 +23,19 @@
 #include "./error.h"
 
 
-__CORE_BEGIN__
+__LOG_BEGIN__
 
-class LoggerStream
+class Stream
 {
 public:
-	virtual ~LoggerStream() = default;
+	virtual ~Stream() = default;
 	virtual void write(const std::string& text) = 0;
 	virtual void flush() = 0;
 	virtual bool is_file();
 	virtual bool is_console();
 };
 
-class LoggerConsoleStream : public LoggerStream
+class ConsoleStream : public Stream
 {
 public:
 	void write(const std::string& text) override;
@@ -43,21 +43,21 @@ public:
 	bool is_console() override;
 };
 
-class LoggerFileStream : public LoggerStream
+class FileStream : public Stream
 {
 private:
-	std::shared_ptr<File> _file;
+	std::shared_ptr<core::File> _file;
 
 public:
-	explicit LoggerFileStream(const std::string& fp);
-	~LoggerFileStream() override;
+	explicit FileStream(const std::string& fp);
+	~FileStream() override;
 	void write(const std::string& text) override;
 	bool is_file() override;
 	void flush() override;
 	bool is_valid();
 };
 
-class LoggerConfig
+class Config
 {
 private:
 	bool _has_cout = false;
@@ -70,7 +70,8 @@ public:
 	bool enable_fatal = true;
 	bool enable_trace = true;
 	bool enable_print = true;
-	std::vector<std::shared_ptr<LoggerStream>> streams;
+
+	std::vector<std::shared_ptr<Stream>> streams;
 
 	void add_console_stream();
 	void add_file_stream(const std::string& fp);
@@ -118,13 +119,13 @@ public:
 	virtual void error(const core::BaseException& exc) = 0;
 	virtual void fatal(const core::BaseException& exc) = 0;
 
-	virtual void info(const Error& exc) = 0;
-	virtual void debug(const Error& exc) = 0;
-	virtual void warning(const Error& exc) = 0;
-	virtual void error(const Error& exc) = 0;
-	virtual void fatal(const Error& exc) = 0;
+	virtual void info(const core::Error& exc) = 0;
+	virtual void debug(const core::Error& exc) = 0;
+	virtual void warning(const core::Error& exc) = 0;
+	virtual void error(const core::Error& exc) = 0;
+	virtual void fatal(const core::Error& exc) = 0;
 
-	virtual void set_config(const LoggerConfig& config) = 0;
+	virtual void set_config(const Config& config) = 0;
 	virtual void clean() = 0;
 };
 
@@ -134,10 +135,9 @@ protected:
 	bool use_output_colors;
 
 public:
-	static std::shared_ptr<ILogger> get_instance(const LoggerConfig& cfg);
-	static void finalize();
+	explicit Logger(const Config& cfg);
 
-	void use_colors(bool use) final;
+	void use_colors(bool use) override;
 
 	~Logger() override;
 
@@ -156,14 +156,13 @@ public:
 	void error(const core::BaseException& exc) override;
 	void fatal(const core::BaseException& exc) override;
 
-	void info(const Error& exc) override;
-	void debug(const Error& exc) override;
-	void warning(const Error& exc) override;
-	void error(const Error& exc) override;
-	void fatal(const Error& exc) override;
+	void info(const core::Error& exc) override;
+	void debug(const core::Error& exc) override;
+	void warning(const core::Error& exc) override;
+	void error(const core::Error& exc) override;
+	void fatal(const core::Error& exc) override;
 
-	void set_config(const LoggerConfig& config) override;
-	void clean() override;
+	void set_config(const Config& config) override;
 
 private:
 #if defined(__unix__) || defined(__linux__)
@@ -193,19 +192,19 @@ private:
 		ll_info, ll_debug, ll_warning, ll_error, ll_fatal, ll_trace
 	};
 
-	LoggerConfig _config;
+	Config _config;
 
-	std::shared_ptr<ThreadPool> _thread_pool;
+	std::shared_ptr<core::ThreadPool> _thread_pool;
 
-	static std::shared_ptr<ILogger> _instance;
-
-	explicit Logger(const LoggerConfig& cfg);
+private:
 	void _log(
 		const std::string& msg, int line, const char* function,
 		const char* file, Logger::log_level_enum level
 	);
+
 	void _write_to_stream(const std::string& msg, Color colour, char end='\n');
+
 	void _set_colour(Color colour);
 };
 
-__CORE_END__
+__LOG_END__

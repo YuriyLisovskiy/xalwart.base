@@ -13,13 +13,13 @@ using namespace xw;
 
 TEST(Lazy_TestCase, value_Get)
 {
-	auto lazy = core::Lazy<int>([]() -> int { return 10; });
+	auto lazy = Lazy<int>([]() -> int { return 10; });
 	ASSERT_EQ(lazy.value(), 10);
 }
 
 TEST(Lazy_TestCase, value_Set)
 {
-	auto lazy = core::Lazy<int>([]() -> int { return 10; });
+	auto lazy = Lazy<int>([]() -> int { return 10; });
 	ASSERT_EQ(lazy.value(), 10);
 
 	lazy.value() = 7;
