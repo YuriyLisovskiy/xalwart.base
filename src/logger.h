@@ -126,7 +126,6 @@ public:
 	virtual void fatal(const core::Error& exc) = 0;
 
 	virtual void set_config(const Config& config) = 0;
-	virtual void clean() = 0;
 };
 
 class Logger : public ILogger
