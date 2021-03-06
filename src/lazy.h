@@ -50,4 +50,7 @@ public:
 	}
 };
 
+template <typename LazyT, typename T>
+concept LazyType = std::is_same_v<LazyT, Lazy<T>>;
+
 __MAIN_NAMESPACE_END__
