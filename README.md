@@ -18,10 +18,12 @@ make && sudo make install
 ```
 
 ### Testing
-
-Use valgrind to check for memory leaks:
 ```bash
 mkdir build && cd build
 cmake -DCMAKE_BUILD_TYPE=Debug .. && make
+```
+
+Use valgrind to check for memory leaks:
+```bash
 valgrind --leak-check=full ./tests/unittests-all
 ```
