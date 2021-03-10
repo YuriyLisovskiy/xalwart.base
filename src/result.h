@@ -49,7 +49,7 @@ public:
 	{
 	}
 
-	explicit Result(nullptr_t) : is_nullptr(true)
+	explicit Result(std::nullptr_t) : is_nullptr(true)
 	{
 	}
 
