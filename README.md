@@ -6,8 +6,8 @@
 ### Requirements
 
 - C++ compiler:
-    - `g++`: v10 or later.
-    - `clang++`: v10 or later.
+    - `gcc`: v10 or later.
+    - `clang`: v10 or later.
 - CMake: `3.12` or later.
 
 ### Build and Install
