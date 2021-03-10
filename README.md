@@ -1,6 +1,6 @@
 ## xalwart.core
 
-[![gcc/g++](https://github.com/YuriyLisovskiy/xalwart.core/actions/workflows/tests-gnuc.yml/badge.svg)](https://github.com/YuriyLisovskiy/xalwart.core/actions/workflows/tests-gnuc.yml)
+[![gcc](https://github.com/YuriyLisovskiy/xalwart.core/actions/workflows/tests-gcc.yml/badge.svg)](https://github.com/YuriyLisovskiy/xalwart.core/actions/workflows/tests-gcc.yml)
 [![clang](https://github.com/YuriyLisovskiy/xalwart.core/actions/workflows/tests-clang.yml/badge.svg)](https://github.com/YuriyLisovskiy/xalwart.core/actions/workflows/tests-clang.yml)
 
 ### Requirements
