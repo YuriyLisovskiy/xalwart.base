@@ -1,11 +1,9 @@
 name: "clang"
-
 on:
   push:
     branches:
       - '**'
       - '!master'
-
 jobs:
   build:
     name: "${{ matrix.os }} [clang-${{ matrix.compiler_version }}]"
@@ -20,13 +18,11 @@ jobs:
       BUILD_TYPE: 'Debug'
     steps:
       - uses: actions/checkout@v2
-
       - name: Install Compiler
         run: |
           sudo apt update -y && \
           sudo pip install --upgrade cmake && \
           sudo apt install -y clang-${{ matrix.compiler_version }} valgrind
-
       - name: Build and Install Google Test Framework
         run: |
           git clone -q https://github.com/google/googletest.git && \
@@ -36,7 +32,6 @@ jobs:
                      -DCMAKE_C_COMPILER=clang-${{ matrix.compiler_version }} .. && \
           sudo make && \
           sudo make install
-
       - name: Build Tests
         run: |
           sudo mkdir build && \
@@ -46,7 +41,6 @@ jobs:
                      -DCMAKE_C_COMPILER=clang-${{ matrix.compiler_version }} \
                      -DCMAKE_BUILD_TYPE=$BUILD_TYPE .. && \
           sudo make
-
       - name: Run Tests
         run: |
           sudo valgrind --leak-check=full ./build/tests/unittests-all
