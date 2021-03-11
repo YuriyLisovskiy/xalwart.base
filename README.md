@@ -1,8 +1,9 @@
 ## xalwart.core
 
-| build | info |
-|---|---|
-| [![gcc](https://github.com/YuriyLisovskiy/xalwart.core/actions/workflows/tests-gcc.yml/badge.svg)](https://github.com/YuriyLisovskiy/xalwart.core/actions/workflows/tests-gcc.yml) [![clang](https://github.com/YuriyLisovskiy/xalwart.core/actions/workflows/tests-clang.yml/badge.svg)](https://github.com/YuriyLisovskiy/xalwart.core/actions/workflows/tests-clang.yml) | [![c++](https://img.shields.io/badge/c%2B%2B-20-6c85cf)](https://isocpp.org/) [![system](https://img.shields.io/badge/Ubuntu-OS-ef4800.svg?style=flat&logo=ubuntu)](https://ubuntu.com/) |
+| [![c++](https://img.shields.io/badge/c%2B%2B-20-6c85cf)](https://isocpp.org/) | [![system](https://img.shields.io/badge/Ubuntu--ef4800.svg?style=flat&logo=ubuntu)](https://ubuntu.com/) | Windows |
+|---|---|---|
+| `gcc` | [![build](https://github.com/YuriyLisovskiy/xalwart.core/actions/workflows/tests-gcc.yml/badge.svg)](https://github.com/YuriyLisovskiy/xalwart.core/actions/workflows/tests-gcc.yml) | *not supported* |
+| `clang` | [![build](https://github.com/YuriyLisovskiy/xalwart.core/actions/workflows/tests-clang.yml/badge.svg)](https://github.com/YuriyLisovskiy/xalwart.core/actions/workflows/tests-clang.yml) | *not supported* |
 
 ### Requirements
 
