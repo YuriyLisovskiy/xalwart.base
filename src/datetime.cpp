@@ -1679,10 +1679,18 @@ Timezone Datetime::_local_timezone() const
 
 	// Extract TZ data
 	auto gmt_off = local_tm.tm_gmtoff;
+	std::string zone;
+	if (gmt_off)
+	{
+		char buffer[10];
+		std::strcpy(buffer, local_tm.tm_zone);
+		zone = buffer;
+	}
+	else
+	{
+		zone = "UTC";
+	}
 
-	char buffer[10];
-	std::strcpy(buffer, local_tm.tm_zone);
-	std::string zone = buffer;
 	return Timezone(Timedelta(0, gmt_off), zone);
 }
 

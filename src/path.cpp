@@ -8,7 +8,6 @@
 
 // C++ libraries.
 #include <fstream>
-#include <cstring>
 #include <filesystem>
 
 #if defined(_WIN32) || defined(_WIN64)
