@@ -6,7 +6,6 @@
 
 #include <gtest/gtest.h>
 
-#include "../../src/types/string.h"
 #include "../../src/types/vector.h"
 
 using namespace xw;

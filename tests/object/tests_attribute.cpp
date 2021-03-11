@@ -17,7 +17,7 @@ using namespace xw;
 TEST(Attribute_TestCase, GetInt)
 {
 	int val = 10;
-	object::Attribute attribute([&val]() -> std::shared_ptr<object::Object> {
+	object::Attribute attribute([val]() -> std::shared_ptr<object::Object> {
 		return std::make_shared<types::Fundamental<int>>(val);
 	});
 	auto& expected = *(types::Fundamental<int>*)attribute.get().get();
@@ -37,11 +37,12 @@ TEST(Attribute_TestCase, SetInt)
 	);
 	auto& expected = *(types::Fundamental<int>*)attribute.get().get();
 	ASSERT_EQ(expected.get(), 1);
-	auto seven = 7;
+	int seven = 7;
 	attribute.set(&seven);
 
 	expected = *(types::Fundamental<int>*)attribute.get().get();
 	ASSERT_EQ(expected.get(), 7);
+	ASSERT_EQ(val, 7);
 }
 
 TEST(Attribute_TestCase, GetUTF8String)
