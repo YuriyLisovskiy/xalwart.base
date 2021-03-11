@@ -1,12 +1,12 @@
 ## xalwart.core
+[![c++](https://img.shields.io/badge/c%2B%2B-20-6c85cf)](https://isocpp.org/)
 
-| [![c++](https://img.shields.io/badge/c%2B%2B-20-6c85cf)](https://isocpp.org/) | [![system](https://img.shields.io/badge/Ubuntu--ef4800.svg?style=flat&logo=ubuntu)](https://ubuntu.com/) | Windows |
-|---|---|---|
-| `gcc` | [![build](https://github.com/YuriyLisovskiy/xalwart.core/actions/workflows/tests-gcc.yml/badge.svg)](https://github.com/YuriyLisovskiy/xalwart.core/actions/workflows/tests-gcc.yml) | *not supported* |
-| `clang` | [![build](https://github.com/YuriyLisovskiy/xalwart.core/actions/workflows/tests-clang.yml/badge.svg)](https://github.com/YuriyLisovskiy/xalwart.core/actions/workflows/tests-clang.yml) | *not supported* |
+| [![ubuntu](https://img.shields.io/static/v1?message=Ubuntu&logo=ubuntu&labelColor=5c5c5c&color=ef4800&logoColor=white&label=%20)](https://ubuntu.com/) | [![windows](https://img.shields.io/static/v1?message=Windows&logo=windows&labelColor=blue&color=blue&logoColor=white&label=%20)](https://www.microsoft.com/en-us/windows/) |
+|:---|:---:|
+| [![gcc](https://github.com/YuriyLisovskiy/xalwart.core/actions/workflows/tests-gcc-ubuntu.yml/badge.svg)](https://github.com/YuriyLisovskiy/xalwart.core/actions/workflows/tests-gcc-ubuntu.yml) | *not supported* |
+| [![clang](https://github.com/YuriyLisovskiy/xalwart.core/actions/workflows/tests-clang-ubuntu.yml/badge.svg)](https://github.com/YuriyLisovskiy/xalwart.core/actions/workflows/tests-clang-ubuntu.yml) | *not supported* |
 
 ### Requirements
-
 - C++ compiler:
     - `gcc`: v10 or later.
     - `clang`: v10 or later.
