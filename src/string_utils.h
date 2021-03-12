@@ -11,6 +11,7 @@
 // C++ libraries.
 #include <vector>
 #include <sstream>
+#include <functional>
 
 // Module definitions.
 #include "./_def_.h"
@@ -44,6 +45,46 @@ std::string join(
 
 	return oss.str();
 }
+
+template <typename IterBegin, typename IterEnd>
+std::string join(
+	IterBegin begin, IterEnd end,
+	const char* delimiter,
+	const std::function<std::string(
+		const typename std::iterator_traits<IterBegin>::value_type&
+	)>& func
+)
+{
+	std::string result;
+	for (auto it = begin; it != end; it++)
+	{
+		result += func(*it);
+		if (std::next(it) != end)
+		{
+			result += delimiter;
+		}
+	}
+
+	return result;
+}
+
+//template <_FundamentalIteratorType IteratorBegin, _FundamentalIteratorType IteratorEnd>
+//std::string join(
+//	IteratorBegin begin, IteratorEnd end, const std::string& delimiter
+//)
+//{
+//	std::string result;
+//	for (auto it = begin; it != end; it++)
+//	{
+//		result += std::to_string(*it);
+//		if (std::next(it) != end)
+//		{
+//			result += delimiter;
+//		}
+//	}
+//
+//	return result;
+//}
 
 /// url_split_type("type:opaqueString", typeOut, opaqueStringOut) --> "type", "opaqueString".
 ///
