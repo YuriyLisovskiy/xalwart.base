@@ -209,9 +209,7 @@ public:
 	[[nodiscard]]
 	inline std::string __repr__() const override
 	{
-		return "xw::types::Fundamental<" + utility::demangle(
-			typeid(internal_type).name()
-		) + ">{" + this->__str__() + "}";
+		return this->__str__();
 	}
 
 	inline Fundamental<internal_type>& operator= (const internal_type& new_val)

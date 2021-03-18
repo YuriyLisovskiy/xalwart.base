@@ -59,7 +59,7 @@ TEST(TestCase_Fundamental_Int, Test___str__)
 TEST(TestCase_Fundamental_Int, Test___repr__)
 {
 	auto int_obj = types::Fundamental<int>(10);
-	ASSERT_EQ(int_obj.__repr__(), "xw::types::Fundamental<int>{10}");
+	ASSERT_EQ(int_obj.__repr__(), "10");
 }
 
 TEST(TestCase_Fundamental_Int, Test_AssignmentOperator)

@@ -71,12 +71,12 @@ public:
 	virtual ~Object() = default;
 
 	[[nodiscard]]
-	std::shared_ptr<Object> __get_attr__(const char* attr_name) const;
+	virtual std::shared_ptr<Object> __get_attr__(const char* attr_name) const;
 
-	void __set_attr__(const char* attr_name, const void* data);
+	virtual void __set_attr__(const char* attr_name, const void* data);
 
 	[[nodiscard]]
-	inline bool __has_attr__(const char* attr_name) const
+	virtual inline bool __has_attr__(const char* attr_name) const
 	{
 		return this->__attrs__.find(attr_name) != this->__attrs__.end();
 	}
