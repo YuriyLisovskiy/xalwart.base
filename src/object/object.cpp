@@ -22,7 +22,7 @@ Object::Object()
 	this->_object_address = oss.str();
 }
 
-std::shared_ptr<Object> Object::__get_attr__(const char* attr_name) const
+std::shared_ptr<Object> Object::__get_attr__(const char* attr_name)
 {
 	if (this->__has_attr__(attr_name))
 	{

@@ -71,7 +71,7 @@ public:
 	virtual ~Object() = default;
 
 	[[nodiscard]]
-	virtual std::shared_ptr<Object> __get_attr__(const char* attr_name) const;
+	virtual std::shared_ptr<Object> __get_attr__(const char* attr_name);
 
 	virtual void __set_attr__(const char* attr_name, const void* data);
 
