@@ -10,7 +10,7 @@
 
 // C++ libraries.
 #include <vector>
-#include <sstream>
+#include <string>
 #include <functional>
 
 // Module definitions.
@@ -18,33 +18,6 @@
 
 
 __STR_BEGIN__
-
-/// Joins std::vector of values separated by given delimiter.
-///
-/// @tparam _Container: type of given container.
-/// @param begin: constant iterator's pointer to the beginning of container.
-/// @param end: constant iterator's pointer to the end of container.
-/// @param delimiter: values' separator.
-/// @return	joined string.
-template <typename _Iterator>
-std::string join(
-	_Iterator begin,
-	_Iterator end,
-	const std::string& delimiter
-)
-{
-	std::ostringstream oss;
-	for (auto it = begin; it != end; it++)
-	{
-		oss << *it;
-		if (std::next(it) != end)
-		{
-			oss << delimiter;
-		}
-	}
-
-	return oss.str();
-}
 
 template <typename IterBegin, typename IterEnd>
 std::string join(
@@ -68,23 +41,48 @@ std::string join(
 	return result;
 }
 
-//template <_FundamentalIteratorType IteratorBegin, _FundamentalIteratorType IteratorEnd>
-//std::string join(
-//	IteratorBegin begin, IteratorEnd end, const std::string& delimiter
-//)
-//{
-//	std::string result;
-//	for (auto it = begin; it != end; it++)
-//	{
-//		result += std::to_string(*it);
-//		if (std::next(it) != end)
-//		{
-//			result += delimiter;
-//		}
-//	}
-//
-//	return result;
-//}
+template <typename T>
+concept str_or_char_iterator_type =
+	std::is_same_v<std::string, typename std::iterator_traits<T>::value_type> ||
+	std::is_same_v<const char*, typename std::iterator_traits<T>::value_type> ||
+	std::is_same_v<char, typename std::iterator_traits<T>::value_type>;
+
+template <str_or_char_iterator_type IteratorT>
+std::string join(IteratorT begin, IteratorT end, const char* delimiter)
+{
+	std::string result;
+	for (str_or_char_iterator_type auto it = begin; it != end; it++)
+	{
+		result += *it;
+		if (std::next(it) != end)
+		{
+			result += delimiter;
+		}
+	}
+
+	return result;
+}
+
+template <typename T>
+concept numeric_iterator_type =
+	std::is_fundamental_v<typename std::iterator_traits<T>::value_type> &&
+	!std::is_same_v<char, typename std::iterator_traits<T>::value_type>;
+
+template <numeric_iterator_type IteratorT>
+std::string join(IteratorT begin, IteratorT end, const char* delimiter)
+{
+	std::string result;
+	for (numeric_iterator_type auto it = begin; it != end; it++)
+	{
+		result += std::to_string(*it);
+		if (std::next(it) != end)
+		{
+			result += delimiter;
+		}
+	}
+
+	return result;
+}
 
 /// url_split_type("type:opaqueString", typeOut, opaqueStringOut) --> "type", "opaqueString".
 ///
