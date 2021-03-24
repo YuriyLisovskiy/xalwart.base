@@ -6,71 +6,42 @@
 
 #include "./object.h"
 
-// C++ libraries.
-#include <sstream>
-
 // Core libraries.
 #include "../exceptions.h"
 
 
-__OBJECT_BEGIN__
-
-Object::Object()
-{
-	std::stringstream oss;
-	oss << static_cast<const void*>(this);
-	this->_object_address = oss.str();
-}
+__OBJ_BEGIN__
 
 std::shared_ptr<Object> Object::__get_attr__(const char* attr_name)
 {
-	if (this->__has_attr__(attr_name))
-	{
-		return this->__attrs__.at(attr_name).get();
-	}
-
-	throw core::AttributeError(
-		"'" + this->__type__().name() + "' object has no attribute '" + std::string(attr_name) + "'"
+	throw core::NotImplementedException(
+		"'" + this->__type__().name() + "::__get_attr__(const char*)' is not implemented",
+		_ERROR_DETAILS_
 	);
 }
 
 void Object::__set_attr__(const char* attr_name, const void* data)
 {
-	if (this->__has_attr__(attr_name))
-	{
-		this->__attrs__[attr_name].set(data);
-	}
-	else
-	{
-		throw core::AttributeError(
-			"'" + this->__type__().name() + "' object has no attribute '" + std::string(attr_name) + "'"
-		);
-	}
+	throw core::NotImplementedException(
+		"'" + this->__type__().name() + "::__set_attr__(const char*, const void*)' is not implemented",
+		_ERROR_DETAILS_
+	);
 }
 
-Type Object::__type__() const
+bool Object::__has_attr__(const char* attr_name) const
 {
-	return Type(*this);
-}
-
-std::string Object::__str__() const
-{
-	return "<" + this->__type__().name() + " object at " + this->_object_address + ">";
-}
-
-std::string Object::__repr__() const
-{
-	return this->__str__();
+	throw core::NotImplementedException(
+		"'" + this->__type__().name() + "::__has_attr__(const char*)' is not implemented",
+		_ERROR_DETAILS_
+	);
 }
 
 Object::operator bool() const
 {
-	return !this->__attrs__.empty();
+	throw core::NotImplementedException(
+		"'" + this->__type__().name() + "::operator bool() const' is not implemented",
+		_ERROR_DETAILS_
+	);
 }
 
-bool Object::operator! () const
-{
-	return this->__attrs__.empty();
-}
-
-__OBJECT_END__
+__OBJ_END__

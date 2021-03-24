@@ -20,7 +20,7 @@
 
 __TYPES_BEGIN__
 
-template <ObjectBasedType T = object::Object>
+template <ObjectBasedType T = obj::Object>
 class Vector : public SequenceIterableContainer<std::vector<std::shared_ptr<T>>>
 {
 public:

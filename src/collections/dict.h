@@ -1,11 +1,11 @@
 /**
  * collections/dict.h
  *
- * Copyright (c) 2019 Yuriy Lisovskiy
+ * Copyright (c) 2019, 2021 Yuriy Lisovskiy
  *
  * Purpose:
- * 	Template container based on std::map with additional
- * 	methods (extended std::map).
+ * 	Template container based on `std::map` with additional
+ * 	methods (extended `std::map`).
  */
 
 #pragma once
@@ -24,7 +24,7 @@ template <typename _Key, typename _Val>
 class Dict
 {
 protected:
-	/// An actual container.
+	// An actual container.
 	std::map<_Key, _Val> _map;
 
 public:
@@ -34,23 +34,22 @@ public:
 	typedef typename std::map<_Key, _Val>::const_iterator const_iterator;
 	typedef typename std::map<_Key, _Val>::const_reverse_iterator const_reverse_iterator;
 
-	/// Constructs empty dictionary.
-	Dict()
-	{
-	}
+	// Constructs empty dictionary.
+	Dict() = default;
 
-	/// Constructs Dict instance from std::map.
+	// Constructs Dict instance from `std::map`.
 	explicit Dict(const std::map<_Key, _Val>& src_map)
 	{
 		this->_map = src_map;
 	}
 
-	/// Returns value by key if it exists, otherwise returns _default.
-	///
-	/// @param key: dict key which holds some value.
-	/// @param _default: a default value to be returned if key does not exist.
-	/// @return value by given key.
-	virtual _Val get(_Key key, _Val _default = _Val()) const
+	// Returns value by key if it exists, otherwise returns _default.
+	//
+	// `key`: dict key which holds some value.
+	// `_default`: a default value to be returned if key does not exist.
+	//
+	// Returns value by given key.
+	virtual inline _Val get(_Key key, _Val _default = _Val()) const
 	{
 		if (this->contains(key))
 		{
@@ -60,19 +59,19 @@ public:
 		return _default;
 	}
 
-	/// Sets new value by given key.
-	///
-	/// @param key: new key or existing key.
-	/// @param value: new value.
-	virtual void set(_Key key, _Val value)
+	// Sets new value by given key.
+	//
+	// `key`: new key or existing key.
+	// `value`: new value.
+	virtual inline void set(_Key key, _Val value)
 	{
 		this->_map[key] = value;
 	}
 
-	/// Removes value from dict by it's key.
-	///
-	/// @param key: key to be removed.
-	virtual void remove(_Key key)
+	// Removes value from dict by it's key.
+	//
+	// `key`: key to be removed.
+	virtual inline void remove(_Key key)
 	{
 		if (this->contains(key))
 		{
@@ -80,39 +79,38 @@ public:
 		}
 	}
 
-	/// Removes all values from dictionary.
-	void clear()
+	// Removes all values from dictionary.
+	inline void clear()
 	{
 		this->_map.clear();
 	}
 
-	/// Returns dictionary's current size.
-	size_t size()
+	// Returns dictionary's current size.
+	inline size_t size() const
 	{
 		return this->_map.size();
 	}
 
-	/// Checks if dictionary contains value by given key.
-	///
-	/// @param key: key to check.
-	/// @return true if value exists, otherwise returns false.
-	virtual bool contains(_Key key) const
+	// Checks if dictionary contains value by given key.
+	//
+	// `key`: key to check.
+	//
+	// Returns true if value exists, otherwise returns false.
+	virtual inline bool contains(_Key key) const
 	{
 		return this->_map.find(key) != this->_map.end();
 	}
 
-	/// Checks if dictionary is empty.
-	///
-	/// @return true if dict is empty, otherwise returns false.
-	bool is_empty()
+	// Checks if dictionary is empty.
+	//
+	// Returns true if dict is empty, otherwise returns false.
+	bool inline is_empty() const
 	{
 		return this->_map.empty();
 	}
 
-	/// Returns all keys which dictionary contains.
-	///
-	/// @return std::vector of keys.
-	virtual std::vector<_Key> keys()
+	// Returns all keys which dictionary contains as `std::vector`.
+	virtual inline std::vector<_Key> keys() const
 	{
 		std::vector<_Key> keys;
 		for (auto it = this->begin(); it != this->end(); it++)
@@ -123,55 +121,55 @@ public:
 		return keys;
 	}
 
-	/// Returns begin iterator.
-	iterator begin() noexcept
+	// Returns begin iterator.
+	inline iterator begin() noexcept
 	{
 		return this->_map.begin();
 	}
 
-	/// Returns constant begin iterator.
-	const_iterator begin() const noexcept
+	// Returns constant begin iterator.
+	inline const_iterator begin() const noexcept
 	{
 		return this->_map.begin();
 	}
 
-	/// Returns end iterator.
-	iterator end() noexcept
+	// Returns end iterator.
+	inline iterator end() noexcept
 	{
 		return this->_map.end();
 	}
 
-	/// Returns constant end iterator.
-	const_iterator end() const noexcept
+	// Returns constant end iterator.
+	inline const_iterator end() const noexcept
 	{
 		return this->_map.end();
 	}
 
-	/// Returns reversed begin iterator.
-	reverse_iterator rbegin() noexcept
+	// Returns reversed begin iterator.
+	inline reverse_iterator rbegin() noexcept
 	{
 		return this->_map.rbegin();
 	}
 
-	/// Returns constant reversed begin iterator.
-	const_reverse_iterator rbegin() const noexcept
+	// Returns constant reversed begin iterator.
+	inline const_reverse_iterator rbegin() const noexcept
 	{
 		return this->_map.rbegin();
 	}
 
-	/// Returns reversed end iterator.
-	reverse_iterator rend() noexcept
+	// Returns reversed end iterator.
+	inline reverse_iterator rend() noexcept
 	{
 		return this->_map.rend();
 	}
 
-	/// Returns constant reversed end iterator.
-	const_reverse_iterator rend() const noexcept
+	// Returns constant reversed end iterator.
+	inline const_reverse_iterator rend() const noexcept
 	{
 		return this->_map.rend();
 	}
 
-	_Val& operator[] (const _Key& key)
+	inline _Val& operator[] (const _Key& key)
 	{
 		return this->_map[key];
 	}

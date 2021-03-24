@@ -23,7 +23,7 @@ template<class T>
 concept fundamental_type = std::is_fundamental_v<T>;
 
 template <fundamental_type internal_type>
-class Fundamental final : public object::Object
+class Fundamental final : public obj::Object
 {
 protected:
 	internal_type internal_value;
@@ -287,7 +287,7 @@ public:
 
 	inline bool operator! ()
 	{
-		return !this->internal_value;
+		return !this->operator bool();
 	}
 
 	inline bool operator&& (const Fundamental<internal_type>& other) const

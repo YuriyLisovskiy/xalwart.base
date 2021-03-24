@@ -21,7 +21,7 @@
 
 __TYPES_BEGIN__
 
-class String final : public object::Object
+class String final : public obj::Object
 {
 protected:
 	std::string value;

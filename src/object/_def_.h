@@ -1,7 +1,7 @@
 /**
  * object/_def_.h
  *
- * Copyright (c) 2019-2020 Yuriy Lisovskiy
+ * Copyright (c) 2019-2021 Yuriy Lisovskiy
  *
  * Purpose: object module's definitions.
  */
@@ -11,6 +11,10 @@
 #include "../_def_.h"
 
 
-// xw::object
-#define __OBJECT_BEGIN__ __MAIN_NAMESPACE_BEGIN__ namespace object {
-#define __OBJECT_END__ } __MAIN_NAMESPACE_END__
+// xw::obj
+#define __OBJ_BEGIN__ __MAIN_NAMESPACE_BEGIN__ namespace obj {
+#define __OBJ_END__ } __MAIN_NAMESPACE_END__
+
+// xw::obj::meta
+#define __OBJ_META_BEGIN__ __OBJ_BEGIN__ namespace meta {
+#define __OBJ_META_END__ } __OBJ_END__
