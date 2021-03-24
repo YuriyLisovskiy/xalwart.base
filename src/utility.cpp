@@ -1,7 +1,7 @@
 /**
  * utility.cpp
  *
- * Copyright (c) 2019-2020 Yuriy Lisovskiy
+ * Copyright (c) 2019-2021 Yuriy Lisovskiy
  */
 
 #include "./utility.h"
@@ -66,7 +66,7 @@ std::string format_datetime(
 		zone = dt->strftime("%z");
 	}
 
-	return internal::_format_timetuple_and_zone(&now, zone);
+	return _format_timetuple_and_zone(&now, zone);
 }
 
 std::string format_date(
@@ -105,11 +105,6 @@ std::string format_date(
 	return format_datetime(dt.get(), use_gmt);
 }
 
-__UTILITY_END__
-
-
-__UTILITY_INTERNAL_BEGIN__
-
 std::string _format_timetuple_and_zone(
 	dt::tm_tuple* time_tuple, const std::string& zone
 )
@@ -124,4 +119,4 @@ std::string _format_timetuple_and_zone(
 		zone;
 }
 
-__UTILITY_INTERNAL_END__
+__UTILITY_END__

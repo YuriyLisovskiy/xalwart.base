@@ -1,7 +1,7 @@
 /**
  * files/file.h
  *
- * Copyright (c) 2019-2020 Yuriy Lisovskiy
+ * Copyright (c) 2019-2021 Yuriy Lisovskiy
  *
  * Purpose: file stream wrapper for easier file handling.
  */
@@ -20,16 +20,14 @@
 #include <unistd.h>
 #endif
 
-//#if defined(_WIN32) || defined(_WIN64)
-//#define stat _stat
-//#endif
-
 // Module definitions.
 #include "./_def_.h"
 
 
 __CORE_BEGIN__
 
+// TODO: optimize File functionality.
+// TODO: refactor.
 class File
 {
 protected:
@@ -46,21 +44,21 @@ protected:
 	std::ios_base::openmode _mode;
 	std::vector<unsigned char> _data;
 
-	void _init_mode(const std::string& mode);
+	void init_mode(const std::string& mode);
+
 	void seek(size_t n, std::ios_base::seekdir seek_dir);
+
 	void seek(size_t n);
+
 	size_t tell();
 
 public:
-	explicit File(
-		const std::string& name = "",
-		const std::string& mode = "r"
-	);
+	explicit File(const std::string& name="", const std::string& mode="r");
 
 	File(
 		const std::vector<unsigned char>& data,
 		const std::string& name,
-		const std::string& mode = "wb"
+		const std::string& mode="wb"
 	);
 
 	File(const File& other);
@@ -77,16 +75,29 @@ public:
 	void save_file();
 
 	void close();
+
 	bool is_open();
+
 	std::vector<unsigned char> read(size_t n = -1);
+
 	std::string read_str(size_t n = -1);
+
 	void write(std::vector<unsigned char> bytes);
+
 	void write_str(const std::string& str);
+
 	void flush();
+
 	size_t size();
+
 	std::vector<std::vector<unsigned char>> chunks(size_t chunk_size = -1);
+
 	bool multiple_chunks(size_t chunk_size = -1);
-	std::string path() const;
+
+	inline std::string path() const
+	{
+		return this->_name;
+	}
 
 	static struct stat file_stat(const std::string& file_path);
 };

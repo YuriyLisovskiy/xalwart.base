@@ -1,7 +1,7 @@
 /**
  * thread_pool.h
  *
- * Copyright (c) 2020 Yuriy Lisovskiy
+ * Copyright (c) 2019-2021 Yuriy Lisovskiy
  *
  * Purpose: queued thread pool for executing functions in parallel.
  */
@@ -33,36 +33,48 @@ private:
 	bool _is_finished;
 
 public:
-	explicit ThreadPool(std::string name, size_t threads_count = 1);
-	~ThreadPool();
+	explicit ThreadPool(std::string name, size_t threads_count=1);
 
-	/// Pushes and copies function to queue.
+	inline ~ThreadPool()
+	{
+		this->wait();
+	}
+
+	// Pushes and copies function to queue.
 	void push(const std::function<void(void)>& func);
 
-	/// Pushes and moves function to queue.
+	// Pushes and moves function to queue.
 	void push(std::function<void(void)>&& func);
 
-	/// Returns threads count.
-	[[nodiscard]] size_t threads_count() const;
+	// Returns threads count.
+	[[nodiscard]]
+	inline size_t threads_count() const
+	{
+		return this->_threads_count;
+	}
 
-	/// Waits until all threads finishes.
+	// Waits until all threads finishes.
 	void wait();
 
-	void close();
+	inline void close()
+	{
+		this->wait();
+	}
 
+	// Joins all threads.
 	void join();
 
-	/// Deleted constructors.
+	// Deleted constructors.
 	ThreadPool(const ThreadPool& other) = delete;
 	ThreadPool(ThreadPool&& other) = delete;
 
-	/// Deleted operators.
+	// Deleted operators.
 	ThreadPool& operator=(const ThreadPool& other) = delete;
 	ThreadPool& operator=(ThreadPool&& other) = delete;
 
 private:
 
-	/// Dispatches function from queue and executes it.
+	// Dispatches function from queue and executes it.
 	void _thread_handler(int idx);
 };
 

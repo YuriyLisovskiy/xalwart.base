@@ -4,6 +4,8 @@
  * Copyright (c) 2019-2020 Yuriy Lisovskiy
  *
  * Purpose: C++ regular expression's wrapper and utilities.
+ * TODO: add docs in comments.
+ * TODO: refactor.
  */
 
 #pragma once

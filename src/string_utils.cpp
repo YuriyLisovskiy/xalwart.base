@@ -1,13 +1,33 @@
 /**
  * string_utils.cpp
  *
- * Copyright (c) 2019-2020 Yuriy Lisovskiy
+ * Copyright (c) 2019-2021 Yuriy Lisovskiy
  */
 
 #include "./string_utils.h"
 
 
 __STR_BEGIN__
+
+int _normalize_exp(double* val)
+{
+	int exponent = 0;
+	double value = *val;
+	while (value >= 1.0)
+	{
+		value /= 10.0;
+		++exponent;
+	}
+
+	while (value < 0.1)
+	{
+		value *= 10.0;
+		--exponent;
+	}
+
+	*val = value;
+	return exponent;
+}
 
 void url_split_type(const std::string& url, std::string& scheme, std::string& data)
 {
@@ -41,11 +61,6 @@ void url_split_type(const std::string& url, std::string& scheme, std::string& da
 		scheme = "";
 		data = url;
 	}
-}
-
-bool contains(const std::string& s, char chr)
-{
-	return s.find(chr) != std::string::npos;
 }
 
 std::string lower(const std::string& s)
@@ -226,20 +241,20 @@ size_t count(const std::string& src, char ch)
 }
 
 std::string cut_edges(
-	const std::string& s, size_t left, size_t right, bool trim_whitespace
+	const std::string& s, size_t left_n, size_t right_n, bool trim_whitespace
 )
 {
 	std::string copy = s;
-	if (s.size() >= left + right)
+	if (s.size() >= left_n + right_n)
 	{
-		if (left)
+		if (left_n)
 		{
-			copy.erase(0, left);
+			copy.erase(0, left_n);
 		}
 
-		if (right)
+		if (right_n)
 		{
-			copy.erase(copy.size() - right);
+			copy.erase(copy.size() - right_n);
 		}
 	}
 
@@ -303,7 +318,7 @@ std::string ftoa_fixed(double value)
 		value = -value;
 	}
 
-	int exponent = internal::normalize_exp(&value);
+	int exponent = _normalize_exp(&value);
 	int places = 0;
 	static const int width = 4;
 
@@ -355,7 +370,7 @@ std::string ftoa_sci(double value)
 	}
 
 	static const int width = 4;
-	int exponent = internal::normalize_exp(&value);
+	int exponent = _normalize_exp(&value);
 	int digit = value * 10.0;
 	result += std::to_string(digit) + '0';
 	value = value * 10.0 - digit;
@@ -373,28 +388,3 @@ std::string ftoa_sci(double value)
 }
 
 __STR_END__
-
-
-__STR_INTERNAL_BEGIN__
-
-int normalize_exp(double* val)
-{
-	int exponent = 0;
-	double value = *val;
-	while (value >= 1.0)
-	{
-		value /= 10.0;
-		++exponent;
-	}
-
-	while (value < 0.1)
-	{
-		value *= 10.0;
-		--exponent;
-	}
-
-	*val = value;
-	return exponent;
-}
-
-__STR_INTERNAL_END__

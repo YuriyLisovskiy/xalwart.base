@@ -6,12 +6,6 @@
 
 #include "./text.h"
 
-// C++ libraries.
-// TODO
-
-// Framework libraries.
-// TODO
-
 
 __TEXT_BEGIN__
 

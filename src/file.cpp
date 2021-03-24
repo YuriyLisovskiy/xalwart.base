@@ -1,7 +1,7 @@
 /**
  * file.cpp
  *
- * Copyright (c) 2019-2020 Yuriy Lisovskiy
+ * Copyright (c) 2019-2021 Yuriy Lisovskiy
  */
 
 #include "./file.h"
@@ -16,6 +16,105 @@
 
 __CORE_BEGIN__
 
+void File::init_mode(const std::string& mode)
+{
+	if (mode == "r")
+	{
+		this->_mode = std::ios::in;
+		this->_file_mode = file_mode_enum::m_read_only;
+	}
+	else if (mode == "rb")
+	{
+		this->_file_mode = file_mode_enum::m_read_only;
+		this->_mode = std::ios::in | std::ios::binary;
+	}
+	else if (mode == "r+" || mode == "w+")
+	{
+		this->_file_mode = file_mode_enum::m_both;
+		this->_mode = std::ios::out | std::ios::in;
+	}
+	else if (mode == "rb+" || mode == "wb+")
+	{
+		this->_file_mode = file_mode_enum::m_both;
+		this->_mode = std::ios::out | std::ios::in | std::ios::binary;
+	}
+	else if (mode == "w")
+	{
+		this->_file_mode = file_mode_enum::m_write_only;
+		this->_mode = std::ios::out;
+	}
+	else if (mode == "wb")
+	{
+		this->_file_mode = file_mode_enum::m_write_only;
+		this->_mode = std::ios::out | std::ios::binary;
+	}
+	else if (mode == "a")
+	{
+		this->_file_mode = file_mode_enum::m_write_only;
+		this->_mode = std::ios::out | std::ios::app;
+	}
+	else if (mode == "a+")
+	{
+		this->_file_mode = file_mode_enum::m_write_only;
+		this->_mode = std::ios::out | std::ios::in | std::ios::app;
+	}
+	else
+	{
+		throw FileError("invalid file mode: " + this->_name, _ERROR_DETAILS_);
+	}
+}
+
+void File::seek(size_t n, std::ios_base::seekdir seek_dir)
+{
+	if (this->_name.empty())
+	{
+		throw FileError("unable to seek: path is empty", _ERROR_DETAILS_);
+	}
+
+	if (this->_file_mode == file_mode_enum::m_read_only)
+	{
+		this->_file.seekg(n, seek_dir);
+	}
+	else
+	{
+		this->_file.seekp(n, seek_dir);
+	}
+}
+
+void File::seek(size_t n)
+{
+	if (this->_name.empty())
+	{
+		throw FileError("unable to seek: path is empty", _ERROR_DETAILS_);
+	}
+
+	if (this->_file_mode == file_mode_enum::m_read_only)
+	{
+		this->_file.seekg(n);
+	}
+	else
+	{
+		this->_file.seekp(n);
+	}
+}
+
+size_t File::tell()
+{
+	if (this->_name.empty())
+	{
+		throw FileError("unable to tell: path is empty", _ERROR_DETAILS_);
+	}
+
+	if (this->_file_mode == file_mode_enum::m_read_only)
+	{
+		return this->_file.tellg();
+	}
+	else
+	{
+		return this->_file.tellp();
+	}
+}
+
 // Public members
 File::File(const std::string& name, const std::string& mode)
 {
@@ -23,7 +122,7 @@ File::File(const std::string& name, const std::string& mode)
 	this->_file = std::fstream();
 	this->_name = name;
 	this->_str_mode = mode;
-	this->_init_mode(mode);
+	this->init_mode(mode);
 }
 
 File::File(
@@ -42,7 +141,7 @@ File::File(const File& other)
 		this->_name = other._name;
 		this->_str_mode = other._str_mode;
 		this->_data = other._data;
-		this->_init_mode(other._str_mode);
+		this->init_mode(other._str_mode);
 	}
 }
 
@@ -55,7 +154,7 @@ File& File::operator=(const File& other)
 		this->_name = other._name;
 		this->_str_mode = other._str_mode;
 		this->_data = other._data;
-		this->_init_mode(other._str_mode);
+		this->init_mode(other._str_mode);
 	}
 
 	return *this;
@@ -252,115 +351,10 @@ bool File::multiple_chunks(size_t chunk_size)
 	return this->size() > chunk_size;
 }
 
-std::string File::path() const
-{
-	return this->_name;
-}
-
-// Private members
-void File::_init_mode(const std::string& mode)
-{
-	if (mode == "r")
-	{
-		this->_mode = std::ios::in;
-		this->_file_mode = file_mode_enum::m_read_only;
-	}
-	else if (mode == "rb")
-	{
-		this->_file_mode = file_mode_enum::m_read_only;
-		this->_mode = std::ios::in | std::ios::binary;
-	}
-	else if (mode == "r+" || mode == "w+")
-	{
-		this->_file_mode = file_mode_enum::m_both;
-		this->_mode = std::ios::out | std::ios::in;
-	}
-	else if (mode == "rb+" || mode == "wb+")
-	{
-		this->_file_mode = file_mode_enum::m_both;
-		this->_mode = std::ios::out | std::ios::in | std::ios::binary;
-	}
-	else if (mode == "w")
-	{
-		this->_file_mode = file_mode_enum::m_write_only;
-		this->_mode = std::ios::out;
-	}
-	else if (mode == "wb")
-	{
-		this->_file_mode = file_mode_enum::m_write_only;
-		this->_mode = std::ios::out | std::ios::binary;
-	}
-	else if (mode == "a")
-	{
-		this->_file_mode = file_mode_enum::m_write_only;
-		this->_mode = std::ios::out | std::ios::app;
-	}
-	else if (mode == "a+")
-	{
-		this->_file_mode = file_mode_enum::m_write_only;
-		this->_mode = std::ios::out | std::ios::in | std::ios::app;
-	}
-	else
-	{
-		throw FileError("invalid file mode: " + this->_name, _ERROR_DETAILS_);
-	}
-}
-
-void File::seek(size_t n, std::ios_base::seekdir seek_dir)
-{
-	if (this->_name.empty())
-	{
-		throw FileError("unable to seek: path is empty", _ERROR_DETAILS_);
-	}
-
-	if (this->_file_mode == file_mode_enum::m_read_only)
-	{
-		this->_file.seekg(n, seek_dir);
-	}
-	else
-	{
-		this->_file.seekp(n, seek_dir);
-	}
-}
-
-void File::seek(size_t n)
-{
-	if (this->_name.empty())
-	{
-		throw FileError("unable to seek: path is empty", _ERROR_DETAILS_);
-	}
-
-	if (this->_file_mode == file_mode_enum::m_read_only)
-	{
-		this->_file.seekg(n);
-	}
-	else
-	{
-		this->_file.seekp(n);
-	}
-}
-
-size_t File::tell()
-{
-	if (this->_name.empty())
-	{
-		throw FileError("unable to tell: path is empty", _ERROR_DETAILS_);
-	}
-
-	if (this->_file_mode == file_mode_enum::m_read_only)
-	{
-		return this->_file.tellg();
-	}
-	else
-	{
-		return this->_file.tellp();
-	}
-}
-
 struct stat File::file_stat(const std::string& file_path)
 {
 #if defined(_WIN32) || defined(_WIN64)
-	//	auto fp = core::str::replace(file_path, "/", "\\");
+	//	auto fp = str::replace(file_path, "/", "\\");
 	struct stat buf;
 	stat(file_path.c_str(), &buf);
 	return buf;

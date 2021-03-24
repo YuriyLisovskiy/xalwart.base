@@ -8,12 +8,34 @@
 
 // C++ libraries.
 #include <iomanip>
+#include <sstream>
 
 // Core libraries.
 #include "./exceptions.h"
 
 
 __ENCODING_BEGIN__
+
+// Converts character to percent-encoded character and writes it to stream.
+//
+// `safe`: string which contains chars that must not be converted. If char 'c'
+// is in this sequence, it will be written to stream without converting.
+//
+// RFC 3986 section 2.2 Reserved Characters: ! * ' ( ) ; : @ & = + $ , / ? # [ ]
+// RFC 3986 section 2.3 Unreserved Characters: ALPHA NUMERIC - _ . ~
+void _escape_char(std::ostringstream& stream, char c, const std::string& safe="")
+{
+	if (std::isalnum((unsigned char) c) || c == '-' || c == '_' || c == '.' || c == '~' || safe.find(c) != -1)
+	{
+		stream << c;
+	}
+	else
+	{
+		stream << std::uppercase;
+		stream << '%' << std::setw(2) << int((unsigned char) c);
+		stream << std::nouppercase;
+	}
+}
 
 std::string encode_url(const std::string& url)
 {
@@ -67,7 +89,7 @@ std::string encode_url(const std::string& url)
 				}
 				else
 				{
-					internal::escape(oss, c, "/");
+					_escape_char(oss, c, "/");
 				}
 				break;
 			case url_state_enum::s_query:
@@ -78,11 +100,11 @@ std::string encode_url(const std::string& url)
 				}
 				else
 				{
-					internal::escape(oss, c, "&=");
+					_escape_char(oss, c, "&=");
 				}
 				break;
 			case url_state_enum::s_fragment:
-				internal::escape(oss, c);
+				_escape_char(oss, c);
 				break;
 		}
 	}
@@ -90,21 +112,20 @@ std::string encode_url(const std::string& url)
 	return oss.str();
 }
 
-std::string quote(const std::string& _str, const std::string& safe)
+std::string quote(const std::string& s, const std::string& safe)
 {
 	std::ostringstream oss;
 	oss.fill('0');
 	oss << std::hex;
-	for (const auto& _char : _str)
+	for (const auto& _char : s)
 	{
-		internal::escape(oss, _char, safe);
+		_escape_char(oss, _char, safe);
 	}
 
 	return oss.str();
 }
 
-// TODO: add more encodings.
-std::string encode(const std::string& s, encoding_set enc, Mode mode)
+std::string encode(const std::string& s, encoding enc, Mode mode)
 {
 	std::string result;
 	switch (enc)
@@ -196,22 +217,3 @@ std::string encode_utf_8(const std::string& s, Mode mode)
 }
 
 __ENCODING_END__
-
-
-__ENCODING_INTERNAL_BEGIN__
-
-void escape(std::ostringstream& stream, char c, const std::string& safe)
-{
-	if (std::isalnum((unsigned char) c) || c == '-' || c == '_' || c == '.' || c == '~' || safe.find(c) != -1)
-	{
-		stream << c;
-	}
-	else
-	{
-		stream << std::uppercase;
-		stream << '%' << std::setw(2) << int((unsigned char) c);
-		stream << std::nouppercase;
-	}
-}
-
-__ENCODING_INTERNAL_END__

@@ -47,10 +47,6 @@ typedef unsigned int uint;
 #define __ENCODING_BEGIN__ __MAIN_NAMESPACE_BEGIN__ namespace encoding {
 #define __ENCODING_END__ } __MAIN_NAMESPACE_END__
 
-// xw::encoding::internal
-#define __ENCODING_INTERNAL_BEGIN__ __ENCODING_BEGIN__ namespace internal {
-#define __ENCODING_INTERNAL_END__ } __ENCODING_END__
-
 // xw::rgx
 #define __RGX_BEGIN__ __MAIN_NAMESPACE_BEGIN__ namespace rgx {
 #define __RGX_END__ } __MAIN_NAMESPACE_END__

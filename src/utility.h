@@ -1,9 +1,11 @@
 /**
  * utility.h
  *
- * Copyright (c) 2019-2020 Yuriy Lisovskiy
+ * Copyright (c) 2019-2021 Yuriy Lisovskiy
  *
  * Purpose: core utilities.
+ * TODO: refactor
+ * TODO: add docs
  */
 
 #pragma once
@@ -46,7 +48,7 @@ long index_of(IteratorT begin, IteratorT end, const ItemT& item)
 	return std::distance(begin, it);
 }
 
-/// Converts typeid.name() to full name.
+// Converts typeid.name() to full name.
 extern std::string demangle(const char* name);
 
 // Turn a datetime into a date string as specified in RFC 2822.
@@ -114,13 +116,8 @@ ObjT deserialize(const std::vector<char>& b)
 	return obj;
 }
 
-__UTILITY_END__
-
-
-__UTILITY_INTERNAL_BEGIN__
-
 extern std::string _format_timetuple_and_zone(
 	dt::tm_tuple* time_tuple, const std::string& zone
 );
 
-__UTILITY_INTERNAL_END__
+__UTILITY_END__

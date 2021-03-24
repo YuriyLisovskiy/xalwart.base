@@ -42,7 +42,6 @@ __CORE_BEGIN__
 class BaseException : public std::exception
 {
 protected:
-//	std::string _full_message;
 	std::string _exception_type;
 	std::string _message;
 	int _line;
@@ -62,7 +61,6 @@ public:
 	[[nodiscard]] virtual const char* file() const noexcept;
 	[[nodiscard]] virtual std::string get_message() const noexcept;
 };
-
 
 DEF_EXCEPTION_WITH_BASE(AttributeError, BaseException, "attribute error");
 DEF_EXCEPTION_WITH_BASE(ArgumentError, BaseException, "argument error");

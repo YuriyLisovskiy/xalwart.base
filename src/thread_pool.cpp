@@ -1,7 +1,7 @@
 /**
  * thread_pool.cpp
  *
- * Copyright (c) 2019-2020 Yuriy Lisovskiy
+ * Copyright (c) 2019-2021 Yuriy Lisovskiy
  */
 
 #include "./thread_pool.h"
@@ -17,11 +17,6 @@ ThreadPool::ThreadPool(std::string name, size_t threads_count) : _name(std::move
 	{
 		this->_threads.emplace_back(&ThreadPool::_thread_handler, this, idx);
 	}
-}
-
-ThreadPool::~ThreadPool()
-{
-	this->wait();
 }
 
 void ThreadPool::push(const std::function<void(void)>& func)
@@ -44,11 +39,6 @@ void ThreadPool::push(std::function<void(void)>&& func)
 	this->_cond_var.notify_all();
 }
 
-size_t ThreadPool::threads_count() const
-{
-	return this->_threads_count;
-}
-
 void ThreadPool::wait()
 {
 	if (this->_is_finished || this->_quit)
@@ -68,11 +58,6 @@ void ThreadPool::wait()
 	this->join();
 
 	this->_is_finished = true;
-}
-
-void ThreadPool::close()
-{
-	this->wait();
 }
 
 void ThreadPool::join()

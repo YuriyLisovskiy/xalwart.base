@@ -3,13 +3,10 @@
  *
  * Copyright (c) 2021 Yuriy Lisovskiy
  *
- * Purpose: TODO
+ * Purpose: text utilities.
  */
 
 #pragma once
-
-// C++ libraries.
-// TODO
 
 // Module definitions.
 #include "./_def_.h"
@@ -28,8 +25,7 @@ const auto SMART_SPLIT_REGEX = rgx::IterRegex(
 // Generator that splits a string by spaces, leaving quoted phrases together.
 // Supports both single and double quotes, and supports escaping quotes with
 // backslashes. In the output, strings will keep their initial and trailing
-// quote marks and escaped quotes will remain escaped (the results can then
-// be further processed with unescape_string_literal()).
+// quote marks and escaped quotes will remain escaped.
 extern std::vector<std::string> smart_split(const std::string& text);
 
 __TEXT_END__
