@@ -1,9 +1,9 @@
 /**
- * net/server.h
+ * net/abc.h
  *
  * Copyright (c) 2020-2021 Yuriy Lisovskiy
  *
- * Purpose: TODO
+ * Purpose: abstract base classes for net module.
  */
 
 #pragma once

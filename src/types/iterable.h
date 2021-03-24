@@ -53,7 +53,7 @@ public:
 	};
 
 	virtual void look_through(
-		const std::function<void(size_t, const std::shared_ptr<object::Object>&)>& func,
+		const std::function<void(size_t, const std::shared_ptr<obj::Object>&)>& func,
 		bool reversed
 	) const = 0;
 };
@@ -65,7 +65,7 @@ public:
 //      - ContainerT::iterator begin()
 //      - ContainerT::iterator end()
 template <class ContainerT>
-class SequenceIterableContainer : public object::Object, public SequenceIterable
+class SequenceIterableContainer : public obj::Object, public SequenceIterable
 {
 protected:
 	ContainerT internal_value;
@@ -74,7 +74,7 @@ protected:
 	[[nodiscard]]
 	virtual inline std::string aggregate(
 		const std::string& separator,
-		const std::function<std::string(const std::shared_ptr<object::Object>&)>& func
+		const std::function<std::string(const std::shared_ptr<obj::Object>&)>& func
 	) const
 	{
 		std::string res;
@@ -99,7 +99,7 @@ public:
 	}
 
 	inline void look_through(
-		const std::function<void(size_t, const std::shared_ptr<object::Object>&)>& func,
+		const std::function<void(size_t, const std::shared_ptr<obj::Object>&)>& func,
 		bool reversed
 	) const override
 	{
@@ -165,7 +165,7 @@ public:
 	{
 		return "{" + this->aggregate(
 			", ",
-			[](const std::shared_ptr<object::Object>& item) -> std::string { return item->__str__(); }
+			[](const std::shared_ptr<obj::Object>& item) -> std::string { return item->__str__(); }
 		) + "}";
 	}
 
@@ -175,7 +175,7 @@ public:
 		auto type = this->__type__();
 		return type.namespace_() + "::" + type.name() + "{" + this->aggregate(
 			", ",
-			[](const std::shared_ptr<object::Object>& item) -> std::string { return item->__repr__(); }
+			[](const std::shared_ptr<obj::Object>& item) -> std::string { return item->__repr__(); }
 		) + "}";
 	}
 };
@@ -190,7 +190,7 @@ public:
 	};
 
 	virtual void look_through(const std::function<void(
-		size_t, const std::pair<std::shared_ptr<object::Object>, std::shared_ptr<object::Object>>&
+		size_t, const std::pair<std::shared_ptr<obj::Object>, std::shared_ptr<obj::Object>>&
 	)>& func, bool reversed) const = 0;
 };
 
@@ -201,7 +201,7 @@ public:
 //      - ContainerT::iterator begin()
 //      - ContainerT::iterator end()
 template <class ContainerT>
-class MapIterableContainer : public object::Object, public MapIterable
+class MapIterableContainer : public obj::Object, public MapIterable
 {
 protected:
 	ContainerT internal_value;
@@ -211,7 +211,7 @@ protected:
 	virtual inline std::string aggregate(
 		const std::string& separator,
 		const std::function<std::string(
-			const std::pair<std::shared_ptr<object::Object>, std::shared_ptr<object::Object>>&
+			const std::pair<std::shared_ptr<obj::Object>, std::shared_ptr<obj::Object>>&
 		)>& func
 	) const
 	{
@@ -238,7 +238,7 @@ public:
 	}
 
 	inline void look_through(const std::function<void(
-		size_t, const std::pair<std::shared_ptr<object::Object>, std::shared_ptr<object::Object>>&
+		size_t, const std::pair<std::shared_ptr<obj::Object>, std::shared_ptr<obj::Object>>&
 	)>& func, bool reversed) const override
 	{
 		size_t i = 0;
@@ -303,7 +303,7 @@ public:
 	{
 		return "{" + this->aggregate(
 			", ", [](
-				const std::pair<std::shared_ptr<object::Object>, std::shared_ptr<object::Object>>& pair
+				const std::pair<std::shared_ptr<obj::Object>, std::shared_ptr<obj::Object>>& pair
 			) -> std::string { return "{" + pair.first->__str__() + ", " + pair.second->__str__() + "}"; }
 		) + "}";
 	}
@@ -314,13 +314,13 @@ public:
 		auto type = this->__type__();
 		return type.namespace_() + "::" + type.name() + "{" + this->aggregate(
 			", ", [](
-				const std::pair<std::shared_ptr<object::Object>, std::shared_ptr<object::Object>>& pair
+				const std::pair<std::shared_ptr<obj::Object>, std::shared_ptr<obj::Object>>& pair
 			) -> std::string { return "{" + pair.first->__repr__() + ", " + pair.second->__repr__() + "}"; }
 		) + "}";
 	}
 };
 
 template <typename T>
-concept ObjectBasedType = std::is_base_of_v<object::Object, T>;
+concept ObjectBasedType = std::is_base_of_v<obj::Object, T>;
 
 __TYPES_END__

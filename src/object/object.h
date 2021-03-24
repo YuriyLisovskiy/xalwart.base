@@ -11,110 +11,83 @@
 #pragma once
 
 // C++ libraries.
-#include <map>
+#include <sstream>
 
 // Module definitions.
 #include "./_def_.h"
 
 // Core libraries.
-#include "./type.h"
-#include "./attribute.h"
+#include "./meta.h"
 
 
-__OBJECT_BEGIN__
+__OBJ_BEGIN__
 
 class Object
 {
-private:
-	std::string _object_address;
-
-protected:
-	std::map<std::string, Attribute> __attrs__;
-
-protected:
-	[[nodiscard]]
-	inline std::string __address__() const
-	{
-		return this->_object_address;
-	}
-
 public:
-	typedef std::map<std::string, Attribute>::const_iterator attrs_iterator;
-	typedef std::map<std::string, Attribute>::const_reverse_iterator attrs_reverse_iterator;
-
-	[[nodiscard]]
-	inline attrs_iterator attrs_begin() const noexcept
-	{
-		return this->__attrs__.cbegin();
-	}
-
-	[[nodiscard]]
-	inline attrs_iterator attrs_end() const noexcept
-	{
-		return this->__attrs__.cend();
-	}
-
-	[[nodiscard]]
-	inline attrs_reverse_iterator attrs_rbegin() const noexcept
-	{
-		return this->__attrs__.crbegin();
-	}
-
-	[[nodiscard]]
-	inline attrs_reverse_iterator attrs_rend() const noexcept
-	{
-		return this->__attrs__.crend();
-	}
-
-	Object();
+	Object() = default;
 
 	virtual ~Object() = default;
 
+	// Returns `attr_name` attribute value of the object.
+	//
+	// Throws core::NotImplementedException by default.
 	[[nodiscard]]
 	virtual std::shared_ptr<Object> __get_attr__(const char* attr_name);
 
+	// Sets a new value to `attr_name` attribute.
+	//
+	// Throws core::NotImplementedException by default.
 	virtual void __set_attr__(const char* attr_name, const void* data);
 
+	// Checks whether object has attribute with `attr_name` or not.
+	//
+	// Throws core::NotImplementedException by default.
 	[[nodiscard]]
-	virtual inline bool __has_attr__(const char* attr_name) const
+	virtual bool __has_attr__(const char* attr_name) const;
+
+	// Returns basic meta information about the object.
+	[[nodiscard]]
+	inline meta::Type __type__() const
 	{
-		return this->__attrs__.find(attr_name) != this->__attrs__.end();
+		return meta::Type(*this);
 	}
 
-	// Returns basic meta information of an object.
+	// Default string representation of an object.
 	[[nodiscard]]
-	Type __type__() const;
-
-	// String representation of an object.
-	//
-	// Can be overridden.
-	[[nodiscard]]
-	virtual std::string __str__() const;
+	virtual inline std::string __str__() const
+	{
+		std::stringstream oss;
+		oss << static_cast<const void*>(this);
+		return "<" + this->__type__().name() + " object at " + oss.str() + ">";
+	}
 
 	// Used for debugging. By default returns '__str__()'.
-	//
-	// Can be overridden.
 	[[nodiscard]]
-	virtual std::string __repr__() const;
+	virtual inline std::string __repr__() const
+	{
+		return this->__str__();
+	}
 
 	// Returns 0 if objects are equal, -1 if 'this' is less
 	// than 'other' otherwise returns 1.
 	//
-	// Must be overridden.
+	// Must be overwritten.
 	[[nodiscard]]
 	virtual short __cmp__(const Object* other) const = 0;
 
-	// By default returns true if '__attrs__' is not empty,
-	// otherwise returns false.
+	// Returns boolean representation of the object.
+	// Used in logical comparisons.
 	//
-	// Can be overridden.
+	// Throws core::NotImplementedException by default.
 	explicit virtual operator bool () const;
 
-	// By default returns true if '__attrs__' is empty.
-	// otherwise returns false.
-	//
-	// Can be overridden.
-	virtual bool operator! () const;
+	// Negates and returns the result of `operator bool()`
+	// by default.
+	virtual inline bool operator! () const
+	{
+		return !this->operator bool();
+	}
 };
 
-__OBJECT_END__
+__OBJ_END__
