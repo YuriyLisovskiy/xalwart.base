@@ -22,15 +22,18 @@ __TYPES_BEGIN__
 template<class T>
 concept fundamental_type = std::is_fundamental_v<T>;
 
-template <fundamental_type internal_type>
+template <fundamental_type InternalT>
 class Fundamental final : public obj::Object
 {
 protected:
-	internal_type internal_value;
+	InternalT internal_value;
 
 protected:
+
+	// Compares two fundamentals.
 	template <fundamental_type OtherT>
-	[[nodiscard]] inline short _cmp_result(OtherT other_val) const
+	[[nodiscard]]
+	inline short _cmp_result(OtherT other_val) const
 	{
 		if (this->internal_value < other_val)
 		{
@@ -43,9 +46,12 @@ protected:
 public:
 	Fundamental() = default;
 
-	~Fundamental() override = default;
+	inline ~Fundamental() override
+	{
+		obj::Object::~Object();
+	};
 
-	explicit Fundamental(internal_type val) : Fundamental()
+	explicit Fundamental(InternalT val) : Fundamental()
 	{
 		this->internal_value = std::move(val);
 	}
@@ -58,20 +64,26 @@ public:
 		}
 	}
 
+	// Checks if fundamental type is `T`.
 	template <typename T>
-	[[nodiscard]] constexpr bool holds_type()
+	[[nodiscard]]
+	inline constexpr bool holds_type()
 	{
-		return std::is_same<internal_type, T>::value;
+		return std::is_same<InternalT, T>::value;
 	}
 
+	// Returns an internal value.
 	[[nodiscard]]
-	inline internal_type get() const
+	inline InternalT get() const
 	{
 		return this->internal_value;
 	}
 
+	// Casts internal type to `T` and returns a new `Fundamental`
+	// object.
 	template <fundamental_type T>
-	[[nodiscard]] inline Fundamental<T> fit_to()
+	[[nodiscard]]
+	inline Fundamental<T> fit_to()
 	{
 		return Fundamental<T>((T)this->internal_value);
 	}
@@ -175,18 +187,19 @@ public:
 		);
 	}
 
+	// Converts fundamental type to `std::string`.
 	[[nodiscard]]
 	inline std::string __str__() const override
 	{
-		if constexpr (std::is_same_v<internal_type, bool>)
+		if constexpr (std::is_same_v<InternalT, bool>)
 		{
 			return this->internal_value ? "true" : "false";
 		}
 
 		if constexpr (
-			std::is_same_v<internal_type, double> ||
-			std::is_same_v<internal_type, long double> ||
-			std::is_same_v<internal_type, float>
+			std::is_same_v<InternalT, double> ||
+			std::is_same_v<InternalT, long double> ||
+			std::is_same_v<InternalT, float>
 		)
 		{
 			std::string value = str::rtrim(std::to_string(this->internal_value), "0");
@@ -198,7 +211,7 @@ public:
 			return value;
 		}
 
-		if constexpr (std::is_same_v<internal_type, signed char> || std::is_same_v<internal_type, unsigned char>)
+		if constexpr (std::is_same_v<InternalT, signed char> || std::is_same_v<InternalT, unsigned char>)
 		{
 			return std::string(1, this->internal_value);
 		}
@@ -212,74 +225,74 @@ public:
 		return this->__str__();
 	}
 
-	inline Fundamental<internal_type>& operator= (const internal_type& new_val)
+	inline Fundamental<InternalT>& operator= (const InternalT& new_val)
 	{
 		this->internal_value = new_val;
 		return *this;
 	}
 
-	inline Fundamental<internal_type> operator+ (const Fundamental<internal_type>& right)
+	inline Fundamental<InternalT> operator+ (const Fundamental<InternalT>& right)
 	{
-		return Fundamental<internal_type>(this->internal_value + right.internal_value);
+		return Fundamental<InternalT>(this->internal_value + right.internal_value);
 	}
 
-	inline Fundamental<internal_type> operator- (const Fundamental<internal_type>& right)
+	inline Fundamental<InternalT> operator- (const Fundamental<InternalT>& right)
 	{
-		return Fundamental<internal_type>(this->internal_value - right.internal_value);
+		return Fundamental<InternalT>(this->internal_value - right.internal_value);
 	}
 
-	inline Fundamental<internal_type> operator+ ()
+	inline Fundamental<InternalT> operator+ ()
 	{
-		return Fundamental<internal_type>(+this->internal_value);
+		return Fundamental<InternalT>(+this->internal_value);
 	}
 
-	inline Fundamental<internal_type> operator- ()
+	inline Fundamental<InternalT> operator- ()
 	{
-		return Fundamental<internal_type>(-this->internal_value);
+		return Fundamental<InternalT>(-this->internal_value);
 	}
 
-	inline Fundamental<internal_type> operator* (const Fundamental<internal_type>& right)
+	inline Fundamental<InternalT> operator* (const Fundamental<InternalT>& right)
 	{
-		return Fundamental<internal_type>(this->internal_value * right.internal_value);
+		return Fundamental<InternalT>(this->internal_value * right.internal_value);
 	}
 
-	inline Fundamental<internal_type> operator/ (const Fundamental<internal_type>& right)
+	inline Fundamental<InternalT> operator/ (const Fundamental<InternalT>& right)
 	{
-		return Fundamental<internal_type>(this->internal_value / right.internal_value);
+		return Fundamental<InternalT>(this->internal_value / right.internal_value);
 	}
 
-	inline Fundamental<internal_type> operator% (const Fundamental<internal_type>& right)
+	inline Fundamental<InternalT> operator% (const Fundamental<InternalT>& right)
 	{
-		return Fundamental<internal_type>(this->internal_value % right.internal_value);
+		return Fundamental<InternalT>(this->internal_value % right.internal_value);
 	}
 
-	inline bool operator== (const Fundamental<internal_type>& other) const
+	inline bool operator== (const Fundamental<InternalT>& other) const
 	{
 		return this->__cmp__(&other) == 0;
 	}
 
-	inline bool operator!= (const Fundamental<internal_type>& other) const
+	inline bool operator!= (const Fundamental<InternalT>& other) const
 	{
 		return this->__cmp__(&other) != 0;
 	}
 
-	inline bool operator< (const Fundamental<internal_type>& other) const
+	inline bool operator< (const Fundamental<InternalT>& other) const
 	{
 		return this->__cmp__(&other) == -1;
 	}
 
-	inline bool operator<= (const Fundamental<internal_type>& other) const
+	inline bool operator<= (const Fundamental<InternalT>& other) const
 	{
 		auto ret_val = this->__cmp__(&other);
 		return ret_val == -1 || ret_val == 0;
 	}
 
-	inline bool operator> (const Fundamental<internal_type>& other) const
+	inline bool operator> (const Fundamental<InternalT>& other) const
 	{
 		return this->__cmp__(&other) == 1;
 	}
 
-	inline bool operator>= (const Fundamental<internal_type>& other) const
+	inline bool operator>= (const Fundamental<InternalT>& other) const
 	{
 		auto ret_val = this->__cmp__(&other);
 		return ret_val == 1 || ret_val == 0;
@@ -290,207 +303,207 @@ public:
 		return !this->operator bool();
 	}
 
-	inline bool operator&& (const Fundamental<internal_type>& other) const
+	inline bool operator&& (const Fundamental<InternalT>& other) const
 	{
 		return this->internal_value && other.internal_value;
 	}
 
-	inline bool operator|| (const Fundamental<internal_type>& other) const
+	inline bool operator|| (const Fundamental<InternalT>& other) const
 	{
 		return this->internal_value || other.internal_value;
 	}
 
-	inline Fundamental<internal_type> operator& (const Fundamental<internal_type>& right)
+	inline Fundamental<InternalT> operator& (const Fundamental<InternalT>& right)
 	{
-		return Fundamental<internal_type>(this->internal_value & right.internal_value);
+		return Fundamental<InternalT>(this->internal_value & right.internal_value);
 	}
 
-	inline Fundamental<internal_type> operator| (const Fundamental<internal_type>& right)
+	inline Fundamental<InternalT> operator| (const Fundamental<InternalT>& right)
 	{
-		return Fundamental<internal_type>(this->internal_value | right.internal_value);
+		return Fundamental<InternalT>(this->internal_value | right.internal_value);
 	}
 
-	inline Fundamental<internal_type> operator~ ()
+	inline Fundamental<InternalT> operator~ ()
 	{
-		return Fundamental<internal_type>(~this->internal_value);
+		return Fundamental<InternalT>(~this->internal_value);
 	}
 
-	inline Fundamental<internal_type> operator^ (const Fundamental<internal_type>& right)
+	inline Fundamental<InternalT> operator^ (const Fundamental<InternalT>& right)
 	{
-		return Fundamental<internal_type>(this->internal_value ^ right.internal_value);
+		return Fundamental<InternalT>(this->internal_value ^ right.internal_value);
 	}
 
-	inline friend std::ostream& operator<<(std::ostream& out, Fundamental<internal_type>& obj)
+	inline friend std::ostream& operator<<(std::ostream& out, Fundamental<InternalT>& obj)
 	{
 		return out << obj.internal_value;
 	}
 
-	inline friend std::istream& operator>>(std::istream& in, Fundamental<internal_type>& obj)
+	inline friend std::istream& operator>>(std::istream& in, Fundamental<InternalT>& obj)
 	{
 		return in >> obj.internal_value;
 	}
 
 	template <std::integral IntegralConstantT>
-	inline friend Fundamental<internal_type> operator<<(const Fundamental<internal_type>& value, IntegralConstantT ic)
+	inline friend Fundamental<InternalT> operator<<(const Fundamental<InternalT>& value, IntegralConstantT ic)
 	{
-		return Fundamental<internal_type>(value.internal_value << ic);
+		return Fundamental<InternalT>(value.internal_value << ic);
 	}
 
 	template <std::integral IntegralConstantT>
-	inline friend Fundamental<internal_type> operator>>(const Fundamental<internal_type>& value, IntegralConstantT ic)
+	inline friend Fundamental<InternalT> operator>>(const Fundamental<InternalT>& value, IntegralConstantT ic)
 	{
-		return Fundamental<internal_type>(value.internal_value >> ic);
+		return Fundamental<InternalT>(value.internal_value >> ic);
 	}
 
 	template <fundamental_type other_internal_type>
-	inline friend Fundamental<internal_type> operator<<(
-		const Fundamental<internal_type>& left, const Fundamental<other_internal_type>& right
+	inline friend Fundamental<InternalT> operator<<(
+		const Fundamental<InternalT>& left, const Fundamental<other_internal_type>& right
 	)
 	{
-		return Fundamental<internal_type>(left.internal_value << right.internal_value);
+		return Fundamental<InternalT>(left.internal_value << right.internal_value);
 	}
 
 	template <fundamental_type other_internal_type>
-	inline friend Fundamental<internal_type> operator>>(
-		const Fundamental<internal_type>& left, const Fundamental<other_internal_type>& right
+	inline friend Fundamental<InternalT> operator>>(
+		const Fundamental<InternalT>& left, const Fundamental<other_internal_type>& right
 	)
 	{
-		return Fundamental<internal_type>(left.internal_value >> right.internal_value);
+		return Fundamental<InternalT>(left.internal_value >> right.internal_value);
 	}
 
-	inline Fundamental<internal_type>& operator+= (const Fundamental<internal_type>& other)
+	inline Fundamental<InternalT>& operator+= (const Fundamental<InternalT>& other)
 	{
 		this->internal_value += other.internal_value;
 		return *this;
 	}
 
 	template <fundamental_type T>
-	inline Fundamental<internal_type>& operator+= (const T& other)
+	inline Fundamental<InternalT>& operator+= (const T& other)
 	{
 		this->internal_value += other;
 		return *this;
 	}
 
-	inline Fundamental<internal_type>& operator-= (const Fundamental<internal_type>& other)
+	inline Fundamental<InternalT>& operator-= (const Fundamental<InternalT>& other)
 	{
 		this->internal_value -= other.internal_value;
 		return *this;
 	}
 
 	template <fundamental_type T>
-	inline Fundamental<internal_type>& operator-= (const T& other)
+	inline Fundamental<InternalT>& operator-= (const T& other)
 	{
 		this->internal_value -= other;
 		return *this;
 	}
 
-	inline Fundamental<internal_type>& operator*= (const Fundamental<internal_type>& other)
+	inline Fundamental<InternalT>& operator*= (const Fundamental<InternalT>& other)
 	{
 		this->internal_value *= other.internal_value;
 		return *this;
 	}
 
 	template <fundamental_type T>
-	inline Fundamental<internal_type>& operator*= (const T& other)
+	inline Fundamental<InternalT>& operator*= (const T& other)
 	{
 		this->internal_value *= other;
 		return *this;
 	}
 
-	inline Fundamental<internal_type>& operator/= (const Fundamental<internal_type>& other)
+	inline Fundamental<InternalT>& operator/= (const Fundamental<InternalT>& other)
 	{
 		this->internal_value /= other.internal_value;
 		return *this;
 	}
 
 	template <fundamental_type T>
-	inline Fundamental<internal_type>& operator/= (const T& other)
+	inline Fundamental<InternalT>& operator/= (const T& other)
 	{
 		this->internal_value /= other;
 		return *this;
 	}
 
-	inline Fundamental<internal_type>& operator%= (const Fundamental<internal_type>& other)
+	inline Fundamental<InternalT>& operator%= (const Fundamental<InternalT>& other)
 	{
 		this->internal_value %= other.internal_value;
 		return *this;
 	}
 
 	template <fundamental_type T>
-	inline Fundamental<internal_type>& operator%= (const T& other)
+	inline Fundamental<InternalT>& operator%= (const T& other)
 	{
 		this->internal_value %= other;
 		return *this;
 	}
 
 	template <fundamental_type other_internal_type>
-	inline Fundamental<internal_type>& operator&= (const Fundamental<other_internal_type>& other)
+	inline Fundamental<InternalT>& operator&= (const Fundamental<other_internal_type>& other)
 	{
 		this->internal_value &= other.internal_value;
 		return *this;
 	}
 
 	template <fundamental_type T>
-	inline Fundamental<internal_type>& operator&= (const T& other)
+	inline Fundamental<InternalT>& operator&= (const T& other)
 	{
 		this->internal_value &= other;
 		return *this;
 	}
 
 	template <fundamental_type other_internal_type>
-	inline Fundamental<internal_type>& operator|= (const Fundamental<other_internal_type>& other)
+	inline Fundamental<InternalT>& operator|= (const Fundamental<other_internal_type>& other)
 	{
 		this->internal_value |= other.internal_value;
 		return *this;
 	}
 
 	template <fundamental_type T>
-	inline Fundamental<internal_type>& operator|= (const T& other)
+	inline Fundamental<InternalT>& operator|= (const T& other)
 	{
 		this->internal_value |= other;
 		return *this;
 	}
 
-	inline Fundamental<internal_type>& operator^= (const Fundamental<internal_type>& other)
+	inline Fundamental<InternalT>& operator^= (const Fundamental<InternalT>& other)
 	{
 		this->internal_value ^= other.internal_value;
 		return *this;
 	}
 
 	template <fundamental_type T>
-	inline Fundamental<internal_type>& operator^= (const T& other)
+	inline Fundamental<InternalT>& operator^= (const T& other)
 	{
 		this->internal_value ^= other;
 		return *this;
 	}
 
 	template <std::integral IntegralConstantT>
-	inline Fundamental<internal_type>& operator<<=(const IntegralConstantT& ic)
+	inline Fundamental<InternalT>& operator<<=(const IntegralConstantT& ic)
 	{
 		this->internal_value <<= ic;
 		return *this;
 	}
 
 	template <std::integral IntegralConstantT>
-	inline Fundamental<internal_type>& operator>>=(const IntegralConstantT& ic)
+	inline Fundamental<InternalT>& operator>>=(const IntegralConstantT& ic)
 	{
 		this->internal_value >>= ic;
 		return *this;
 	}
 
-	inline Fundamental<internal_type>& operator<<=(const Fundamental<internal_type>& right)
+	inline Fundamental<InternalT>& operator<<=(const Fundamental<InternalT>& right)
 	{
 		this->internal_value <<= right.internal_value;
 		return *this;
 	}
 
-	inline Fundamental<internal_type>& operator>>=(const Fundamental<internal_type>& right)
+	inline Fundamental<InternalT>& operator>>=(const Fundamental<InternalT>& right)
 	{
 		this->internal_value >>= right.internal_value;
 		return *this;
 	}
 
-	inline internal_type& operator* ()
+	inline InternalT& operator* ()
 	{
 		return this->internal_value;
 	}

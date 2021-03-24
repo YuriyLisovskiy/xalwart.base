@@ -9,7 +9,6 @@
 #pragma once
 
 // C++ libraries.
-#include <map>
 #include <functional>
 #include <string>
 
@@ -66,21 +65,37 @@ struct RequestContext
 	std::function<bool(const char* data, size_t n)> write;
 
 	[[nodiscard]]
-	bool proto_v_eq(short major, short minor) const;
+	inline bool proto_v_eq(short major, short minor) const
+	{
+		return this->major_v == major && this->minor_v == minor;
+	}
 
 	[[nodiscard]]
-	bool proto_v_gte(short major, short minor) const;
+	inline bool proto_v_gte(short major, short minor) const
+	{
+		return this->major_v >= major && this->minor_v >= minor;
+	}
 
 	[[nodiscard]]
-	bool proto_v_lte(short major, short minor) const;
+	inline bool proto_v_lte(short major, short minor) const
+	{
+		return this->major_v <= major && this->minor_v <= minor;
+	}
 
 	[[nodiscard]]
-	bool proto_v_gt(short major, short minor) const;
+	inline bool proto_v_gt(short major, short minor) const
+	{
+		return this->major_v > major && this->minor_v > minor;
+	}
 
 	[[nodiscard]]
-	bool proto_v_lt(short major, short minor) const;
+	inline bool proto_v_lt(short major, short minor) const
+	{
+		return this->major_v < major && this->minor_v < minor;
+	}
 };
 
+// Function type that handles the request.
 typedef std::function<uint(
 	RequestContext*, collections::Dict<std::string, std::string>
 )> HandlerFunc;

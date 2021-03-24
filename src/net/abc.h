@@ -26,15 +26,16 @@ class IServer
 public:
 	virtual void setup_handler(net::HandlerFunc handler) = 0;
 
-	// Bind socket.
+	// Binds socket.
 	virtual void bind(const std::string& address, uint16_t port) = 0;
 
-	// Listen the socket.
+	// Listens the socket.
 	virtual void listen(const std::string& startup_message) = 0;
 
-	// Shutdown and close server socket.
+	// Shutdowns and closes server socket.
 	virtual void close() = 0;
 
+	// Returns server's environment variables.
 	[[nodiscard]]
 	virtual collections::Dict<std::string, std::string> environ() const = 0;
 

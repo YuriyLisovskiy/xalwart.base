@@ -3,7 +3,8 @@
  *
  * Copyright (c) 2020 Yuriy Lisovskiy
  *
- * Purpose: TODO
+ * Purpose: holds the result of the returned value from function
+ *  or error. It is a lightweight exception-like handling mechanism.
  */
 
 #pragma once
@@ -18,18 +19,27 @@
 __CORE_BEGIN__
 
 template <typename T>
-concept ResultType = std::is_default_constructible_v<T> && !std::is_pointer_v<T>;
+concept result_type = std::is_default_constructible_v<T> && !std::is_pointer_v<T>;
 
-template <ResultType ValueT>
-class Result
+template <result_type ValueT>
+class Result final
 {
 private:
-	[[nodiscard]] bool _check_base(error_type base, error_type expected) const
+	const short ERROR_T_HTTP_LOWER = 2;
+	const short ERROR_T_HTTP_UPPER = 8;
+
+	const short ERROR_T_SO_LOWER = 9;
+	const short ERROR_T_SO_UPPER = 10;
+
+private:
+	[[nodiscard]]
+	inline bool _check_base(error_type base, error_type expected) const
 	{
 		return expected == base || this->err.type == expected;
 	}
 
-	[[nodiscard]] bool _check_nested(error_type super_base, error_type base, error_type expected) const
+	[[nodiscard]]
+	inline bool _check_nested(error_type super_base, error_type base, error_type expected) const
 	{
 		return expected == super_base || this->_check_base(base, expected);
 	}
@@ -41,35 +51,35 @@ public:
 
 	Result() = default;
 
-	explicit Result(ValueT data) : value(data)
+	inline explicit Result(ValueT data) : value(data)
 	{
 	}
 
-	explicit Result(const Error& err) : err(err)
+	inline explicit Result(const Error& err) : err(err)
 	{
 	}
 
-	explicit Result(std::nullptr_t) : is_nullptr(true)
+	inline explicit Result(std::nullptr_t) : is_nullptr(true)
 	{
 	}
 
-	explicit operator bool () const
+	inline explicit operator bool () const
 	{
 		return !this->is_nullptr;
 	}
 
 	[[nodiscard]]
-	bool catch_(error_type expected = HttpError) const
+	inline bool catch_(error_type expected = HttpError) const
 	{
 		// Process SuspiciousOperation-based errors
-		if (this->err.type >= internal::ERROR_T_SO_LOWER && this->err.type <= internal::ERROR_T_SO_UPPER)
+		if (this->err.type >= ERROR_T_SO_LOWER && this->err.type <= ERROR_T_SO_UPPER)
 		{
 			return this->err.type != None && this->_check_nested(
 				HttpError, SuspiciousOperation, expected
 			);
 		}
 		// Process HttpError-based errors
-		else if (this->err.type >= internal::ERROR_T_HTTP_LOWER && this->err.type <= internal::ERROR_T_HTTP_UPPER)
+		else if (this->err.type >= ERROR_T_HTTP_LOWER && this->err.type <= ERROR_T_HTTP_UPPER)
 		{
 			return this->err.type != None && this->_check_base(HttpError, expected);
 		}
@@ -78,14 +88,14 @@ public:
 	}
 
 	template<typename NewType>
-	Result<NewType> forward()
+	inline Result<NewType> forward()
 	{
 		auto result = Result<NewType>();
 		result.err = this->err;
 		return result;
 	}
 
-	static Result<ValueT> null()
+	inline static Result<ValueT> null()
 	{
 		return Result<ValueT>(nullptr);
 	}

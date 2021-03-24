@@ -34,8 +34,8 @@ private:
 	std::string _name;
 	std::string _namespace;
 
-	// Splits name and namespace of the object into separate
-	// variables.
+	// Splits name and namespace of the object into `_name` and
+	// `_namespace`.
 	explicit Type(const Object& obj);
 
 public:

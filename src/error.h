@@ -1,9 +1,9 @@
 /**
  * error.h
  *
- * Copyright (c) 2020 Yuriy Lisovskiy
+ * Copyright (c) 2020-2021 Yuriy Lisovskiy
  *
- * Purpose: TODO
+ * Purpose: error holder for lightweight exception-like handling.
  */
 
 #pragma once
@@ -15,16 +15,6 @@
 // Module definitions.
 #include "./_def_.h"
 
-
-__CORE_INTERNAL_BEGIN__
-
-const short ERROR_T_HTTP_LOWER = 2;
-const short ERROR_T_HTTP_UPPER = 8;
-
-const short ERROR_T_SO_LOWER = 9;
-const short ERROR_T_SO_UPPER = 10;
-
-__CORE_INTERNAL_END__
 
 __CORE_BEGIN__
 
@@ -47,6 +37,7 @@ enum error_type
 	DisallowedRedirect = 10
 };
 
+// Returns string representation of error type.
 extern std::string to_string(error_type et);
 
 struct Error
@@ -57,25 +48,50 @@ struct Error
 	std::string file;
 	std::string msg;
 
-	Error(
+	inline Error(
 		error_type type, std::string msg, int line, const char* func, const char* file
-	);
+	) : type(type), msg(std::move(msg)), line(line), func(func), file(file)
+	{
+	}
 
-	explicit Error(error_type type, const std::string& msg);
+	inline explicit Error(error_type type, const std::string& msg) : Error(type, msg, 0, "", "")
+	{
+	}
 
-	Error();
+	inline Error() : Error(None, "", 0, "", "")
+	{
+	}
 
-	static Error none();
+	inline static Error none()
+	{
+		return Error();
+	}
 
-	explicit operator bool() const;
-	bool operator !() const;
+	inline explicit operator bool() const
+	{
+		return this->type != None;
+	}
+
+	inline bool operator !() const
+	{
+		return this->type == None;
+	}
 
 	[[nodiscard]]
-	std::string get_message() const;
+	inline std::string get_message() const
+	{
+		return to_string(this->type) + ": " + this->msg;
+	}
 };
 
 __CORE_END__
 
-std::ostream& operator<<(std::ostream& os, const xw::core::error_type& type);
+inline std::ostream& operator<<(std::ostream& os, const xw::core::error_type& type)
+{
+	return os << to_string(type);
+}
 
-std::ostream& operator<<(std::ostream& os, const xw::core::Error& err);
+inline std::ostream& operator<<(std::ostream& os, const xw::core::Error& err)
+{
+	return os << "\nFile \"" << err.file << "\", line " << err.line << ", in " << err.func << '\n' << err.msg;
+}

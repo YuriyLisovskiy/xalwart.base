@@ -3,14 +3,10 @@
  *
  * Copyright (c) 2021 Yuriy Lisovskiy
  *
- * Purpose: TODO
+ * Purpose: `std::string` wrapper for rendering it in templates.
  */
 
 #pragma once
-
-// C++ libraries.
-#include <string_view>
-#include <utility>
 
 // Module definitions.
 #include "./_def_.h"
@@ -43,12 +39,21 @@ public:
 		return "'" + this->value + "'";
 	}
 
+	// Compares two objects.
+	//
+	// Throws `core::TypeError` if `other` is not `String`-type object.
 	[[nodiscard]]
 	short __cmp__(const Object* other) const override;
 
-	explicit operator bool () const override;
+	inline explicit operator bool () const override
+	{
+		return !this->value.empty();
+	}
 
-	bool operator! () const override;
+	inline bool operator! () const override
+	{
+		return this->value.empty();
+	}
 
 	inline std::string& operator* ()
 	{

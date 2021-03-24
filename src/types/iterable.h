@@ -19,6 +19,7 @@
 #include "../object/object.h"
 
 
+// TODO: improve iterable classes.
 __TYPES_BEGIN__
 
 class Iterable

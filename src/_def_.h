@@ -27,10 +27,6 @@ typedef unsigned int uint;
 #define __CORE_BEGIN__ __MAIN_NAMESPACE_BEGIN__ namespace core {
 #define __CORE_END__ } __MAIN_NAMESPACE_END__
 
-// xw::core::internal
-#define __CORE_INTERNAL_BEGIN__ __CORE_BEGIN__ namespace internal {
-#define __CORE_INTERNAL_END__ } __CORE_END__
-
 // xw::path
 #define __PATH_BEGIN__ __MAIN_NAMESPACE_BEGIN__ namespace path {
 #define __PATH_END__ } __MAIN_NAMESPACE_END__

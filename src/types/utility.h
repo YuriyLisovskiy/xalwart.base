@@ -18,7 +18,7 @@
 __TYPES_BEGIN__
 
 template <typename Base, typename Derived>
-constexpr bool is_base_of()
+inline constexpr bool is_base_of()
 {
 	if constexpr (std::is_pointer<Base>::value && std::is_pointer<Derived>::value)
 	{
@@ -43,13 +43,13 @@ constexpr bool is_base_of()
 }
 
 template <typename Derived, typename Base>
-constexpr bool is_base_of(const Base&)
+inline constexpr bool is_base_of(const Base&)
 {
 	return is_base_of<Base, Derived>();
 }
 
 template <typename LeftT, typename RightT>
-constexpr bool is_instance(const RightT& value)
+inline constexpr bool is_instance(const RightT& value)
 {
 	if constexpr (std::is_pointer<RightT>::value)
 	{

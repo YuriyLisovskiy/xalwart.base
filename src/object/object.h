@@ -18,6 +18,7 @@
 
 // Core libraries.
 #include "./meta.h"
+#include "../exceptions.h"
 
 
 __OBJ_BEGIN__
@@ -31,20 +32,35 @@ public:
 
 	// Returns `attr_name` attribute value of the object.
 	//
-	// Throws core::NotImplementedException by default.
+	// Throws `core::AttributeError` by default.
 	[[nodiscard]]
-	virtual std::shared_ptr<Object> __get_attr__(const char* attr_name);
+	virtual inline std::shared_ptr<Object> __get_attr__(const char* attr_name)
+	{
+		throw core::AttributeError(
+			"'" + this->__type__().name() + "' object has no attribute '" + std::string(attr_name) + "'",
+			_ERROR_DETAILS_
+		);
+	}
 
 	// Sets a new value to `attr_name` attribute.
 	//
-	// Throws core::NotImplementedException by default.
-	virtual void __set_attr__(const char* attr_name, const void* data);
+	// Throws `core::AttributeError` by default.
+	virtual inline void __set_attr__(const char* attr_name, const void* data)
+	{
+		throw core::AttributeError(
+			"'" + this->__type__().name() + "' object has no attribute '" + std::string(attr_name) + "'",
+			_ERROR_DETAILS_
+		);
+	}
 
 	// Checks whether object has attribute with `attr_name` or not.
 	//
-	// Throws core::NotImplementedException by default.
+	// Returns `false` by default.
 	[[nodiscard]]
-	virtual bool __has_attr__(const char* attr_name) const;
+	virtual inline bool __has_attr__(const char* attr_name) const
+	{
+		return false;
+	}
 
 	// Returns basic meta information about the object.
 	[[nodiscard]]
@@ -80,7 +96,13 @@ public:
 	// Used in logical comparisons.
 	//
 	// Throws core::NotImplementedException by default.
-	explicit virtual operator bool () const;
+	explicit virtual operator bool () const
+	{
+		throw core::NotImplementedException(
+			"'" + this->__type__().name() + "::operator bool() const' is not implemented",
+			_ERROR_DETAILS_
+		);
+	}
 
 	// Negates and returns the result of `operator bool()`
 	// by default.

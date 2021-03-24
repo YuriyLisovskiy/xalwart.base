@@ -6,9 +6,6 @@
 
 #include "./string.h"
 
-// Core libraries.
-#include "../exceptions.h"
-
 
 __TYPES_BEGIN__
 
@@ -25,19 +22,10 @@ short String::__cmp__(const Object* other) const
 	}
 
 	throw core::TypeError(
-		"'__cmp__' not supported between instances of '" + this->__type__().name() + "' and '" + other->__type__().name() + "'",
+		"'__cmp__' not supported between instances of '" + this->__type__().name() +
+			"' and '" + other->__type__().name() + "'",
 		_ERROR_DETAILS_
 	);
-}
-
-String::operator bool() const
-{
-	return !this->value.empty();
-}
-
-bool String::operator! () const
-{
-	return this->value.empty();
 }
 
 __TYPES_END__
