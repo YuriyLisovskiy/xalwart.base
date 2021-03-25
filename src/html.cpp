@@ -6,19 +6,16 @@
 
 #include "./html.h"
 
-// C++ libraries.
-// TODO
-
 // Core libraries.
 #include "./string_utils.h"
 
 
 __HTML_BEGIN__
 
-std::string escape(const std::string& s, bool quote)
+std::string escape(const std::string& input, bool quote)
 {
-	auto escaped = s;
-	str::replace(escaped, "&", "&amp;");    // Must be done first!
+	auto escaped = input;
+	str::replace(escaped, "&", "&amp;"); // Must be done first!
 	str::replace(escaped, "<", "&lt;");
 	str::replace(escaped, ">", "&gt;");
 	if (quote)

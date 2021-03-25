@@ -3,7 +3,7 @@
  *
  * Copyright (c) 2020-2021 Yuriy Lisovskiy
  *
- * Purpose: abstract base classes for net module.
+ * Abstract base classes for `net` module.
  */
 
 #pragma once
@@ -21,6 +21,7 @@
 
 __NET_BEGIN__
 
+// Base class (interface) for server implementation.
 class IServer
 {
 public:
@@ -40,6 +41,8 @@ public:
 	virtual collections::Dict<std::string, std::string> environ() const = 0;
 
 protected:
+
+	// Initializes environment variables of the server.
 	virtual void init_environ() = 0;
 };
 

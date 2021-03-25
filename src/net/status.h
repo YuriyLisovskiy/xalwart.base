@@ -3,9 +3,8 @@
  *
  * Copyright (c) 2019-2021 Yuriy Lisovskiy
  *
- * Purpose:
- * 	Hold all available http statuses, which contains status code,
- * 	reason phrase and brief explanation.
+ * A collection of all available http statuses, which
+ * contains status code, reason phrase and brief explanation.
  */
 
 #pragma once

@@ -3,9 +3,8 @@
  *
  * Copyright (c) 2020-2021 Yuriy Lisovskiy
  *
- * Purpose:
- * 	Main parent for all derived classes which need to be rendered
- * 	or for some other purposes.
+ * Main parent for all derived classes which need to be rendered
+ * or for some other purposes.
  */
 
 #pragma once
@@ -42,7 +41,10 @@ public:
 		);
 	}
 
-	// Sets a new value to `attr_name` attribute.
+	// Sets a new value to attribute.
+	//
+	// `attr_name`: name of an attribute to set.
+	// `data`: pointer to data which should be set.
 	//
 	// Throws `core::AttributeError` by default.
 	virtual inline void __set_attr__(const char* attr_name, const void* data)
@@ -53,7 +55,9 @@ public:
 		);
 	}
 
-	// Checks whether object has attribute with `attr_name` or not.
+	// Checks whether object has attribute or not.
+	//
+	// `attr_name`: name of an attribute to check.
 	//
 	// Returns `false` by default.
 	[[nodiscard]]

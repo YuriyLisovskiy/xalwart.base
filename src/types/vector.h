@@ -20,6 +20,7 @@
 
 __TYPES_BEGIN__
 
+// TODO: improve functionality.
 template <ObjectBasedType T = obj::Object>
 class Vector : public SequenceIterableContainer<std::vector<std::shared_ptr<T>>>
 {

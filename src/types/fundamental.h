@@ -3,7 +3,7 @@
  *
  * Copyright (c) 2021 Yuriy Lisovskiy
  *
- * Purpose: Object-based wrapper for basic (fundamental) C++ types.
+ * Object-based wrapper for basic (fundamental) C++ types.
  */
 
 #pragma once
@@ -88,6 +88,10 @@ public:
 		return Fundamental<T>((T)this->internal_value);
 	}
 
+	// Compares `Fundamental` types.
+	//
+	// Throws `core::TypeError` if `other` object is not
+	// `Fundamental` type.
 	[[nodiscard]]
 	inline short __cmp__(const Object* other) const override
 	{
@@ -187,7 +191,10 @@ public:
 		);
 	}
 
-	// Converts fundamental type to `std::string`.
+	// Converts fundamental type to `std::string`. If internal type
+	// is `bool`, returns `true`/`false`. If type is floating-point
+	// (double, long double, float) trims unnecessary ending zeros.
+	// Otherwise returns string representation of `internal_value`.
 	[[nodiscard]]
 	inline std::string __str__() const override
 	{

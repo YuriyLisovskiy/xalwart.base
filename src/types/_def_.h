@@ -1,9 +1,9 @@
 /**
  * types/_def_.h
  *
- * Copyright (c) 2020 Yuriy Lisovskiy
+ * Copyright (c) 2020-2021 Yuriy Lisovskiy
  *
- * Purpose: types module's definitions.
+ * Definitions of `types` module.
  */
 
 #pragma once

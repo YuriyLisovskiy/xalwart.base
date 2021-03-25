@@ -1,10 +1,10 @@
 /**
  * result.h
  *
- * Copyright (c) 2020 Yuriy Lisovskiy
+ * Copyright (c) 2020-2021 Yuriy Lisovskiy
  *
- * Purpose: holds the result of the returned value from function
- *  or error. It is a lightweight exception-like handling mechanism.
+ * The result of the returned value from function or error.
+ * It is a lightweight exception-like handling mechanism.
  */
 
 #pragma once
@@ -25,19 +25,27 @@ template <result_type ValueT>
 class Result final
 {
 private:
+
+	// Bounds of http error family.
 	const short ERROR_T_HTTP_LOWER = 2;
 	const short ERROR_T_HTTP_UPPER = 8;
 
+	// Bounds of suspicious operation error family.
 	const short ERROR_T_SO_LOWER = 9;
 	const short ERROR_T_SO_UPPER = 10;
 
 private:
+
+	// Returns `true` if the expected error is the same as
+	// base or current error type, `false` otherwise.
 	[[nodiscard]]
 	inline bool _check_base(error_type base, error_type expected) const
 	{
 		return expected == base || this->err.type == expected;
 	}
 
+	// Returns `true` if the expected error is the same as base,
+	// super-base or current error type, `false` otherwise.
 	[[nodiscard]]
 	inline bool _check_nested(error_type super_base, error_type base, error_type expected) const
 	{
@@ -45,29 +53,46 @@ private:
 	}
 
 public:
+
+	// Holds an error of the result.
 	Error err{};
+
+	// Holds a value of the result.
 	ValueT value{};
+
+	// Indicates whether result is null or not.
 	bool is_nullptr = false;
 
+	// Default constructor.
 	Result() = default;
 
+	// Constructs the result with given value.
 	inline explicit Result(ValueT data) : value(data)
 	{
 	}
 
+	// Constructs the result with given error.
 	inline explicit Result(const Error& err) : err(err)
 	{
 	}
 
+	// Constructs null-result.
 	inline explicit Result(std::nullptr_t) : is_nullptr(true)
 	{
 	}
 
+	// Returns `true` if result is not null, `false` otherwise.
 	inline explicit operator bool () const
 	{
 		return !this->is_nullptr;
 	}
 
+	// Checks if error was generated.
+	//
+	// `expected`: error which is expected to be generated.
+	//
+	// Returns `true` if the expected error is generated,
+	// `false` otherwise.
 	[[nodiscard]]
 	inline bool catch_(error_type expected = HttpError) const
 	{
@@ -87,6 +112,8 @@ public:
 		return this->err.type != None && expected == HttpError;
 	}
 
+	// Creates a new result with the same error as initial
+	// object.
 	template<typename NewType>
 	inline Result<NewType> forward()
 	{
@@ -95,18 +122,34 @@ public:
 		return result;
 	}
 
+	// Creates null result without value and error.
 	inline static Result<ValueT> null()
 	{
 		return Result<ValueT>(nullptr);
 	}
 };
 
+// Creates result with error.
+//
+// `msg`: error message.
+//
+// Returns `Result<ValueT>` object with given message
+// and error type.
 template <error_type err_type, typename ValueT>
 Result<ValueT> raise(const std::string& msg)
 {
 	return Result<ValueT>(Error(err_type, msg.c_str(), 0, "", ""));
 }
 
+// Creates result with error.
+//
+// `msg`: error message.
+// `line`: line where an error occurred.
+// `func`: function where an error occurred.
+// `file`: file where an error occurred.
+//
+// Returns `Result<ValueT>` object with given message, line,
+// function name, file name and error type.
 template <error_type err_type, typename ValueT>
 Result<ValueT> raise(const std::string& msg, int line, const char* func, const char* file)
 {

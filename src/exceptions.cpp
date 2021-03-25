@@ -12,65 +12,6 @@
 
 __CORE_BEGIN__
 
-// BaseException
-BaseException::BaseException(const char* message, int line, const char* function, const char* file, const char* exceptionType)
-	: _message(message), _line(line), _function(function), _file(file), _exception_type(exceptionType)
-{
-}
-
-BaseException::BaseException(const char* message, int line, const char* function, const char* file)
-	: BaseException(message, line, function, file, "BaseException")
-{
-}
-
-const char* BaseException::what() const noexcept
-{
-	return this->_message.c_str();
-}
-
-int BaseException::line() const noexcept
-{
-	return this->_line;
-}
-
-const char* BaseException::function() const noexcept
-{
-	return this->_function;
-}
-
-const char* BaseException::file() const noexcept
-{
-	return this->_file;
-}
-
-std::string BaseException::get_message() const noexcept
-{
-	return this->_exception_type + ": " + this->_message;
-}
-
-// InterruptException
-InterruptException::InterruptException(
-	const char* message, int line, const char* function, const char* file, const char* type
-) : BaseException(message, line, function, file, type)
-{
-}
-
-InterruptException::InterruptException(const char* message, int line, const char* function, const char* file)
-	: InterruptException(message, line, function, file, "InterruptException")
-{
-}
-
-InterruptException::InterruptException(
-	const std::string& message, int line, const char *function, const char *file
-) : InterruptException(message.c_str(), line, function, file)
-{
-}
-
-void InterruptException::handle_signal(int sig)
-{
-	throw InterruptException("execution is interrupted with signal " + std::to_string(sig));
-}
-
 void InterruptException::initialize()
 {
 #if defined(_WIN32) || defined(_WIN64)
@@ -87,29 +28,6 @@ void InterruptException::initialize()
 #else
 #error Library is not supported on this platform
 #endif
-}
-
-SocketError::SocketError(
-	int err_no, const char* message, int line, const char* function, const char* file, const char* type
-) : BaseException(message, line, function, file, type), _errno(err_no)
-{
-}
-
-SocketError::SocketError(
-	int err_no, const char* message, int line, const char* function, const char* file
-) : SocketError(err_no, message, line, function, file, "SocketError")
-{
-}
-
-SocketError::SocketError(
-	int err_no, const std::string& message, int line, const char* function, const char* file
-) : SocketError(err_no, message.c_str(), line, function, file)
-{
-}
-
-int SocketError::err_no() const
-{
-	return this->_errno;
 }
 
 __CORE_END__

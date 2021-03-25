@@ -3,7 +3,7 @@
  *
  * Copyright (c) 2019-2021 Yuriy Lisovskiy
  *
- * Purpose: file stream wrapper for easier file handling.
+ * File stream wrapper for easier file handling.
  */
 
 #pragma once

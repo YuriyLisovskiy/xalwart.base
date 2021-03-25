@@ -1,11 +1,9 @@
 /**
  * collections/_def_.cpp
  *
- * Copyright (c) 2019 Yuriy Lisovskiy
- */
-
-/**
- * Purpose: collections module's definitions.
+ * Copyright (c) 2019, 2021 Yuriy Lisovskiy
+ *
+ * Definitions of `collections` module.
  */
 
 #pragma once

@@ -3,9 +3,7 @@
  *
  * Copyright (c) 2019-2021 Yuriy Lisovskiy
  *
- * Purpose: core utilities.
- * TODO: refactor
- * TODO: add docs
+ * Core utilities.
  */
 
 #pragma once
@@ -22,22 +20,58 @@
 
 __UTILITY_BEGIN__
 
-template <typename ItemT>
-bool contains(const ItemT& to_check, const std::vector<ItemT>& items)
+// Checks if sequence contains item or not.
+//
+// `begin`: iterator to the beginning of the sequence.
+// `end`: iterator to the end of the sequence.
+// `item`: item to check.
+//
+// Returns `true` if sequence contains item, `false` otherwise.
+// Returns `false` if the range is empty.
+template <typename ItemT, typename IteratorT>
+inline bool contains(IteratorT begin, IteratorT end, const ItemT& item)
 {
-	for (const auto& item : items)
-	{
-		if (item == to_check)
-		{
-			return true;
-		}
-	}
-
-	return false;
+	return std::any_of(begin, end, [item](const auto& o) -> bool {
+		return o == item;
+	});
 }
 
+// Checks if vector contains item or not.
+//
+// `item`: item to check.
+// `sequence`: vector of items where to search for.
+//
+// Returns `true` if sequence contains item, `false` otherwise.
+// Returns `false` if the range is empty.
+template <typename ItemT>
+inline bool contains(const ItemT& item, const std::vector<ItemT>& sequence)
+{
+	return contains(sequence.begin(), sequence.end(), item);
+}
+
+// Checks if initializer list contains item or not.
+//
+// `item`: item to check.
+// `sequence`: initializer list of items where to search for.
+//
+// Returns `true` if sequence contains item, `false` otherwise.
+// Returns `false` if the range is empty.
+template <typename ItemT>
+bool contains(const ItemT& item, const std::initializer_list<ItemT>& sequence)
+{
+	return contains(sequence.begin(), sequence.end(), item);
+}
+
+// Searches for index of item in given range.
+//
+// `begin`: iterator to the beginning of the sequence.
+// `end`: iterator to the end of the sequence.
+// `item`: item to search.
+//
+// Returns non-negative `long` integer if the range contains `item`,
+// `-1` othrwise.
 template <typename ItemT, typename IteratorT>
-long index_of(IteratorT begin, IteratorT end, const ItemT& item)
+inline long index_of(IteratorT begin, IteratorT end, const ItemT& item)
 {
 	auto it = std::find(begin, end, item);
 	if (it == end)
@@ -48,7 +82,11 @@ long index_of(IteratorT begin, IteratorT end, const ItemT& item)
 	return std::distance(begin, it);
 }
 
-// Converts typeid.name() to full name.
+// Converts type name to full name.
+//
+// `name`: result of 'typeid(...).name()' call.
+//
+// Returns full name.
 extern std::string demangle(const char* name);
 
 // Turn a datetime into a date string as specified in RFC 2822.
@@ -56,6 +94,11 @@ extern std::string demangle(const char* name);
 // If usegmt is True, dt must be an aware datetime with an offset of zero.  In
 // this case 'GMT' will be rendered instead of the normal +0000 required by
 // RFC2822.  This is to support HTTP headers involving date stamps.
+//
+// `dt`: pointer to datetime object.
+// `use_gmt`: indicates whether to use GMT or not.
+//
+// Returns formatted datetime as `std::string`.
 extern std::string format_datetime(
 	const dt::Datetime* dt, bool use_gmt = false
 );
@@ -74,48 +117,24 @@ extern std::string format_datetime(
 // Optional argument usegmt means that the timezone is written out as
 // an ascii string, not numeric one (so "GMT" instead of "+0000"). This
 // is needed for HTTP, and is only used when localtime==false.
+//
+// `time_val`: time structure to format.
+// `local_time`: indicates whether `time_val` is local time or not.
+// `use_gmt`: indicates whether to use GMT or not.
+//
+// Returns formatted datetime as `std::string`.
 extern std::string format_date(
 	time_t time_val, bool local_time = false, bool use_gmt = false
 );
 
-template <typename T>
-concept serializable_type = !(
-	std::is_same_v<std::wstring, T> ||
-	std::is_same_v<std::u16string, T> ||
-	std::is_same_v<std::u32string, T>
-);
-
-template <serializable_type ObjT>
-std::vector<char> serialize(ObjT src)
-{
-	if constexpr (std::is_same_v<std::string, ObjT>)
-	{
-		return std::vector<char>(src.begin(), src.end());
-	}
-	else
-	{
-		std::vector<char> p(sizeof(src));
-		std::memcpy((char*)p.data(), &src, sizeof(src));
-		return p;
-	}
-}
-
-template <serializable_type ObjT>
-ObjT deserialize(const std::vector<char>& b)
-{
-	ObjT obj;
-	if constexpr (std::is_same_v<std::string, ObjT>)
-	{
-		obj = std::string(b.begin(), b.end());
-	}
-	else
-	{
-		std::memcpy(&obj, b.data(), sizeof(obj));
-	}
-
-	return obj;
-}
-
+// Formats datetime from 'dt::time_tuple' and zone name as specified by RFC 2822, e.g.:
+//
+// Fri, 09 Nov 2001 01:08:47 -0000
+//
+// `time_tuple`: datetime struct to format.
+// `zone`: time zone name.
+//
+// Returns formatted datetime as `std::string`.
 extern std::string _format_timetuple_and_zone(
 	dt::tm_tuple* time_tuple, const std::string& zone
 );

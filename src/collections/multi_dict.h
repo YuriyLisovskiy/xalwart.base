@@ -3,10 +3,9 @@
  *
  * Copyright (c) 2019, 2021 Yuriy Lisovskiy
  *
- * Purpose:
- * 	Template container based on `collections::Dict` with additional
- * 	methods (extended `collections::Dict`). Main difference is that
- * 	MultiValueDict can contain multiple values in one key.
+ * Template container based on `collections::Dict` with additional
+ * methods (extended `collections::Dict`). Main difference is that
+ * `MultiValueDict` can contain multiple values in one key.
  */
 
 #pragma once
@@ -20,33 +19,33 @@
 
 __COLLECTIONS_BEGIN__
 
-template <typename _Key, typename _Val>
-class MultiValueDict : public Dict<_Key, std::vector<_Val>>
+template <typename KeyT, typename ValT>
+class MultiValueDict : public Dict<KeyT, std::vector<ValT>>
 {
 public:
 
 	// Constructs empty multi-value dictionary.
-	MultiValueDict() : Dict<_Key, std::vector<_Val>>()
+	MultiValueDict() : Dict<KeyT, std::vector<ValT>>()
 	{
 	}
 
 	// Constructs `MultiValueDict` instance from `std::map`.
-	explicit MultiValueDict(const std::map<_Key, std::vector<_Val>>& src_map)
-		: Dict<_Key, std::vector<_Val>>(src_map)
+	explicit MultiValueDict(const std::map<KeyT, std::vector<ValT>>& src_map)
+		: Dict<KeyT, std::vector<ValT>>(src_map)
 	{
 	}
 
-	// Returns first value from vector by key if it exists, otherwise returns _default.
+	// Returns first value from vector by key if it exists, `_default` otherwise.
 	//
 	// `key`: dict key which holds `std::vector` of values.
 	// `_default`: a default value to be returned if key does not exist.
 	//
 	// Returns first value of `std::vector` by given key.
-	inline _Val get(_Key key, _Val _default = _Val())
+	inline ValT get(KeyT key, ValT _default = ValT())
 	{
 		if (this->contains(key))
 		{
-			std::vector<_Val> vec = this->_map[key];
+			std::vector<ValT> vec = this->_map[key];
 			if (vec.size() > 0)
 			{
 				return vec.at(vec.size() - 1);
@@ -56,13 +55,13 @@ public:
 		return _default;
 	}
 
-	// Returns vector of values by key if it exists, otherwise returns `_default` vector.
+	// Returns vector of values by key if it exists, `_default` vector otherwise.
 	//
 	// `key`: dict key which holds std::vector of values.
 	// `_default`: a default vector of values to be returned if key does not exist.
 	//
 	// Returns `std::vector` of values by given key.
-	inline std::vector<_Val> get(_Key key, std::vector<_Val> _default) const override
+	inline std::vector<ValT> get(KeyT key, std::vector<ValT> _default) const override
 	{
 		if (this->contains(key))
 		{
@@ -76,16 +75,16 @@ public:
 	//
 	// `key`: new key or existing key.
 	// `value`: new value to construct `std::vector`.
-	inline void set(_Key key, _Val value)
+	inline void set(KeyT key, ValT value)
 	{
-		this->_map[key] = std::vector<_Val>{value};
+		this->_map[key] = std::vector<ValT>{value};
 	}
 
 	// Sets new vector of values by given key.
 	//
 	// `key`: new key or existing key.
 	// `value`: new `std::vector`.
-	inline void set(_Key key, std::vector<_Val> value) override
+	inline void set(KeyT key, std::vector<ValT> value) override
 	{
 		this->_map[key] = value;
 	}
@@ -95,7 +94,7 @@ public:
 	//
 	// `key`: new key or existing key.
 	// `value`: new value to append to `std::vector`.
-	inline void append(_Key key, _Val val)
+	inline void append(KeyT key, ValT val)
 	{
 		if (this->contains(key))
 		{
@@ -112,7 +111,7 @@ public:
 	//
 	// `key`: new key or existing key.
 	// `value`: new `std::vector` of values to append to `std::vector`.
-	inline void append(_Key key, std::vector<_Val> vec)
+	inline void append(KeyT key, std::vector<ValT> vec)
 	{
 		if (this->contains(key))
 		{

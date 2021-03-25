@@ -241,11 +241,11 @@ size_t count(const std::string& src, char ch)
 }
 
 std::string cut_edges(
-	const std::string& s, size_t left_n, size_t right_n, bool trim_whitespace
+	const std::string& src, size_t left_n, size_t right_n, bool trim_whitespace
 )
 {
-	std::string copy = s;
-	if (s.size() >= left_n + right_n)
+	std::string copy = src;
+	if (src.size() >= left_n + right_n)
 	{
 		if (left_n)
 		{

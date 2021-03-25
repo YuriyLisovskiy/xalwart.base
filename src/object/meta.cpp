@@ -7,8 +7,8 @@
 #include "./meta.h"
 
 // Core libraries.
-#include "../string_utils.h"
 #include "./object.h"
+#include "../string_utils.h"
 
 
 __OBJ_META_BEGIN__

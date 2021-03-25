@@ -3,7 +3,7 @@
  *
  * Copyright (c) 2021 Yuriy Lisovskiy
  *
- * Purpose: class for lazy initialization.
+ * Lazy initialization.
  */
 
 #pragma once
@@ -21,13 +21,25 @@ template <typename T, typename ...Args>
 class Lazy final
 {
 private:
+
+	// Holds a value to be lazy initialized.
 	T _value{};
+
+	// Indicates whether value is already initialized
+	// or not.
 	bool _loaded = false;
+
+	// Lazy function for value initialization.
 	std::function<T(Args...)> _initializer = nullptr;
 
 public:
 	Lazy() = default;
 
+	// Constructs initializer.
+	//
+	// `lambda`: initializer of value.
+	//
+	// Throws `std::runtime_error` if lambda is null.
 	inline Lazy(std::function<T(Args...)> lambda) : _initializer(std::move(lambda))
 	{
 		if (!this->_initializer)
@@ -38,6 +50,8 @@ public:
 		}
 	}
 
+	// Initializes value if it was not done yet and
+	// returns an address to initialized value.
 	inline T& value(Args&& ...args)
 	{
 		if (!this->_loaded && this->_initializer)
@@ -51,6 +65,6 @@ public:
 };
 
 template <typename LazyT, typename T>
-concept LazyType = std::is_same_v<LazyT, Lazy<T>>;
+concept lazy_type = std::is_same_v<LazyT, Lazy<T>>;
 
 __MAIN_NAMESPACE_END__

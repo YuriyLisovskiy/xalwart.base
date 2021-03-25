@@ -3,9 +3,7 @@
  *
  * Copyright (c) 2019, 2021 Yuriy Lisovskiy
  *
- * Purpose:
- * 	Template container based on `std::map` with additional
- * 	methods (extended `std::map`).
+ * Template container based on `std::map` with additional methods.
  */
 
 #pragma once
@@ -20,36 +18,36 @@
 
 __COLLECTIONS_BEGIN__
 
-template <typename _Key, typename _Val>
+template <typename KeyT, typename ValT>
 class Dict
 {
 protected:
 	// An actual container.
-	std::map<_Key, _Val> _map;
+	std::map<KeyT, ValT> _map;
 
 public:
-	typedef typename std::map<_Key, _Val>::iterator iterator;
-	typedef typename std::map<_Key, _Val>::reverse_iterator reverse_iterator;
+	typedef typename std::map<KeyT, ValT>::iterator iterator;
+	typedef typename std::map<KeyT, ValT>::reverse_iterator reverse_iterator;
 
-	typedef typename std::map<_Key, _Val>::const_iterator const_iterator;
-	typedef typename std::map<_Key, _Val>::const_reverse_iterator const_reverse_iterator;
+	typedef typename std::map<KeyT, ValT>::const_iterator const_iterator;
+	typedef typename std::map<KeyT, ValT>::const_reverse_iterator const_reverse_iterator;
 
 	// Constructs empty dictionary.
 	Dict() = default;
 
-	// Constructs Dict instance from `std::map`.
-	explicit Dict(const std::map<_Key, _Val>& src_map)
+	// Constructs `Dict` instance from `std::map`.
+	explicit Dict(const std::map<KeyT, ValT>& src_map)
 	{
 		this->_map = src_map;
 	}
 
-	// Returns value by key if it exists, otherwise returns _default.
+	// Returns value by key if it exists, otherwise returns `_default`.
 	//
 	// `key`: dict key which holds some value.
 	// `_default`: a default value to be returned if key does not exist.
 	//
 	// Returns value by given key.
-	virtual inline _Val get(_Key key, _Val _default = _Val()) const
+	virtual inline ValT get(KeyT key, ValT _default = ValT()) const
 	{
 		if (this->contains(key))
 		{
@@ -63,15 +61,15 @@ public:
 	//
 	// `key`: new key or existing key.
 	// `value`: new value.
-	virtual inline void set(_Key key, _Val value)
+	virtual inline void set(KeyT key, ValT value)
 	{
 		this->_map[key] = value;
 	}
 
-	// Removes value from dict by it's key.
+	// Removes value from dictionary by it's key.
 	//
 	// `key`: key to be removed.
-	virtual inline void remove(_Key key)
+	virtual inline void remove(KeyT key)
 	{
 		if (this->contains(key))
 		{
@@ -95,24 +93,24 @@ public:
 	//
 	// `key`: key to check.
 	//
-	// Returns true if value exists, otherwise returns false.
-	virtual inline bool contains(_Key key) const
+	// Returns `true` if value exists, `false` otherwise.
+	virtual inline bool contains(KeyT key) const
 	{
 		return this->_map.find(key) != this->_map.end();
 	}
 
 	// Checks if dictionary is empty.
 	//
-	// Returns true if dict is empty, otherwise returns false.
+	// Returns `true` if dict is empty, `false` otherwise.
 	bool inline is_empty() const
 	{
 		return this->_map.empty();
 	}
 
 	// Returns all keys which dictionary contains as `std::vector`.
-	virtual inline std::vector<_Key> keys() const
+	virtual inline std::vector<KeyT> keys() const
 	{
-		std::vector<_Key> keys;
+		std::vector<KeyT> keys;
 		for (auto it = this->begin(); it != this->end(); it++)
 		{
 			keys.push_back(it->first);
@@ -169,7 +167,8 @@ public:
 		return this->_map.rend();
 	}
 
-	inline _Val& operator[] (const _Key& key)
+	// Returns an address to value by key.
+	inline ValT& operator[] (const KeyT& key)
 	{
 		return this->_map[key];
 	}

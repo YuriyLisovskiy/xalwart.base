@@ -1,9 +1,9 @@
 /**
  * regex.h
  *
- * Copyright (c) 2019-2020 Yuriy Lisovskiy
+ * Copyright (c) 2019-2021 Yuriy Lisovskiy
  *
- * Purpose: C++ regular expression's wrapper and utilities.
+ * C++ regular expression's wrapper and utilities.
  * TODO: add docs in comments.
  * TODO: refactor.
  */

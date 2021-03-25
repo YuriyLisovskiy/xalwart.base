@@ -3,7 +3,7 @@
  *
  * Copyright (c) 2021 Yuriy Lisovskiy
  *
- * Purpose: system helpers and framework definitions.
+ * System helpers and framework definitions.
  */
 
 #pragma once

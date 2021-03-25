@@ -3,7 +3,7 @@
  *
  * Copyright (c) 2019-2021 Yuriy Lisovskiy
  *
- * Purpose: utilities for working with path.
+ * Utilities for working with path.
  */
 
 #pragma once
@@ -37,30 +37,30 @@ extern void _split_text(
 // Split a path in root and extension.
 // The extension is everything starting at the last dot in the last
 // pathname component; the root is everything before that.
-// It is always true that root + ext == p.
+// It is always true that `root + ext == p`.
 inline void split_text(const std::string& full_path, std::string& root_out, std::string& ext_out)
 {
 	_split_text(full_path, '/', '\0', '.', root_out, ext_out);
 }
 
-// Returns true if path exists, otherwise returns false.
-//
 // `path`: path to check.
+//
+// Returns `true` if path exists, `false` otherwise.
 extern bool exists(const std::string& path);
 
-// Returns base directory name from given path.
-//
 // `path`: path to analyze.
+//
+// Returns base directory name from given path.
 extern std::string dirname(const std::string& path);
 
-// Returns file name from given path.
-//
 // `path`: path to analyze.
+//
+// Returns file name from given path.
 extern std::string basename(const std::string& path);
 
-// Returns file size in bytes.
-//
 // `path`: path to access.
+//
+// Returns file size in bytes.
 extern size_t get_size(const std::string& path);
 
 // Joins two strings to single path.
@@ -80,6 +80,8 @@ extern std::string cwd();
 // Checks if path is absolute or not.
 //
 // `p`: path to check.
+//
+// Returns `true` if path is absolute, `false` otherwise.
 extern bool is_absolute(const std::string& p);
 
 __PATH_END__

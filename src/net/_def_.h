@@ -3,7 +3,7 @@
  *
  * Copyright (c) 2021 Yuriy Lisovskiy
  *
- * Purpose: net module's definitions.
+ * Definitions of `net` module.
  */
 
 #pragma once

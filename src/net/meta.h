@@ -3,7 +3,7 @@
  *
  * Copyright (c) 2019-2021 Yuriy Lisovskiy
  *
- * Purpose: meta parameters of http request.
+ * Meta parameters of http request.
  */
 
 #pragma once

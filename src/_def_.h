@@ -3,7 +3,7 @@
  *
  * Copyright (c) 2019-2021 Yuriy Lisovskiy
  *
- * Purpose: core module's definitions.
+ * Definitions of `core` module.
  */
 
 #pragma once
@@ -31,10 +31,6 @@ typedef unsigned int uint;
 #define __PATH_BEGIN__ __MAIN_NAMESPACE_BEGIN__ namespace path {
 #define __PATH_END__ } __MAIN_NAMESPACE_END__
 
-// xw::path::internal
-#define __PATH_INTERNAL_BEGIN__ __PATH_BEGIN__ namespace internal {
-#define __PATH_INTERNAL_END__ } __PATH_END__
-
 // xw::dt
 #define __DATETIME_BEGIN__ __MAIN_NAMESPACE_BEGIN__ namespace dt {
 #define __DATETIME_END__ } __MAIN_NAMESPACE_END__
@@ -59,17 +55,9 @@ typedef unsigned int uint;
 #define __STR_BEGIN__ __MAIN_NAMESPACE_BEGIN__ namespace str {
 #define __STR_END__ } __MAIN_NAMESPACE_END__
 
-// xw::str::internal
-#define __STR_INTERNAL_BEGIN__ __STR_BEGIN__ namespace internal {
-#define __STR_INTERNAL_END__ } __STR_END__
-
 // xw::utility
 #define __UTILITY_BEGIN__ __MAIN_NAMESPACE_BEGIN__ namespace utility {
 #define __UTILITY_END__ } __MAIN_NAMESPACE_END__
-
-// xw::utility::internal
-#define __UTILITY_INTERNAL_BEGIN__ __UTILITY_BEGIN__ namespace internal {
-#define __UTILITY_INTERNAL_END__ } __UTILITY_END__
 
 // xw::sys
 #define __SYS_BEGIN__ __MAIN_NAMESPACE_BEGIN__ namespace sys {
@@ -98,7 +86,7 @@ protected:\
 public:\
 	explicit name(\
 		const char* message = default_message,\
-		int line = 0, const char* function = "", const char* file = ""\
+		int line=0, const char* function="", const char* file=""\
 	)\
 		: name(message, line, function, file, #name)\
 	{\
@@ -106,7 +94,7 @@ public:\
 \
 	explicit name(\
 		const std::string& message = default_message,\
-		int line = 0, const char* function = "", const char* file = ""\
+		int line=0, const char* function="", const char* file=""\
 	)\
 		: name(message.c_str(), line, function, file)\
 	{\

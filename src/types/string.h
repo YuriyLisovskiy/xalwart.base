@@ -3,7 +3,7 @@
  *
  * Copyright (c) 2021 Yuriy Lisovskiy
  *
- * Purpose: `std::string` wrapper for rendering it in templates.
+ * Wrapper for `std::string` type for rendering it in templates.
  */
 
 #pragma once
@@ -45,16 +45,19 @@ public:
 	[[nodiscard]]
 	short __cmp__(const Object* other) const override;
 
+	// Returns `true` if internal string is not empty, `false` otherwise.
 	inline explicit operator bool () const override
 	{
 		return !this->value.empty();
 	}
 
+	// Returns `true` if internal string is empty, `false` otherwise.
 	inline bool operator! () const override
 	{
 		return this->value.empty();
 	}
 
+	// Returns an address to internal string.
 	inline std::string& operator* ()
 	{
 		return this->value;
