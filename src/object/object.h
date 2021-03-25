@@ -22,6 +22,7 @@
 
 __OBJ_BEGIN__
 
+// TESTME: Object
 class Object
 {
 public:
@@ -92,9 +93,15 @@ public:
 	// Returns 0 if objects are equal, -1 if 'this' is less
 	// than 'other' otherwise returns 1.
 	//
-	// Must be overwritten.
+	// Throws core::NotImplementedException by default.
 	[[nodiscard]]
-	virtual short __cmp__(const Object* other) const = 0;
+	virtual inline short __cmp__(const Object* other) const
+	{
+		throw core::NotImplementedException(
+			"Object of type '" + this->__type__().name() + "' does not support comparison",
+			_ERROR_DETAILS_
+		);
+	}
 
 	// Returns boolean representation of the object.
 	// Used in logical comparisons.

@@ -25,6 +25,7 @@ __OBJ_END__
 
 __OBJ_META_BEGIN__
 
+// TESTME: Type
 class Type final
 {
 private:
@@ -64,6 +65,7 @@ public:
 	}
 };
 
+// TESTME: std::string type_name()
 // Retrieves a full name of any type including namespace.
 template<typename T>
 inline std::string type_name()

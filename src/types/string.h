@@ -17,6 +17,8 @@
 
 __TYPES_BEGIN__
 
+// TESTME: String
+// TODO: docs
 class String final : public obj::Object
 {
 protected:

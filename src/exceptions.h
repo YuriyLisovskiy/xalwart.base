@@ -10,22 +10,18 @@
  *	- ArgumentError
  *	- BadSignature
  *	- CommandError
- *	- DictError
  *	- EncodingError
  *	- FileError
  *	- ImproperlyConfigured
  *	- InterruptException
  *	- ParseError
  *	- RuntimeError
+ *	- MultiPartParserError
  *	- NotImplementedException
  *	- NullPointerException
  *	- SocketError
  *	- TypeError
  *	- ValueError
- *
- * DictError-based exceptions:
- *	- MultiPartParserError
- *	- MultiValueDictError
 */
 
 #pragma once
@@ -117,7 +113,6 @@ DEF_EXCEPTION_WITH_BASE(AttributeError, BaseException, "attribute error");
 DEF_EXCEPTION_WITH_BASE(ArgumentError, BaseException, "argument error");
 DEF_EXCEPTION_WITH_BASE(BadSignature, BaseException, "bad signature error");
 DEF_EXCEPTION_WITH_BASE(CommandError, BaseException, "command error");
-DEF_EXCEPTION_WITH_BASE(DictError, BaseException, "dict error");
 
 // Redirect to scheme not in allowed list.
 DEF_EXCEPTION_WITH_BASE(EncodingError, BaseException, "encoding error");
@@ -161,7 +156,6 @@ public:
 DEF_EXCEPTION_WITH_BASE(ParseError, BaseException, "parse error");
 DEF_EXCEPTION_WITH_BASE(RuntimeError, BaseException, "runtime error");
 DEF_EXCEPTION_WITH_BASE(MultiPartParserError, ParseError, "multipart parser error");
-DEF_EXCEPTION_WITH_BASE(MultiValueDictError, DictError, "multi-value dict error");
 DEF_EXCEPTION_WITH_BASE(NotImplementedException, BaseException, "not implemented");
 DEF_EXCEPTION_WITH_BASE(NullPointerException, BaseException, "null pointer exception");
 

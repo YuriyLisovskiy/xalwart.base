@@ -22,6 +22,7 @@ const auto SMART_SPLIT_REGEX = re::IterRegex(
 	std::regex_constants::optimize
 );
 
+// TESTME: smart_split
 // Splits a string by spaces, leaving quoted phrases together.
 // Supports both single and double quotes, and supports escaping quotes with
 // backslashes. In the output, strings will keep their initial and trailing

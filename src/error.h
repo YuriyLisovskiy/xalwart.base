@@ -38,13 +38,14 @@ enum error_type
 	DisallowedRedirect = 10
 };
 
+// TESTME: to_string
 // Returns string representation of error type.
 // If error type is not known, returns "Unknown".
 //
 // `et`: error type object to convert.
 extern std::string to_string(error_type et);
 
-// Error representation.
+// TESTME: Error
 struct Error
 {
 	// Error type.
@@ -106,12 +107,14 @@ struct Error
 
 __CORE_END__
 
+// TESTME: operator<< for error_type
 // Writes `error_type` object to stream.
 inline std::ostream& operator<<(std::ostream& os, const xw::core::error_type& type)
 {
 	return os << to_string(type);
 }
 
+// TESTME: operator<< for Error
 // Formats and writes `Error` object to stream.
 inline std::ostream& operator<<(std::ostream& os, const xw::core::Error& err)
 {

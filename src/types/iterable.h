@@ -20,6 +20,9 @@
 
 
 // TODO: improve functionality.
+// TODO: docs
+// TESTME: iterables.
+
 __TYPES_BEGIN__
 
 class Iterable

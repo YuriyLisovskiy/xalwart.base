@@ -17,6 +17,7 @@
 
 __RE_BEGIN__
 
+// TESTME: IterRegex
 class IterRegex final
 {
 private:

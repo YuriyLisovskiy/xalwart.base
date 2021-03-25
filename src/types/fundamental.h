@@ -44,18 +44,23 @@ protected:
 	}
 
 public:
+
+	// Default constructor.
 	Fundamental() = default;
 
+	// Calls `Object` destructor.
 	inline ~Fundamental() override
 	{
 		obj::Object::~Object();
 	};
 
+	// Constructs `Fundamental` from value of basic type.
 	explicit Fundamental(InternalT val) : Fundamental()
 	{
 		this->internal_value = std::move(val);
 	}
 
+	// Copy constructor.
 	Fundamental(const Fundamental& other)
 	{
 		if (this != &other)

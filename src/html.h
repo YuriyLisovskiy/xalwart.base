@@ -17,6 +17,7 @@
 
 __HTML_BEGIN__
 
+// TESTME: escape
 // Replace special characters "&", "<" and ">" to HTML-safe sequences.
 // If the optional flag quote is true (the default), the quotation mark
 // characters, both double quote (") and single quote (') characters are also

@@ -17,6 +17,7 @@
 
 __ENCODING_BEGIN__
 
+// TESTME: _escape_char
 // Converts character to percent-encoded character and writes it to stream.
 //
 // `safe`: string which contains chars that must not be converted. If char 'c'
@@ -30,9 +31,11 @@ __ENCODING_BEGIN__
 // `safe`: characters which should be ignored.
 extern void _escape_char(std::ostringstream& stream, char c, const std::string& safe="");
 
+// TESTME: encode_url
 // Encodes url using percent-encoding.
 extern std::string encode_url(const std::string& url);
 
+// TESTME: quote
 // Encodes string to hex.
 //
 // `s`: input string.
@@ -53,6 +56,7 @@ enum Mode
 	REPLACE // replace offending symbols by question mark ('?').
 };
 
+// TESTME: encode
 // Encode string using given encoding and mode.
 //
 // `s`: string to encode.
@@ -62,6 +66,7 @@ enum Mode
 // Returns encoded copy input string.
 extern std::string encode(const std::string& s, encoding enc, Mode mode=Mode::STRICT);
 
+// TESTME: encode_ascii
 // Encodes string to ASCII string.
 //
 // `mode`: target mode.
@@ -69,6 +74,7 @@ extern std::string encode(const std::string& s, encoding enc, Mode mode=Mode::ST
 // Returns encoded copy input string.
 extern std::string encode_ascii(const std::string& s, Mode mode);
 
+// TESTME: encode_iso_8859_1
 // latin-1 encoding.
 //
 // `mode`: target mode.
@@ -76,6 +82,7 @@ extern std::string encode_ascii(const std::string& s, Mode mode);
 // Returns encoded copy input string.
 extern std::string encode_iso_8859_1(const std::string& s, Mode mode);
 
+// TESTME: encode_utf_8
 // Encodes string to UTF-8 string.
 //
 // `mode`: target mode.
