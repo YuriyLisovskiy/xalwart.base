@@ -1,5 +1,5 @@
 /**
- * tests/exceptions/main.cpp
+ * exceptions/main.cpp
  *
  * Copyright (c) 2019-2020 Yuriy Lisovskiy
  */

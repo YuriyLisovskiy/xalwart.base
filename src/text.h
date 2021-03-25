@@ -12,12 +12,12 @@
 #include "./_def_.h"
 
 // Core libraries.
-#include "./regex.h"
+#include "./re/iter_regex.h"
 
 
 __TEXT_BEGIN__
 
-const auto SMART_SPLIT_REGEX = rgx::IterRegex(
+const auto SMART_SPLIT_REGEX = re::IterRegex(
 	R"((?:[^\s'"]*(?:(?:"(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*')[^\s'"]*)+)|\S+)",
 	std::regex_constants::optimize
 );

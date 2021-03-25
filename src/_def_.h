@@ -43,10 +43,6 @@ typedef unsigned int uint;
 #define __ENCODING_BEGIN__ __MAIN_NAMESPACE_BEGIN__ namespace encoding {
 #define __ENCODING_END__ } __MAIN_NAMESPACE_END__
 
-// xw::rgx
-#define __RGX_BEGIN__ __MAIN_NAMESPACE_BEGIN__ namespace rgx {
-#define __RGX_END__ } __MAIN_NAMESPACE_END__
-
 // xw::text
 #define __TEXT_BEGIN__ __MAIN_NAMESPACE_BEGIN__ namespace text {
 #define __TEXT_END__ } __MAIN_NAMESPACE_END__

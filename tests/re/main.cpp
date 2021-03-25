@@ -1,7 +1,7 @@
 /**
- * types/main.cpp
+ * re/main.cpp
  *
- * Copyright (c) 2020 Yuriy Lisovskiy
+ * Copyright (c) 2021 Yuriy Lisovskiy
  */
 
 #include <gtest/gtest.h>

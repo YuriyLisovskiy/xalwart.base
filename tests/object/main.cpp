@@ -1,5 +1,5 @@
 /**
- * tests/object/main.cpp
+ * object/main.cpp
  *
  * Copyright (c) 2020 Yuriy Lisovskiy
  */

@@ -1,5 +1,5 @@
 /**
- * tests/collections/main.cpp
+ * collections/main.cpp
  *
  * Copyright (c) 2019 Yuriy Lisovskiy
  */
