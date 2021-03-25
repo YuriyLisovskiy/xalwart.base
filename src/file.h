@@ -26,11 +26,22 @@
 
 __CORE_BEGIN__
 
-// TODO: optimize File functionality.
-// TODO: refactor.
-class File
+class File final
 {
-protected:
+public:
+	enum open_mode
+	{
+		r,   // read-only
+		rb,  // read in binary mode (read-only)
+		rw,  // read and write
+		rwb, // read and write in binary mode
+		w,   // write-only
+		wb,  // write in binary mode (write-only)
+		a,   // append (write-only)
+		arw  // append (read and write)
+	};
+
+private:
 	enum file_mode_enum
 	{
 		m_read_only, m_write_only, m_both
@@ -40,66 +51,115 @@ protected:
 	std::fstream _file;
 	std::string _name;
 	file_mode_enum _file_mode;
-	std::string _str_mode;
 	std::ios_base::openmode _mode;
-	std::vector<unsigned char> _data;
-
-	void init_mode(const std::string& mode);
-
-	void seek(size_t n, std::ios_base::seekdir seek_dir);
-
-	void seek(size_t n);
-
-	size_t tell();
 
 public:
-	explicit File(const std::string& name="", const std::string& mode="r");
 
-	File(
-		const std::vector<unsigned char>& data,
-		const std::string& name,
-		const std::string& mode="wb"
-	);
+	// Initializes file name and mode.
+	explicit File(const std::string& name="", open_mode mode=open_mode::r);
 
-	File(const File& other);
+	// Deleted constructor.
+	File(const File& other) = delete;
 
-	File& operator=(const File& other);
+	// Deleted `operator=`.
+	File& operator=(const File& other) = delete;
 
+	// Move-constructor.
+	File(File&& other) noexcept;
+
+	// Tries to open a file.
+	//
+	// Throws `core::FileError` if file name is not empty.
 	void open();
 
 	// Saves file without closing.
+	//
+	// Throws `core::FileError` if file is not opened.
 	void save();
 
-	// Opens file if it is not opened, writes data
-	//  if byte vector is not empty and closes file.
-	void save_file();
-
+	// Closes the file without saving.
+	//
+	// Throws `core::FileError` if file is not opened.
 	void close();
 
-	bool is_open();
+	// Returns `true` if file is open, `false` otherwise.
+	inline bool is_open() const
+	{
+		return this->_file.is_open();
+	}
 
-	std::vector<unsigned char> read(size_t n = -1);
+	// Reads `n` bytes from file.
+	//
+	// Throws `core::FileError` if file is not opened.
+	std::vector<unsigned char> read(size_t n=-1);
 
-	std::string read_str(size_t n = -1);
+	// Reads `n` characters from file.
+	//
+	// Throws `core::FileError` if file is not opened.
+	std::string read_str(size_t n=-1);
 
+	// Writes a vector of bytes to the file.
+	//
+	// Throws `core::FileError` if file is not opened.
 	void write(std::vector<unsigned char> bytes);
 
-	void write_str(const std::string& str);
+	// Writes string to a file.
+	//
+	// Throws `core::FileError` if file is not opened.
+	inline void write(const std::string& str)
+	{
+		this->write(std::vector<unsigned char>(str.begin(), str.end()));
+	}
 
-	void flush();
+	// Synchronizes the associated stream buffer with its
+	// controlled output sequence.
+	//
+	// Throws `core::FileError` if file is not opened.
+	File& flush();
 
+	// Returns the size of file.
+	//
+	// Throws `core::FileError` if file is not opened.
 	size_t size();
 
-	std::vector<std::vector<unsigned char>> chunks(size_t chunk_size = -1);
+	// This function first clears eofbit. It does not count the
+	// number of characters extracted, if any, and therefore
+	// does not affect the next call to gcount().
+	//
+	// Uses `seekg(n, seekdir)` for read-only files and
+	// `seekp(n, seekdir)` otherwise.
+	void seek(size_t n, std::ios_base::seekdir seek_dir);
 
-	bool multiple_chunks(size_t chunk_size = -1);
+	// This function first clears eofbit. It does not count the
+	// number of characters extracted, if any, and therefore
+	// does not affect the next call to gcount().
+	//
+	// Uses `seekg(n)` for read-only files and `seekp(n)` otherwise.
+	void seek(size_t n);
 
+	// Returns a file position object.
+	size_t tell();
+
+	// Divides file into chunks of given size, read them
+	// and returns as vector of string vectors.
+	//
+	// Throws `core::FileError` if file is not opened.
+	std::vector<std::vector<unsigned char>> chunks(size_t chunk_size=-1);
+
+	// Checks if file can be divided into chunks of
+	// given size.
+	//
+	// Throws `core::FileError` if file is not opened.
+	bool multiple_chunks(size_t chunk_size=-1);
+
+	// Returns file path.
 	inline std::string path() const
 	{
 		return this->_name;
 	}
-
-	static struct stat file_stat(const std::string& file_path);
 };
+
+// Returns file info as struct `stat`.
+struct stat file_stat(const std::string& file_path);
 
 __CORE_END__

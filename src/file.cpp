@@ -16,155 +16,66 @@
 
 __CORE_BEGIN__
 
-void File::init_mode(const std::string& mode)
-{
-	if (mode == "r")
-	{
-		this->_mode = std::ios::in;
-		this->_file_mode = file_mode_enum::m_read_only;
-	}
-	else if (mode == "rb")
-	{
-		this->_file_mode = file_mode_enum::m_read_only;
-		this->_mode = std::ios::in | std::ios::binary;
-	}
-	else if (mode == "r+" || mode == "w+")
-	{
-		this->_file_mode = file_mode_enum::m_both;
-		this->_mode = std::ios::out | std::ios::in;
-	}
-	else if (mode == "rb+" || mode == "wb+")
-	{
-		this->_file_mode = file_mode_enum::m_both;
-		this->_mode = std::ios::out | std::ios::in | std::ios::binary;
-	}
-	else if (mode == "w")
-	{
-		this->_file_mode = file_mode_enum::m_write_only;
-		this->_mode = std::ios::out;
-	}
-	else if (mode == "wb")
-	{
-		this->_file_mode = file_mode_enum::m_write_only;
-		this->_mode = std::ios::out | std::ios::binary;
-	}
-	else if (mode == "a")
-	{
-		this->_file_mode = file_mode_enum::m_write_only;
-		this->_mode = std::ios::out | std::ios::app;
-	}
-	else if (mode == "a+")
-	{
-		this->_file_mode = file_mode_enum::m_write_only;
-		this->_mode = std::ios::out | std::ios::in | std::ios::app;
-	}
-	else
-	{
-		throw FileError("invalid file mode: " + this->_name, _ERROR_DETAILS_);
-	}
-}
-
-void File::seek(size_t n, std::ios_base::seekdir seek_dir)
-{
-	if (this->_name.empty())
-	{
-		throw FileError("unable to seek: path is empty", _ERROR_DETAILS_);
-	}
-
-	if (this->_file_mode == file_mode_enum::m_read_only)
-	{
-		this->_file.seekg(n, seek_dir);
-	}
-	else
-	{
-		this->_file.seekp(n, seek_dir);
-	}
-}
-
-void File::seek(size_t n)
-{
-	if (this->_name.empty())
-	{
-		throw FileError("unable to seek: path is empty", _ERROR_DETAILS_);
-	}
-
-	if (this->_file_mode == file_mode_enum::m_read_only)
-	{
-		this->_file.seekg(n);
-	}
-	else
-	{
-		this->_file.seekp(n);
-	}
-}
-
-size_t File::tell()
-{
-	if (this->_name.empty())
-	{
-		throw FileError("unable to tell: path is empty", _ERROR_DETAILS_);
-	}
-
-	if (this->_file_mode == file_mode_enum::m_read_only)
-	{
-		return this->_file.tellg();
-	}
-	else
-	{
-		return this->_file.tellp();
-	}
-}
-
-// Public members
-File::File(const std::string& name, const std::string& mode)
+File::File(const std::string& name, open_mode mode)
 {
 	this->_default_chunk_size = 64 * std::pow(2, 10);
-	this->_file = std::fstream();
 	this->_name = name;
-	this->_str_mode = mode;
-	this->init_mode(mode);
+	switch (mode)
+	{
+		case open_mode::r:
+			this->_mode = std::ios::in;
+			this->_file_mode = file_mode_enum::m_read_only;
+			break;
+		case open_mode::rb:
+			this->_file_mode = file_mode_enum::m_read_only;
+			this->_mode = std::ios::in | std::ios::binary;
+			break;
+		case open_mode::rw:
+			this->_file_mode = file_mode_enum::m_both;
+			this->_mode = std::ios::out | std::ios::in;
+			break;
+		case open_mode::rwb:
+			this->_file_mode = file_mode_enum::m_both;
+			this->_mode = std::ios::out | std::ios::in | std::ios::binary;
+			break;
+		case open_mode::w:
+			this->_file_mode = file_mode_enum::m_write_only;
+			this->_mode = std::ios::out;
+			break;
+		case open_mode::wb:
+			this->_file_mode = file_mode_enum::m_write_only;
+			this->_mode = std::ios::out | std::ios::binary;
+			break;
+		case open_mode::a:
+			this->_file_mode = file_mode_enum::m_write_only;
+			this->_mode = std::ios::out | std::ios::app;
+			break;
+		case open_mode::arw:
+			this->_file_mode = file_mode_enum::m_both;
+			this->_mode = std::ios::out | std::ios::in | std::ios::app;
+			break;
+		default:
+			throw FileError("invalid file mode: " + this->_name, _ERROR_DETAILS_);
+	}
 }
 
-File::File(
-	const std::vector<unsigned char>& data, const std::string& name, const std::string& mode
-) : File(name, mode)
-{
-	this->_data = data;
-}
-
-File::File(const File& other)
+File::File(File&& other) noexcept
 {
 	if (this != &other)
 	{
 		this->_default_chunk_size = other._default_chunk_size;
-		this->_file = std::fstream();
-		this->_name = other._name;
-		this->_str_mode = other._str_mode;
-		this->_data = other._data;
-		this->init_mode(other._str_mode);
+		this->_name = std::move(other._name);
+		this->_file_mode = other._file_mode;
+		this->_mode = other._mode;
+		this->_file = std::move(other._file);
 	}
-}
-
-File& File::operator=(const File& other)
-{
-	if (this != &other)
-	{
-		this->_default_chunk_size = other._default_chunk_size;
-		this->_file = std::fstream();
-		this->_name = other._name;
-		this->_str_mode = other._str_mode;
-		this->_data = other._data;
-		this->init_mode(other._str_mode);
-	}
-
-	return *this;
 }
 
 void File::open()
 {
 	if (this->_name.empty())
 	{
-		throw FileError("unable to open file: path is empty", _ERROR_DETAILS_);
+		throw FileError("open: file path is empty", _ERROR_DETAILS_);
 	}
 
 	if (this->_file.is_open())
@@ -179,65 +90,34 @@ void File::open()
 
 void File::save()
 {
-	if (this->_name.empty())
+	if (!this->is_open())
 	{
-		throw FileError("unable to save file: path is empty", _ERROR_DETAILS_);
+		throw FileError("save: file is not opened: " + this->_name, _ERROR_DETAILS_);
 	}
 
 	this->_file.flush();
 }
 
-void File::save_file()
-{
-	if (this->_name.empty())
-	{
-		throw FileError("unable to save file: path is empty", _ERROR_DETAILS_);
-	}
-
-	if (this->_data.empty())
-	{
-		return;
-	}
-
-	this->open();
-	this->write(this->_data);
-	this->_data.clear();
-	this->close();
-}
-
 void File::close()
 {
-	if (this->_name.empty())
+	if (!this->is_open())
 	{
-		throw FileError("unable to close file: path is empty", _ERROR_DETAILS_);
+		throw FileError("close: file is not opened: " + this->_name, _ERROR_DETAILS_);
 	}
 
-	if (this->_file.is_open())
-	{
-		this->_file.close();
-	}
-}
-
-bool File::is_open()
-{
-	if (this->_name.empty())
-	{
-		throw FileError("unable to check if file is open: path is empty", _ERROR_DETAILS_);
-	}
-
-	return this->_file.is_open();
+	this->_file.close();
 }
 
 std::vector<unsigned char> File::read(size_t n)
 {
-	if (!this->_file.is_open())
+	if (!this->is_open())
 	{
-		throw FileError("file is not open: " + this->_name, _ERROR_DETAILS_);
+		throw FileError("read: file is not opened: " + this->_name, _ERROR_DETAILS_);
 	}
 
 	if (this->_file_mode == file_mode_enum::m_write_only)
 	{
-		throw FileError("file is open only for writing: " + this->_name, _ERROR_DETAILS_);
+		throw FileError("read: file is open only for writing: " + this->_name, _ERROR_DETAILS_);
 	}
 
 	size_t actual_size = this->size() - this->tell();
@@ -249,15 +129,8 @@ std::vector<unsigned char> File::read(size_t n)
 	std::vector<unsigned char> bytes;
 	if (n > 0)
 	{
-		char* buffer = new char[n];
-		this->_file.read(buffer, n);
-
-		for (size_t i = 0; i < n; i++)
-		{
-			bytes.push_back(buffer[i]);
-		}
-
-		delete[] buffer;
+		bytes.resize(n);
+		this->_file.read((char*) bytes.data(), n);
 	}
 
 	return bytes;
@@ -271,34 +144,35 @@ std::string File::read_str(size_t n)
 
 void File::write(std::vector<unsigned char> bytes)
 {
-	if (!this->_file.is_open())
+	if (!this->is_open())
 	{
-		throw FileError("file is not open: " + this->_name, _ERROR_DETAILS_);
+		throw FileError("write: file is not opened: " + this->_name, _ERROR_DETAILS_);
 	}
 
 	if (this->_file_mode == file_mode_enum::m_read_only)
 	{
-		throw FileError("file is open only for reading: " + this->_name, _ERROR_DETAILS_);
+		throw FileError("write: file is open only for reading: " + this->_name, _ERROR_DETAILS_);
 	}
 
 	this->_file.write((char*) bytes.data(), bytes.size());
 }
 
-void File::write_str(const std::string& str)
+File& File::flush()
 {
-	this->write(std::vector<unsigned char>(str.begin(), str.end()));
-}
+	if (!this->is_open())
+	{
+		throw FileError("flush: file is not opened: " + this->_name, _ERROR_DETAILS_);
+	}
 
-void File::flush()
-{
-	// TODO: call this->_file.flush()
+	this->_file.flush();
+	return *this;
 }
 
 size_t File::size()
 {
 	if (!this->is_open())
 	{
-		throw FileError("file is not open: " + this->_name, _ERROR_DETAILS_);
+		throw FileError("size: file is not opened: " + this->_name, _ERROR_DETAILS_);
 	}
 
 	size_t current_pos = this->tell();
@@ -308,11 +182,62 @@ size_t File::size()
 	return file_size;
 }
 
+void File::seek(size_t n, std::ios_base::seekdir seek_dir)
+{
+	if (!this->is_open())
+	{
+		throw FileError("seek: file is not opened: " + this->_name, _ERROR_DETAILS_);
+	}
+
+	if (this->_file_mode == file_mode_enum::m_read_only)
+	{
+		this->_file.seekg(n, seek_dir);
+	}
+	else
+	{
+		this->_file.seekp(n, seek_dir);
+	}
+}
+
+void File::seek(size_t n)
+{
+	if (!this->is_open())
+	{
+		throw FileError("seek: file is not opened: " + this->_name, _ERROR_DETAILS_);
+	}
+
+	if (this->_file_mode == file_mode_enum::m_read_only)
+	{
+		this->_file.seekg(n);
+	}
+	else
+	{
+		this->_file.seekp(n);
+	}
+}
+
+size_t File::tell()
+{
+	if (!this->is_open())
+	{
+		throw FileError("tell: file is not opened: " + this->_name, _ERROR_DETAILS_);
+	}
+
+	if (this->_file_mode == file_mode_enum::m_read_only)
+	{
+		return this->_file.tellg();
+	}
+	else
+	{
+		return this->_file.tellp();
+	}
+}
+
 std::vector<std::vector<unsigned char>> File::chunks(size_t chunk_size)
 {
-	if (this->_name.empty())
+	if (!this->is_open())
 	{
-		throw FileError("unable to read file chunks: path is empty", _ERROR_DETAILS_);
+		throw FileError("chunks: file is not opened: " + this->_name, _ERROR_DETAILS_);
 	}
 
 	if (chunk_size < 1)
@@ -338,9 +263,9 @@ std::vector<std::vector<unsigned char>> File::chunks(size_t chunk_size)
 
 bool File::multiple_chunks(size_t chunk_size)
 {
-	if (this->_name.empty())
+	if (!this->is_open())
 	{
-		throw FileError("unable to check multiple chunks: path is empty", _ERROR_DETAILS_);
+		throw FileError("multiple_chunks: file is not opened: " + this->_name, _ERROR_DETAILS_);
 	}
 
 	if (chunk_size < 1)
@@ -351,7 +276,7 @@ bool File::multiple_chunks(size_t chunk_size)
 	return this->size() > chunk_size;
 }
 
-struct stat File::file_stat(const std::string& file_path)
+struct stat file_stat(const std::string& file_path)
 {
 #if defined(_WIN32) || defined(_WIN64)
 	//	auto fp = str::replace(file_path, "/", "\\");

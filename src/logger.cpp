@@ -19,7 +19,7 @@ void FileStream::write(const std::string& text)
 {
 	if (this->_file->is_open())
 	{
-		this->_file->write_str(text);
+		this->_file->write(text);
 	}
 }
 

@@ -40,7 +40,7 @@ class ReadFileTestCase : public ::testing::Test
 {
 protected:
 	const std::string testReadFilePath = path::cwd() + "/TestReadFile.txt";
-	File fileToRead = File(this->testReadFilePath, "r");
+	File fileToRead = File(this->testReadFilePath);
 
 	void SetUp() override
 	{
@@ -94,7 +94,7 @@ TEST_F(ReadFileTestCase, TestReadString)
 
 TEST_F(ReadFileTestCase, TestReadBinaryMode)
 {
-	File f(this->testReadFilePath, "rb");
+	File f(this->testReadFilePath, File::rb);
 	f.open();
 
 	ASSERT_TRUE(f.is_open());
@@ -177,7 +177,7 @@ class WriteFileTestCase : public ::testing::Test
 {
 protected:
 	const std::string testFilePath = path::cwd() + "/TestWriteFile.txt";
-	File file = File(this->testFilePath, "w");
+	File file = File(this->testFilePath, File::w);
 
 	void SetUp() override
 	{
@@ -236,7 +236,7 @@ TEST_F(WriteFileTestCase, TestWriteMode)
 TEST_F(WriteFileTestCase, TestWriteString)
 {
 	std::string expected = "Hello, World";
-	this->file.write_str(expected);
+	this->file.write(expected);
 	this->file.save();
 
 	WriteFileTestCase::assertFile(this->testFilePath, strToBytes(expected), false);
@@ -244,7 +244,7 @@ TEST_F(WriteFileTestCase, TestWriteString)
 
 TEST_F(WriteFileTestCase, TestWriteBinaryMode)
 {
-	File f(this->testFilePath, "wb");
+	File f(this->testFilePath, File::wb);
 	f.open();
 
 	ASSERT_TRUE(f.is_open());
