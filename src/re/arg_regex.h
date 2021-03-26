@@ -21,7 +21,6 @@
 
 __RE_BEGIN__
 
-// TESTME: ArgRegex
 class ArgRegex final
 {
 private:

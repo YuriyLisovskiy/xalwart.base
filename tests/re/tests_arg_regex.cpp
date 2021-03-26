@@ -54,7 +54,18 @@ TEST_F(TestCase_ArgRegex, args_NotFound)
 	ASSERT_EQ(this->regex.args().size(), 0);
 }
 
-// TODO: test arg(...)
+TEST_F(TestCase_ArgRegex, arg_Existent)
+{
+	this->regex.search("accounts/1/picture/flower.jpeg");
+	ASSERT_EQ(this->regex.arg("id"), "1");
+	ASSERT_EQ(this->regex.arg("name"), "flower.jpeg");
+}
+
+TEST_F(TestCase_ArgRegex, arg_NonExistent)
+{
+	this->regex.search("accounts/1/picture/flower.jpeg");
+	ASSERT_EQ(this->regex.arg("age"), "");
+}
 
 TEST_F(TestCase_ArgRegex, parts)
 {
