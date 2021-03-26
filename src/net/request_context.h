@@ -21,6 +21,7 @@
 
 __NET_BEGIN__
 
+// TESTME: RequestContext
 struct RequestContext
 {
 	// Major part of http protocol version.

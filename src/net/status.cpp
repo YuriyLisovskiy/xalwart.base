@@ -16,6 +16,8 @@ collections::Dict<unsigned short int, std::pair<std::string, std::string>> HTTP_
 		{100, {"Continue", "Request received, please continue"}},
 		{101, {"Switching Protocols", "Switching to new protocol; obey Upgrade header"}},
 		{102, {"Processing", ""}},
+		{103, {"Early Hints", ""}},
+		{105, {"Name Not Resolved", ""}},
 
 		// Success
 		{200, std::pair("OK", "Request fulfilled, document follows")},
@@ -36,6 +38,7 @@ collections::Dict<unsigned short int, std::pair<std::string, std::string>> HTTP_
 		{303, std::pair("See Other", "Object moved -- see Method and URL list")},
 		{304, std::pair("Not Modified", "Document has not changed since given time")},
 		{305, std::pair("Use Proxy", "You must use proxy specified in Location to access this resource")},
+		{306, std::pair("(Unused)", "")},
 		{307, std::pair("Temporary Redirect", "Object moved temporarily -- see URI list")},
 		{308, std::pair("Permanent Redirect", "Object moved temporarily -- see URI list")},
 
@@ -53,18 +56,21 @@ collections::Dict<unsigned short int, std::pair<std::string, std::string>> HTTP_
 		{410, std::pair("Gone", "URI no longer exists and has been permanently removed")},
 		{411, std::pair("Length Required", "Client must specify Content-Length")},
 		{412, std::pair("Precondition Failed", "Precondition in headers is false")},
-		{413, std::pair("Request Entity Too Large", "Entity is too large")},
-		{414, std::pair("Request-URI Too Long", "URI is too long")},
+		{413, std::pair("Payload Too Large", "Entity is too large")},
+		{414, std::pair("URI Too Long", "URI is too long")},
 		{415, std::pair("Unsupported Media Type", "Entity body in unsupported format")},
-		{416, std::pair("Requested Range Not Satisfiable", "Cannot satisfy request range")},
+		{416, std::pair("Range Not Satisfiable", "Cannot satisfy request range")},
 		{417, std::pair("Expectation Failed", "Expect condition could not be satisfied")},
+		{421, std::pair("Misdirected Request", "")},
 		{422, std::pair("Unprocessable Entity", "")},
 		{423, std::pair("Locked", "")},
+		{425, std::pair("Too Early", "")},
 		{424, std::pair("Failed Dependency", "")},
 		{426, std::pair("Upgrade Required", "")},
 		{428, std::pair("Precondition Required", "The origin server requires the request to be conditional")},
 		{429, std::pair("Too Many Requests", "The user has sent too many requests in a given amount of time (\"rate limiting\")")},
 		{431, std::pair("Request Header Fields Too Large", "The server is unwilling to process the request because its header fields are too large")},
+		{451, std::pair("Unavailable For Legal Reasons", "")},
 
 		// Server error
 		{500, std::pair("Internal Server Error", "Server got itself in trouble")},
