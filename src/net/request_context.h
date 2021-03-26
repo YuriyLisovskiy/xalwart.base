@@ -10,7 +10,6 @@
 
 // C++ libraries.
 #include <functional>
-#include <string>
 
 // Module definitions.
 #include "./_def_.h"
@@ -21,7 +20,6 @@
 
 __NET_BEGIN__
 
-// TESTME: RequestContext
 struct RequestContext
 {
 	// Major part of http protocol version.
@@ -65,34 +63,44 @@ struct RequestContext
 
 	std::function<bool(const char* data, size_t n)> write;
 
+	// Checks if current protocol major and minor versions are equal to
+	// provided.
 	[[nodiscard]]
-	inline bool proto_v_eq(short major, short minor) const
+	inline bool proto_v_eq_to(short major, short minor) const
 	{
 		return this->major_v == major && this->minor_v == minor;
 	}
 
+	// Checks if current protocol major and minor versions are greater
+	// than or equal to provided.
 	[[nodiscard]]
 	inline bool proto_v_gte(short major, short minor) const
 	{
-		return this->major_v >= major && this->minor_v >= minor;
+		return this->proto_v_eq_to(major, minor) || this->proto_v_gt(major, minor);
 	}
 
+	// Checks if current protocol major and minor versions are less
+	// than or equal to provided.
 	[[nodiscard]]
 	inline bool proto_v_lte(short major, short minor) const
 	{
-		return this->major_v <= major && this->minor_v <= minor;
+		return this->proto_v_eq_to(major, minor) || this->proto_v_lt(major, minor);
 	}
 
+	// Checks if current protocol major and minor versions are greater
+	// than provided.
 	[[nodiscard]]
 	inline bool proto_v_gt(short major, short minor) const
 	{
-		return this->major_v > major && this->minor_v > minor;
+		return this->major_v > major || (!(major > this->major_v) && this->minor_v > minor);
 	}
 
+	// Checks if current protocol major and minor versions are less
+	// than provided.
 	[[nodiscard]]
 	inline bool proto_v_lt(short major, short minor) const
 	{
-		return this->major_v < major && this->minor_v < minor;
+		return this->major_v < major || (!(major < this->major_v) && this->minor_v < minor);
 	}
 };
 

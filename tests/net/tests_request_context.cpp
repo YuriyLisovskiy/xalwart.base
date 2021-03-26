@@ -23,21 +23,21 @@ protected:
 	}
 };
 
-TEST_F(TestCase_RequestContext, proto_v_eq_True)
+TEST_F(TestCase_RequestContext, proto_v_eq_to_True)
 {
-	ASSERT_TRUE(this->context.proto_v_eq(1, 2));
+	ASSERT_TRUE(this->context.proto_v_eq_to(1, 2));
 }
 
-TEST_F(TestCase_RequestContext, proto_v_eq_FalseGreater)
+TEST_F(TestCase_RequestContext, proto_v_eq_to_FalseGreater)
 {
-	ASSERT_FALSE(this->context.proto_v_eq(1, 3));
-	ASSERT_FALSE(this->context.proto_v_eq(2, 0));
+	ASSERT_FALSE(this->context.proto_v_eq_to(1, 3));
+	ASSERT_FALSE(this->context.proto_v_eq_to(2, 0));
 }
 
-TEST_F(TestCase_RequestContext, proto_v_eq_FalseLess)
+TEST_F(TestCase_RequestContext, proto_v_eq_to_FalseLess)
 {
-	ASSERT_FALSE(this->context.proto_v_eq(0, 9));
-	ASSERT_FALSE(this->context.proto_v_eq(1, 1));
+	ASSERT_FALSE(this->context.proto_v_eq_to(0, 9));
+	ASSERT_FALSE(this->context.proto_v_eq_to(1, 1));
 }
 
 TEST_F(TestCase_RequestContext, proto_v_gte_TrueEquals)
@@ -47,8 +47,8 @@ TEST_F(TestCase_RequestContext, proto_v_gte_TrueEquals)
 
 TEST_F(TestCase_RequestContext, proto_v_gte_TrueGreater)
 {
-	ASSERT_FALSE(this->context.proto_v_gte(1, 1));
-	ASSERT_FALSE(this->context.proto_v_gte(0, 9));
+	ASSERT_TRUE(this->context.proto_v_gte(1, 1));
+	ASSERT_TRUE(this->context.proto_v_gte(0, 9));
 }
 
 TEST_F(TestCase_RequestContext, proto_v_gte_FalseLess)
@@ -104,6 +104,6 @@ TEST_F(TestCase_RequestContext, proto_v_lt_FalseEquals)
 
 TEST_F(TestCase_RequestContext, proto_v_lt_FalseGreater)
 {
-	ASSERT_FALSE(this->context.proto_v_lt(1, 3));
-	ASSERT_FALSE(this->context.proto_v_lt(2, 0));
+	ASSERT_FALSE(this->context.proto_v_lt(0, 9));
+	ASSERT_FALSE(this->context.proto_v_lt(1, 1));
 }
