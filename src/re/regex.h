@@ -17,7 +17,6 @@
 
 __RE_BEGIN__
 
-// TESTME: Regex
 class Regex final
 {
 private:

@@ -9,6 +9,21 @@
 
 __RE_BEGIN__
 
+ArgRegex& ArgRegex::operator= (const ArgRegex& other)
+{
+	if (this != &other)
+	{
+		this->_matches = other._matches;
+		this->_orig = other._orig;
+		this->_rgx = other._rgx;
+		this->_pattern_parts = other._pattern_parts;
+		this->_keys = other._keys;
+		this->_groups = other._groups;
+	}
+
+	return *this;
+}
+
 bool ArgRegex::search(const std::string& s)
 {
 	auto is_found = std::regex_search(s, this->_matches, this->_rgx);
@@ -27,7 +42,7 @@ bool ArgRegex::search(const std::string& s)
 	return is_found;
 }
 
-std::string ArgRegex::group(const std::string& key, const std::string& default_val) const
+std::string ArgRegex::arg(const std::string& key, const std::string& default_val) const
 {
 	if (this->_groups.find(key) != this->_groups.end())
 	{
