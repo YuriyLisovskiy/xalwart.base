@@ -115,13 +115,13 @@ std::vector<std::string> split(const std::string& s, char delimiter, long n)
 		}
 	}
 
-	if (!current.empty())
-	{
-		result.push_back(current);
-	}
-	else if (i < size)
+	if (i < size)
 	{
 		result.push_back(s.substr(i));
+	}
+	else
+	{
+		result.push_back(current);
 	}
 
 	return result;
@@ -169,7 +169,6 @@ std::string ltrim(std::string s, const std::string& chars)
 	while (pos < n && chars.find(s[pos]) != std::string::npos)
 	{
 		pos++;
-//		s.erase(s.begin(), s.begin() + chars.size());
 	}
 
 	return s.substr(pos);
@@ -181,7 +180,6 @@ std::string rtrim(std::string s, const std::string& chars)
 	while (pos >= 0 && chars.find(s[pos]) != std::string::npos)
 	{
 		pos--;
-//		s.erase(s.begin(), s.begin() + chars.size());
 	}
 
 	return s.substr(0, pos + 1);
@@ -189,7 +187,20 @@ std::string rtrim(std::string s, const std::string& chars)
 
 std::string trim(std::string s, const std::string& chars)
 {
-	return rtrim(std::move(ltrim(std::move(s), chars)), chars);
+	size_t l_pos = 0;
+	size_t n = s.size();
+	while (l_pos < n && chars.find(s[l_pos]) != std::string::npos)
+	{
+		l_pos++;
+	}
+
+	size_t r_pos = n - 1;
+	while (r_pos >= 0 && chars.find(s[r_pos]) != std::string::npos)
+	{
+		r_pos--;
+	}
+
+	return s.substr(l_pos, r_pos - l_pos + 1);
 }
 
 size_t count(const std::string& src, char ch)

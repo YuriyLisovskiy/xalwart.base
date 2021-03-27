@@ -21,6 +21,7 @@ __CORE_BEGIN__
 template <typename T>
 concept result_type = std::is_default_constructible_v<T> && !std::is_pointer_v<T>;
 
+// TESTME: Result
 template <result_type ValueT>
 class Result final
 {
@@ -79,6 +80,47 @@ public:
 	// Constructs null-result.
 	inline explicit Result(std::nullptr_t) : is_nullptr(true)
 	{
+	}
+
+	// Copy constructor.
+	// If `other` is null then neither error nor value
+	// will be copied. If other holds error, then only
+	// error will be copied, otherwise copies `value`.
+	inline Result(const Result& other)
+	{
+		if (this != &other)
+		{
+			this->is_nullptr = other.is_nullptr;
+			if (!this->is_nullptr)
+			{
+				if (other.err)
+				{
+					this->err = other.err;
+				}
+				else
+				{
+					this->value = other.value;
+				}
+			}
+		}
+	}
+
+	// Copy-assignment operator.
+	// Acts the same way as copy-constructor.
+	inline Result& operator= (const Result& other)
+	{
+		if (this != &other)
+		{
+			this->is_nullptr = other.is_nullptr;
+			if (!this->is_nullptr)
+			{
+				this->err = other.err;
+				if (!this->err)
+				{
+					this->value = other.value;
+				}
+			}
+		}
 	}
 
 	// Returns `true` if result is not null, `false` otherwise.

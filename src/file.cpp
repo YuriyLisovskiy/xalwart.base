@@ -142,7 +142,7 @@ std::string File::read_str(size_t n)
 	return std::string(bytes.begin(), bytes.end());
 }
 
-void File::write(std::vector<unsigned char> bytes)
+void File::write(const std::vector<unsigned char>& bytes)
 {
 	if (!this->is_open())
 	{

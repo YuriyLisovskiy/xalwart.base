@@ -215,6 +215,15 @@ TEST(TestCase_string_utils, split_ToZeroParts)
 	ASSERT_EQ(value, actual[0]);
 }
 
+TEST(TestCase_string_utils, split_WithLastSymbolAsDelimiter)
+{
+	std::string value("hello:");
+	auto actual = str::split(value, ':');
+	ASSERT_EQ(2, actual.size());
+	ASSERT_EQ("hello", actual[0]);
+	ASSERT_EQ("", actual[1]);
+}
+
 TEST(TestCase_string_utils, split_WithNonExistentDelimiter)
 {
 	std::string value("Alphanumeric and printable shellcode");

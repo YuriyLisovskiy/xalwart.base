@@ -101,7 +101,7 @@ public:
 	// Writes a vector of bytes to the file.
 	//
 	// Throws `core::FileError` if file is not opened.
-	void write(std::vector<unsigned char> bytes);
+	void write(const std::vector<unsigned char>& bytes);
 
 	// Writes string to a file.
 	//
