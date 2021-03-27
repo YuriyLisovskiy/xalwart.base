@@ -9,6 +9,8 @@
 
 #pragma once
 
+#include <iostream>
+
 // Module definitions.
 #include "./_def_.h"
 
@@ -77,11 +79,6 @@ public:
 	{
 	}
 
-	// Constructs null-result.
-	inline explicit Result(std::nullptr_t) : is_nullptr(true)
-	{
-	}
-
 	// Copy constructor.
 	// If `other` is null then neither error nor value
 	// will be copied. If other holds error, then only
@@ -114,13 +111,18 @@ public:
 			this->is_nullptr = other.is_nullptr;
 			if (!this->is_nullptr)
 			{
-				this->err = other.err;
-				if (!this->err)
+				if (other.err)
+				{
+					this->err = other.err;
+				}
+				else
 				{
 					this->value = other.value;
 				}
 			}
 		}
+
+		return *this;
 	}
 
 	// Returns `true` if result is not null, `false` otherwise.
@@ -156,10 +158,10 @@ public:
 
 	// Creates a new result with the same error as initial
 	// object.
-	template<typename NewType>
-	inline Result<NewType> forward()
+	template <typename NewT>
+	inline Result<NewT> forward()
 	{
-		auto result = Result<NewType>();
+		auto result = Result<NewT>();
 		result.err = this->err;
 		return result;
 	}
@@ -167,7 +169,9 @@ public:
 	// Creates null result without value and error.
 	inline static Result<ValueT> null()
 	{
-		return Result<ValueT>(nullptr);
+		Result<ValueT> null_result;
+		null_result.is_nullptr = true;
+		return null_result;
 	}
 };
 
