@@ -1,5 +1,5 @@
 /**
- * object/main.cpp
+ * net/main.cpp
  *
  * Copyright (c) 2021 Yuriy Lisovskiy
  */

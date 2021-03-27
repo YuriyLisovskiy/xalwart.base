@@ -21,7 +21,6 @@
 
 __RE_BEGIN__
 
-// TESTME: ArgRegex
 class ArgRegex final
 {
 private:
@@ -58,11 +57,19 @@ private:
 
 public:
 
+	// Default constructor.
+	inline explicit ArgRegex() : ArgRegex("")
+	{
+	}
+
 	// Parses original pattern and constructs `ArgRegex` object.
 	inline explicit ArgRegex(std::string pattern) : _orig(std::move(pattern))
 	{
 		this->_rgx = std::regex(this->_parse(this->_orig));
 	}
+
+	// Copy assignment operator.
+	ArgRegex& operator= (const ArgRegex& other);
 
 	// Matches string with regular expression.
 	//
@@ -83,18 +90,18 @@ public:
 	// `false` otherwise.
 	bool search(const std::string& s);
 
-	// Returns found groups.
+	// Returns found args.
 	[[nodiscard]]
-	inline std::map<std::string, std::string> groups() const
+	inline std::map<std::string, std::string> args() const
 	{
 		return this->_groups;
 	}
 
-	// Returns group by given key.
+	// Returns arg by given key.
 	//
-	// If group is not found returns empty string.
+	// If arg is not found returns empty string.
 	[[nodiscard]]
-	std::string group(
+	std::string arg(
 		const std::string& key, const std::string& default_val=""
 	) const;
 
@@ -107,7 +114,7 @@ public:
 
 	// Returns original regular expression as `std::string`.
 	[[nodiscard]]
-	inline std::string original() const
+	inline std::string str() const
 	{
 		return this->_orig;
 	}

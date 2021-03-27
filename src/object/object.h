@@ -22,7 +22,6 @@
 
 __OBJ_BEGIN__
 
-// TESTME: Object
 class Object
 {
 public:
@@ -83,11 +82,12 @@ public:
 		return "<" + this->__type__().name() + " object at " + oss.str() + ">";
 	}
 
-	// Used for debugging. By default returns '__str__()'.
+	// Used for debugging. By default returns '__str__()' with
+	// single quotes.
 	[[nodiscard]]
 	virtual inline std::string __repr__() const
 	{
-		return this->__str__();
+		return "'" + this->__str__() + "'";
 	}
 
 	// Returns 0 if objects are equal, -1 if 'this' is less

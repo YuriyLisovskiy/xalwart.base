@@ -12,19 +12,18 @@
 
 __HTML_BEGIN__
 
-std::string escape(const std::string& input, bool quote)
+std::string escape(std::string input, bool quote)
 {
-	auto escaped = input;
-	str::replace(escaped, "&", "&amp;"); // Must be done first!
-	str::replace(escaped, "<", "&lt;");
-	str::replace(escaped, ">", "&gt;");
+	str::replace(input, "&", "&amp;"); // Must be done first!
+	str::replace(input, "<", "&lt;");
+	str::replace(input, ">", "&gt;");
 	if (quote)
 	{
-		str::replace(escaped, "\"", "&quot;");
-		str::replace(escaped, "'", "&#x27;");
+		str::replace(input, "\"", "&quot;");
+		str::replace(input, "'", "&#x27;");
 	}
 
-	return escaped;
+	return input;
 }
 
 __HTML_END__

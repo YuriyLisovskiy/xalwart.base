@@ -49,7 +49,7 @@ void _split_text(
 	}
 
 	size_t dot_idx = full_path.rfind(extsep);
-	if (dot_idx > sep_idx)
+	if (dot_idx != std::string::npos && sep_idx != std::string::npos && dot_idx > sep_idx)
 	{
 		// skip all leading dots
 		size_t file_name_idx = sep_idx + 1;
@@ -83,11 +83,10 @@ std::string dirname(const std::string& path)
 	auto result = std::string(path.begin(), path.begin() + pos + 1);
 	if (result.size() > 1)
 	{
-		str::rtrim(result, "/");
+		result = str::rtrim(result, "/");
 		while (result.ends_with("/."))
 		{
-			str::rtrim(result, ".");
-			str::rtrim(result, "/");
+			result = str::rtrim(str::rtrim(result, "."), "/");
 		}
 	}
 

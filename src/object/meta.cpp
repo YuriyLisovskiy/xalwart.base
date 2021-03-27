@@ -19,9 +19,8 @@ Type::Type(const Object& obj)
 	auto full_name = str::rsplit(s, ':', 1);
 	if (full_name.size() == 2)
 	{
-		str::ltrim(full_name.back(), ":");
-		str::rtrim(full_name.front(), ":");
-		this->_namespace = full_name.front();
+		full_name.back() = str::ltrim(full_name.back(), ":");
+		this->_namespace = str::rtrim(full_name.front(), ":");
 	}
 
 	this->_name = full_name.back();
