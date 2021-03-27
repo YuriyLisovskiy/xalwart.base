@@ -83,11 +83,10 @@ std::string dirname(const std::string& path)
 	auto result = std::string(path.begin(), path.begin() + pos + 1);
 	if (result.size() > 1)
 	{
-		str::rtrim(result, "/");
+		result = str::rtrim(result, "/");
 		while (result.ends_with("/."))
 		{
-			str::rtrim(result, ".");
-			str::rtrim(result, "/");
+			result = str::rtrim(str::rtrim(result, "."), "/");
 		}
 	}
 

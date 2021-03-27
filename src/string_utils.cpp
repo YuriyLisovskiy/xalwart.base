@@ -6,6 +6,8 @@
 
 #include "./string_utils.h"
 
+#include <utility>
+
 
 __STR_BEGIN__
 
@@ -66,164 +68,128 @@ void url_split_type(const std::string& url, std::string& scheme, std::string& da
 std::string lower(const std::string& s)
 {
 	std::string res(s);
-	std::transform(
-		res.begin(),
-		res.end(),
-		res.begin(),
-		[](unsigned char c){ return std::tolower(c); }
-	);
+	std::transform(res.begin(), res.end(), res.begin(), [](auto c) -> auto {
+		return std::tolower(c);
+	});
 	return res;
 }
 
 std::string upper(const std::string& s)
 {
 	std::string res(s);
-	std::transform(
-		res.begin(),
-		res.end(),
-		res.begin(),
-		[](unsigned char c){ return std::toupper(c); }
-	);
+	std::transform(res.begin(), res.end(), res.begin(), [](auto c) -> auto {
+		return std::toupper(c);
+	});
 	return res;
 }
 
-std::vector<std::string> split(const std::string& str, char delimiter)
+std::vector<std::string> split(const std::string& s, char delimiter, long n)
 {
-	std::vector<std::string> result;
-	if (str.empty())
+	bool count_splits = true;
+	if (n < 0)
 	{
-		return result;
+		count_splits = false;
 	}
 
-	std::string current;
-	for (const char& _char : str)
+	if (s.empty() || n == 0)
 	{
-		if (_char == delimiter)
+		return {s};
+	}
+
+	auto size = s.size();
+	std::vector<std::string> result;
+	std::string current;
+	size_t counter = 0;
+	size_t i;
+	for (i = 0; i < size && (!count_splits || counter < n); i++)
+	{
+		if (s[i] == delimiter)
 		{
 			result.push_back(current);
 			current.clear();
+			counter++;
 		}
 		else
 		{
-			current += _char;
+			current += s[i];
 		}
 	}
 
-	result.push_back(current);
-	return result;
-}
-
-std::vector<std::string> rsplit(const std::string& str, char delimiter, size_t n)
-{
-	if (n < 0)
+	if (!current.empty())
 	{
-		return split(str, delimiter);
+		result.push_back(current);
 	}
-
-	long str_last_pos = (long)str.size() - 1;
-	if (str_last_pos == -1)
+	else if (i < size)
 	{
-		return {};
-	}
-
-	std::vector<std::string> result;
-	std::string current;
-	size_t split_count = 0;
-	long int i;
-	for (i = str_last_pos; i >= 0 && split_count < n; i--)
-	{
-		if (str[i] == delimiter)
-		{
-			std::reverse(current.begin(), current.end());
-			result.insert(result.begin(), current);
-			current.clear();
-			split_count++;
-		}
-		else
-		{
-			current += str[i];
-		}
-	}
-
-	if (result.empty())
-	{
-		std::reverse(current.begin(), current.end());
-		result.insert(result.begin(), current);
-	}
-	else
-	{
-		result.insert(result.begin(), str.substr(0, i + 1));
+		result.push_back(s.substr(i));
 	}
 
 	return result;
 }
 
-std::pair<std::string, std::string> lsplit_one(const std::string& s, char delimiter)
+std::vector<std::string> rsplit(const std::string& s, char delimiter, long n)
 {
-	std::pair<std::string, std::string> result;
-	size_t len = s.size();
-	for (size_t i = 0; i < len; i++)
+	if (s.empty() || n == 0)
 	{
-		auto ch = s[i];
-		if (ch == delimiter)
-		{
-			if (i + 1 < len)
-			{
-				result.second = std::string(s.begin() + i + 1, s.end());
-			}
+		return {s};
+	}
 
+	auto rs = s;
+	std::reverse(rs.begin(), rs.end());
+	auto result = split(rs, delimiter, n);
+	auto begin = result.begin();
+	auto end = result.end();
+	while (true)
+	{
+		if (begin == end)
+		{
+			break;
+		}
+		else if (begin == --end)
+		{
+			std::reverse(begin->begin(), begin->end());
 			break;
 		}
 		else
 		{
-			result.first += ch;
+			std::reverse(begin->begin(), begin->end());
+			std::reverse(end->begin(), end->end());
+			std::iter_swap(begin, end);
+			++begin;
 		}
 	}
 
 	return result;
 }
 
-void ltrim(std::string& s, const std::string& to_trim)
+std::string ltrim(std::string s, const std::string& chars)
 {
-	while (s.starts_with(to_trim))
+	size_t pos = 0;
+	size_t n = s.size();
+	while (pos < n && chars.find(s[pos]) != std::string::npos)
 	{
-		s.erase(s.begin(), s.begin() + to_trim.size());
+		pos++;
+//		s.erase(s.begin(), s.begin() + chars.size());
 	}
+
+	return s.substr(pos);
 }
 
-std::string ltrim(const std::string& s, const std::string& to_trim)
+std::string rtrim(std::string s, const std::string& chars)
 {
-	std::string copy = s;
-	ltrim(copy, to_trim);
-	return copy;
-}
-
-void rtrim(std::string& s, const std::string& to_trim)
-{
-	while (s.ends_with(to_trim))
+	size_t pos = s.size() - 1;
+	while (pos >= 0 && chars.find(s[pos]) != std::string::npos)
 	{
-		s.erase(s.end() - to_trim.size(), s.end());
+		pos--;
+//		s.erase(s.begin(), s.begin() + chars.size());
 	}
+
+	return s.substr(0, pos + 1);
 }
 
-std::string rtrim(const std::string& s, const std::string& to_trim)
+std::string trim(std::string s, const std::string& chars)
 {
-	std::string copy = s;
-	rtrim(copy, to_trim);
-	return copy;
-}
-
-void trim(std::string& s, const std::string& to_trim)
-{
-	ltrim(s, to_trim);
-	rtrim(s, to_trim);
-}
-
-std::string trim(const std::string& s, const std::string& to_trim)
-{
-	std::string copy = s;
-	trim(copy, to_trim);
-	return copy;
+	return rtrim(std::move(ltrim(std::move(s), chars)), chars);
 }
 
 size_t count(const std::string& src, char ch)
@@ -260,17 +226,16 @@ std::string cut_edges(
 
 	if (trim_whitespace)
 	{
-		trim(copy);
+		copy = trim(copy);
 	}
 
 	return copy;
 }
 
-std::string replace(
-	const std::string& src, const std::string& old_sub, const std::string& new_sub
+void replace(
+	std::string& src, const std::string& old_sub, const std::string& new_sub
 )
 {
-	std::string copy = src;
 	size_t index = 0;
 	while (true)
 	{
@@ -280,10 +245,17 @@ std::string replace(
 			break;
 		}
 
-		copy.replace(index, old_sub.size(), new_sub);
+		src.replace(index, old_sub.size(), new_sub);
 		index += new_sub.size();
 	}
+}
 
+std::string replace(
+	const std::string& src, const std::string& old_sub, const std::string& new_sub
+)
+{
+	std::string copy = src;
+	replace(copy, old_sub, new_sub);
 	return copy;
 }
 
@@ -301,7 +273,7 @@ std::string make_text_list(
 		return list[0];
 	}
 
-	return join(list.begin(), list.end() - 1, ", ") + " " + last + " " + *list.end();
+	return join(", ", list.begin(), list.end() - 1) + " " + last + " " + *list.end();
 }
 
 std::string ftoa_fixed(double value)
