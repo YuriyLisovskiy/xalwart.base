@@ -49,7 +49,7 @@ void _split_text(
 	}
 
 	size_t dot_idx = full_path.rfind(extsep);
-	if (dot_idx > sep_idx)
+	if (dot_idx != std::string::npos && sep_idx != std::string::npos && dot_idx > sep_idx)
 	{
 		// skip all leading dots
 		size_t file_name_idx = sep_idx + 1;
