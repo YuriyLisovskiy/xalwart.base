@@ -252,16 +252,14 @@ extern std::string rtrim(std::string s, const std::string& to_trim=" ");
 // Returns a copy of trimmed string.
 extern std::string trim(std::string s, const std::string& to_trim=" ");
 
-// TESTME: count
 // Calculates number of entries of char `ch` in string `str`.
 //
 // `src`: input string to count from.
 // `ch`: symbol to count it's occurrences.
 //
 // Returns non-negative integer.
-extern size_t count(const std::string& src, char ch);
+extern size_t count(const std::string& s, char ch);
 
-// TESTME: cut_edges
 // Cuts chars from the left side of input string and chars
 // from the right side of the string. Additionally trims
 // whitespace if needed.
@@ -271,29 +269,18 @@ extern size_t count(const std::string& src, char ch);
 // `right_n`: right edge.
 // `trim_whitespace`: indicates whether to trim whitespaces or not.
 extern std::string cut_edges(
-	const std::string& src, size_t left_n, size_t right_n, bool trim_whitespace=true
+	std::string s, size_t left_n, size_t right_n, bool trim_whitespace=true
 );
 
-// TESTME: replace
-// Replaces old substring with new substring in-place.
-//
-// `src`: input string.
-// `old_sub`: old substring to remove.
-// `new_sub`: new substring to insert.
-extern void replace(
-	std::string& src,
-	const std::string& old_sub,
-	const std::string& new_sub
-);
-
-// TESTME: replace
 // Replaces old substring with new substring.
 //
 // `src`: input string.
 // `old_sub`: old substring to remove.
 // `new_sub`: new substring to insert.
+//
+// If `old_sub` is empty, returns string without changes.
 extern std::string replace(
-	const std::string& src,
+	std::string src,
 	const std::string& old_sub,
 	const std::string& new_sub
 );
