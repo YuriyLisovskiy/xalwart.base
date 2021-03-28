@@ -285,7 +285,6 @@ extern std::string replace(
 	const std::string& new_sub
 );
 
-// TESTME: make_text_list
 // Creates text from input vector of strings.
 //
 // `list`: vector of strings.
@@ -295,32 +294,9 @@ extern std::string replace(
 // of sequence is 1, returns the first item. Otherwise returns
 // first `n - 1` items concatenated with `last` string and the
 // last item of the sequence.
+// Example: 'one, two and three'.
 extern std::string make_text_list(
 	const std::vector<std::string>& list, const std::string& last
 );
-
-// TESTME: ftoa_fixed
-// Carries out a fixed conversion of a `double` value to a `std::string`,
-// with a precision of 5 decimal digits. Values with absolute values less
-// than `0.000001` are rounded to `0.0`.
-// Note: this blindly assumes that the buffer will be large enough to hold
-// the largest possible result. The largest value we expect is an IEEE 754
-// double precision real, with maximum magnitude of approximately e+308.
-// The C standard requires an implementation to allow a single conversion
-// to produce up to 512 characters, so that's what we really expect as
-// the buffer size.
-//
-// `value`: value to convert.
-//
-// Returns `double` as `std::string` with fixed precision.
-extern std::string ftoa_fixed(double value);
-
-// TESTME: ftoa_sci
-// Converts `double` value to scientific number in `std::string` form.
-//
-// `value`: value to convert.
-//
-// Returns `double` as `std::string` scientific form.
-extern std::string ftoa_sci(double value);
 
 __STR_END__

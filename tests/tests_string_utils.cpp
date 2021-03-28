@@ -563,3 +563,29 @@ TEST(TestCase_string_utils, replace_EmptyString)
 	auto actual = str::replace("", "1", "~");
 	ASSERT_EQ("", actual);
 }
+
+TEST(TestCase_string_utils, make_text_list_ListIsEmpty)
+{
+	ASSERT_EQ("", str::make_text_list({}, "and"));
+}
+
+TEST(TestCase_string_utils, make_text_list_ListHasOneItem)
+{
+	std::string expected = "one";
+	auto actual = str::make_text_list({"one"}, "and");
+	ASSERT_EQ(expected, actual);
+}
+
+TEST(TestCase_string_utils, make_text_list_TwoItems)
+{
+	std::string expected = "one and two";
+	auto actual = str::make_text_list({"one", "two"}, "and");
+	ASSERT_EQ(expected, actual);
+}
+
+TEST(TestCase_string_utils, make_text_list_MultipleItems)
+{
+	std::string expected = "one, two, three and four";
+	auto actual = str::make_text_list({"one", "two", "three", "four"}, "and");
+	ASSERT_EQ(expected, actual);
+}
