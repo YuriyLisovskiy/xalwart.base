@@ -14,13 +14,15 @@ __HTML_BEGIN__
 
 std::string escape(std::string input, bool quote)
 {
-	str::replace(input, "&", "&amp;"); // Must be done first!
-	str::replace(input, "<", "&lt;");
-	str::replace(input, ">", "&gt;");
+	input = str::replace(input, "&", "&amp;"); // Must be done first!
+	input = str::replace(
+		str::replace(input, "<", "&lt;"), ">", "&gt;"
+	);
 	if (quote)
 	{
-		str::replace(input, "\"", "&quot;");
-		str::replace(input, "'", "&#x27;");
+		input = str::replace(
+			str::replace(input, "\"", "&quot;"), "'", "&#x27;"
+		);
 	}
 
 	return input;

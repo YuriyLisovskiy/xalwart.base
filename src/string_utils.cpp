@@ -6,8 +6,6 @@
 
 #include "./string_utils.h"
 
-#include <utility>
-
 
 __STR_BEGIN__
 
@@ -203,10 +201,10 @@ std::string trim(std::string s, const std::string& chars)
 	return s.substr(l_pos, r_pos - l_pos + 1);
 }
 
-size_t count(const std::string& src, char ch)
+size_t count(const std::string& s, char ch)
 {
 	size_t res = 0;
-	for (const auto& c : src)
+	for (const auto& c : s)
 	{
 		if (c == ch)
 		{
@@ -218,35 +216,39 @@ size_t count(const std::string& src, char ch)
 }
 
 std::string cut_edges(
-	const std::string& src, size_t left_n, size_t right_n, bool trim_whitespace
+	std::string s, size_t left_n, size_t right_n, bool trim_whitespace
 )
 {
-	std::string copy = src;
-	if (src.size() >= left_n + right_n)
+	if (s.size() >= left_n + right_n)
 	{
 		if (left_n)
 		{
-			copy.erase(0, left_n);
+			s.erase(0, left_n);
 		}
 
 		if (right_n)
 		{
-			copy.erase(copy.size() - right_n);
+			s.erase(s.size() - right_n);
 		}
 	}
 
 	if (trim_whitespace)
 	{
-		copy = trim(copy);
+		s = trim(s);
 	}
 
-	return copy;
+	return s;
 }
 
-void replace(
-	std::string& src, const std::string& old_sub, const std::string& new_sub
+std::string replace(
+	std::string src, const std::string& old_sub, const std::string& new_sub
 )
 {
+	if (src.empty() || old_sub.empty())
+	{
+		return src;
+	}
+
 	size_t index = 0;
 	while (true)
 	{
@@ -259,15 +261,8 @@ void replace(
 		src.replace(index, old_sub.size(), new_sub);
 		index += new_sub.size();
 	}
-}
 
-std::string replace(
-	const std::string& src, const std::string& old_sub, const std::string& new_sub
-)
-{
-	std::string copy = src;
-	replace(copy, old_sub, new_sub);
-	return copy;
+	return src;
 }
 
 std::string make_text_list(
@@ -284,90 +279,7 @@ std::string make_text_list(
 		return list[0];
 	}
 
-	return join(", ", list.begin(), list.end() - 1) + " " + last + " " + *list.end();
-}
-
-std::string ftoa_fixed(double value)
-{
-	if (value == 0.0)
-	{
-		return "0";
-	}
-
-	std::string result;
-	if (value < 0.0)
-	{
-		result += '-';
-		value = -value;
-	}
-
-	int exponent = _normalize_exp(&value);
-	int places = 0;
-	static const int width = 4;
-
-	while (exponent > 0)
-	{
-		int digit = value * 10;
-		result += std::to_string(digit) + '0';
-		value = value * 10 - digit;
-		++places;
-		--exponent;
-	}
-
-	if (places == 0)
-	{
-		result += '0';
-	}
-
-	result += '.';
-	while (exponent < 0 && places < width)
-	{
-		result += '0';
-		--exponent;
-		++places;
-	}
-
-	while (places < width)
-	{
-		int digit = value * 10.0;
-		result += std::to_string(digit) + '0';
-		value = value * 10.0 - digit;
-		++places;
-	}
-
-	return result;
-}
-
-std::string ftoa_sci(double value)
-{
-	if (value == 0.0)
-	{
-		return "0";
-	}
-
-	std::string result;
-	if (value < 0.0)
-	{
-		result += '-';
-		value = -value;
-	}
-
-	static const int width = 4;
-	int exponent = _normalize_exp(&value);
-	int digit = value * 10.0;
-	result += std::to_string(digit) + '0';
-	value = value * 10.0 - digit;
-	--exponent;
-
-	result += '.';
-	for (int i = 0; i < width; i++)
-	{
-		digit = value * 10.0;
-		result += std::to_string(digit) + '0';
-		value = value * 10.0 - digit;
-	}
-
-	return result + 'e' + std::to_string(exponent);
+	return join(", ", list.begin(), list.end() - 1) + " " + last + " " + *(list.end() - 1);
 }
 
 __STR_END__

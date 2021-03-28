@@ -440,3 +440,152 @@ TEST(TestCase_string_utils, trim_CustomChars)
 	std::string actual = str::trim(" -- Hello, World -- ", "-Hello ");
 	ASSERT_EQ(actual, expected);
 }
+
+TEST(TestCase_string_utils, count_Found)
+{
+	std::string s = "Hello, World!";
+	size_t expected = 3;
+	auto actual = str::count(s, 'l');
+	ASSERT_EQ(expected, actual);
+}
+
+TEST(TestCase_string_utils, count_NotFound)
+{
+	std::string s = "Hello, World!";
+	size_t expected = 0;
+	auto actual = str::count(s, 'w');
+	ASSERT_EQ(expected, actual);
+}
+
+TEST(TestCase_string_utils, cut_edges_LeftOnly)
+{
+	std::string expected = ", World!";
+	auto actual = str::cut_edges("Hello, World!", 5, 0, false);
+	ASSERT_EQ(expected, actual);
+}
+
+TEST(TestCase_string_utils, cut_edges_LeftOnlyCutAll)
+{
+	auto actual = str::cut_edges("Hello, World!", 13, 0, false);
+	ASSERT_EQ("", actual);
+}
+
+TEST(TestCase_string_utils, cut_edges_LeftOnlyNotCutEdgesAreGreaterThanInput)
+{
+	std::string expected = "Hello, World!";
+	auto actual = str::cut_edges("Hello, World!", 14, 0, false);
+	ASSERT_EQ(expected, actual);
+}
+
+TEST(TestCase_string_utils, cut_edges_RightOnly)
+{
+	std::string expected = "H";
+	auto actual = str::cut_edges("Hello, World!", 0, 12, false);
+	ASSERT_EQ(expected, actual);
+}
+
+TEST(TestCase_string_utils, cut_edges_RightOnlyCutAll)
+{
+	auto actual = str::cut_edges("Hello, World!", 0, 13, false);
+	ASSERT_EQ("", actual);
+}
+
+TEST(TestCase_string_utils, cut_edges_RightOnlyNotCutEdgesAreGreaterThanInput)
+{
+	std::string expected = "Hello, World!";
+	auto actual = str::cut_edges("Hello, World!", 0, 14, false);
+	ASSERT_EQ(expected, actual);
+}
+
+TEST(TestCase_string_utils, cut_edges_Both)
+{
+	std::string expected = " lo, Wo  ";
+	auto actual = str::cut_edges("Hel lo, Wo  rld!", 3, 4, false);
+	ASSERT_EQ(expected, actual);
+}
+
+TEST(TestCase_string_utils, cut_edges_BothWithTrim)
+{
+	std::string expected = "llo, Wo";
+	auto actual = str::cut_edges("He llo, Wo  rld!", 3, 4, true);
+	ASSERT_EQ(expected, actual);
+}
+
+TEST(TestCase_string_utils, cut_edges_NotCutEdgesAreGreaterThanInput)
+{
+	std::string expected = "Hel lo, Wo  rld!";
+	auto actual = str::cut_edges("Hel lo, Wo  rld!", 8, 9, false);
+	ASSERT_EQ(expected, actual);
+}
+
+TEST(TestCase_string_utils, cut_edges_CutAll)
+{
+	auto actual = str::cut_edges("Hel lo, Wo  rld!", 7, 9, false);
+	ASSERT_EQ("", actual);
+}
+
+TEST(TestCase_string_utils, cut_edges_CutEmptyString)
+{
+	auto actual = str::cut_edges("", 7, 9, false);
+	ASSERT_EQ("", actual);
+}
+
+TEST(TestCase_string_utils, replace_OneSub)
+{
+	std::string expected = "Hello, Home!";
+	auto actual = str::replace("Hello, World?", "World?", "Home!");
+	ASSERT_EQ(expected, actual);
+}
+
+TEST(TestCase_string_utils, replace_MultipleSubs)
+{
+	std::string expected = "He~|~~|~o, Wor~|~d!";
+	auto actual = str::replace("Hello, World!", "l", "~|~");
+	ASSERT_EQ(expected, actual);
+}
+
+TEST(TestCase_string_utils, replace_SubsToEmpty)
+{
+	std::string expected = "Heo, Word!";
+	auto actual = str::replace("Hello, World!", "l", "");
+	ASSERT_EQ(expected, actual);
+}
+
+TEST(TestCase_string_utils, replace_EmptySub)
+{
+	std::string expected = "Hello, World!";
+	auto actual = str::replace("Hello, World!", "", "~");
+	ASSERT_EQ(expected, actual);
+}
+
+TEST(TestCase_string_utils, replace_EmptyString)
+{
+	auto actual = str::replace("", "1", "~");
+	ASSERT_EQ("", actual);
+}
+
+TEST(TestCase_string_utils, make_text_list_ListIsEmpty)
+{
+	ASSERT_EQ("", str::make_text_list({}, "and"));
+}
+
+TEST(TestCase_string_utils, make_text_list_ListHasOneItem)
+{
+	std::string expected = "one";
+	auto actual = str::make_text_list({"one"}, "and");
+	ASSERT_EQ(expected, actual);
+}
+
+TEST(TestCase_string_utils, make_text_list_TwoItems)
+{
+	std::string expected = "one and two";
+	auto actual = str::make_text_list({"one", "two"}, "and");
+	ASSERT_EQ(expected, actual);
+}
+
+TEST(TestCase_string_utils, make_text_list_MultipleItems)
+{
+	std::string expected = "one, two, three and four";
+	auto actual = str::make_text_list({"one", "two", "three", "four"}, "and");
+	ASSERT_EQ(expected, actual);
+}
