@@ -108,80 +108,20 @@ std::string dirname(const std::string& p)
 
 size_t get_size(const std::string& p)
 {
-	if (!exists(p))
+	std::ifstream ifs(p, std::ifstream::ate | std::ifstream::binary);
+	if (!ifs.is_open())
 	{
-		throw core::FileError("file '" + p + "' does not exist", _ERROR_DETAILS_);
+		throw core::FileError("can not access file '" + p + "'", _ERROR_DETAILS_);
 	}
 
-	std::ifstream ifs(p, std::ifstream::ate | std::ifstream::binary);
 	size_t result = ifs.tellg();
 	ifs.close();
 	return result;
 }
 
-std::string join(const std::string& left, const std::string& right)
-{
-	auto new_left = str::rtrim(left, "/");
-	return (new_left.empty() ? "." : new_left) + "/" + str::ltrim(right, "/");
-}
-
-std::string join(const std::vector<std::string>& paths)
-{
-	size_t size = paths.size();
-	if (size == 0)
-	{
-		return "./";
-	}
-
-	if (size == 1)
-	{
-		return paths[0];
-	}
-
-	std::string result = str::rtrim(paths[0], "/");
-	if (result.empty())
-	{
-		result = ".";
-	}
-
-	for (size_t i = 1; i < size - 1; i++)
-	{
-		auto part = str::trim(paths[i], "/");
-		result += part.empty() ? "" : "/" + part;
-	}
-
-	auto part = str::ltrim(paths[size - 1], "/");
-	result += part.empty() ? "" : "/" + part;
-
-	return result == "." ? "./" : result;
-}
-
 std::string cwd()
 {
 	return std::filesystem::current_path();
-}
-
-bool is_absolute(const std::string& p)
-{
-#if defined(_WIN32) || defined(_WIN64)
-	auto pos = p.find(':');
-	if (pos != std::string::npos)
-	{
-		if (p.size() > pos + 1)
-		{
-			return p.substr(pos + 1)[0] == '\\';
-		}
-
-		return true;
-	}
-#else
-	if (!p.empty())
-	{
-		return p[0] == '/';
-	}
-#endif
-
-	return false;
 }
 
 __PATH_END__

@@ -83,34 +83,63 @@ extern std::string basename(const std::string& p);
 // Returns the directory component of a path name.
 extern std::string dirname(const std::string& p);
 
-// TESTME: get_size
 // `p`: path to access.
 //
 // Returns file size in bytes.
 extern size_t get_size(const std::string& p);
 
-// TESTME: join(left, right)
-// Joins two strings to single path.
-//
-// `left`: left path part.
-// `right`: right path part.
-extern std::string join(const std::string& left, const std::string& right);
+template <typename... PartT>
+void _join(std::string& out, const std::string& b, const PartT&... p)
+{
+	if (b.starts_with(path::sep))
+	{
+		out = b;
+	}
+	else if (out.empty() || out.ends_with(path::sep))
+	{
+		out += b;
+	}
+	else
+	{
+		out += std::string(1, path::sep) + b;
+	}
 
-// TESTME: join(vector)
-// Joins vector of strings to single path.
+	if constexpr (sizeof...(p) > 0)
+	{
+		_join(out, p...);
+	}
+}
+
+// Join two or more pathname components, inserting 'path::sep'
+// as needed. If any component is an absolute path, all previous path
+// components will be discarded. An empty last part will result in a path
+// that ends with a separator.
 //
-// `paths`: vector of path parts.
-extern std::string join(const std::vector<std::string>& paths);
+// `a`: first part of path.
+// `p`: arguments pack of another parts.
+template <typename... PartT>
+std::string join(const std::string& a, const PartT&... p)
+{
+	std::string result_path = a;
+	if constexpr (sizeof...(p) > 0)
+	{
+		_join(result_path, p...);
+	}
+
+	return result_path;
+}
 
 // Returns current working directory.
 extern std::string cwd();
 
-// TESTME: is_absolute
-// Checks if path is absolute or not.
+// Test whether a path is absolute.
 //
 // `p`: path to check.
 //
 // Returns `true` if path is absolute, `false` otherwise.
-extern bool is_absolute(const std::string& p);
+inline bool is_absolute(const std::string& p)
+{
+	return p.starts_with(path::sep);
+}
 
 __PATH_END__
