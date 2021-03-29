@@ -231,26 +231,50 @@ extern std::vector<std::string> rsplit(const std::string& s, char delimiter=' ',
 // Trims left part of string.
 //
 // `s`: string to trim.
-// `to_trim`: string to be trimmed.
+// `c`: char to be trimmed.
 //
 // Returns a copy of trimmed string.
-extern std::string ltrim(std::string s, const std::string& chars=" ");
+extern std::string ltrim(const std::string& s, char c=' ');
 
 // Trims right part of string.
 //
 // `s`: string to trim.
-// `to_trim`: string to be trimmed.
+// `c`: char to be trimmed.
 //
 // Returns a copy of trimmed string.
-extern std::string rtrim(std::string s, const std::string& to_trim=" ");
+extern std::string rtrim(const std::string& s, char c=' ');
 
 // Trims both left and right parts of string.
 //
 // `s`: string to trim.
-// `to_trim`: string to be trimmed.
+// `c`: char to be trimmed.
 //
 // Returns a copy of trimmed string.
-extern std::string trim(std::string s, const std::string& to_trim=" ");
+extern std::string trim(const std::string& s, char c=' ');
+
+// Trims left part of string.
+//
+// `s`: string to trim.
+// `chars`: string to be trimmed.
+//
+// Returns a copy of trimmed string.
+extern std::string ltrim(const std::string& s, const std::string& chars);
+
+// Trims right part of string.
+//
+// `s`: string to trim.
+// `chars`: string to be trimmed.
+//
+// Returns a copy of trimmed string.
+extern std::string rtrim(const std::string& s, const std::string& chars);
+
+// Trims both left and right parts of string.
+//
+// `s`: string to trim.
+// `chars`: string to be trimmed.
+//
+// Returns a copy of trimmed string.
+extern std::string trim(const std::string& s, const std::string& chars);
 
 // Calculates number of entries of char `ch` in string `str`.
 //

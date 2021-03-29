@@ -32,30 +32,45 @@ __PATH_BEGIN__
 
 void _split_text(
 	const std::string& full_path,
-	char sep,
-	char altsep,
-	char extsep,
+	char separator,
+	char alt_separator,
+	char ext_separator,
 	std::string& root_out,
 	std::string& ext_out
 )
 {
 	root_out = full_path;
 	ext_out = "";
-	size_t sep_idx = full_path.rfind(sep);
-	if (altsep != '\0')
+	long sep_idx = full_path.rfind(separator);
+	if (sep_idx == std::string::npos)
 	{
-		size_t altsep_idx = full_path.rfind(altsep);
+		sep_idx = -1;
+	}
+
+	if (alt_separator != '\0')
+	{
+		long altsep_idx = full_path.rfind(alt_separator);
+		if (altsep_idx == std::string::npos)
+		{
+			altsep_idx = -1;
+		}
+
 		sep_idx = std::max(sep_idx, altsep_idx);
 	}
 
-	size_t dot_idx = full_path.rfind(extsep);
-	if (dot_idx != std::string::npos && sep_idx != std::string::npos && dot_idx > sep_idx)
+	long dot_idx = full_path.rfind(ext_separator);
+	if (dot_idx == std::string::npos)
+	{
+		dot_idx = -1;
+	}
+
+	if (dot_idx > sep_idx)
 	{
 		// skip all leading dots
 		size_t file_name_idx = sep_idx + 1;
 		while (file_name_idx < dot_idx)
 		{
-			if (full_path.at(file_name_idx) != extsep)
+			if (full_path.at(file_name_idx) != ext_separator)
 			{
 				root_out = full_path.substr(0, dot_idx);
 				ext_out = full_path.substr(dot_idx);
@@ -67,55 +82,38 @@ void _split_text(
 	}
 }
 
-bool exists(const std::string& path)
+bool exists(const std::string& p)
 {
-	return access(path.c_str(), 0) == 0;
+	return access(p.c_str(), 0) == 0;
 }
 
-std::string dirname(const std::string& path)
+std::string basename(const std::string& p)
 {
-	size_t pos = path.rfind('/');
-	if (pos == std::string::npos)
-	{
-		return "";
-	}
-
-	auto result = std::string(path.begin(), path.begin() + pos + 1);
-	if (result.size() > 1)
-	{
-		result = str::rtrim(result, "/");
-		while (result.ends_with("/."))
-		{
-			result = str::rtrim(str::rtrim(result, "."), "/");
-		}
-	}
-
-	return result;
+	size_t pos = p.rfind(path::sep);
+	return p.substr(pos == std::string::npos ? 0 : pos + 1);
 }
 
-std::string basename(const std::string& path)
+std::string dirname(const std::string& p)
 {
-	size_t pos = path.rfind('/');
-	if (pos == std::string::npos)
+	size_t pos = p.rfind(path::sep);
+	auto i = pos == std::string::npos ? 0 : pos + 1;
+	auto head = p.substr(0, i);
+	if (!head.empty() && head != std::string(head.size(), path::sep))
 	{
-		pos = 0;
-	}
-	else
-	{
-		pos += 1;
+		head = str::rtrim(head, path::sep);
 	}
 
-	return str::rtrim(std::string(path.begin() + pos, path.end()), "/");
+	return head;
 }
 
-size_t get_size(const std::string& path)
+size_t get_size(const std::string& p)
 {
-	if (!exists(path))
+	if (!exists(p))
 	{
-		throw core::FileError("file '" + path + "' does not exist", _ERROR_DETAILS_);
+		throw core::FileError("file '" + p + "' does not exist", _ERROR_DETAILS_);
 	}
 
-	std::ifstream ifs(path, std::ifstream::ate | std::ifstream::binary);
+	std::ifstream ifs(p, std::ifstream::ate | std::ifstream::binary);
 	size_t result = ifs.tellg();
 	ifs.close();
 	return result;
