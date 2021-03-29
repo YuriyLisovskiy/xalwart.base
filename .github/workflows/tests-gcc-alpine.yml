@@ -14,11 +14,11 @@ jobs:
         alpine_version: [3.13]
     steps:
       - uses: actions/checkout@v2
-      - name: Build container
+      - name: Build the Container
         run: |
           sudo docker build --build-arg alpine_version=${{ matrix.alpine_version }} \
                             -f docker/alpine/gcc.Dockerfile \
                             --tag=xalwart.core-test:alpine-gcc .
-      - name: Run tests
+      - name: Run Tests
         run: |
           sudo docker run xalwart.core-test:alpine-gcc
