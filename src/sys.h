@@ -51,4 +51,8 @@ const std::string compiler_version =
 	#define __windows__
 #endif
 
+#if defined (__APPLE__) && defined (__MACH__)
+	#define __mac__
+#endif
+
 __SYS_END__
