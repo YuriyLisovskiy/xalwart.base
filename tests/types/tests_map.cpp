@@ -15,6 +15,7 @@ using namespace xw;
 
 TEST(TestCase_Map, Test_IsMap)
 {
+	ASSERT_TRUE(false);
 	types::Map<obj::Object, types::String> map;
 	map.value()[std::make_shared<types::Fundamental<int>>(1)] = std::make_shared<types::String>("Pes");
 	map.value()[std::make_shared<types::String>("Hello")] = std::make_shared<types::String>("World");
