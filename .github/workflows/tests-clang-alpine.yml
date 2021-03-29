@@ -18,7 +18,7 @@ jobs:
         run: |
           sudo docker build --build-arg alpine_version=${{ matrix.alpine_version }} \
                             -f docker/alpine/clang.Dockerfile \
-                            --tag=xalwart.core-test:alpine-clang . && \
+                            --tag=xalwart.core-test:alpine-clang .
       - name: Run tests
         run: |
           sudo docker run xalwart.core-test:alpine-clang
