@@ -3299,9 +3299,9 @@ TEST(TestCase_Fundamental, Test_Str_Float)
 
 TEST(TestCase_Fundamental, Test_Str_Double)
 {
-	auto value = types::Fundamental<double>(34567.34);
+	auto value = types::Fundamental<double>(34567.35);
 	auto actual = value.__str__();
-	auto expected = std::string("34567.34");
+	auto expected = std::string("34567.349999");
 	ASSERT_EQ(actual, expected);
 }
 

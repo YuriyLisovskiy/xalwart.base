@@ -6,7 +6,6 @@
 
 #include <gtest/gtest.h>
 
-#include "./benchmark.h"
 #include "../src/utility.h"
 
 using namespace xw;
