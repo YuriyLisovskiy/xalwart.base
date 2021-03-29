@@ -1,7 +1,7 @@
 /**
  * core/tests_encoding.cpp
  *
- * Copyright (c) 2019 Yuriy Lisovskiy
+ * Copyright (c) 2019, 2021 Yuriy Lisovskiy
  */
 
 #include <gtest/gtest.h>
@@ -11,7 +11,7 @@
 using namespace xw;
 
 
-TEST(EncodeUrlTestCase, encode)
+TEST(TestCase_encode_url, encode)
 {
 	std::string expected("https://hostName/deepLinkAction.do?userName=peter%40nable.com&password=Hello%25There&method=defaultDashboard");
 	std::string toEncode("https://hostName/deepLinkAction.do?userName=peter@nable.com&password=Hello%There&method=defaultDashboard");

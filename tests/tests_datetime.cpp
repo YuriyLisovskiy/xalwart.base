@@ -1,7 +1,7 @@
 /**
  * tests_datetime.cpp
  *
- * Copyright (c) 2020 Yuriy Lisovskiy
+ * Copyright (c) 2020-2021 Yuriy Lisovskiy
  */
 
 #include <gtest/gtest.h>
@@ -16,7 +16,7 @@ TEST(Datetime_TestCase, _M_Assert_NotAborts)
 	ASSERT_NO_THROW(dt::internal::_M_Assert("", true, "", 0, ""));
 }
 
-TEST(Datetime_TestCase, _mod)
+TEST(TestCase_datetime, _mod)
 {
 	ASSERT_EQ(dt::internal::_mod(-1, 2), 1);
 	ASSERT_EQ(dt::internal::_mod(2, -1), 0);
@@ -26,7 +26,7 @@ TEST(Datetime_TestCase, _mod)
 	ASSERT_EQ(dt::internal::_mod(3, 5), 3);
 }
 
-TEST(Datetime_TestCase, _true_div)
+TEST(TestCase_datetime, _true_div)
 {
 	auto actual = dt::internal::_true_div(3, 2);
 	ASSERT_EQ(actual, 1);
@@ -38,7 +38,7 @@ TEST(Datetime_TestCase, _true_div)
 	ASSERT_EQ(actual, -3);
 }
 
-TEST(Datetime_TestCase, _div_mod)
+TEST(TestCase_datetime, _div_mod)
 {
 	auto actual = dt::internal::_div_mod(1, 1);
 	ASSERT_EQ(actual.first, 1);
@@ -73,7 +73,7 @@ TEST(Datetime_TestCase, _div_mod)
 	ASSERT_EQ(actual.second, -186);
 }
 
-TEST(Datetime_TestCase, _cmp)
+TEST(TestCase_datetime, _cmp)
 {
 	ASSERT_EQ(dt::internal::_cmp(1, 1), 0);
 	ASSERT_EQ(dt::internal::_cmp(-1, 1), -1);
@@ -88,7 +88,7 @@ TEST(Datetime_TestCase, _cmp)
 	ASSERT_EQ(dt::internal::_cmp(std::string("hello"), std::string("aello")), 1);
 }
 
-TEST(Datetime_TestCase, _cmp_arr)
+TEST(TestCase_datetime, _cmp_arr)
 {
 	int a[4] = {1, 3, 2, 4};
 	int b[4] = {1, 7, 1, -5};
@@ -103,7 +103,7 @@ TEST(Datetime_TestCase, _cmp_arr)
 	ASSERT_EQ(dt::internal::_cmp_arr(e, f, 4), 0);
 }
 
-TEST(Datetime_TestCase, _is_leap)
+TEST(TestCase_datetime, _is_leap)
 {
 	ASSERT_TRUE(dt::internal::_is_leap(2020));
 	ASSERT_TRUE(dt::internal::_is_leap(1940));
@@ -115,7 +115,7 @@ TEST(Datetime_TestCase, _is_leap)
 	ASSERT_TRUE(dt::internal::_is_leap(16));
 }
 
-TEST(Datetime_TestCase, _days_before_year)
+TEST(TestCase_datetime, _days_before_year)
 {
 	ASSERT_EQ(dt::internal::_days_before_year(2000), 730119);
 	ASSERT_EQ(dt::internal::_days_before_year(1656), 604476);
@@ -124,7 +124,7 @@ TEST(Datetime_TestCase, _days_before_year)
 	ASSERT_EQ(dt::internal::_days_before_year(2077), 758244);
 }
 
-TEST(Datetime_TestCase, _days_in_month)
+TEST(TestCase_datetime, _days_in_month)
 {
 	ASSERT_EQ(dt::internal::_days_in_month(2000, 1), 31);
 	ASSERT_EQ(dt::internal::_days_in_month(1656, 2), 29);
@@ -134,7 +134,7 @@ TEST(Datetime_TestCase, _days_in_month)
 	ASSERT_EQ(dt::internal::_days_in_month(2077, 2), 28);
 }
 
-TEST(Datetime_TestCase, _days_before_month)
+TEST(TestCase_datetime, _days_before_month)
 {
 	ASSERT_EQ(dt::internal::_days_before_month(2000, 1), 0);
 	ASSERT_EQ(dt::internal::_days_before_month(1656, 2), 31);
@@ -144,7 +144,7 @@ TEST(Datetime_TestCase, _days_before_month)
 	ASSERT_EQ(dt::internal::_days_before_month(2077, 12), 334);
 }
 
-TEST(Datetime_TestCase, _ymd2ord)
+TEST(TestCase_datetime, _ymd2ord)
 {
 	ASSERT_EQ(dt::internal::_ymd2ord(1970, 10, 11), 719446);
 	ASSERT_EQ(dt::internal::_ymd2ord(2020, 10, 11), 737709);
@@ -153,14 +153,14 @@ TEST(Datetime_TestCase, _ymd2ord)
 	ASSERT_EQ(dt::internal::_ymd2ord(2077, 3, 16), 758319);
 }
 
-TEST(Datetime_TestCase, _DInY)
+TEST(TestCase_datetime, _DInY)
 {
 	ASSERT_EQ(dt::internal::_DI400Y, 146097);
 	ASSERT_EQ(dt::internal::_DI100Y, 36524);
 	ASSERT_EQ(dt::internal::_DI4Y, 1461);
 }
 
-TEST(Datetime_TestCase, _ord2ymd)
+TEST(TestCase_datetime, _ord2ymd)
 {
 	auto expected = dt::internal::ymd{2221, 11, 9};
 	auto actual = dt::internal::_ord2ymd(811151);
@@ -175,7 +175,7 @@ TEST(Datetime_TestCase, _ord2ymd)
 	ASSERT_EQ(expected.day, actual.day);
 }
 
-TEST(Datetime_TestCase, tm_tuple_Gmtime)
+TEST(TestCase_datetime, tm_tuple_Gmtime)
 {
 	time_t time = 1573821926;
 	auto tm_ptr = std::gmtime(&time);
@@ -204,7 +204,7 @@ TEST(Datetime_TestCase, tm_tuple_Gmtime)
 
 
 
-TEST(DatetimeTestCase, StrftimeTest)
+TEST(TestCase_datetime, StrftimeTest)
 {
 	const char* str_dt = "Fri, 15 Nov 2019 12:45:26";
 	auto dt = dt::Datetime::strptime(str_dt, "%a, %e %b %Y %T");
@@ -216,7 +216,7 @@ TEST(DatetimeTestCase, StrftimeTest)
 	ASSERT_EQ(expected, strf_time);
 }
 
-TEST(DatetimeTestCase, TimestampTest)
+TEST(TestCase_datetime, TimestampTest)
 {
 	const char* str_dt = "Fri, 15 Nov 2019 12:45:26 GMT";
 	auto dt = dt::Datetime::strptime(str_dt, "%a, %e %b %Y %T %Z");
@@ -241,13 +241,13 @@ TEST(DatetimeTestCase, TimestampTest)
 	ASSERT_EQ(expected, dt.timestamp());
 }
 
-TEST(ModuleTestCase, TestContacts)
+TEST(TestCase_datetime, TestContacts)
 {
 	ASSERT_EQ(dt::MIN_YEAR, 1);
 	ASSERT_EQ(dt::MAX_YEAR, 9999);
 }
 
-TEST(ModuleTestCase, TestDivideAndRound)
+TEST(TestCase_datetime, TestDivideAndRound)
 {
 	ASSERT_EQ(dt::internal::_divide_and_round(-10, -3), 3);
 	ASSERT_EQ(dt::internal::_divide_and_round(5, -2), -2);
@@ -290,7 +290,7 @@ public:
 	}
 };
 
-TEST(TimezoneTestCase, NormalTest)
+TEST(TestCase_datetime, NormalTest)
 {
 	auto fo = FixedOffset(3, "Three");
 

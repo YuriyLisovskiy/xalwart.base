@@ -1,19 +1,17 @@
 /**
  * tests_utility.cpp
  *
- * Copyright (c) 2020 Yuriy Lisovskiy
+ * Copyright (c) 2020-2021 Yuriy Lisovskiy
  */
 
 #include <gtest/gtest.h>
-
-#include <utility>
 
 #include "./benchmark.h"
 #include "../src/utility.h"
 
 using namespace xw;
 
-TEST(UtilityTestCase, format_datetime)
+TEST(TestCase_utility, format_datetime)
 {
 	const char* str_dt = "Fri, 15 Nov 2019 12:45:26";
 	auto dt = dt::Datetime::strptime(str_dt, "%a, %e %b %Y %T");
@@ -25,7 +23,7 @@ TEST(UtilityTestCase, format_datetime)
 	ASSERT_EQ(expected, actual);
 }
 
-TEST(UtilityTestCase, format_datetime_NoTimezone)
+TEST(TestCase_utility, format_datetime_NoTimezone)
 {
 	const char* str_dt = "Fri, 15 Nov 2019 12:45:26";
 	auto dt = dt::Datetime::strptime(str_dt, "%a, %e %b %Y %T");
@@ -34,7 +32,7 @@ TEST(UtilityTestCase, format_datetime_NoTimezone)
 	ASSERT_EQ(expected, actual);
 }
 
-TEST(UtilityTestCase, format_datetime_UseGmt)
+TEST(TestCase_utility, format_datetime_UseGmt)
 {
 	const char* str_dt = "Fri, 15 Nov 2019 12:45:26";
 	auto dt = dt::Datetime::strptime(str_dt, "%a, %e %b %Y %T");

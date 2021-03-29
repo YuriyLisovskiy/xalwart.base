@@ -1,7 +1,7 @@
 /**
  * tests_result.cpp
  *
- * Copyright (c) 2020 Yuriy Lisovskiy
+ * Copyright (c) 2020-2021 Yuriy Lisovskiy
  */
 
 #include <gtest/gtest.h>
@@ -11,14 +11,14 @@
 using namespace xw;
 
 
-TEST(FuncResult_TestCase, ConstructFromValue)
+TEST(TestCase_Result, ConstructFromValue)
 {
 	auto result = core::Result<int>(2020);
 	ASSERT_FALSE(result.err);
 	ASSERT_EQ(result.value, 2020);
 }
 
-TEST(FuncResult_TestCase, RaiseException)
+TEST(TestCase_Result, RaiseException)
 {
 	using core::error_type;
 	auto result = core::raise<error_type::HttpError, int>("an error");
@@ -35,7 +35,7 @@ TEST(FuncResult_TestCase, RaiseException)
 	ASSERT_FALSE(result.catch_(error_type::DisallowedRedirect));
 }
 
-TEST(FuncResult_TestCase, RaiseEntityTooLargeError)
+TEST(TestCase_Result, RaiseEntityTooLargeError)
 {
 	using core::error_type;
 	auto result = core::raise<error_type::EntityTooLargeError, int>("an error");
@@ -44,7 +44,7 @@ TEST(FuncResult_TestCase, RaiseEntityTooLargeError)
 	ASSERT_TRUE(result.catch_(error_type::HttpError));
 }
 
-TEST(FuncResult_TestCase, RaiseFileDoesNotExistError)
+TEST(TestCase_Result, RaiseFileDoesNotExistError)
 {
 	using core::error_type;
 	auto result = core::raise<error_type::FileDoesNotExistError, int>("an error");
@@ -53,7 +53,7 @@ TEST(FuncResult_TestCase, RaiseFileDoesNotExistError)
 	ASSERT_TRUE(result.catch_(error_type::HttpError));
 }
 
-TEST(FuncResult_TestCase, RaisePermissionDenied)
+TEST(TestCase_Result, RaisePermissionDenied)
 {
 	using core::error_type;
 	auto result = core::raise<error_type::PermissionDenied, int>("an error");
@@ -62,7 +62,7 @@ TEST(FuncResult_TestCase, RaisePermissionDenied)
 	ASSERT_TRUE(result.catch_(error_type::HttpError));
 }
 
-TEST(FuncResult_TestCase, RaiseSuspiciousOperation)
+TEST(TestCase_Result, RaiseSuspiciousOperation)
 {
 	using core::error_type;
 	auto result = core::raise<error_type::SuspiciousOperation, int>("an error");
@@ -71,7 +71,7 @@ TEST(FuncResult_TestCase, RaiseSuspiciousOperation)
 	ASSERT_TRUE(result.catch_(error_type::HttpError));
 }
 
-TEST(FuncResult_TestCase, RaiseDisallowedHost)
+TEST(TestCase_Result, RaiseDisallowedHost)
 {
 	using core::error_type;
 	auto result = core::raise<error_type::DisallowedHost, int>("an error");
@@ -81,7 +81,7 @@ TEST(FuncResult_TestCase, RaiseDisallowedHost)
 	ASSERT_TRUE(result.catch_(error_type::HttpError));
 }
 
-TEST(FuncResult_TestCase, RaiseDisallowedRedirect)
+TEST(TestCase_Result, RaiseDisallowedRedirect)
 {
 	using core::error_type;
 	auto result = core::raise<error_type::DisallowedRedirect, int>("an error");

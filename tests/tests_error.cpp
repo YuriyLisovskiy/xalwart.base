@@ -1,7 +1,7 @@
 /**
  * tests_error.cpp
  *
- * Copyright (c) 2020 Yuriy Lisovskiy
+ * Copyright (c) 2020-2021 Yuriy Lisovskiy
  */
 
 #include <gtest/gtest.h>
@@ -9,7 +9,7 @@
 #include "../src/error.h"
 
 
-TEST(FuncResult_TestCase, ConstructError)
+TEST(TestCase_Error, ConstructError)
 {
 	using xw::core::error_type;
 	auto err = xw::core::Error(error_type::HttpError, "an error", 1, "main", "main.cpp");

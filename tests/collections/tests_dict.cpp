@@ -1,7 +1,7 @@
 /**
  * tests/collections/tests_dict.cpp
  *
- * Copyright (c) 2019 Yuriy Lisovskiy
+ * Copyright (c) 2019, 2021 Yuriy Lisovskiy
  */
 
 #include <gtest/gtest.h>
@@ -12,7 +12,7 @@ using namespace xw;
 
 
 // Dict testing.
-TEST(DictTestCase, TestGetItemExists)
+TEST(TestCase_Dict, TestGetItemExists)
 {
 	collections::Dict<int, int> testDict({
 		{1, 2},
@@ -24,7 +24,7 @@ TEST(DictTestCase, TestGetItemExists)
 	ASSERT_EQ(testDict.get(3, 0), 4);
 }
 
-TEST(DictTestCase, TestGetItemNotExists)
+TEST(TestCase_Dict, TestGetItemNotExists)
 {
 	collections::Dict<int, int> testDict(std::map<int, int>{
 		{1, 2}
@@ -32,7 +32,7 @@ TEST(DictTestCase, TestGetItemNotExists)
 	ASSERT_EQ(testDict.get(3, 0), 0);
 }
 
-TEST(DictTestCase, TestSet)
+TEST(TestCase_Dict, TestSet)
 {
 	collections::Dict<int, int> testDict;
 	ASSERT_EQ(testDict.get(3, 0), 0);
@@ -40,7 +40,7 @@ TEST(DictTestCase, TestSet)
 	ASSERT_EQ(testDict.get(3, 0), 5);
 }
 
-TEST(DictTestCase, TestRemove)
+TEST(TestCase_Dict, TestRemove)
 {
 	collections::Dict<int, int> testDict(std::map<int, int>{
 		{1, 2}
@@ -50,7 +50,7 @@ TEST(DictTestCase, TestRemove)
 	ASSERT_EQ(testDict.get(1, 0), 0);
 }
 
-TEST(DictTestCase, TestClear)
+TEST(TestCase_Dict, TestClear)
 {
 	collections::Dict<int, int> testDict(std::map<int, int>{
 		{1, 2}, {3, 4}
@@ -60,7 +60,7 @@ TEST(DictTestCase, TestClear)
 	ASSERT_TRUE(testDict.is_empty());
 }
 
-TEST(DictTestCase, TestSize)
+TEST(TestCase_Dict, TestSize)
 {
 	collections::Dict<int, int> testDict;
 	ASSERT_EQ(testDict.size(), 0);
@@ -70,7 +70,7 @@ TEST(DictTestCase, TestSize)
 	ASSERT_EQ(testDict.size(), 2);
 }
 
-TEST(DictTestCase, TestContains)
+TEST(TestCase_Dict, TestContains)
 {
 	collections::Dict<int, int> testDict(std::map<int, int>{
 		{1, 2}
@@ -79,13 +79,13 @@ TEST(DictTestCase, TestContains)
 	ASSERT_FALSE(testDict.contains(2));
 }
 
-TEST(DictTestCase, TestIsEmpty)
+TEST(TestCase_Dict, TestIsEmpty)
 {
 	collections::Dict<int, int> testDict;
 	ASSERT_TRUE(testDict.is_empty());
 }
 
-TEST(DictTestCase, TestIsNotEmpty)
+TEST(TestCase_Dict, TestIsNotEmpty)
 {
 	collections::Dict<int, int> testDict(std::map<int, int>{
 		{1, 2}
@@ -93,31 +93,31 @@ TEST(DictTestCase, TestIsNotEmpty)
 	ASSERT_FALSE(testDict.is_empty());
 }
 
-TEST(DictTestCase, TestBeginNotThrows)
+TEST(TestCase_Dict, TestBeginNotThrows)
 {
 	collections::Dict<int, int> testDict;
 	ASSERT_NO_THROW(testDict.begin());
 }
 
-TEST(DictTestCase, TestEndNotThrows)
+TEST(TestCase_Dict, TestEndNotThrows)
 {
 	collections::Dict<int, int> testDict;
 	ASSERT_NO_THROW(testDict.end());
 }
 
-TEST(DictTestCase, TestRBeginNotThrows)
+TEST(TestCase_Dict, TestRBeginNotThrows)
 {
 	collections::Dict<int, int> testDict;
 	ASSERT_NO_THROW(testDict.rbegin());
 }
 
-TEST(DictTestCase, TestREndNotThrows)
+TEST(TestCase_Dict, TestREndNotThrows)
 {
 	collections::Dict<int, int> testDict;
 	ASSERT_NO_THROW(testDict.rend());
 }
 
-TEST(DictTestCase, TestGetKeys)
+TEST(TestCase_Dict, TestGetKeys)
 {
 	collections::Dict<int, int> testDict(std::map<int, int>{
 		{1, 2},
@@ -135,7 +135,7 @@ TEST(DictTestCase, TestGetKeys)
 	}
 }
 
-TEST(DictTestCase, TestGetSize)
+TEST(TestCase_Dict, TestGetSize)
 {
 	collections::Dict<int, int> testDict(std::map<int, int>{
 		{1, 2},
