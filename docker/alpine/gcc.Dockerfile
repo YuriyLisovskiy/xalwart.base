@@ -28,8 +28,7 @@ COPY . .
 
 RUN mkdir build && \
     cd build && \
-    cmake -DCMAKE_TEST_ALL_ONLY=yes \
-          -DCMAKE_CXX_COMPILER=g++ \
+    cmake -DCMAKE_CXX_COMPILER=g++ \
           -DCMAKE_C_COMPILER=gcc \
           -DCMAKE_BUILD_TYPE=Debug .. && \
     make unittests-all

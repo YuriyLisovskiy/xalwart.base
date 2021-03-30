@@ -29,8 +29,7 @@ COPY . .
 
 RUN mkdir build && \
     cd build && \
-    cmake -DCMAKE_TEST_ALL_ONLY=yes \
-          -DCMAKE_CXX_COMPILER=clang++ \
+    cmake -DCMAKE_CXX_COMPILER=clang++ \
           -DCMAKE_C_COMPILER=clang \
           -DCMAKE_BUILD_TYPE=Debug .. && \
     make unittests-all

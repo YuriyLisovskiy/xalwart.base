@@ -33,8 +33,7 @@ jobs:
         run: |
           sudo mkdir build && \
           cd build/ && \
-          sudo cmake -DCMAKE_TEST_ALL=yes \
-                     -DCMAKE_CXX_COMPILER=clang++-${{ matrix.compiler_version }} \
+          sudo cmake -DCMAKE_CXX_COMPILER=clang++-${{ matrix.compiler_version }} \
                      -DCMAKE_C_COMPILER=clang-${{ matrix.compiler_version }} \
                      -DCMAKE_BUILD_TYPE=Debug .. && \
           sudo make unittests-all
