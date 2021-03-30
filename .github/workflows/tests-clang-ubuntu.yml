@@ -2,8 +2,10 @@ name: "ubuntu-clang"
 on:
   push:
     branches:
-      - '**'
-      - '!master'
+      - 'ubuntu/*'
+      - 'ubuntu-*'
+      - 'testing'
+      - 'dev'
 jobs:
   build:
     name: "${{ matrix.os }} [clang-${{ matrix.compiler_version }}]"

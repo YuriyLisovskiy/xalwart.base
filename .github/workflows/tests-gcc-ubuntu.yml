@@ -2,8 +2,10 @@ name: "ubuntu-gcc"
 on:
   push:
     branches:
-      - '**'
-      - '!master'
+      - 'ubuntu/*'
+      - 'ubuntu-*'
+      - 'testing'
+      - 'dev'
 jobs:
   build:
     name: "${{ matrix.os }} [gcc-${{ matrix.compiler_version }}]"

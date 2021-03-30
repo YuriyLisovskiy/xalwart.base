@@ -2,8 +2,10 @@ name: "alpine-gcc"
 on:
   push:
     branches:
-      - '**'
-      - '!master'
+      - 'alpine/*'
+      - 'alpine-*'
+      - 'testing'
+      - 'dev'
 jobs:
   build:
     name: "alpine-${{ matrix.alpine_version }} [gcc-10]"
