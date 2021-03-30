@@ -3,7 +3,7 @@
  *
  * Copyright (c) 2021 Yuriy Lisovskiy
  *
- * Generic utilities for working with path.
+ * Generic path utilities.
  */
 
 #pragma once

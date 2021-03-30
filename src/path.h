@@ -20,7 +20,6 @@
 
 #ifdef __windows__
 
-// TODO: include windows path utilities.
 #error "Path utilities is not supported on Windows"
 
 #endif // __windows__
@@ -28,7 +27,6 @@
 
 #ifdef __mac__
 
-// TODO: include mac path utilities.
 #error "Path utilities is not supported on Mac"
 
 #endif // __mac__

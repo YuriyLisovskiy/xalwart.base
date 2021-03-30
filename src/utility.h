@@ -20,7 +20,6 @@
 
 __UTILITY_BEGIN__
 
-// TESTME: contains(begin, end, item)
 // Checks if sequence contains item or not.
 //
 // `begin`: iterator to the beginning of the sequence.
@@ -30,28 +29,13 @@ __UTILITY_BEGIN__
 // Returns `true` if sequence contains item, `false` otherwise.
 // Returns `false` if the range is empty.
 template <typename ItemT, typename IteratorT>
-inline bool contains(IteratorT begin, IteratorT end, const ItemT& item)
+inline bool contains(const ItemT& item, IteratorT begin, IteratorT end)
 {
 	return std::any_of(begin, end, [item](const auto& o) -> bool {
 		return o == item;
 	});
 }
 
-// TESTME: contains(item, seq)
-// Checks if vector contains item or not.
-//
-// `item`: item to check.
-// `sequence`: vector of items where to search for.
-//
-// Returns `true` if sequence contains item, `false` otherwise.
-// Returns `false` if the range is empty.
-template <typename ItemT>
-inline bool contains(const ItemT& item, const std::vector<ItemT>& sequence)
-{
-	return contains(sequence.begin(), sequence.end(), item);
-}
-
-// TESTME: contains(item, initializer_list)
 // Checks if initializer list contains item or not.
 //
 // `item`: item to check.
@@ -62,10 +46,9 @@ inline bool contains(const ItemT& item, const std::vector<ItemT>& sequence)
 template <typename ItemT>
 bool contains(const ItemT& item, const std::initializer_list<ItemT>& sequence)
 {
-	return contains(sequence.begin(), sequence.end(), item);
+	return contains(item, sequence.begin(), sequence.end());
 }
 
-// TESTME: index_of
 // Searches for index of item in given range.
 //
 // `begin`: iterator to the beginning of the sequence.
@@ -73,9 +56,9 @@ bool contains(const ItemT& item, const std::initializer_list<ItemT>& sequence)
 // `item`: item to search.
 //
 // Returns non-negative `long` integer if the range contains `item`,
-// `-1` othrwise.
+// `-1` otherwise.
 template <typename ItemT, typename IteratorT>
-inline long index_of(IteratorT begin, IteratorT end, const ItemT& item)
+inline long index_of(const ItemT& item, IteratorT begin, IteratorT end)
 {
 	auto it = std::find(begin, end, item);
 	if (it == end)
@@ -86,7 +69,6 @@ inline long index_of(IteratorT begin, IteratorT end, const ItemT& item)
 	return std::distance(begin, it);
 }
 
-// TESTME: demangle
 // Converts type name to full name.
 //
 // `name`: result of 'typeid(...).name()' call.
@@ -94,7 +76,6 @@ inline long index_of(IteratorT begin, IteratorT end, const ItemT& item)
 // Returns full name.
 extern std::string demangle(const char* name);
 
-// TESTME: format_datetime
 // Turn a datetime into a date string as specified in RFC 2822.
 //
 // If usegmt is True, dt must be an aware datetime with an offset of zero.  In
@@ -109,7 +90,6 @@ extern std::string format_datetime(
 	const dt::Datetime* dt, bool use_gmt = false
 );
 
-// TESTME: format_date
 // Returns a date string as specified by RFC 2822, e.g.:
 //
 // Fri, 09 Nov 2001 01:08:47 -0000
@@ -134,7 +114,6 @@ extern std::string format_date(
 	time_t time_val, bool local_time = false, bool use_gmt = false
 );
 
-// TESTME: _format_timetuple_and_zone
 // Formats datetime from 'dt::time_tuple' and zone name as specified by RFC 2822, e.g.:
 //
 // Fri, 09 Nov 2001 01:08:47 -0000

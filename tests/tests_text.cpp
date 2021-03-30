@@ -11,7 +11,7 @@
 using namespace xw;
 
 
-TEST(TestCase_smart_split, Test_DoubleQuotes)
+TEST(TestCase_text, smart_split_DoubleQuotes)
 {
 	std::string input = R"(This is "a person's" test.)";
 	std::vector expected = {
@@ -25,7 +25,7 @@ TEST(TestCase_smart_split, Test_DoubleQuotes)
 	}
 }
 
-TEST(TestCase_smart_split, Test_SingleQuotes)
+TEST(smart_split, smart_split_SingleQuotes)
 {
 	std::string input = R"(Another 'person\'s' test.)";
 	std::vector expected = {
@@ -39,7 +39,7 @@ TEST(TestCase_smart_split, Test_SingleQuotes)
 	}
 }
 
-TEST(TestCase_smart_split, Test_NestedDoubleQuotes)
+TEST(smart_split, smart_split_NestedDoubleQuotes)
 {
 	std::string input = R"(A "\"funky\" style" test.)";
 	std::vector expected = {

@@ -29,7 +29,7 @@ __UTILITY_BEGIN__
 std::string demangle(const char* name)
 {
 #ifdef _MSC_VER
-	return core::str::ltrim(core::str::ltrim(name, "class"));
+	return str::ltrim(name, "class");
 #else
 	int status = -4;
 	std::unique_ptr<char, void(*)(void*)> res {
@@ -77,7 +77,7 @@ std::string format_date(
 	// 2822 requires that day and month names be the English abbreviations.
 	if (!time_val)
 	{
-		time_val = dt::internal::_time();
+		time_val = dt::_time();
 	}
 
 	std::shared_ptr<dt::Datetime> dt;
@@ -109,13 +109,13 @@ std::string _format_timetuple_and_zone(
 	dt::tm_tuple* time_tuple, const std::string& zone
 )
 {
-	return dt::internal::_DAY_NAMES[time_tuple->tm_wday+1] + ", " +
-		dt::internal::_lf(time_tuple->tm_mday) + " " +
-		dt::internal::_MONTH_NAMES[time_tuple->tm_mon] + " " +
-		dt::internal::_lf(time_tuple->tm_year, 4) + " " +
-		dt::internal::_lf(time_tuple->tm_hour) + ":" +
-		dt::internal::_lf(time_tuple->tm_min) + ":" +
-		dt::internal::_lf(time_tuple->tm_sec) + " " +
+	return dt::_DAY_NAMES[time_tuple->tm_wday+1] + ", " +
+		dt::_lf(time_tuple->tm_mday) + " " +
+		dt::_MONTH_NAMES[time_tuple->tm_mon] + " " +
+		dt::_lf(time_tuple->tm_year, 4) + " " +
+		dt::_lf(time_tuple->tm_hour) + ":" +
+		dt::_lf(time_tuple->tm_min) + ":" +
+		dt::_lf(time_tuple->tm_sec) + " " +
 		zone;
 }
 
