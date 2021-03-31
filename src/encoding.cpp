@@ -8,12 +8,6 @@
 
 // C++ libraries.
 #include <sstream>
-#include <codecvt>
-#include <codecvt>
-#include <algorithm>
-#include <iterator>
-#include <codecvt> // for wstring_convert
-#include <locale>  // for codecvt_byname
 
 // Core libraries.
 #include "./exceptions.h"
