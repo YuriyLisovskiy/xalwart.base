@@ -160,7 +160,48 @@ std::vector<std::string> rsplit(const std::string& s, char delimiter, long n)
 	return result;
 }
 
-std::string ltrim(std::string s, const std::string& chars)
+std::string ltrim(const std::string& s, char c)
+{
+	size_t pos = 0;
+	size_t n = s.size();
+	while (pos < n && s.at(pos) == c)
+	{
+		pos++;
+	}
+
+	return s.substr(pos);
+}
+
+std::string rtrim(const std::string& s, char c)
+{
+	size_t pos = s.size() - 1;
+	while (pos >= 0 && s.at(pos) == c)
+	{
+		pos--;
+	}
+
+	return s.substr(0, pos + 1);
+}
+
+std::string trim(const std::string& s, char c)
+{
+	size_t l_pos = 0;
+	size_t n = s.size();
+	while (l_pos < n && s.at(l_pos) == c)
+	{
+		l_pos++;
+	}
+
+	size_t r_pos = n - 1;
+	while (r_pos >= 0 && s.at(r_pos) == c)
+	{
+		r_pos--;
+	}
+
+	return s.substr(l_pos, r_pos - l_pos + 1);
+}
+
+std::string ltrim(const std::string& s, const std::string& chars)
 {
 	size_t pos = 0;
 	size_t n = s.size();
@@ -172,7 +213,7 @@ std::string ltrim(std::string s, const std::string& chars)
 	return s.substr(pos);
 }
 
-std::string rtrim(std::string s, const std::string& chars)
+std::string rtrim(const std::string& s, const std::string& chars)
 {
 	size_t pos = s.size() - 1;
 	while (pos >= 0 && chars.find(s[pos]) != std::string::npos)
@@ -183,7 +224,7 @@ std::string rtrim(std::string s, const std::string& chars)
 	return s.substr(0, pos + 1);
 }
 
-std::string trim(std::string s, const std::string& chars)
+std::string trim(const std::string& s, const std::string& chars)
 {
 	size_t l_pos = 0;
 	size_t n = s.size();

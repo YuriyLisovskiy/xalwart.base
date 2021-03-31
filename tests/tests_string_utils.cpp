@@ -406,13 +406,6 @@ TEST(TestCase_string_utils, ltrim_DefaultChars)
 	ASSERT_EQ(actual, expected);
 }
 
-TEST(TestCase_string_utils, ltrim_CustomChars)
-{
-	std::string expected = "llo, World";
-	std::string actual = str::ltrim("%%%Hello, World", "%eH");
-	ASSERT_EQ(actual, expected);
-}
-
 TEST(TestCase_string_utils, rtrim_DefaultChars)
 {
 	std::string expected = " -- Hello, World --";
@@ -420,17 +413,24 @@ TEST(TestCase_string_utils, rtrim_DefaultChars)
 	ASSERT_EQ(actual, expected);
 }
 
-TEST(TestCase_string_utils, rtrim_CustomChars)
-{
-	std::string expected = " -- Hello,";
-	std::string actual = str::rtrim(" -- Hello, World -- ", " World-");
-	ASSERT_EQ(actual, expected);
-}
-
 TEST(TestCase_string_utils, trim_DefaultChars)
 {
 	std::string expected = "Hello, World";
 	std::string actual = str::trim(" Hello, World          ");
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_string_utils, ltrim_CustomChars)
+{
+	std::string expected = "llo, World";
+	std::string actual = str::ltrim("%%%Hello, World", "%eH");
+	ASSERT_EQ(actual, expected);
+}
+
+TEST(TestCase_string_utils, rtrim_CustomChars)
+{
+	std::string expected = " -- Hello,";
+	std::string actual = str::rtrim(" -- Hello, World -- ", " World-");
 	ASSERT_EQ(actual, expected);
 }
 

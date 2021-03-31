@@ -13,8 +13,8 @@
 using namespace xw;
 
 
-template <typename _T>
-bool vectorsAreEqual(const std::vector<_T>& left, const std::vector<_T>& right)
+template <typename T>
+bool vectorsAreEqual(const std::vector<T>& left, const std::vector<T>& right)
 {
 	bool result = true;
 	if (left.size() != right.size())
@@ -35,8 +35,7 @@ bool vectorsAreEqual(const std::vector<_T>& left, const std::vector<_T>& right)
 	return result;
 }
 
-// MultiValueDict testing.
-TEST(MultiValueDictTestCase, TestGetItemExists)
+TEST(TestCase_MultiValueDict, TestGetItemExists)
 {
 	collections::MultiValueDict<int, int> testDict(std::map<int, std::vector<int>>{
 		{1, {2, 3, 4}},
@@ -48,7 +47,7 @@ TEST(MultiValueDictTestCase, TestGetItemExists)
 	ASSERT_EQ(testDict.get(7, 0), 10);
 }
 
-TEST(MultiValueDictTestCase, TestGetItemNotExists)
+TEST(TestCase_MultiValueDict, TestGetItemNotExists)
 {
 	collections::MultiValueDict<int, int> testDict(std::map<int, std::vector<int>>{
 		{1, {2, 3, 4}},
@@ -56,7 +55,7 @@ TEST(MultiValueDictTestCase, TestGetItemNotExists)
 	ASSERT_EQ(testDict.get(3, 0), 0);
 }
 
-TEST(MultiValueDictTestCase, TestSet)
+TEST(TestCase_MultiValueDict, TestSet)
 {
 	collections::MultiValueDict<int, int> testDict;
 	ASSERT_EQ(testDict.get(3, 0), 0);
@@ -64,7 +63,7 @@ TEST(MultiValueDictTestCase, TestSet)
 	ASSERT_EQ(testDict.get(3, 0), 5);
 }
 
-TEST(MultiValueDictTestCase, TestSetVector)
+TEST(TestCase_MultiValueDict, TestSetVector)
 {
 	collections::MultiValueDict<int, int> testDict;
 	ASSERT_EQ(testDict.get(3, 0), 0);
@@ -72,7 +71,7 @@ TEST(MultiValueDictTestCase, TestSetVector)
 	ASSERT_EQ(testDict.get(3), 7);
 }
 
-TEST(MultiValueDictTestCase, TestAppendToNonExistent)
+TEST(TestCase_MultiValueDict, TestAppendToNonExistent)
 {
 	collections::MultiValueDict<int, int> testDict;
 	ASSERT_EQ(testDict.get(3, {}), {});
@@ -84,7 +83,7 @@ TEST(MultiValueDictTestCase, TestAppendToNonExistent)
 	ASSERT_EQ(testDict.get(3), 100);
 }
 
-TEST(MultiValueDictTestCase, TestAppendToExistent)
+TEST(TestCase_MultiValueDict, TestAppendToExistent)
 {
 	collections::MultiValueDict<int, int> testDict(std::map<int, std::vector<int>>{
 		{1, {2, 3}}
@@ -95,7 +94,7 @@ TEST(MultiValueDictTestCase, TestAppendToExistent)
 	ASSERT_TRUE(vectorsAreEqual(testDict.get(1, std::vector<int>{}), std::vector<int>{2, 3, 5}));
 }
 
-TEST(MultiValueDictTestCase, TestAppendVectorToNonExistent)
+TEST(TestCase_MultiValueDict, TestAppendVectorToNonExistent)
 {
 	collections::MultiValueDict<int, int> testDict;
 	ASSERT_EQ(testDict.get(3, {}), {});
@@ -103,7 +102,7 @@ TEST(MultiValueDictTestCase, TestAppendVectorToNonExistent)
 	ASSERT_EQ(testDict.get(3), 7);
 }
 
-TEST(MultiValueDictTestCase, TestAppendVectorToExistent)
+TEST(TestCase_MultiValueDict, TestAppendVectorToExistent)
 {
 	collections::MultiValueDict<int, int> testDict(
 		std::map<int, std::vector<int>>{{1, {2, 3}}}
@@ -115,7 +114,7 @@ TEST(MultiValueDictTestCase, TestAppendVectorToExistent)
 	ASSERT_TRUE(vectorsAreEqual(testDict.get(1, std::vector<int>{}), std::vector<int>{2, 3, 5, 6, 7}));
 }
 
-TEST(MultiValueDictTestCase, TestClear)
+TEST(TestCase_MultiValueDict, TestClear)
 {
 	collections::MultiValueDict<int, int> testDict(
 		std::map<int, std::vector<int>>{{1, {2, 3, 4}}}
@@ -125,7 +124,7 @@ TEST(MultiValueDictTestCase, TestClear)
 	ASSERT_TRUE(testDict.is_empty());
 }
 
-TEST(MultiValueDictTestCase, TestSize)
+TEST(TestCase_MultiValueDict, TestSize)
 {
 	collections::MultiValueDict<int, int> testDict;
 	ASSERT_EQ(testDict.size(), 0);
@@ -135,7 +134,7 @@ TEST(MultiValueDictTestCase, TestSize)
 	ASSERT_EQ(testDict.size(), 2);
 }
 
-TEST(MultiValueDictTestCase, TestRemove)
+TEST(TestCase_MultiValueDict, TestRemove)
 {
 	collections::MultiValueDict<int, int> testDict(
 		std::map<int, std::vector<int>>{{1, {2, 3, 4}}}
@@ -145,7 +144,7 @@ TEST(MultiValueDictTestCase, TestRemove)
 	ASSERT_EQ(testDict.get(1, 0), 0);
 }
 
-TEST(MultiValueDictTestCase, TestContains)
+TEST(TestCase_MultiValueDict, TestContains)
 {
 	collections::MultiValueDict<int, int> testDict(
 		std::map<int, std::vector<int>>{{1, {2, 3, 4}}}
@@ -154,13 +153,13 @@ TEST(MultiValueDictTestCase, TestContains)
 	ASSERT_FALSE(testDict.contains(2));
 }
 
-TEST(MultiValueDictTestCase, TestIsEmpty)
+TEST(TestCase_MultiValueDict, TestIsEmpty)
 {
 	collections::MultiValueDict<int, int> testDict;
 	ASSERT_TRUE(testDict.is_empty());
 }
 
-TEST(MultiValueDictTestCase, TestIsNotEmpty)
+TEST(TestCase_MultiValueDict, TestIsNotEmpty)
 {
 	collections::MultiValueDict<int, int> testDict(
 		std::map<int, std::vector<int>>{{1, {2, 3, 4}}}
@@ -168,25 +167,25 @@ TEST(MultiValueDictTestCase, TestIsNotEmpty)
 	ASSERT_FALSE(testDict.is_empty());
 }
 
-TEST(MultiValueDictTestCase, TestBeginNotThrows)
+TEST(TestCase_MultiValueDict, TestBeginNotThrows)
 {
 	collections::MultiValueDict<int, int> testDict;
 	ASSERT_NO_THROW(testDict.begin());
 }
 
-TEST(MultiValueDictTestCase, TestEndNotThrows)
+TEST(TestCase_MultiValueDict, TestEndNotThrows)
 {
 	collections::MultiValueDict<int, int> testDict;
 	ASSERT_NO_THROW(testDict.end());
 }
 
-TEST(MultiValueDictTestCase, TestRBeginNotThrows)
+TEST(TestCase_MultiValueDict, TestRBeginNotThrows)
 {
 	collections::MultiValueDict<int, int> testDict;
 	ASSERT_NO_THROW(testDict.rbegin());
 }
 
-TEST(MultiValueDictTestCase, TestREndNotThrows)
+TEST(TestCase_MultiValueDict, TestREndNotThrows)
 {
 	collections::MultiValueDict<int, int> testDict;
 	ASSERT_NO_THROW(testDict.rend());

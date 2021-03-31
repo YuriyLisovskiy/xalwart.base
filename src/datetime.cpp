@@ -1,7 +1,7 @@
 /**
  * datetime.cpp
  *
- * Copyright (c) 2020 Yuriy Lisovskiy
+ * Copyright (c) 2020-2021 Yuriy Lisovskiy
  */
 
 #include "./datetime.h"
@@ -19,8 +19,11 @@
 #include <cmath>
 #endif
 
+// Core libraries.
+#include "./sys.h"
 
-__DATETIME_INTERNAL_BEGIN__
+
+__DATETIME_BEGIN__
 
 void _M_Assert(
 	const char* expr_str, bool expr,
@@ -110,7 +113,7 @@ ymd _ord2ymd(size_t n)
 	//      1 Jan  401         _DI400Y +1     _DI400Y      400-year boundary
 
 	n -= 1;
-	auto n400_n = internal::_div_mod(n, _DI400Y);
+	auto n400_n = _div_mod(n, _DI400Y);
 	auto n400 = n400_n.first;
 	n = n400_n.second;
 	auto year = n400 * 400 + 1;
@@ -120,18 +123,18 @@ ymd _ord2ymd(size_t n)
 	// Note that it's possible for n100 to equal 4!  In that case 4 full
 	// 100-year cycles precede the desired day, which implies the desired
 	// day is December 31 at the end of a 400-year cycle.
-	auto n100_n = internal::_div_mod(n, _DI100Y);
+	auto n100_n = _div_mod(n, _DI100Y);
 	auto n100 = n100_n.first;
 	n = n100_n.second;
 
 	// Now compute how many 4-year cycles precede it.
-	auto n4_n = internal::_div_mod(n, _DI4Y);
+	auto n4_n = _div_mod(n, _DI4Y);
 	auto n4 = n4_n.first;
 	n = n4_n.second;
 
 	// And now how many single years.  Again n1 can be 4, and again meaning
 	// that the desired day is December 31 at the end of the 4-year cycle.
-	auto n1_n = internal::_div_mod(n, (size_t)365);
+	auto n1_n = _div_mod(n, (size_t)365);
 	auto n1 = n1_n.first;
 	n = n1_n.second;
 
@@ -181,7 +184,7 @@ tm_tuple _build_struct_time(
 //	t.tm_wday = (internal::_mod((int)(_ymd2ord(y, m, d) + 6), 7) + 1)%7;
 //	t.tm_yday = ((int)_days_before_month(y, m) + d) - 1;
 
-	t.tm_wday = internal::_mod((_ymd2ord(y, m, d) + 6), 7);
+	t.tm_wday = _mod((_ymd2ord(y, m, d) + 6), 7);
 //	t.tm_yday = (int)_days_before_month(y, m) + d;
 
 	t.tm_isdst = dst_flag;
@@ -212,7 +215,7 @@ void _mk_tz_info(tm_tuple* time_tuple, bool is_gmt)
 	auto offset = std::string(s.substr(0, pos));
 	auto abbr = s.substr(pos + 1);
 
-	time_tuple->tm_zone = abbr.c_str();
+	std::strcpy((char*)time_tuple->tm_zone, abbr.c_str());
 
 	// `offset` is in ISO 8601 format: "±HHMM"
 	int h = std::stoi(offset.substr(0,3), nullptr, 10);
@@ -271,7 +274,7 @@ Datetime _strptime_datetime(
 )
 {
 	tm_tuple dt_tm{};
-	internal::_strptime(datetime_str.c_str(), format, &dt_tm);
+	_strptime(datetime_str.c_str(), format, &dt_tm);
 //	internal::_mk_tz_info(&dt_tm);
 
 	std::shared_ptr<Timezone> tz = nullptr;
@@ -338,7 +341,7 @@ std::string _format_time(
 			result = _lf(hh) + ":" + _lf(mm) + ":" + _lf(ss) + "." + _lf(us, 6);
 			break;
 		default:
-			throw std::invalid_argument("Unknown time_spec value");
+			throw std::invalid_argument("dt: unknown time_spec value");
 	}
 
 	return result;
@@ -486,13 +489,13 @@ ymd _parse_isoformat_date(const std::string& dt_str)
 	auto year = (ushort)std::stol(dt_str.substr(0, 4));
 	if (dt_str[4] != '-')
 	{
-		throw std::invalid_argument("Invalid date separator: " + std::to_string(dt_str[4]));
+		throw std::invalid_argument("dt: invalid date separator: " + std::to_string(dt_str[4]));
 	}
 
 	auto month = (ushort)std::stol(dt_str.substr(5, 2));
 	if (dt_str[7] != '-')
 	{
-		throw std::invalid_argument("Invalid date separator");
+		throw std::invalid_argument("dt: invalid date separator");
 	}
 
 	auto day = (ushort)std::stol(dt_str.substr(8, 2));
@@ -508,7 +511,7 @@ hmsf _parse_hh_mm_ss_ff(const std::string& t_str)
 	{
 		if ((str_len - pos) < 2)
 		{
-			throw std::invalid_argument("Incomplete time component");
+			throw std::invalid_argument("dt: incomplete time component");
 		}
 
 		time_comps[comp] = std::stol(t_str.substr(pos, 2));
@@ -521,7 +524,7 @@ hmsf _parse_hh_mm_ss_ff(const std::string& t_str)
 
 		if (next_char != ':')
 		{
-			throw std::invalid_argument("Invalid time separator: " + std::to_string(next_char));
+			throw std::invalid_argument("dt: invalid time separator: " + std::to_string(next_char));
 		}
 
 		pos++;
@@ -531,14 +534,14 @@ hmsf _parse_hh_mm_ss_ff(const std::string& t_str)
 	{
 		if (t_str[pos] != '.')
 		{
-			throw std::invalid_argument("Invalid microsecond component");
+			throw std::invalid_argument("dt: invalid microsecond component");
 		}
 
 		pos++;
 		auto len_rem = str_len - pos;
 		if (len_rem != 3 && len_rem != 6)
 		{
-			throw std::invalid_argument("Invalid microsecond component");
+			throw std::invalid_argument("dt: invalid microsecond component");
 		}
 
 		time_comps[3] = std::stol(t_str.substr(pos));
@@ -561,21 +564,21 @@ void _check_date_fields(ushort year, ushort month, ushort day)
 	if (!(year >= MIN_YEAR && year <= MAX_YEAR))
 	{
 		throw std::invalid_argument(
-			"year must be in " + std::to_string(MIN_YEAR) + ".." +
+			"dt: year must be in " + std::to_string(MIN_YEAR) + ".." +
 			std::to_string(MAX_YEAR) + ": " + std::to_string(year)
 		);
 	}
 
 	if (!(month >= 1 && month <= 12))
 	{
-		throw std::invalid_argument("month must be in 1..12: " + std::to_string(month));
+		throw std::invalid_argument("dt: month must be in 1..12: " + std::to_string(month));
 	}
 
 	auto dim = _days_in_month(year, month);
 	if (!(day >= 1 && day <= dim))
 	{
 		throw std::invalid_argument(
-			"day must be in 1.." + std::to_string(dim) + ": " + std::to_string(day)
+			"dt: day must be in 1.." + std::to_string(dim) + ": " + std::to_string(day)
 		);
 	}
 }
@@ -587,33 +590,33 @@ void _check_time_fields(
 {
 	if (!(hour >= 0 && hour <= 23))
 	{
-		throw std::invalid_argument("hour must be in 0..23: " + std::to_string(hour));
+		throw std::invalid_argument("dt: hour must be in 0..23: " + std::to_string(hour));
 	}
 
 	if (!(minute >= 0 && minute <= 59))
 	{
-		throw std::invalid_argument("minute must be in 0..59: " + std::to_string(minute));
+		throw std::invalid_argument("dt: minute must be in 0..59: " + std::to_string(minute));
 	}
 
 	if (!(second >= 0 && second <= 59))
 	{
-		throw std::invalid_argument("second must be in 0..59: " + std::to_string(second));
+		throw std::invalid_argument("dt: second must be in 0..59: " + std::to_string(second));
 	}
 
 	if (!(microsecond >= 0 && microsecond <= 999999))
 	{
-		throw std::invalid_argument("microsecond must be in 0..999999: " + std::to_string(microsecond));
+		throw std::invalid_argument("dt: microsecond must be in 0..999999: " + std::to_string(microsecond));
 	}
 
 	if (fold != 0 && fold != 1)
 	{
-		throw std::invalid_argument("fold must be either 0 or 1");
+		throw std::invalid_argument("dt: fold must be either 0 or 1");
 	}
 }
 
 long long int _divide_and_round(long long int a, long long int b)
 {
-	auto q_r = internal::_div_mod(a, b);
+	auto q_r = _div_mod(a, b);
 	auto q = q_r.first;
 	auto r = q_r.second;
 
@@ -622,7 +625,7 @@ long long int _divide_and_round(long long int a, long long int b)
 	// positive, 2 * r < b if b negative.
 	r *= 2;
 	auto greater_than_half = b > 0 ? r > b : r < b;
-	if (greater_than_half || r == b && internal::_mod(q, 2) == 1)
+	if (greater_than_half || r == b && _mod(q, 2) == 1)
 	{
 		q += 1;
 	}
@@ -651,11 +654,6 @@ tm_tuple _gmtime(const time_t* _timer)
 	return tm_tuple(t);
 }
 
-__DATETIME_INTERNAL_END__
-
-
-__DATETIME_BEGIN__
-
 std::string Timedelta::_plural(long n)
 {
 	return n != 1 ? "s" : "";
@@ -671,7 +669,7 @@ signed short Timedelta::_cmp(const Timedelta& other) const
 	const short arr_sz = 3;
 	long long left[arr_sz] = {this->_days, this->_seconds, this->_microseconds};
 	long long right[arr_sz] = {other._days, other._seconds, other._microseconds};
-	return internal::_cmp_arr(left, right, arr_sz);
+	return _cmp_arr(left, right, arr_sz);
 }
 
 Timedelta::Timedelta(
@@ -696,7 +694,7 @@ Timedelta::Timedelta(
 	auto seconds_frac = day_seconds_frac;
 	assert(std::abs(seconds_frac) <= 2.0);
 
-	auto d_s = internal::_div_mod(seconds, 24*3600);
+	auto d_s = _div_mod(seconds, 24*3600);
 	days = d_s.first;
 	seconds = d_s.second;
 	d += days;
@@ -706,11 +704,11 @@ Timedelta::Timedelta(
 	auto us_double = seconds_frac * 1e6;
 	assert(std::abs(us_double) < 2.1e6);    // exact value not critical
 
-	auto s_ms = internal::_div_mod(microseconds, 1000000);
+	auto s_ms = _div_mod(microseconds, 1000000);
 	seconds = s_ms.first;
 	microseconds = s_ms.second;
 
-	d_s = internal::_div_mod(seconds, 24*3600);
+	d_s = _div_mod(seconds, 24*3600);
 	days = d_s.first;
 	seconds = d_s.second;
 	d += days;
@@ -720,12 +718,12 @@ Timedelta::Timedelta(
 	assert(std::abs(microseconds) < 3.1e6);
 
 	// Just a little bit of carrying possible for microseconds and seconds.
-	auto s_us = internal::_div_mod(microseconds, 1000000);
+	auto s_us = _div_mod(microseconds, 1000000);
 	seconds = s_us.first;
 	us = s_us.second;
 	s += seconds;
 
-	d_s = internal::_div_mod(s, 24*3600);
+	d_s = _div_mod(s, 24*3600);
 	days = d_s.first;
 	s = d_s.second;
 	d += days;
@@ -736,7 +734,7 @@ Timedelta::Timedelta(
 	if (std::abs(d) > 999999999)
 	{
 		throw std::invalid_argument(
-			"timedelta # of days is too large: " + std::to_string(d)
+			"Timedelta: # of days is too large: " + std::to_string(d)
 		);
 	}
 
@@ -747,15 +745,15 @@ Timedelta::Timedelta(
 
 std::string Timedelta::str() const
 {
-	auto mm_ss = internal::_div_mod(this->_seconds, (long)60);
+	auto mm_ss = _div_mod(this->_seconds, (long)60);
 	long long int mm = mm_ss.first;
 	long long int ss = mm_ss.second;
 
-	auto hh_mm = internal::_div_mod(mm, (long)60);
+	auto hh_mm = _div_mod(mm, (long)60);
 	long long int hh = hh_mm.first;
 	mm = hh_mm.second;
 
-	auto s = std::to_string(hh) + ":" + internal::_lf(mm) + ":" + internal::_lf(ss);
+	auto s = std::to_string(hh) + ":" + _lf(mm) + ":" + _lf(ss);
 	if (this->_days != 0)
 	{
 		s = std::to_string(this->_days) + " day" + Timedelta::_plural(this->_days) + ", " + s;
@@ -763,7 +761,7 @@ std::string Timedelta::str() const
 
 	if (this->_microseconds != 0)
 	{
-		s += "." + internal::_lf(this->_microseconds, 6);
+		s += "." + _lf(this->_microseconds, 6);
 	}
 
 	return s;
@@ -854,7 +852,7 @@ Timedelta Timedelta::operator / (const long& other) const
 {
 	return Timedelta(
 		0, 0,
-		internal::_divide_and_round(this->_to_microseconds(), other)
+		_divide_and_round(this->_to_microseconds(), other)
 	);
 }
 
@@ -862,7 +860,7 @@ Timedelta operator / (long left, const Timedelta& right)
 {
 	return Timedelta(
 		0, 0,
-		internal::_divide_and_round(right._to_microseconds(), left)
+		_divide_and_round(right._to_microseconds(), left)
 	);
 }
 
@@ -870,7 +868,7 @@ Timedelta Timedelta::operator % (const Timedelta& other) const
 {
 	return Timedelta(
 		0, 0,
-		internal::_mod(this->_to_microseconds(), other._to_microseconds())
+		_mod(this->_to_microseconds(), other._to_microseconds())
 	);
 }
 
@@ -934,19 +932,19 @@ const Timedelta Timedelta::RESOLUTION = Timedelta(0, 0, 1);
 // Date class definitions.
 signed char Date::_cmp(const Date& other) const
 {
-	auto y1_y2 = internal::_cmp(this->_year, other._year);
+	auto y1_y2 = _cmp_val(this->_year, other._year);
 	if (y1_y2 != 0)
 	{
 		return y1_y2;
 	}
 
-	auto m1_m2 = internal::_cmp(this->_month, other._month);
+	auto m1_m2 = _cmp_val(this->_month, other._month);
 	if (m1_m2 != 0)
 	{
 		return m1_m2;
 	}
 
-	auto d1_d2 = internal::_cmp(this->_day, other._day);
+	auto d1_d2 = _cmp_val(this->_day, other._day);
 	if (d1_d2 != 0)
 	{
 		return d1_d2;
@@ -957,7 +955,7 @@ signed char Date::_cmp(const Date& other) const
 
 Date::Date(ushort year, ushort month, ushort day)
 {
-	internal::_check_date_fields(year, month, day);
+	_check_date_fields(year, month, day);
 	this->_year = year;
 	this->_month = month;
 	this->_day = day;
@@ -965,26 +963,26 @@ Date::Date(ushort year, ushort month, ushort day)
 
 Date Date::from_timestamp(time_t t)
 {
-	auto lt = internal::_localtime(&t);
+	auto lt = _localtime(&t);
 	return Date(lt.tm_year, lt.tm_mon, lt.tm_mday);
 }
 
 Date Date::today()
 {
-	auto ms = internal::_time();
+	auto ms = _time();
 	return Date::from_timestamp(ms);
 }
 
 Date Date::from_ordinal(size_t n)
 {
-	auto ymd = internal::_ord2ymd(n);
+	auto ymd = _ord2ymd(n);
 	return Date(ymd.year, ymd.month, ymd.day);
 }
 
 Date Date::from_iso_format(const std::string& date_str)
 {
-	m_assert(date_str.size() == 10, ("Invalid iso format string: " + date_str).c_str());
-	auto iso_ymd = internal::_parse_isoformat_date(date_str);
+	m_assert(date_str.size() == 10, ("Date: invalid iso format string: " + date_str).c_str());
+	auto iso_ymd = _parse_isoformat_date(date_str);
 	return Date(iso_ymd.year, iso_ymd.month, iso_ymd.day);
 }
 
@@ -993,7 +991,7 @@ Date Date::from_iso_calendar(ushort year, ushort week, ushort day)
 	// Year is bounded this way because 9999-12-31 is (9999, 52, 5)
 	if (!(year >= MIN_YEAR && year <= MAX_YEAR))
 	{
-		throw std::invalid_argument("Year is out of range: " + std::to_string(year));
+		throw std::invalid_argument("Date: year is out of range: " + std::to_string(year));
 	}
 
 	if (!(week > 0 && week < 53))
@@ -1003,10 +1001,8 @@ Date Date::from_iso_calendar(ushort year, ushort week, ushort day)
 		{
 			// ISO years have 53 weeks in them on years starting with a
 			// Thursday and leap years starting on a Wednesday
-			auto first_weekday = internal::_mod(
-				internal::_ymd2ord(year, 1, 1), 7
-			);
-			if (first_weekday == 4 || (first_weekday == 3 && internal::_is_leap(year)))
+			auto first_weekday = _mod(_ymd2ord(year, 1, 1), 7);
+			if (first_weekday == 4 || (first_weekday == 3 && _is_leap(year)))
 			{
 				out_of_range = false;
 			}
@@ -1014,14 +1010,14 @@ Date Date::from_iso_calendar(ushort year, ushort week, ushort day)
 
 		if (out_of_range)
 		{
-			throw std::invalid_argument("Invalid week: " + std::to_string(week));
+			throw std::invalid_argument("Date: invalid week: " + std::to_string(week));
 		}
 	}
 
 	if (!(day > 0 && day < 8))
 	{
 		throw std::invalid_argument(
-			"Invalid weekday: " + std::to_string(day) + " (range is [1, 7])"
+			"Date: invalid weekday: " + std::to_string(day) + " (range is [1, 7])"
 		);
 	}
 
@@ -1029,37 +1025,35 @@ Date Date::from_iso_calendar(ushort year, ushort week, ushort day)
 	auto day_offset = (week - 1) * 7 + (day - 1);
 
 	// Calculate the ordinal day for monday, week 1
-	auto day_1 = internal::_iso_week1monday(year);
+	auto day_1 = _iso_week1monday(year);
 	auto ord_day = day_1 + day_offset;
 
-	auto ymd = internal::_ord2ymd(ord_day);
+	auto ymd = _ord2ymd(ord_day);
 	return Date(ymd.year, ymd.month, ymd.day);
 }
 
 std::string Date::ctime() const
 {
-	auto weekday = internal::_mod(this->to_ordinal(), 7);
+	auto weekday = _mod(this->to_ordinal(), 7);
 	if (!weekday)
 	{
 		weekday = 7;
 	}
 
-	return internal::_DAY_NAMES[weekday] + " " +
-			internal::_MONTH_NAMES[this->_month] + " " +
-			internal::_lf(this->_day, 2, ' ') + " 00:00:00 " +
-			internal::_lf(this->_year, 4, 0);
+	return _DAY_NAMES[weekday] + " " +
+		_MONTH_NAMES[this->_month] + " " +
+		_lf(this->_day, 2, ' ') + " 00:00:00 " +
+		_lf(this->_year, 4, 0);
 }
 
 std::string Date::strftime(const std::string& fmt) const
 {
-	return internal::_wrap_strftime(fmt, this->time_tuple());
+	return _wrap_strftime(fmt, this->time_tuple());
 }
 
 std::string Date::iso_format() const
 {
-	return internal::_lf(this->_year, 4) + "-" +
-			internal::_lf(this->_month) + "-" +
-			internal::_lf(this->_day);
+	return _lf(this->_year, 4) + "-" + _lf(this->_month) + "-" + _lf(this->_day);
 }
 
 std::string Date::str() const
@@ -1084,14 +1078,14 @@ ushort Date::day() const
 
 tm_tuple Date::time_tuple() const
 {
-	return internal::_build_struct_time(
+	return _build_struct_time(
 		this->_year, this->_month, this->_day, 0, 0, 0, -1
 	);
 }
 
 size_t Date::to_ordinal() const
 {
-	return internal::_ymd2ord(this->_year, this->_month, this->_day);
+	return _ymd2ord(this->_year, this->_month, this->_day);
 }
 
 Date Date::replace(ushort year, ushort month, ushort day) const
@@ -1147,12 +1141,12 @@ bool Date::operator > (const Date& other) const
 Date Date::operator + (const Timedelta& other) const
 {
 	auto o = this->to_ordinal() + other.days();
-	if (o > 0 && o <= internal::_MAX_ORDINAL)
+	if (o > 0 && o <= _MAX_ORDINAL)
 	{
 		return Date::from_ordinal(o);
 	}
 
-	throw std::out_of_range("result out of range");
+	throw std::out_of_range("Date: result out of range");
 }
 
 Timedelta Date::operator - (const Date& other) const
@@ -1169,13 +1163,13 @@ Date Date::operator - (const Timedelta& other) const
 
 short int Date::weekday() const
 {
-	return (short int)(internal::_mod((this->to_ordinal() + 6), 7));
+	return (short int)(_mod((this->to_ordinal() + 6), 7));
 }
 
 short int Date::iso_weekday() const
 {
 	// 1-Jan-0001 is a Monday
-	auto wd = internal::_mod(this->to_ordinal(), 7);
+	auto wd = _mod(this->to_ordinal(), 7);
 	if (!wd)
 	{
 		wd = 7;
@@ -1187,24 +1181,24 @@ short int Date::iso_weekday() const
 std::tuple<ushort, ushort, ushort> Date::iso_calendar() const
 {
 	auto year = this->_year;
-	auto week1monday = internal::_iso_week1monday(year);
-	auto today = internal::_ymd2ord(this->_year, this->_month, this->_day);
+	auto week1monday = _iso_week1monday(year);
+	auto today = _ymd2ord(this->_year, this->_month, this->_day);
 
 	// Internally, week and day have origin 0
-	auto w_d = internal::_div_mod((long long)(today - week1monday), 7);
+	auto w_d = _div_mod((long long)(today - week1monday), 7);
 	auto week = w_d.first;
 	auto day = w_d.second;
 	if (week < 0)
 	{
 		year--;
-		week1monday = internal::_iso_week1monday(year);
-		w_d = internal::_div_mod((long long)(today - week1monday), 7);
+		week1monday = _iso_week1monday(year);
+		w_d = _div_mod((long long)(today - week1monday), 7);
 		week = w_d.first;
 		day = w_d.second;
 	}
 	else if (week >= 52)
 	{
-		if (today >= internal::_iso_week1monday(year + 1))
+		if (today >= _iso_week1monday(year + 1))
 		{
 			year++;
 			week = 0;
@@ -1228,7 +1222,7 @@ Time::Time(
 	ushort fold
 )
 {
-	internal::_check_time_fields(hour, minute, second, microsecond, fold);
+	_check_time_fields(hour, minute, second, microsecond, fold);
 	this->_hour = hour;
 	this->_minute = minute;
 	this->_second = second;
@@ -1332,7 +1326,7 @@ signed short Time::_cmp(const Time& other, bool allow_mixed) const
 		const short arr_sz = 4;
 		uint left[arr_sz] = {this->_hour, this->_minute, this->_second, this->_microsecond};
 		uint right[arr_sz] = {other._hour, other._minute, other._second, other._microsecond};
-		return internal::_cmp_arr(left, right, arr_sz);
+		return _cmp_arr(left, right, arr_sz);
 	}
 
 	if (!my_off || !ot_off)
@@ -1343,7 +1337,7 @@ signed short Time::_cmp(const Time& other, bool allow_mixed) const
 		}
 		else
 		{
-			throw std::invalid_argument("cannot compare naive and aware times");
+			throw std::invalid_argument("Time: cannot compare naive and aware times");
 		}
 	}
 
@@ -1353,17 +1347,17 @@ signed short Time::_cmp(const Time& other, bool allow_mixed) const
 	const short arr_sz = 3;
 	uint left[arr_sz] = {(uint)my_hh_mm, this->_second, this->_microsecond};
 	uint right[arr_sz] = {(uint)ot_hh_mm, other._second, other._microsecond};
-	return internal::_cmp_arr(left, right, arr_sz);
+	return _cmp_arr(left, right, arr_sz);
 }
 
 std::string Time::_tz_str() const
 {
-	return internal::_format_offset(this->utc_offset().get());
+	return _format_offset(this->utc_offset().get());
 }
 
 std::string Time::iso_format(time_spec ts) const
 {
-	auto s = internal::_format_time(
+	auto s = _format_time(
 		this->_hour, this->_minute, this->_second, this->_microsecond, ts
 	);
 	auto tz = this->_tz_str();
@@ -1382,7 +1376,7 @@ std::string Time::str() const
 
 Time Time::from_iso_format(const std::string& time_str)
 {
-	auto t = internal::_parse_isoformat_time(time_str);
+	auto t = _parse_isoformat_time(time_str);
 	return Time(t.hh, t.mm, t.ss, t.ff, t.tz);
 }
 
@@ -1402,7 +1396,7 @@ std::string Time::strftime(const std::string& fmt) const
 	auto utc_offset = [this]() -> std::shared_ptr<Timedelta> { return this->utc_offset(); };
 	auto tz_name = [this]() -> std::string { return this->tz_name(); };
 
-	return internal::_wrap_strftime(fmt, time, microsecond, utc_offset, tz_name);
+	return _wrap_strftime(fmt, time, microsecond, utc_offset, tz_name);
 }
 
 std::shared_ptr<Timedelta> Time::utc_offset() const
@@ -1413,7 +1407,7 @@ std::shared_ptr<Timedelta> Time::utc_offset() const
 	}
 
 	auto offset = this->_tz_info->utc_offset(nullptr);
-	internal::_check_utc_offset("utcoffset", offset.get());
+	_check_utc_offset("utcoffset", offset.get());
 	return offset;
 }
 
@@ -1435,7 +1429,7 @@ std::shared_ptr<Timedelta> Time::dst() const
 	}
 
 	auto offset = this->_tz_info->dst(nullptr);
-	internal::_check_utc_offset("dst", offset.get());
+	_check_utc_offset("dst", offset.get());
 	return offset;
 }
 
@@ -1514,14 +1508,14 @@ Datetime Datetime::_from_timestamp(
 	{
 		converter = [](double t) -> tm_tuple {
 			time_t tt = t;
-			return internal::_gmtime(&tt);
+			return _gmtime(&tt);
 		};
 	}
 	else
 	{
 		converter = [](double t) -> tm_tuple {
 			time_t tt = t;
-			return internal::_localtime(&tt);
+			return _localtime(&tt);
 		};
 	}
 
@@ -1542,7 +1536,7 @@ Datetime Datetime::_from_timestamp(
 		// thus we can't perform fold detection for values of time less
 		// than the max time fold. See comments in _datetime module's
 		// version of this method for more details.
-		#if defined(_WIN32) || defined(_WIN64)
+		#if __windows__
 		if (t < max_fold_seconds)
 		{
 			return result;
@@ -1583,7 +1577,7 @@ time_t Datetime::_mk_time() const
 	time_t t = (*this - epoch) / Timedelta(0, 1);
 	auto local = [epoch](time_t u) -> double
 	{
-		auto tm_ = internal::_localtime(&u);
+		auto tm_ = _localtime(&u);
 		auto d = Datetime(
 			tm_.tm_year, tm_.tm_mon, tm_.tm_mday,
 			tm_.tm_hour, tm_.tm_min, tm_.tm_sec
@@ -1613,7 +1607,7 @@ time_t Datetime::_mk_time() const
 				num = -max_fold_seconds;
 				break;
 			default:
-				throw std::invalid_argument("Invalid fold value");
+				throw std::invalid_argument("Datetime: invalid fold value");
 		}
 		auto u2 = u1 + num;
 		b = local(u2) - u2;
@@ -1651,7 +1645,7 @@ time_t Datetime::_mk_time() const
 			return std::max(u1, u2);
 			break;
 		default:
-			throw std::invalid_argument("Invalid fold value");
+			throw std::invalid_argument("Datetime: invalid fold value");
 	}
 }
 
@@ -1664,17 +1658,17 @@ Timezone Datetime::_local_timezone() const
 	}
 	else
 	{
-		ts = (*this - internal::_EPOCH) / Timedelta(0, 1);
+		ts = (*this - _EPOCH) / Timedelta(0, 1);
 	}
 
-	auto local_tm = internal::_localtime(&ts);
+	auto local_tm = _localtime(&ts);
 	auto local = Datetime(
 		local_tm.tm_year, local_tm.tm_mon, local_tm.tm_mday,
 		local_tm.tm_hour, local_tm.tm_min, local_tm.tm_sec
 	);
-	if (!this->_tz_info)
+	if (!this->_tz_info && local_tm.tm_zone[0] == '\0')
 	{
-		internal::_mk_tz_info(&local_tm);
+		_mk_tz_info(&local_tm);
 	}
 
 	// Extract TZ data
@@ -1702,7 +1696,7 @@ Datetime::Datetime(
 	ushort fold
 ) : Date(year, month, day)
 {
-	internal::_check_time_fields(hour, minute, second, microsecond, fold);
+	_check_time_fields(hour, minute, second, microsecond, fold);
 	this->_hour = hour;
 	this->_minute = minute;
 	this->_second = second;
@@ -1769,13 +1763,13 @@ Datetime Datetime::utc_from_timestamp(double t)
 
 Datetime Datetime::now(const std::shared_ptr<Timezone>& tz)
 {
-	double t = internal::_time();
+	double t = _time();
 	return Datetime::from_timestamp(t, tz);
 }
 
 Datetime Datetime::utc_now()
 {
-	double t = internal::_time();
+	double t = _time();
 	return Datetime::utc_from_timestamp(t);
 }
 
@@ -1803,11 +1797,11 @@ Datetime Datetime::from_iso_format(const std::string& date_str)
 	auto d_str = date_str.substr(0, 10);
 	auto t_str = date_str.substr(11);
 
-	auto date_comps = internal::_parse_isoformat_date(d_str);
-	internal::hmsfz time_comps;
+	auto date_comps = _parse_isoformat_date(d_str);
+	hmsfz time_comps;
 	if (!t_str.empty())
 	{
-		time_comps = internal::_parse_isoformat_time(t_str);
+		time_comps = _parse_isoformat_time(t_str);
 	}
 	else
 	{
@@ -1837,7 +1831,7 @@ tm_tuple Datetime::time_tuple() const
 		dst_flag = 0;
 	}
 
-	return internal::_build_struct_time(
+	return _build_struct_time(
 		this->_year, this->_month, this->_day,
 		this->_hour, this->_minute, this->_second, dst_flag
 	);
@@ -1852,7 +1846,7 @@ double Datetime::timestamp() const
 	}
 	else
 	{
-		return (double)(*this - internal::_EPOCH).total_seconds();
+		return (double)(*this - _EPOCH).total_seconds();
 	}
 }
 
@@ -1864,7 +1858,7 @@ tm_tuple Datetime::utc_time_tuple()
 		this->operator-=(*offset);
 	}
 
-	return internal::_build_struct_time(
+	return _build_struct_time(
 		this->_year, this->_month, this->_day,
 		this->_hour, this->_minute, this->_second, 0
 	);
@@ -1954,9 +1948,7 @@ Datetime Datetime::replace(
 	);
 }
 
-Datetime Datetime::as_timezone(
-	std::shared_ptr<Timezone> tz
-) const
+Datetime Datetime::as_timezone(std::shared_ptr<Timezone> tz) const
 {
 	if (tz == nullptr)
 	{
@@ -2004,32 +1996,32 @@ Datetime Datetime::as_timezone(
 
 std::string Datetime::ctime() const
 {
-	auto weekday = internal::_mod(this->to_ordinal(), 7);
+	auto weekday = _mod(this->to_ordinal(), 7);
 	if (!weekday)
 	{
 		weekday = 7;
 	}
 
-	return internal::_DAY_NAMES[weekday] + " " +
-		internal::_MONTH_NAMES[this->_month] + " " +
-		internal::_lf(this->_day, 2, ' ') + " " +
-		internal::_lf(this->_hour) + ":" +
-		internal::_lf(this->_minute) + ":" +
-		internal::_lf(this->_second) + " " +
-		internal::_lf(this->_year, 4);
+	return _DAY_NAMES[weekday] + " " +
+		_MONTH_NAMES[this->_month] + " " +
+		_lf(this->_day, 2, ' ') + " " +
+		_lf(this->_hour) + ":" +
+		_lf(this->_minute) + ":" +
+		_lf(this->_second) + " " +
+		_lf(this->_year, 4);
 }
 
 std::string Datetime::iso_format(char sep, time_spec ts) const
 {
-	auto s = internal::_lf(this->_year, 4) + "-" +
-		internal::_lf(this->_month) + "-" +
-		internal::_lf(this->_day) + sep +
-		internal::_format_time(
+	auto s = _lf(this->_year, 4) + "-" +
+		_lf(this->_month) + "-" +
+		_lf(this->_day) + sep +
+		_format_time(
 			this->_hour, this->_minute,
 			this->_second, this->_microsecond, ts
 		);
 	auto off = this->utc_offset();
-	auto tz = internal::_format_offset(off.get());
+	auto tz = _format_offset(off.get());
 	if (!tz.empty())
 	{
 		s += tz;
@@ -2049,14 +2041,14 @@ std::string Datetime::strftime(const std::string& fmt) const
 	auto utc_offset = [this]() -> std::shared_ptr<Timedelta> { return this->utc_offset(); };
 	auto tz_name = [this]() -> std::string { return this->tz_name(); };
 
-	return internal::_wrap_strftime(
+	return _wrap_strftime(
 		fmt, this->time_tuple(), microsecond, utc_offset, tz_name
 	);
 }
 
 Datetime Datetime::strptime(const std::string& date_str, const char* format)
 {
-	return internal::_strptime_datetime(date_str, format);
+	return _strptime_datetime(date_str, format);
 }
 
 std::shared_ptr<Timedelta> Datetime::utc_offset() const
@@ -2067,7 +2059,7 @@ std::shared_ptr<Timedelta> Datetime::utc_offset() const
 	}
 
 	auto offset = this->_tz_info->utc_offset(this);
-	internal::_check_utc_offset("utcoffset", offset.get());
+	_check_utc_offset("utcoffset", offset.get());
 	return offset;
 }
 
@@ -2089,7 +2081,7 @@ std::shared_ptr<Timedelta> Datetime::dst() const
 	}
 
 	auto offset = this->_tz_info->dst(this);
-	internal::_check_utc_offset("dst", offset.get());
+	_check_utc_offset("dst", offset.get());
 	return offset;
 }
 
@@ -2174,7 +2166,7 @@ signed short Datetime::_cmp(const Datetime& other, bool allow_mixed) const
 			other._hour, other._minute, other._second,
 			other._microsecond
 		};
-		return internal::_cmp_arr(left, right, arr_sz);
+		return _cmp_arr(left, right, arr_sz);
 	}
 
 	if (!my_off || !ot_off)
@@ -2185,7 +2177,7 @@ signed short Datetime::_cmp(const Datetime& other, bool allow_mixed) const
 		}
 		else
 		{
-			throw std::invalid_argument("cannot compare naive and aware times");
+			throw std::invalid_argument("Datetime: cannot compare naive and aware times");
 		}
 	}
 
@@ -2207,15 +2199,15 @@ Datetime Datetime::operator + (const Timedelta& other) const
 	);
 	delta += other;
 
-	auto h_r = internal::_div_mod(delta.seconds(), (long)3600);
+	auto h_r = _div_mod(delta.seconds(), (long)3600);
 	auto hour = h_r.first;
 	auto rem = h_r.second;
 
-	auto m_s = internal::_div_mod(rem, (long)60);
+	auto m_s = _div_mod(rem, (long)60);
 	auto minute = m_s.first;
 	auto second = m_s.second;
 
-	if (delta.days() > 0 && delta.days() <= internal::_MAX_ORDINAL)
+	if (delta.days() > 0 && delta.days() <= _MAX_ORDINAL)
 	{
 		return Datetime::combine(
 			Date::from_ordinal(delta.days()),
@@ -2223,7 +2215,7 @@ Datetime Datetime::operator + (const Timedelta& other) const
 		);
 	}
 
-	throw std::overflow_error("result out of range");
+	throw std::overflow_error("Datetime: result out of range");
 }
 
 Datetime& Datetime::operator = (const Datetime& other)
@@ -2285,7 +2277,7 @@ Timedelta Datetime::operator - (const Datetime& other) const
 
 	if (!my_off || !ot_off)
 	{
-		throw std::invalid_argument("cannot mix naive and timezone-aware time");
+		throw std::invalid_argument("Datetime: cannot mix naive and timezone-aware time");
 	}
 
 	return base + *ot_off - *my_off;
@@ -2326,13 +2318,13 @@ Timezone::Timezone(const Timedelta& offset, const std::string& name)
 	}
 	else if (name.empty())
 	{
-		throw std::invalid_argument("name can not be empty");
+		throw std::invalid_argument("Timezone: name can not be empty");
 	}
 
 	if (!(offset >= Timezone::_min_offset && offset <= Timezone::_max_offset))
 	{
 		throw std::invalid_argument(
-			"offset must be a timedelta strictly between"
+			"Timezone: offset must be a timedelta strictly between"
 			"-timedelta(hours=24) and timedelta(hours=24)."
 		);
 	}
@@ -2455,13 +2447,13 @@ Datetime Timezone::from_utc(const Datetime* dt) const
 		auto tzinfo = dt->tz_info();
 		if (!tzinfo || (*tzinfo != *this))
 		{
-			throw std::invalid_argument("from_utc: dt.tz_info() is not this");
+			throw std::invalid_argument("Timezone: dt.tz_info() is not this");
 		}
 
 		return *dt + *this->_offset;
 	}
 
-	throw std::invalid_argument("from_utc() argument must be instantiated");
+	throw std::invalid_argument("Timezone: from_utc() argument must be instantiated");
 }
 
 std::string Timezone::_name_from_offset(const Timedelta* delta)
@@ -2494,23 +2486,18 @@ std::string Timezone::_name_from_offset(const Timedelta* delta)
 	auto seconds = rest.seconds();
 	auto microseconds = rest.microseconds();
 
-	result += internal::_lf(hours) + ":" + internal::_lf(minutes);
+	result += _lf(hours) + ":" + _lf(minutes);
 	if (microseconds)
 	{
-		result += ":" + internal::_lf(seconds) + "." + internal::_lf(microseconds, 6);
+		result += ":" + _lf(seconds) + "." + _lf(microseconds, 6);
 	}
 	else if (seconds)
 	{
-		result += ":" + internal::_lf(seconds);
+		result += ":" + _lf(seconds);
 	}
 
 	return result;
 }
-
-__DATETIME_END__
-
-
-__DATETIME_INTERNAL_BEGIN__
 
 void _check_utc_offset(
 	const std::string& name, const Timedelta* offset
@@ -2525,7 +2512,7 @@ void _check_utc_offset(
 	if (!(*offset > -Timedelta(1) && *offset < Timedelta(1)))
 	{
 		throw std::invalid_argument(
-			name + "() = " + offset->str() +
+			"dt: " + name + "() = " + offset->str() +
 			", must be strictly between -timedelta(hours=24) and timedelta(hours=24)"
 		);
 	}
@@ -2589,7 +2576,7 @@ hmsfz _parse_isoformat_time(const std::string& t_str)
 	auto len_str = t_str.size();
 	if (len_str < 2)
 	{
-		throw std::invalid_argument("Isoformat time too short");
+		throw std::invalid_argument("dt: iso format time too short");
 	}
 
 	// This is equivalent to regex::search('[+-]', t_str), but faster
@@ -2623,7 +2610,7 @@ hmsfz _parse_isoformat_time(const std::string& t_str)
 		auto tz_str_len = tz_str.size();
 		if (tz_str_len != 5 && tz_str_len != 8 && tz_str_len != 15)
 		{
-			throw std::invalid_argument("Malformed time zone string");
+			throw std::invalid_argument("dt: malformed time zone string");
 		}
 
 		auto tz_comps = _parse_hh_mm_ss_ff(tz_str);
@@ -2647,4 +2634,4 @@ hmsfz _parse_isoformat_time(const std::string& t_str)
 	return time_comps;
 }
 
-__DATETIME_INTERNAL_END__
+__DATETIME_END__

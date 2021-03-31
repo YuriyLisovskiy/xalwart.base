@@ -9,8 +9,6 @@
 
 #pragma once
 
-#include <iostream>
-
 // Module definitions.
 #include "./_def_.h"
 
@@ -21,9 +19,8 @@
 __CORE_BEGIN__
 
 template <typename T>
-concept result_type = std::is_default_constructible_v<T> && !std::is_pointer_v<T>;
+concept result_type = std::is_default_constructible_v<T>;
 
-// TESTME: Result
 template <result_type ValueT>
 class Result final
 {
@@ -70,6 +67,9 @@ public:
 	Result() = default;
 
 	// Constructs the result with given value.
+	//
+	// !IMPORTANT!
+	// If `ValueT` is pointer, it must be deleted manually.
 	inline explicit Result(ValueT data) : value(data)
 	{
 	}
@@ -131,6 +131,12 @@ public:
 		return !this->is_nullptr;
 	}
 
+	// Returns `true` if result is null, `false` otherwise.
+	inline bool operator! () const
+	{
+		return this->is_nullptr;
+	}
+
 	// Checks if error was generated.
 	//
 	// `expected`: error which is expected to be generated.
@@ -158,8 +164,11 @@ public:
 
 	// Creates a new result with the same error as initial
 	// object.
+	//
+	// !IMPORTANT!
+	// If `ValueT` is pointer, it must be deleted manually.
 	template <typename NewT>
-	inline Result<NewT> forward()
+	inline Result<NewT> forward_err()
 	{
 		auto result = Result<NewT>();
 		result.err = this->err;

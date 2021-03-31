@@ -1,16 +1,15 @@
 /**
  * datetime.h
  *
- * Copyright (c) 2020 Yuriy Lisovskiy
+ * Copyright (c) 2020-2021 Yuriy Lisovskiy
  *
- * Purpose:
- *  C++ implementation of Python's datetime module.
- *  (Not finished yet, check "!IMPROVEMENT!" keywords)
+ * C++ implementation of Python's datetime module.
+ * (Not finished yet, check "!IMPROVEMENT!" keywords)
  *
- *  Concrete date/time and related types.
+ * Concrete date/time and related types.
  *
- *  See http://www.iana.org/time-zones/repository/tz-link.html for
- *  time zone and DST data sources.
+ * See http://www.iana.org/time-zones/repository/tz-link.html for
+ * time zone and DST data sources.
  */
 
 #pragma once
@@ -24,18 +23,13 @@
 #include "./_def_.h"
 
 
-__DATETIME_INTERNAL_BEGIN__
+__DATETIME_BEGIN__
 
 extern void _M_Assert(
 	const char* expr_str,
 	bool expr, const char* function,
 	int /* line */, const char* msg
 );
-
-__DATETIME_INTERNAL_END__
-
-
-__DATETIME_BEGIN__
 
 enum time_spec
 {
@@ -52,10 +46,10 @@ typedef unsigned int uint;
 
 #ifdef _MSC_VER
 #define m_assert(_expr, _msg) \
-	internal::_M_Assert(#_expr, _expr, __FUNCTION__, __LINE__, _msg)
+	_M_Assert(#_expr, _expr, __FUNCTION__, __LINE__, _msg)
 #else
 #define m_assert(_expr, _msg) \
-	internal::_M_Assert(#_expr, _expr, __PRETTY_FUNCTION__, __LINE__, _msg)
+	_M_Assert(#_expr, _expr, __PRETTY_FUNCTION__, __LINE__, _msg)
 #endif
 
 struct tm_tuple
@@ -122,11 +116,6 @@ struct tm_tuple
 	}
 };
 
-__DATETIME_END__
-
-
-__DATETIME_INTERNAL_BEGIN__
-
 template <typename T1, typename T2>
 T1 _mod(const T1& a, const T2& b)
 {
@@ -138,7 +127,7 @@ long _true_div(const long& x, const long& y);
 std::pair<long long, long long> _div_mod(const long long& x, const long long& y);
 
 template <typename T>
-signed short _cmp(T left, T right)
+signed short _cmp_val(T left, T right)
 {
 	if (left == right)
 	{
@@ -153,7 +142,7 @@ signed short _cmp_arr(const T* left, const T* right, size_t n)
 {
 	for (size_t i = 0; i < n; i++)
 	{
-		auto l_r = internal::_cmp(left[i], right[i]);
+		auto l_r = _cmp_val(left[i], right[i]);
 		if (l_r != 0)
 		{
 			return l_r;
@@ -271,11 +260,6 @@ extern time_t _time();
 extern tm_tuple _localtime(const time_t* _timer);
 extern tm_tuple _gmtime(const time_t* _timer);
 
-__DATETIME_INTERNAL_END__
-
-
-__DATETIME_BEGIN__
-
 const ushort MIN_YEAR = 1;
 const ushort MAX_YEAR = 9999;
 
@@ -351,11 +335,6 @@ public:
 	explicit operator bool () const;
 };
 
-__DATETIME_END__
-
-
-__DATETIME_INTERNAL_BEGIN__
-
 // name is the offset-producing method, "utcoffset" or "dst".
 // offset is what it returned.
 // If offset isn't zero, throws std::invalid_argument.
@@ -367,11 +346,6 @@ extern void _check_utc_offset(
 );
 
 extern std::string _format_offset(const Timedelta* off);
-
-__DATETIME_INTERNAL_END__
-
-
-__DATETIME_BEGIN__
 
 // Concrete date type.
 //
@@ -767,9 +741,7 @@ public:
 		const std::shared_ptr<Timezone>& tz = nullptr, short int fold = -1
 	) const;
 
-	[[nodiscard]] Datetime as_timezone(
-		std::shared_ptr<Timezone> tz = nullptr
-	) const;
+	[[nodiscard]] Datetime as_timezone(std::shared_ptr<Timezone> tz = nullptr) const;
 
 	// Ways to produce a string.
 
@@ -917,11 +889,6 @@ public:
 	static std::string _name_from_offset(const Timedelta* delta) ;
 };
 
-__DATETIME_END__
-
-
-__DATETIME_INTERNAL_BEGIN__
-
 extern void _replace(
 	std::string& src, const std::string& old, const std::string& new_
 );
@@ -952,4 +919,4 @@ const static Datetime _EPOCH = Datetime(
 	1970, 1, 1, 0, 0, 0, 0, std::make_shared<Timezone>(Timezone::_create(Timedelta(0)))
 );
 
-__DATETIME_INTERNAL_END__
+__DATETIME_END__

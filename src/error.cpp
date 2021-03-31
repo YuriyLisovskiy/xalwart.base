@@ -14,34 +14,37 @@ std::string to_string(error_type et)
 	const char *repr;
 	switch (et)
 	{
-		case xw::core::error_type::None:
+		case error_type::None:
 			repr = "None";
 			break;
-		case xw::core::error_type::HttpError:
+		case error_type::HttpError:
 			repr = "HttpError";
 			break;
-		case xw::core::error_type::DisallowedHost:
+		case error_type::DisallowedHost:
 			repr = "DisallowedHost";
 			break;
-		case xw::core::error_type::DisallowedRedirect:
+		case error_type::DisallowedRedirect:
 			repr = "DisallowedRedirect";
 			break;
-		case xw::core::error_type::EntityTooLargeError:
+		case error_type::EntityTooLargeError:
 			repr = "EntityTooLargeError";
 			break;
-		case xw::core::error_type::FileDoesNotExistError:
+		case error_type::FileDoesNotExistError:
 			repr = "FileDoesNotExistError";
 			break;
-		case xw::core::error_type::PermissionDenied:
+		case error_type::PermissionDenied:
 			repr = "PermissionDenied";
 			break;
-		case xw::core::error_type::NotFound:
+		case error_type::NotFound:
 			repr = "NotFound";
 			break;
-		case xw::core::error_type::RequestTimeout:
+		case error_type::InternalServerError:
+			repr = "InternalServerError";
+			break;
+		case error_type::RequestTimeout:
 			repr = "RequestTimeout";
 			break;
-		case xw::core::error_type::SuspiciousOperation:
+		case error_type::SuspiciousOperation:
 			repr = "SuspiciousOperation";
 			break;
 		default:
