@@ -2,7 +2,7 @@ name: "alpine-clang"
 on:
   push:
     branches:
-      - '**'
+      - 'dev'
       - '!master'
 jobs:
   build:
