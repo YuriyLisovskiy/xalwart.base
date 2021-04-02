@@ -23,7 +23,7 @@ __TYPES_BEGIN__
 // TODO: improve functionality.
 // TODO: docs
 // TESTME: Map
-template <ObjectBasedType KeyT, ObjectBasedType ValueT>
+template <object_based_type KeyT, object_based_type ValueT>
 class Map : public MapIterableContainer<std::map<std::shared_ptr<KeyT>, std::shared_ptr<ValueT>>>
 {
 public:

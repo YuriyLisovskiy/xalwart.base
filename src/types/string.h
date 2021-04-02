@@ -17,24 +17,26 @@
 
 __TYPES_BEGIN__
 
-// TESTME: String
-// TODO: docs
 class String final : public obj::Object
 {
 protected:
 	std::string value;
 
 public:
+	String() = default;
+
 	inline explicit String(std::string s) : value(std::move(s))
 	{
 	}
 
+	// Returns an internal string value.
 	[[nodiscard]]
 	inline std::string __str__() const override
 	{
 		return this->value;
 	}
 
+	// Returns an internal string value wrapped th quotes.
 	[[nodiscard]]
 	inline std::string __repr__() const override
 	{
@@ -65,5 +67,7 @@ public:
 		return this->value;
 	}
 };
+
+typedef String string;
 
 __TYPES_END__

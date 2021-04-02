@@ -241,13 +241,3 @@ TEST(TestCase_encoding, encode_iso_8859_1_ReplaceModeZeroChar)
 	auto actual = encoding::encode_iso_8859_1("\0", encoding::REPLACE);
 	ASSERT_EQ("", actual);
 }
-
-// !IMPORTANT!
-// Test range from `0x7F` to `0xA0`
-//TEST(TestCase_encoding, encode_iso_8859_1_ReplaceModeSpecial)
-//{
-//	std::string input = "\x7f\x80\x81\x82\x83\x84\x85\x86\x87\x88\x89\x8a\x8b\x8c\x8d\x8e\x8f\x90\x91\x92\x93\x94\x95\x96\x97\x98\x99\x9a\x9b\x9c\x9d\x9e\x9f\xa0";
-//	std::string expected = "\x7f\x80\x81\x82\x83\x84\x85\x86\x87\x88\x89\x8a\x8b\x8c\x8d\x8e\x8f\x90\x91\x92\x93\x94\x95\x96\x97\x98\x99\x9a\x9b\x9c\x9d\x9e\x9f\xa0";
-//	auto actual = encoding::encode_iso_8859_1("\x81", encoding::REPLACE);
-//	ASSERT_EQ("\x81", actual);
-//}

@@ -71,7 +71,6 @@ extern std::string encode_ascii(const std::string& s, Mode mode);
 // Returns encoded copy input string.
 extern std::string encode_iso_8859_1(const std::string& s, Mode mode);
 
-// TESTME: encode_utf_8
 // Encodes string to UTF-8 string.
 //
 // `mode`: target mode.
@@ -79,7 +78,6 @@ extern std::string encode_iso_8859_1(const std::string& s, Mode mode);
 // Returns encoded copy input string.
 extern std::string encode_utf_8(const std::string& s, Mode mode);
 
-// TESTME: encode
 // Encode string using given encoding and mode.
 //
 // `s`: string to encode.

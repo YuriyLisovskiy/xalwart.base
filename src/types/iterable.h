@@ -3,7 +3,7 @@
  *
  * Copyright (c) 2021 Yuriy Lisovskiy
  *
- * Purpose: TODO
+ * TODO
  */
 
 #pragma once
@@ -19,9 +19,7 @@
 #include "../object/object.h"
 
 
-// TODO: improve functionality.
 // TODO: docs
-// TESTME: iterables.
 
 __TYPES_BEGIN__
 
@@ -145,6 +143,7 @@ public:
 		return this->internal_value;
 	}
 
+	// TESTME: __cmp__
 	[[nodiscard]]
 	inline short __cmp__(const Object* other) const override
 	{
@@ -164,6 +163,7 @@ public:
 		);
 	}
 
+	// TESTME: __str__
 	[[nodiscard]]
 	inline std::string __str__() const override
 	{
@@ -173,6 +173,7 @@ public:
 		) + "}";
 	}
 
+	// TESTME: __repr__
 	[[nodiscard]]
 	inline std::string __repr__() const override
 	{
@@ -184,6 +185,7 @@ public:
 	}
 };
 
+// TESTME: MapIterable
 class MapIterable : public Iterable
 {
 public:
@@ -198,6 +200,7 @@ public:
 	)>& func, bool reversed) const = 0;
 };
 
+// TESTME: MapIterableContainer
 // Requirements for derived class:
 //
 //  - ContainerT::value_type must be std::shared_ptr<object::Object>
@@ -325,6 +328,6 @@ public:
 };
 
 template <typename T>
-concept ObjectBasedType = std::is_base_of_v<obj::Object, T>;
+concept object_based_type = std::is_base_of_v<obj::Object, T>;
 
 __TYPES_END__
