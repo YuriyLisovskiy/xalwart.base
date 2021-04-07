@@ -7,6 +7,7 @@
 #include <gtest/gtest.h>
 
 #include "../../src/types/string.h"
+#include "../../src/types/fundamental.h"
 
 using namespace xw;
 
@@ -36,6 +37,121 @@ TEST(TestCase_String, __cmp__False)
 {
 	types::String s1("One"), s2("Two");
 	ASSERT_NE(s1.__cmp__(&s2), 0);
+}
+
+TEST(TestCase_String, __cmp__LessTrue)
+{
+	types::String s1("One"), s2("Two");
+	ASSERT_EQ(s1.__cmp__(&s2), -1);
+}
+
+TEST(TestCase_String, __cmp__LessFalse)
+{
+	types::String s1("Two"), s2("One");
+	ASSERT_NE(s1.__cmp__(&s2), -1);
+}
+
+TEST(TestCase_String, __cmp__GreaterTrue)
+{
+	types::String s1("Two"), s2("One");
+	ASSERT_EQ(s1.__cmp__(&s2), 1);
+}
+
+TEST(TestCase_String, __cmp__GreaterFalse)
+{
+	types::String s1("One"), s2("Two");
+	ASSERT_NE(s1.__cmp__(&s2), 1);
+}
+
+TEST(TestCase_String, __cmp__ThrowsIncompatibleTypes)
+{
+	types::String s1("One");
+	types::Fundamental<float> f2(10.0f);
+	ASSERT_THROW(auto _ = s1.__cmp__(&f2), core::TypeError);
+}
+
+TEST(TestCase_String, operator_equals_True)
+{
+	types::string s1("One"), s2("One");
+	ASSERT_TRUE(s1 == s2);
+}
+
+TEST(TestCase_String, operator_equals_False)
+{
+	types::string s1("One"), s2("Two");
+	ASSERT_FALSE(s1 == s2);
+}
+
+TEST(TestCase_String, operator_not_equals_True)
+{
+	types::string s1("One"), s2("Two");
+	ASSERT_TRUE(s1 != s2);
+}
+
+TEST(TestCase_String, operator_not_equals_False)
+{
+	types::string s1("One"), s2("One");
+	ASSERT_FALSE(s1 != s2);
+}
+
+TEST(TestCase_String, operator_less_True)
+{
+	types::string s1("One"), s2("Two");
+	ASSERT_TRUE(s1 < s2);
+}
+
+TEST(TestCase_String, operator_less_False)
+{
+	types::string s1("Two"), s2("One");
+	ASSERT_FALSE(s1 < s2);
+}
+
+TEST(TestCase_String, operator_less_or_equals_EqualsTrue)
+{
+	types::string s1("One"), s2("One");
+	ASSERT_TRUE(s1 <= s2);
+}
+
+TEST(TestCase_String, operator_less_or_equals_LessTrue)
+{
+	types::string s1("One"), s2("Three");
+	ASSERT_TRUE(s1 <= s2);
+}
+
+TEST(TestCase_String, operator_less_or_equals_False)
+{
+	types::string s1("Two"), s2("One");
+	ASSERT_FALSE(s1 <= s2);
+}
+
+TEST(TestCase_String, operator_greater_True)
+{
+	types::string s1("Three"), s2("One");
+	ASSERT_TRUE(s1 > s2);
+}
+
+TEST(TestCase_String, operator_greater_False)
+{
+	types::string s1("One"), s2("Two");
+	ASSERT_FALSE(s1 > s2);
+}
+
+TEST(TestCase_String, operator_greater_or_equals_EqualsTrue)
+{
+	types::string s1("One"), s2("One");
+	ASSERT_TRUE(s1 >= s2);
+}
+
+TEST(TestCase_String, operator_greater_or_equals_GreaterTrue)
+{
+	types::string s1("Seven"), s2("One");
+	ASSERT_TRUE(s1 >= s2);
+}
+
+TEST(TestCase_String, operator_greater_or_equals_False)
+{
+	types::string s1("One"), s2("Two");
+	ASSERT_FALSE(s1 >= s2);
 }
 
 TEST(TestCase_String, __cmp__ThrowsTypeError)

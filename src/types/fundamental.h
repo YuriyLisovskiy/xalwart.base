@@ -55,13 +55,13 @@ public:
 	};
 
 	// Constructs `Fundamental` from value of basic type.
-	explicit Fundamental(InternalT val) : Fundamental()
+	inline explicit Fundamental(InternalT val) : Fundamental()
 	{
 		this->internal_value = std::move(val);
 	}
 
 	// Copy constructor.
-	Fundamental(const Fundamental& other)
+	inline Fundamental(const Fundamental& other)
 	{
 		if (this != &other)
 		{
@@ -525,5 +525,8 @@ public:
 		return this->internal_value;
 	}
 };
+
+template <typename T>
+using fundamental = Fundamental<T>;
 
 __TYPES_END__

@@ -19,8 +19,6 @@
 #include "../object/object.h"
 
 
-// TODO: docs
-
 __TYPES_BEGIN__
 
 class Iterable
@@ -45,7 +43,7 @@ public:
 	}
 };
 
-class SequenceIterable : public Iterable
+class SequenceContainer : public Iterable
 {
 public:
 	[[nodiscard]]
@@ -55,134 +53,9 @@ public:
 	};
 
 	virtual void look_through(
-		const std::function<void(size_t, const std::shared_ptr<obj::Object>&)>& func,
+		const std::function<void(size_t, const obj::Object*)>& func,
 		bool reversed
 	) const = 0;
-};
-
-// Requirements for derived class:
-//
-//  - ContainerT::value_type must be std::shared_ptr<object::Object>
-//  - Override 'void look_through(...)' method or implement:
-//      - ContainerT::iterator begin()
-//      - ContainerT::iterator end()
-template <class ContainerT>
-class SequenceIterableContainer : public obj::Object, public SequenceIterable
-{
-protected:
-	ContainerT internal_value;
-
-protected:
-	[[nodiscard]]
-	virtual inline std::string aggregate(
-		const std::string& separator,
-		const std::function<std::string(const std::shared_ptr<obj::Object>&)>& func
-	) const
-	{
-		std::string res;
-		auto last_iteration = this->internal_value.end() - 1;
-		for (auto it = this->internal_value.begin(); it != this->internal_value.end(); it++)
-		{
-			res += func(*it);
-			if (it != last_iteration)
-			{
-				res += separator;
-			}
-		}
-
-		return res;
-	}
-
-public:
-	inline explicit SequenceIterableContainer() = default;
-
-	inline explicit SequenceIterableContainer(ContainerT value) : internal_value(std::move(value))
-	{
-	}
-
-	inline void look_through(
-		const std::function<void(size_t, const std::shared_ptr<obj::Object>&)>& func,
-		bool reversed
-	) const override
-	{
-		size_t i = 0;
-		if (reversed)
-		{
-			auto begin = this->internal_value.rbegin();
-			auto end = this->internal_value.rend();
-			for (auto it = begin; it != end; it++)
-			{
-				func(i++, *it);
-			}
-		}
-		else
-		{
-			auto begin = this->internal_value.begin();
-			auto end = this->internal_value.end();
-			for (auto it = begin; it != end; it++)
-			{
-				func(i++, *it);
-			}
-		}
-	}
-
-	[[nodiscard]]
-	bool empty() const override
-	{
-		return this->internal_value.empty();
-	}
-
-	[[nodiscard]]
-	inline size_t size() const override
-	{
-		return this->internal_value.size();
-	}
-
-	inline ContainerT& value()
-	{
-		return this->internal_value;
-	}
-
-	// TESTME: __cmp__
-	[[nodiscard]]
-	inline short __cmp__(const Object* other) const override
-	{
-		if (auto other_v = dynamic_cast<const SequenceIterableContainer<ContainerT>*>(other))
-		{
-			if (this->internal_value == other_v->internal_value)
-			{
-				return 0;
-			}
-
-			return this->internal_value > other_v->internal_value ? 1 : -1;
-		}
-
-		throw core::TypeError(
-			"'__cmp__' not supported between instances of '" + this->__type__().name() + "' and '" + other->__type__().name() + "'",
-			_ERROR_DETAILS_
-		);
-	}
-
-	// TESTME: __str__
-	[[nodiscard]]
-	inline std::string __str__() const override
-	{
-		return "{" + this->aggregate(
-			", ",
-			[](const std::shared_ptr<obj::Object>& item) -> std::string { return item->__str__(); }
-		) + "}";
-	}
-
-	// TESTME: __repr__
-	[[nodiscard]]
-	inline std::string __repr__() const override
-	{
-		auto type = this->__type__();
-		return type.namespace_() + "::" + type.name() + "{" + this->aggregate(
-			", ",
-			[](const std::shared_ptr<obj::Object>& item) -> std::string { return item->__repr__(); }
-		) + "}";
-	}
 };
 
 // TESTME: MapIterable

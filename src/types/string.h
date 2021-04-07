@@ -66,6 +66,42 @@ public:
 	{
 		return this->value;
 	}
+
+	// Operator equals.
+	inline bool operator== (const String& other) const
+	{
+		return this->value == other.value;
+	}
+
+	// Operator not equals.
+	inline bool operator!= (const String& other) const
+	{
+		return this->value != other.value;
+	}
+
+	// Operator less.
+	inline bool operator< (const String& other) const
+	{
+		return this->value < other.value;
+	}
+
+	// Operator less or equals.
+	inline bool operator<= (const String& other) const
+	{
+		return this->value <= other.value;
+	}
+
+	// Operator greater.
+	inline bool operator> (const String& other) const
+	{
+		return this->value > other.value;
+	}
+
+	// Operator greater or equals.
+	inline bool operator>= (const String& other) const
+	{
+		return this->value >= other.value;
+	}
 };
 
 typedef String string;
