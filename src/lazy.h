@@ -52,12 +52,24 @@ public:
 
 	// Initializes value if it was not done yet and
 	// returns an address to initialized value.
-	inline T& value(Args&& ...args)
+	inline T& get(Args&& ...args)
 	{
 		if (!this->_loaded && this->_initializer)
 		{
 			this->_value = this->_initializer(std::forward<Args>(args)...);
 			this->_loaded = true;
+		}
+
+		return this->_value;
+	}
+
+	// Returns value if it was initializer or the result of
+	// initializer call.
+	inline T get(Args&& ...args) const
+	{
+		if (!this->_loaded && this->_initializer)
+		{
+			return this->_initializer(std::forward<Args>(args)...);
 		}
 
 		return this->_value;
