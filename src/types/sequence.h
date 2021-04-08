@@ -1,15 +1,15 @@
 /**
- * types/map.h
+ * types/sequence.h
  *
  * Copyright (c) 2021 Yuriy Lisovskiy
  *
- * Wrapper for map containers based on `std::map` for rendering in templates.
+ * Wrapper for sequential containers based on `std::list` for rendering in templates.
  */
 
 #pragma once
 
 // C++ libraries.
-#include <map>
+#include <list>
 
 // Module definitions.
 #include "./_def_.h"
@@ -20,14 +20,12 @@
 
 __TYPES_BEGIN__
 
-template <object_based_type KeyT, object_based_type ValueT>
-class Map : public obj::Object, public MapContainer
+template <object_based_type ValueT>
+class Sequence : public obj::Object, public SequenceContainer
 {
 public:
-	typedef KeyT key_type;
 	typedef ValueT value_type;
-
-	typedef std::map<key_type, value_type> container_type;
+	typedef std::list<value_type> container_type;
 
 protected:
 	container_type container;
@@ -39,7 +37,7 @@ protected:
 	[[nodiscard]]
 	virtual inline std::string aggregate(
 		const std::string& separator,
-		const std::function<std::string(const obj::Object*, const obj::Object*)>& func
+		const std::function<std::string(const obj::Object*)>& func
 	) const
 	{
 		auto begin = this->container.begin();
@@ -50,11 +48,10 @@ protected:
 			return res;
 		}
 
-		auto last_iteration = end;
-		last_iteration--;
+		auto last_iteration = std::prev(end, 1);
 		for (auto it = begin; it != end; it++)
 		{
-			res += func(&it->first, &it->second);
+			res += func(&(*it));
 			if (it != last_iteration)
 			{
 				res += separator;
@@ -65,44 +62,44 @@ protected:
 	}
 
 public:
+
 	// Default constructor.
-	inline explicit Map() = default;
+	inline explicit Sequence() = default;
 
 	// Constructs Sequence from container.
-	inline explicit Map(container_type value) : container(std::move(value))
+	inline explicit Sequence(container_type value) : container(std::move(value))
 	{
 	}
 
 	// Constructs Sequence from initializer list.
-	inline explicit Map(std::initializer_list<std::pair<const key_type , value_type>> mp)
+	inline explicit Sequence(std::initializer_list<value_type> list)
 	{
-		this->container = std::move(mp);
+		this->container = std::move(list);
 	}
 
-	// Loops through map container using iterators.
+	// Iterates through sequential container using iterators.
 	//
 	// `begin`, `end`: iterators of the container.
 	// `func`: function which handles an item and it's index.
 	template <typename IteratorT>
 	inline void look_through(
 		IteratorT begin, IteratorT end,
-		const std::function<void(size_t, const obj::Object*, const obj::Object*)>& func
+		const std::function<void(size_t, const obj::Object*)>& func
 	) const
 	{
 		size_t i = 0;
 		for (auto it = begin; it != end; it++)
 		{
-			func(i++, &it->first, &it->second);
+			func(i++, &(*it));
 		}
 	}
 
-	// Iterates through map container in given direction.
+	// Iterates through sequential container in given direction.
 	//
-	// `func`: function which handles key, value and index.
+	// `func`: function which handles an item and it's index.
 	// `reversed`: iteration direction option.
 	inline void look_through(
-		const std::function<void(size_t, const obj::Object*, const obj::Object*)>& func,
-		bool reversed
+		const std::function<void(size_t, const obj::Object*)>& func, bool reversed
 	) const override
 	{
 		if (reversed)
@@ -142,7 +139,7 @@ public:
 	[[nodiscard]]
 	inline short __cmp__(const Object* other) const override
 	{
-		if (auto other_v = dynamic_cast<const Map<KeyT, ValueT>*>(other))
+		if (auto other_v = dynamic_cast<const Sequence<value_type>*>(other))
 		{
 			if (this->container == other_v->container)
 			{
@@ -163,10 +160,8 @@ public:
 	inline std::string __str__() const override
 	{
 		return "{" + this->aggregate(
-			", ", [](const obj::Object* key, const obj::Object* value) -> std::string
-			{
-				return "{" + (key ? key->__str__() : "nullptr") + ", " + (value ? value->__str__() : "nullptr") + "}";
-			}
+			", ",
+			[](const obj::Object* item) -> std::string { return item ? item->__str__() : "nullptr"; }
 		) + "}";
 	}
 
@@ -176,15 +171,13 @@ public:
 	inline std::string __repr__() const override
 	{
 		return "{" + this->aggregate(
-			", ", [](const obj::Object* key, const obj::Object* value) -> std::string
-			{
-				return "{" + (key ? key->__repr__() : "'nullptr'") + ", " + (value ? value->__repr__() : "'nullptr'") + "}";
-			}
+			", ",
+			[](const obj::Object* item) -> std::string { return item ? item->__repr__() : "'nullptr'"; }
 		) + "}";
 	}
 };
 
-template <typename KeyT, typename ValueT>
-using map = Map<KeyT, ValueT>;
+template <typename T>
+using sequence = Sequence<T>;
 
 __TYPES_END__

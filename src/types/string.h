@@ -9,6 +9,8 @@
 #pragma once
 
 // Module definitions.
+#include <utility>
+
 #include "./_def_.h"
 
 // Core libraries.
@@ -17,24 +19,34 @@
 
 __TYPES_BEGIN__
 
-// TESTME: String
-// TODO: docs
 class String final : public obj::Object
 {
 protected:
 	std::string value;
 
 public:
-	inline explicit String(std::string s) : value(std::move(s))
+
+	// Default constructor.
+	String() = default;
+
+	// Constructs String from `std::string`
+	inline String(std::string s) : value(std::move(s))
 	{
 	}
 
+	// Constructs String from `const char*`
+	inline String(const char* s) : value(s)
+	{
+	}
+
+	// Returns an internal string value.
 	[[nodiscard]]
 	inline std::string __str__() const override
 	{
 		return this->value;
 	}
 
+	// Returns an internal string value wrapped th quotes.
 	[[nodiscard]]
 	inline std::string __repr__() const override
 	{
@@ -64,6 +76,44 @@ public:
 	{
 		return this->value;
 	}
+
+	// Operator equals.
+	inline bool operator== (const String& other) const
+	{
+		return this->value == other.value;
+	}
+
+	// Operator not equals.
+	inline bool operator!= (const String& other) const
+	{
+		return this->value != other.value;
+	}
+
+	// Operator less.
+	inline bool operator< (const String& other) const
+	{
+		return this->value < other.value;
+	}
+
+	// Operator less or equals.
+	inline bool operator<= (const String& other) const
+	{
+		return this->value <= other.value;
+	}
+
+	// Operator greater.
+	inline bool operator> (const String& other) const
+	{
+		return this->value > other.value;
+	}
+
+	// Operator greater or equals.
+	inline bool operator>= (const String& other) const
+	{
+		return this->value >= other.value;
+	}
 };
+
+typedef String string;
 
 __TYPES_END__

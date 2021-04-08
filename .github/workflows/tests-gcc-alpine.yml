@@ -2,7 +2,7 @@ name: "alpine-gcc"
 on:
   push:
     branches:
-      - '**'
+      - 'dev'
       - '!master'
 jobs:
   build:
