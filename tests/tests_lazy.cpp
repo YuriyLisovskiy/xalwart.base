@@ -22,6 +22,6 @@ TEST(TestCase_Lazy, value_Set)
 	auto lazy = Lazy<int>([]() -> int { return 10; });
 	ASSERT_EQ(lazy.get(), 10);
 
-	lazy.get() = 7;
+	lazy.set(7);
 	ASSERT_EQ(lazy.get(), 7);
 }

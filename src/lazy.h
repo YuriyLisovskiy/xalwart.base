@@ -23,11 +23,11 @@ class Lazy final
 private:
 
 	// Holds a value to be lazy initialized.
-	T _value{};
+	mutable T _value{};
 
 	// Indicates whether value is already initialized
 	// or not.
-	bool _loaded = false;
+	mutable bool _loaded = false;
 
 	// Lazy function for value initialization.
 	std::function<T(Args...)> _initializer = nullptr;
@@ -52,7 +52,14 @@ public:
 
 	// Initializes value if it was not done yet and
 	// returns an address to initialized value.
-	inline T& get(Args&& ...args)
+	operator const T& () const
+	{
+		return get();
+	}
+
+	// Initializes value if it was not done yet and
+	// returns an address to initialized value.
+	inline const T& get(Args&& ...args) const
 	{
 		if (!this->_loaded && this->_initializer)
 		{
@@ -63,16 +70,10 @@ public:
 		return this->_value;
 	}
 
-	// Returns value if it was initializer or the result of
-	// initializer call.
-	inline T get(Args&& ...args) const
+	inline void set(T val)
 	{
-		if (!this->_loaded && this->_initializer)
-		{
-			return this->_initializer(std::forward<Args>(args)...);
-		}
-
-		return this->_value;
+		this->_value = val;
+		this->_loaded = true;
 	}
 };
 
