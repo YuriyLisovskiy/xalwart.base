@@ -8,6 +8,8 @@
 
 #pragma once
 
+typedef unsigned int uint;
+
 // xw
 #define __MAIN_NAMESPACE_BEGIN__ namespace xw {
 #define __MAIN_NAMESPACE_END__ }
@@ -17,10 +19,6 @@
 #define _ERROR_DETAILS_ __LINE__, __FUNCTION__, __FILE__
 #else
 #define _ERROR_DETAILS_ __LINE__, __PRETTY_FUNCTION__, __FILE__
-#endif
-
-#if defined(_WIN32) || defined(_WIN64)
-typedef unsigned int uint;
 #endif
 
 // xw::core
@@ -34,10 +32,6 @@ typedef unsigned int uint;
 // xw::dt
 #define __DATETIME_BEGIN__ __MAIN_NAMESPACE_BEGIN__ namespace dt {
 #define __DATETIME_END__ } __MAIN_NAMESPACE_END__
-
-// xw::dt::internal
-#define __DATETIME_INTERNAL_BEGIN__ __DATETIME_BEGIN__ namespace internal {
-#define __DATETIME_INTERNAL_END__ } __DATETIME_END__
 
 // xw::encoding
 #define __ENCODING_BEGIN__ __MAIN_NAMESPACE_BEGIN__ namespace encoding {
