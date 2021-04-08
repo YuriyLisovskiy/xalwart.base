@@ -33,7 +33,7 @@ public:
 	//
 	// Throws `core::AttributeError` by default.
 	[[nodiscard]]
-	virtual inline std::shared_ptr<Object> __get_attr__(const char* attr_name)
+	virtual inline std::shared_ptr<const Object> __get_attr__(const char* attr_name)
 	{
 		throw core::AttributeError(
 			"'" + this->__type__().name() + "' object has no attribute '" + std::string(attr_name) + "'",
