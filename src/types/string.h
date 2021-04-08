@@ -9,6 +9,8 @@
 #pragma once
 
 // Module definitions.
+#include <utility>
+
 #include "./_def_.h"
 
 // Core libraries.
@@ -23,9 +25,17 @@ protected:
 	std::string value;
 
 public:
+
+	// Default constructor.
 	String() = default;
 
-	inline explicit String(std::string s) : value(std::move(s))
+	// Constructs String from `std::string`
+	inline String(std::string s) : value(std::move(s))
+	{
+	}
+
+	// Constructs String from `const char*`
+	inline String(const char* s) : value(s)
 	{
 	}
 

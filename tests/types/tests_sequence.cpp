@@ -26,6 +26,16 @@ protected:
 	}
 };
 
+TEST_F(TestCase_Sequence, is_sequence_True)
+{
+	ASSERT_TRUE(this->string_sequence.is_sequence());
+}
+
+TEST_F(TestCase_Sequence, is_map_False)
+{
+	ASSERT_FALSE(this->string_sequence.is_map());
+}
+
 TEST_F(TestCase_Sequence, look_through)
 {
 	std::vector expected = {"Hello", "14.7"};
@@ -131,14 +141,14 @@ TEST_F(TestCase_Sequence, __str__Empty)
 
 TEST_F(TestCase_Sequence, __repr__)
 {
-	std::string expected = "xw::types::Sequence<xw::types::String>{'Hello', '14.7'}";
+	std::string expected = "{'Hello', '14.7'}";
 	auto actual = this->string_sequence.__repr__();
 	ASSERT_EQ(expected, actual);
 }
 
 TEST_F(TestCase_Sequence, __repr__Empty)
 {
-	std::string expected = "xw::types::Sequence<xw::types::Fundamental<float> >{}";
+	std::string expected = "{}";
 	auto actual = this->empty_sequence.__repr__();
 	ASSERT_EQ(expected, actual);
 }

@@ -3,7 +3,7 @@
  *
  * Copyright (c) 2021 Yuriy Lisovskiy
  *
- * Wrapper for sequential containers based on std::list for rendering in templates.
+ * Wrapper for sequential containers based on `std::list` for rendering in templates.
  */
 
 #pragma once
@@ -15,7 +15,7 @@
 #include "./_def_.h"
 
 // Core libraries.
-#include "./iterable.h"
+#include "./abc.h"
 
 
 __TYPES_BEGIN__
@@ -31,15 +31,25 @@ protected:
 	container_type container;
 
 protected:
+
+	// Aggregates container values to string.
+	// Used for `__str__()` and `__repr__()` methods.
 	[[nodiscard]]
 	virtual inline std::string aggregate(
 		const std::string& separator,
 		const std::function<std::string(const obj::Object*)>& func
 	) const
 	{
+		auto begin = this->container.begin();
+		auto end = this->container.end();
 		std::string res;
-		auto last_iteration = std::prev(this->container.end(), 1);
-		for (auto it = this->container.begin(); it != this->container.end(); it++)
+		if (begin == end)
+		{
+			return res;
+		}
+
+		auto last_iteration = std::prev(end, 1);
+		for (auto it = begin; it != end; it++)
 		{
 			res += func(&(*it));
 			if (it != last_iteration)
@@ -151,21 +161,18 @@ public:
 	{
 		return "{" + this->aggregate(
 			", ",
-			[](const obj::Object* item) -> std::string { return item->__str__(); }
+			[](const obj::Object* item) -> std::string { return item ? item->__str__() : "nullptr"; }
 		) + "}";
 	}
 
-	// Returns string representation of the container with
-	// it's type name.
-	//
-	// Used for debugging.
+	// Returns string representation of the container using
+	// __repr__() method of container's values.
 	[[nodiscard]]
 	inline std::string __repr__() const override
 	{
-		auto type = this->__type__();
-		return type.namespace_() + "::" + type.name() + "{" + this->aggregate(
+		return "{" + this->aggregate(
 			", ",
-			[](const obj::Object* item) -> std::string { return item->__repr__(); }
+			[](const obj::Object* item) -> std::string { return item ? item->__repr__() : "'nullptr'"; }
 		) + "}";
 	}
 };
