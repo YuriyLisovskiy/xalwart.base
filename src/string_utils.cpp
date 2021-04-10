@@ -174,7 +174,7 @@ std::string ltrim(const std::string& s, char c)
 
 std::string rtrim(const std::string& s, char c)
 {
-	size_t pos = s.size() - 1;
+	long long pos = (long long)s.size() - 1;
 	while (pos >= 0 && s.at(pos) == c)
 	{
 		pos--;
@@ -192,7 +192,7 @@ std::string trim(const std::string& s, char c)
 		l_pos++;
 	}
 
-	size_t r_pos = n - 1;
+	long long r_pos = (long long)n - 1;
 	while (r_pos >= 0 && s.at(r_pos) == c)
 	{
 		r_pos--;
@@ -215,7 +215,7 @@ std::string ltrim(const std::string& s, const std::string& chars)
 
 std::string rtrim(const std::string& s, const std::string& chars)
 {
-	size_t pos = s.size() - 1;
+	long long pos = (long long)s.size() - 1;
 	while (pos >= 0 && chars.find(s[pos]) != std::string::npos)
 	{
 		pos--;
@@ -233,7 +233,7 @@ std::string trim(const std::string& s, const std::string& chars)
 		l_pos++;
 	}
 
-	size_t r_pos = n - 1;
+	long long r_pos = (long long)n - 1;
 	while (r_pos >= 0 && chars.find(s[r_pos]) != std::string::npos)
 	{
 		r_pos--;
