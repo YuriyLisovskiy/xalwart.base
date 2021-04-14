@@ -8,6 +8,10 @@
 
 #pragma once
 
+// C++ libraries.
+#include <iterator>
+
+
 typedef unsigned int uint;
 
 // xw
@@ -90,3 +94,10 @@ public:\
 	{\
 	}\
 }
+
+__MAIN_NAMESPACE_BEGIN__
+
+template <typename T>
+using iterator_v_type = typename std::iterator_traits<T>::value_type;
+
+__MAIN_NAMESPACE_END__
