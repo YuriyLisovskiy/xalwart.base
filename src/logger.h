@@ -81,7 +81,7 @@ class FileStream : public Stream
 private:
 
 	// File with log messages.
-	std::shared_ptr<core::File> _file;
+	std::shared_ptr<File> _file;
 
 public:
 
@@ -91,7 +91,7 @@ public:
 	// `fp`: path to file.
 	explicit FileStream(const std::string& fp)
 	{
-		this->_file = std::make_shared<core::File>(fp, core::File::open_mode::a);
+		this->_file = std::make_shared<File>(fp, File::open_mode::a);
 		this->_file->open();
 	}
 
@@ -234,34 +234,34 @@ public:
 	virtual void print(const std::string& msg) = 0;
 
 	// Logs exception with `info` logging level if it is enabled in config.
-	virtual void info(const core::BaseException& exc) = 0;
+	virtual void info(const BaseException& exc) = 0;
 
 	// Logs exception with `debug` logging level if it is enabled in config.
-	virtual void debug(const core::BaseException& exc) = 0;
+	virtual void debug(const BaseException& exc) = 0;
 
 	// Logs exception with `warning` logging level if it is enabled in config.
-	virtual void warning(const core::BaseException& exc) = 0;
+	virtual void warning(const BaseException& exc) = 0;
 
 	// Logs exception with `error` logging level if it is enabled in config.
-	virtual void error(const core::BaseException& exc) = 0;
+	virtual void error(const BaseException& exc) = 0;
 
 	// Logs exception with `fatal` logging level if it is enabled in config.
-	virtual void fatal(const core::BaseException& exc) = 0;
+	virtual void fatal(const BaseException& exc) = 0;
 
 	// Logs `Error` with `info` logging level if it is enabled in config.
-	virtual void info(const core::Error& exc) = 0;
+	virtual void info(const Error& exc) = 0;
 
 	// Logs `Error` with `debug` logging level if it is enabled in config.
-	virtual void debug(const core::Error& exc) = 0;
+	virtual void debug(const Error& exc) = 0;
 
 	// Logs `Error` with `warning` logging level if it is enabled in config.
-	virtual void warning(const core::Error& exc) = 0;
+	virtual void warning(const Error& exc) = 0;
 
 	// Logs `Error` with `error` logging level if it is enabled in config.
-	virtual void error(const core::Error& exc) = 0;
+	virtual void error(const Error& exc) = 0;
 
 	// Logs `Error` with `fatal` logging level if it is enabled in config.
-	virtual void fatal(const core::Error& exc) = 0;
+	virtual void fatal(const Error& exc) = 0;
 
 	// Sets a config for logger.
 	virtual void set_config(const Config& config) = 0;
@@ -281,7 +281,7 @@ public:
 	// Initializes thread pool with one thread.
 	inline explicit Logger(Config cfg) : use_output_colors(false), _config(std::move(cfg))
 	{
-		this->_thread_pool = std::make_shared<core::ThreadPool>("logger", 1);
+		this->_thread_pool = std::make_shared<ThreadPool>("logger", 1);
 	}
 
 	// Sets colour mode for console stream.
@@ -396,61 +396,61 @@ public:
 	}
 
 	// Logs exception with `info` logging level if it is enabled in config.
-	inline void info(const core::BaseException& exc) override
+	inline void info(const BaseException& exc) override
 	{
 		this->info(exc.get_message(), exc.line(), exc.function(), exc.file());
 	}
 
 	// Logs exception with `debug` logging level if it is enabled in config.
-	inline void debug(const core::BaseException& exc) override
+	inline void debug(const BaseException& exc) override
 	{
 		this->debug(exc.get_message(), exc.line(), exc.function(), exc.file());
 	}
 
 	// Logs exception with `warning` logging level if it is enabled in config.
-	inline void warning(const core::BaseException& exc) override
+	inline void warning(const BaseException& exc) override
 	{
 		this->warning(exc.get_message(), exc.line(), exc.function(), exc.file());
 	}
 
 	// Logs exception with `error` logging level if it is enabled in config.
-	inline void error(const core::BaseException& exc) override
+	inline void error(const BaseException& exc) override
 	{
 		this->error(exc.get_message(), exc.line(), exc.function(), exc.file());
 	}
 
 	// Logs exception with `fatal` logging level if it is enabled in config.
-	inline void fatal(const core::BaseException& exc) override
+	inline void fatal(const BaseException& exc) override
 	{
 		this->fatal(exc.get_message(), exc.line(), exc.function(), exc.file());
 	}
 
 	// Logs `Error` with `info` logging level if it is enabled in config.
-	inline void info(const core::Error& exc) override
+	inline void info(const Error& exc) override
 	{
 		this->info(exc.get_message(), exc.line, exc.func.c_str(), exc.file.c_str());
 	}
 
 	// Logs `Error` with `debug` logging level if it is enabled in config.
-	inline void debug(const core::Error& exc) override
+	inline void debug(const Error& exc) override
 	{
 		this->debug(exc.get_message(), exc.line, exc.func.c_str(), exc.file.c_str());
 	}
 
 	// Logs `Error` with `warning` logging level if it is enabled in config.
-	inline void warning(const core::Error& exc) override
+	inline void warning(const Error& exc) override
 	{
 		this->warning(exc.get_message(), exc.line, exc.func.c_str(), exc.file.c_str());
 	}
 
 	// Logs `Error` with `error` logging level if it is enabled in config.
-	inline void error(const core::Error& exc) override
+	inline void error(const Error& exc) override
 	{
 		this->error(exc.get_message(), exc.line, exc.func.c_str(), exc.file.c_str());
 	}
 
 	// Logs `Error` with `fatal` logging level if it is enabled in config.
-	inline void fatal(const core::Error& exc) override
+	inline void fatal(const Error& exc) override
 	{
 		this->fatal(exc.get_message(), exc.line, exc.func.c_str(), exc.file.c_str());
 	}
@@ -496,7 +496,7 @@ private:
 	Config _config;
 
 	// Thread pool which is used for asynchronous logging.
-	std::shared_ptr<core::ThreadPool> _thread_pool;
+	std::shared_ptr<ThreadPool> _thread_pool;
 
 private:
 

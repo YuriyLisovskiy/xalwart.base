@@ -10,7 +10,7 @@
 #include <csignal>
 
 
-__CORE_BEGIN__
+__MAIN_NAMESPACE_BEGIN__
 
 void InterruptException::initialize()
 {
@@ -30,4 +30,4 @@ void InterruptException::initialize()
 #endif
 }
 
-__CORE_END__
+__MAIN_NAMESPACE_END__

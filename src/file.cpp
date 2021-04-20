@@ -14,7 +14,7 @@
 #include "./string_utils.h"
 
 
-__CORE_BEGIN__
+__MAIN_NAMESPACE_BEGIN__
 
 File::File(const std::string& name, open_mode mode)
 {
@@ -292,4 +292,4 @@ struct stat file_stat(const std::string& file_path)
 #endif
 }
 
-__CORE_END__
+__MAIN_NAMESPACE_END__

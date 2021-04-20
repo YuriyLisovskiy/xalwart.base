@@ -20,8 +20,8 @@ public:
 	const char* ErrorFile = "test_file.cpp";
 	const size_t ErrorLine = 1;
 
-	core::RuntimeError ConstCharConstructorError;
-	core::RuntimeError StringConstructorError;
+	RuntimeError ConstCharConstructorError;
+	RuntimeError StringConstructorError;
 
 	explicit RuntimeErrorTestCase()
 		: ConstCharConstructorError("Test error message from RuntimeErrorTestCase", this->ErrorLine, this->ErrorFunction, this->ErrorFile),

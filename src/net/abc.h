@@ -19,7 +19,7 @@
 #include "../collections/dict.h"
 
 
-__NET_BEGIN__
+__NET_ABC_BEGIN__
 
 // Base class (interface) for server implementation.
 class IServer
@@ -46,4 +46,4 @@ protected:
 	virtual void init_environ() = 0;
 };
 
-__NET_END__
+__NET_ABC_END__

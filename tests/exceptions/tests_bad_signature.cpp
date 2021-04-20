@@ -20,8 +20,8 @@ public:
 	const char* ErrorFile = "test_file.cpp";
 	const size_t ErrorLine = 1;
 
-	core::BadSignature ConstCharConstructorError;
-	core::BadSignature StringConstructorError;
+	BadSignature ConstCharConstructorError;
+	BadSignature StringConstructorError;
 
 	explicit BadSignatureTestCase()
 		: ConstCharConstructorError("Test error message from BadSignatureTestCase", this->ErrorLine, this->ErrorFunction, this->ErrorFile),

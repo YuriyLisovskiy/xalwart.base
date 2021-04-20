@@ -19,7 +19,6 @@ using namespace xw;
 
 
 using byte = unsigned char;
-using File = core::File;
 
 
 std::vector<byte> strToBytes(const std::string& s)
@@ -110,14 +109,14 @@ TEST_F(ReadFileTestCase, TestReadFileIsNotOpenError)
 {
 	this->fileToRead.close();
 
-	ASSERT_THROW(this->fileToRead.read(), core::FileError);
+	ASSERT_THROW(this->fileToRead.read(), FileError);
 
 	this->fileToRead.open();
 }
 
 TEST_F(ReadFileTestCase, TestWriteFileIsInReadOnlyModeError)
 {
-	ASSERT_THROW(this->fileToRead.write(strToBytes("Hello, World")), core::FileError);
+	ASSERT_THROW(this->fileToRead.write(strToBytes("Hello, World")), FileError);
 }
 
 TEST_F(ReadFileTestCase, TestGetPath)
@@ -260,12 +259,12 @@ TEST_F(WriteFileTestCase, TestWriteFileIsNotOpenError)
 {
 	this->file.close();
 
-	ASSERT_THROW(this->file.write(strToBytes("Hello, World")), core::FileError);
+	ASSERT_THROW(this->file.write(strToBytes("Hello, World")), FileError);
 
 	this->file.open();
 }
 
 TEST_F(WriteFileTestCase, TestReadFileIsInWriteOnlyModeError)
 {
-	ASSERT_THROW(file.read(), core::FileError);
+	ASSERT_THROW(file.read(), FileError);
 }

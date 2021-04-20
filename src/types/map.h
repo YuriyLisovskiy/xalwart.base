@@ -20,8 +20,8 @@
 
 __TYPES_BEGIN__
 
-template <object_based_type KeyT, object_based_type ValueT>
-class Map : public obj::Object, public MapContainer
+template <object_based_type_c KeyT, object_based_type_c ValueT>
+class Map : public obj::Object, public abc::MapContainer
 {
 public:
 	typedef KeyT key_type;
@@ -152,7 +152,7 @@ public:
 			return this->container > other_v->container ? 1 : -1;
 		}
 
-		throw core::TypeError(
+		throw TypeError(
 			"'__cmp__' not supported between instances of '" + this->__type__().name() + "' and '" + other->__type__().name() + "'",
 			_ERROR_DETAILS_
 		);

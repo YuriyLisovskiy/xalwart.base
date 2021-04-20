@@ -20,8 +20,8 @@ public:
 	const char* ErrorFile = "test_file.cpp";
 	const size_t ErrorLine = 1;
 
-	core::InterruptException ConstCharConstructorError;
-	core::InterruptException StringConstructorError;
+	InterruptException ConstCharConstructorError;
+	InterruptException StringConstructorError;
 
 	explicit InterruptExceptionTestCase()
 		: ConstCharConstructorError("Test error message from InterruptExceptionTestCase", this->ErrorLine, this->ErrorFunction, this->ErrorFile),

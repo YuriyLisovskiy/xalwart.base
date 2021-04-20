@@ -16,7 +16,7 @@
 #include "./_def_.h"
 
 
-__CORE_BEGIN__
+__MAIN_NAMESPACE_BEGIN__
 
 // Queued thread pool for executing functions in parallel.
 class ThreadPool
@@ -108,4 +108,4 @@ private:
 	void _thread_handler(int idx);
 };
 
-__CORE_END__
+__MAIN_NAMESPACE_END__

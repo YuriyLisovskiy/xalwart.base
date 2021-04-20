@@ -9,8 +9,6 @@
 #pragma once
 
 // Module definitions.
-#include <utility>
-
 #include "./_def_.h"
 
 // Core libraries.

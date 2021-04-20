@@ -132,7 +132,7 @@ T* require_non_null(T* p, const char* message)
 {
 	if (p == nullptr)
 	{
-		throw core::NullPointerException(message, _ERROR_DETAILS_);
+		throw NullPointerException(message, _ERROR_DETAILS_);
 	}
 
 	return p;
@@ -141,8 +141,8 @@ T* require_non_null(T* p, const char* message)
 template <typename T>
 T* require_non_null(T* p)
 {
-	return require_non_null(
-		p, "pointer to object of type '" + demangle(typeid(T).name()) + "' is nullptr"
+	return require_non_null<T>(
+		p, ("pointer to object of type '" + demangle(typeid(T).name()) + "' is nullptr").c_str()
 	);
 }
 

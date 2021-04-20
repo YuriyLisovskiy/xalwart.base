@@ -35,7 +35,7 @@ public:
 	[[nodiscard]]
 	virtual inline std::shared_ptr<const Object> __get_attr__(const char* attr_name) const
 	{
-		throw core::AttributeError(
+		throw AttributeError(
 			"'" + this->__type__().name() + "' object has no attribute '" + std::string(attr_name) + "'",
 			_ERROR_DETAILS_
 		);
@@ -49,7 +49,7 @@ public:
 	// Throws `core::AttributeError` by default.
 	virtual inline void __set_attr__(const char* attr_name, const void* data)
 	{
-		throw core::AttributeError(
+		throw AttributeError(
 			"'" + this->__type__().name() + "' object has no attribute '" + std::string(attr_name) + "'",
 			_ERROR_DETAILS_
 		);
@@ -97,7 +97,7 @@ public:
 	[[nodiscard]]
 	virtual inline short __cmp__(const Object* other) const
 	{
-		throw core::NotImplementedException(
+		throw NotImplementedException(
 			"Object of type '" + this->__type__().name() + "' does not support comparison",
 			_ERROR_DETAILS_
 		);
@@ -109,7 +109,7 @@ public:
 	// Throws core::NotImplementedException by default.
 	explicit virtual operator bool () const
 	{
-		throw core::NotImplementedException(
+		throw NotImplementedException(
 			"'" + this->__type__().name() + "::operator bool() const' is not implemented",
 			_ERROR_DETAILS_
 		);

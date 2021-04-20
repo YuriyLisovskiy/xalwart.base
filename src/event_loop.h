@@ -20,7 +20,7 @@
 #include "./_def_.h"
 
 
-__CORE_BEGIN__
+__MAIN_NAMESPACE_BEGIN__
 
 class Event
 {
@@ -117,4 +117,4 @@ public:
 	void wait_for_threads();
 };
 
-__CORE_END__
+__MAIN_NAMESPACE_END__

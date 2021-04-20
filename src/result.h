@@ -16,7 +16,7 @@
 #include "./error.h"
 
 
-__CORE_BEGIN__
+__MAIN_NAMESPACE_BEGIN__
 
 template <typename T>
 concept result_type = std::is_default_constructible_v<T>;
@@ -211,4 +211,4 @@ Result<ValueT> raise(const std::string& msg, int line, const char* func, const c
 	return Result<ValueT>(Error(err_type, msg.c_str(), line, func, file));
 }
 
-__CORE_END__
+__MAIN_NAMESPACE_END__

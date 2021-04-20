@@ -122,7 +122,7 @@ TEST_F(TestCase_Sequence, __cmp__ThrowsIncompatibleTypes)
 {
 	types::sequence<types::string> seq1{types::string("Hello"), types::string("World")};
 	types::fundamental<int> s2(256);
-	ASSERT_THROW(auto _ = seq1.__cmp__(&s2), core::TypeError);
+	ASSERT_THROW(auto _ = seq1.__cmp__(&s2), TypeError);
 }
 
 TEST_F(TestCase_Sequence, __str__)

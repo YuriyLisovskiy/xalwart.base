@@ -7,7 +7,7 @@
 #include "./error.h"
 
 
-__CORE_BEGIN__
+__MAIN_NAMESPACE_BEGIN__
 
 std::string to_string(error_type et)
 {
@@ -55,4 +55,4 @@ std::string to_string(error_type et)
 	return repr;
 }
 
-__CORE_END__
+__MAIN_NAMESPACE_END__

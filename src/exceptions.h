@@ -33,7 +33,7 @@
 #include "./_def_.h"
 
 
-__CORE_BEGIN__
+__MAIN_NAMESPACE_BEGIN__
 
 // Base exception which is used in framework.
 // Used to build new exception types.
@@ -201,4 +201,4 @@ public:
 DEF_EXCEPTION_WITH_BASE(ValueError, BaseException, "value error");
 DEF_EXCEPTION_WITH_BASE(TypeError, BaseException, "type error");
 
-__CORE_END__
+__MAIN_NAMESPACE_END__

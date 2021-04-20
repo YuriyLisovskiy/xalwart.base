@@ -49,7 +49,7 @@ size_t get_size(const std::string& p)
 	std::ifstream ifs(p, std::ifstream::ate | std::ifstream::binary);
 	if (!ifs.is_open())
 	{
-		throw core::FileError("can not access file '" + p + "'", _ERROR_DETAILS_);
+		throw FileError("can not access file '" + p + "'", _ERROR_DETAILS_);
 	}
 
 	size_t result = ifs.tellg();

@@ -21,7 +21,7 @@ short String::__cmp__(const Object* other) const
 		return this->value == other_v->value ? 0 : 1;
 	}
 
-	throw core::TypeError(
+	throw TypeError(
 		"'__cmp__' not supported between instances of '" + this->__type__().name() +
 			"' and '" + other->__type__().name() + "'",
 		_ERROR_DETAILS_

@@ -20,8 +20,8 @@ public:
 	const char* ErrorFile = "test_file.cpp";
 	const size_t ErrorLine = 1;
 
-	core::ImproperlyConfigured ConstCharConstructorError;
-	core::ImproperlyConfigured StringConstructorError;
+	ImproperlyConfigured ConstCharConstructorError;
+	ImproperlyConfigured StringConstructorError;
 
 	explicit ImproperlyConfiguredTestCase()
 		: ConstCharConstructorError("Test error message from ImproperlyConfiguredTestCase", this->ErrorLine, this->ErrorFunction, this->ErrorFile),

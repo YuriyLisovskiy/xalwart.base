@@ -20,8 +20,8 @@ public:
 	const char* ErrorFile = "test_file.cpp";
 	const size_t ErrorLine = 1;
 
-	core::ValueError ConstCharConstructorError;
-	core::ValueError StringConstructorError;
+	ValueError ConstCharConstructorError;
+	ValueError StringConstructorError;
 
 	explicit ValueErrorTestCase()
 		: ConstCharConstructorError("Test error message from ValueErrorTestCase", this->ErrorLine, this->ErrorFunction, this->ErrorFile),

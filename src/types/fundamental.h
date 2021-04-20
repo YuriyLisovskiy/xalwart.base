@@ -190,7 +190,7 @@ public:
 			return this->_cmp_result(other_v->get());
 		}
 
-		throw core::TypeError(
+		throw TypeError(
 			"'__cmp__' not supported between instances of '" + this->__type__().name() + "' and '" + other->__type__().name() + "'",
 			_ERROR_DETAILS_
 		);

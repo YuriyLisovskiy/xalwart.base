@@ -20,8 +20,8 @@ public:
 	const char* ErrorFile = "test_file.cpp";
 	const size_t ErrorLine = 1;
 
-	core::ParseError ConstCharConstructorError;
-	core::ParseError StringConstructorError;
+	ParseError ConstCharConstructorError;
+	ParseError StringConstructorError;
 
 	explicit ParseErrorTestCase()
 		: ConstCharConstructorError("Test error message from ParseErrorTestCase", this->ErrorLine, this->ErrorFunction, this->ErrorFile),
