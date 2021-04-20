@@ -67,7 +67,7 @@ TEST(TestCase_String, __cmp__ThrowsIncompatibleTypes)
 {
 	types::String s1("One");
 	types::Fundamental<float> f2(10.0f);
-	ASSERT_THROW(auto _ = s1.__cmp__(&f2), core::TypeError);
+	ASSERT_THROW(auto _ = s1.__cmp__(&f2), TypeError);
 }
 
 TEST(TestCase_String, operator_equals_True)
@@ -158,7 +158,7 @@ TEST(TestCase_String, __cmp__ThrowsTypeError)
 {
 	types::String s1("One");;
 	obj::Object o;
-	ASSERT_THROW(auto _ = s1.__cmp__(&o), core::TypeError);
+	ASSERT_THROW(auto _ = s1.__cmp__(&o), TypeError);
 }
 
 TEST(TestCase_String, operator_bool_True)

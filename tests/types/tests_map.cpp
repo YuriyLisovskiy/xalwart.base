@@ -126,7 +126,7 @@ TEST_F(TestCase_Map, __cmp__ThrowsIncompatibleTypes)
 {
 	types::map<types::string, types::string> mp{{types::string("Hello"), types::string("World")}};
 	types::fundamental<int> s2(256);
-	ASSERT_THROW(auto _ = mp.__cmp__(&s2), core::TypeError);
+	ASSERT_THROW(auto _ = mp.__cmp__(&s2), TypeError);
 }
 
 TEST_F(TestCase_Map, __str__)

@@ -17,10 +17,6 @@ using uint = unsigned int;
 #define __MAIN_NAMESPACE_BEGIN__ namespace xw {
 #define __MAIN_NAMESPACE_END__ }
 
-// xw::core
-//#define __CORE_BEGIN__ __MAIN_NAMESPACE_BEGIN__ namespace core {
-//#define __CORE_END__ } __MAIN_NAMESPACE_END__
-
 // xw::path
 #define __PATH_BEGIN__ __MAIN_NAMESPACE_BEGIN__ namespace path {
 #define __PATH_END__ } __MAIN_NAMESPACE_END__
