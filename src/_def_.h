@@ -12,7 +12,7 @@
 #include <iterator>
 
 
-typedef unsigned int uint;
+using uint = unsigned int;
 
 // xw
 #define __MAIN_NAMESPACE_BEGIN__ namespace xw {
@@ -49,8 +49,8 @@ typedef unsigned int uint;
 #define __STR_BEGIN__ __MAIN_NAMESPACE_BEGIN__ namespace str {
 #define __STR_END__ } __MAIN_NAMESPACE_END__
 
-// xw::utility
-#define __UTILITY_BEGIN__ __MAIN_NAMESPACE_BEGIN__ namespace utility {
+// xw::util
+#define __UTILITY_BEGIN__ __MAIN_NAMESPACE_BEGIN__ namespace util {
 #define __UTILITY_END__ } __MAIN_NAMESPACE_END__
 
 // xw::sys

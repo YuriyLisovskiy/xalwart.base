@@ -16,6 +16,7 @@
 
 // Core libraries.
 #include "./datetime.h"
+#include "./exceptions.h"
 
 
 __UTILITY_BEGIN__
@@ -125,5 +126,24 @@ extern std::string format_date(
 extern std::string _format_timetuple_and_zone(
 	dt::tm_tuple* time_tuple, const std::string& zone
 );
+
+template <typename T>
+T* require_non_null(T* p, const char* message)
+{
+	if (p == nullptr)
+	{
+		throw core::NullPointerException(message, _ERROR_DETAILS_);
+	}
+
+	return p;
+}
+
+template <typename T>
+T* require_non_null(T* p)
+{
+	return require_non_null(
+		p, "pointer to object of type '" + demangle(typeid(T).name()) + "' is nullptr"
+	);
+}
 
 __UTILITY_END__
