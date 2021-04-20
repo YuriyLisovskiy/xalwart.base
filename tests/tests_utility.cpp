@@ -118,3 +118,15 @@ TEST(TestCase_utility, format_date_WithGMT)
 	auto actual = util::format_date(timestamp, false, true);
 	ASSERT_EQ(expected, actual);
 }
+
+TEST(TestCase_utility, require_non_null_ThrowsNullPointerException)
+{
+	int* a = nullptr;
+	ASSERT_THROW(util::require_non_null(a), NullPointerException);
+}
+
+TEST(TestCase_utility, require_non_null_NotThrows)
+{
+	int a = 10;
+	ASSERT_NO_THROW(util::require_non_null(&a));
+}

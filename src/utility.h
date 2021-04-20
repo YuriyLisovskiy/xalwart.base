@@ -141,8 +141,8 @@ T* require_non_null(T* p, const char* message)
 template <typename T>
 T* require_non_null(T* p)
 {
-	return require_non_null(
-		p, "pointer to object of type '" + demangle(typeid(T).name()) + "' is nullptr"
+	return require_non_null<T>(
+		p, ("pointer to object of type '" + demangle(typeid(T).name()) + "' is nullptr").c_str()
 	);
 }
 
