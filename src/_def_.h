@@ -11,23 +11,15 @@
 // C++ libraries.
 #include <iterator>
 
-
 using uint = unsigned int;
 
 // xw
 #define __MAIN_NAMESPACE_BEGIN__ namespace xw {
 #define __MAIN_NAMESPACE_END__ }
 
-// Required parameters for built-in logger.
-#ifdef _MSC_VER
-#define _ERROR_DETAILS_ __LINE__, __FUNCTION__, __FILE__
-#else
-#define _ERROR_DETAILS_ __LINE__, __PRETTY_FUNCTION__, __FILE__
-#endif
-
 // xw::core
-#define __CORE_BEGIN__ __MAIN_NAMESPACE_BEGIN__ namespace core {
-#define __CORE_END__ } __MAIN_NAMESPACE_END__
+//#define __CORE_BEGIN__ __MAIN_NAMESPACE_BEGIN__ namespace core {
+//#define __CORE_END__ } __MAIN_NAMESPACE_END__
 
 // xw::path
 #define __PATH_BEGIN__ __MAIN_NAMESPACE_BEGIN__ namespace path {
@@ -64,6 +56,13 @@ using uint = unsigned int;
 // xw::log
 #define __LOG_BEGIN__ __MAIN_NAMESPACE_BEGIN__ namespace log {
 #define __LOG_END__ } __MAIN_NAMESPACE_END__
+
+// Required parameters for built-in logger.
+#ifdef _MSC_VER
+#define _ERROR_DETAILS_ __LINE__, __FUNCTION__, __FILE__
+#else
+#define _ERROR_DETAILS_ __LINE__, __PRETTY_FUNCTION__, __FILE__
+#endif
 
 // Declares exception's class with given base.
 #define DEF_EXCEPTION_WITH_BASE(name, base, default_message)\

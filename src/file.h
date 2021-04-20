@@ -24,7 +24,7 @@
 #include "./_def_.h"
 
 
-__CORE_BEGIN__
+__MAIN_NAMESPACE_BEGIN__
 
 class File final
 {
@@ -162,4 +162,4 @@ public:
 // Returns file info as struct `stat`.
 struct stat file_stat(const std::string& file_path);
 
-__CORE_END__
+__MAIN_NAMESPACE_END__

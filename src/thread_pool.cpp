@@ -7,7 +7,7 @@
 #include "./thread_pool.h"
 
 
-__CORE_BEGIN__
+__MAIN_NAMESPACE_BEGIN__
 
 ThreadPool::ThreadPool(std::string name, size_t threads_count) : _name(std::move(name))
 {
@@ -100,4 +100,4 @@ void ThreadPool::_thread_handler(int idx)
 	}
 }
 
-__CORE_END__
+__MAIN_NAMESPACE_END__

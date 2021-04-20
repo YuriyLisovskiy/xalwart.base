@@ -20,14 +20,14 @@ protected:
 TEST_F(TestCase_Object, __get_attr__ThrowsAttributeError)
 {
 	ASSERT_THROW(
-		auto _ = this->object.__get_attr__("some_attr"), core::AttributeError
+		auto _ = this->object.__get_attr__("some_attr"), AttributeError
 	);
 }
 
 TEST_F(TestCase_Object, __set_attr__ThrowsAttributeError)
 {
 	ASSERT_THROW(
-		this->object.__set_attr__("some_attr", (void*)10), core::AttributeError
+		this->object.__set_attr__("some_attr", (void*)10), AttributeError
 	);
 }
 
@@ -63,16 +63,16 @@ TEST_F(TestCase_Object, __cmp__ThrowsNotImplementedException)
 {
 	obj::Object other;
 	ASSERT_THROW(
-		auto _ = this->object.__cmp__(&other), core::NotImplementedException
+		auto _ = this->object.__cmp__(&other), NotImplementedException
 	);
 }
 
 TEST_F(TestCase_Object, operator_bool_ThrowsNotImplementedException)
 {
-	ASSERT_THROW(auto _ = (bool) this->object, core::NotImplementedException);
+	ASSERT_THROW(auto _ = (bool) this->object, NotImplementedException);
 }
 
 TEST_F(TestCase_Object, operator_not_ThrowsNotImplementedException)
 {
-	ASSERT_THROW(auto _ = !this->object, core::NotImplementedException);
+	ASSERT_THROW(auto _ = !this->object, NotImplementedException);
 }

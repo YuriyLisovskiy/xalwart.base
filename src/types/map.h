@@ -20,8 +20,8 @@
 
 __TYPES_BEGIN__
 
-template <object_based_type KeyT, object_based_type ValueT>
-class Map : public obj::Object, public MapContainer
+template <object_based_type_c KeyT, object_based_type_c ValueT>
+class Map : public obj::Object, public abc::MapContainer
 {
 public:
 	typedef KeyT key_type;

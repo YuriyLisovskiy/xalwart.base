@@ -20,8 +20,8 @@
 
 __TYPES_BEGIN__
 
-template <object_based_type ValueT>
-class Sequence : public obj::Object, public SequenceContainer
+template <object_based_type_c ValueT>
+class Sequence : public obj::Object, public abc::SequenceContainer
 {
 public:
 	typedef ValueT value_type;

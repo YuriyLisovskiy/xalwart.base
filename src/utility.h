@@ -132,7 +132,7 @@ T* require_non_null(T* p, const char* message)
 {
 	if (p == nullptr)
 	{
-		throw core::NullPointerException(message, _ERROR_DETAILS_);
+		throw NullPointerException(message, _ERROR_DETAILS_);
 	}
 
 	return p;

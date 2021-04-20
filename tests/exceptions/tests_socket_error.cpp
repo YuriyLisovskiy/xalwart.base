@@ -20,8 +20,8 @@ public:
 	const char* ErrorFile = "test_file.cpp";
 	const size_t ErrorLine = 1;
 
-	core::SocketError ConstCharConstructorError;
-	core::SocketError StringConstructorError;
+	SocketError ConstCharConstructorError;
+	SocketError StringConstructorError;
 
 	explicit SocketErrorTestCase()
 		: ConstCharConstructorError(1, "Test error message from SocketErrorTestCase", this->ErrorLine, this->ErrorFunction, this->ErrorFile),

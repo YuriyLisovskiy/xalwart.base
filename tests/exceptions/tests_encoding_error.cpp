@@ -20,8 +20,8 @@ public:
 	const char* ErrorFile = "test_file.cpp";
 	const size_t ErrorLine = 1;
 
-	core::EncodingError ConstCharConstructorError;
-	core::EncodingError StringConstructorError;
+	EncodingError ConstCharConstructorError;
+	EncodingError StringConstructorError;
 
 	explicit EncodingErrorTestCase()
 		: ConstCharConstructorError("Test error message from EncodingErrorTestCase", this->ErrorLine, this->ErrorFunction, this->ErrorFile),

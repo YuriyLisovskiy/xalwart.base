@@ -13,7 +13,7 @@ using namespace xw;
 
 TEST(TestCase_Result, ConstructFromValue)
 {
-	auto result = core::Result<int>(2020);
+	auto result = Result<int>(2020);
 	ASSERT_FALSE(result.err);
 	ASSERT_EQ(result.value, 2020);
 }

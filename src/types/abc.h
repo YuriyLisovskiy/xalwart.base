@@ -15,7 +15,7 @@
 #include "../object/object.h"
 
 
-__TYPES_BEGIN__
+__TYPES_ABC_BEGIN__
 
 // Base class for iterable container.
 class Iterable
@@ -91,7 +91,11 @@ public:
 	) const = 0;
 };
 
+__TYPES_ABC_END__
+
+__TYPES_BEGIN__
+
 template <typename T>
-concept object_based_type = std::is_base_of_v<obj::Object, T>;
+concept object_based_type_c = std::is_base_of_v<obj::Object, T>;
 
 __TYPES_END__

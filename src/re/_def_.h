@@ -10,7 +10,6 @@
 
 #include "../_def_.h"
 
-
 // xw::re
 #define __RE_BEGIN__ __MAIN_NAMESPACE_BEGIN__ namespace re {
 #define __RE_END__ } __MAIN_NAMESPACE_END__

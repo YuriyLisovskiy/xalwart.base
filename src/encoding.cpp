@@ -131,7 +131,7 @@ std::string encode_ascii(const std::string& s, Mode mode)
 			switch (mode)
 			{
 				case Mode::STRICT:
-					throw core::EncodingError(
+					throw EncodingError(
 						"'ascii' codec can't encode character in position " + std::to_string(i) + ": ordinal not in range [0;127]",
 						_ERROR_DETAILS_
 					);
@@ -195,7 +195,7 @@ std::string encode_iso_8859_1(const std::string& s, Mode mode)
 				switch (mode)
 				{
 					case Mode::STRICT:
-						throw core::EncodingError(
+						throw EncodingError(
 							"'iso_8859_1' codec can't encode character: ordinal not in range [0;255]",
 							_ERROR_DETAILS_
 						);
@@ -235,7 +235,7 @@ std::string encode(const std::string& s, encoding enc, Mode mode)
 			result = encode_utf_8(s, mode);
 			break;
 		default:
-			throw core::EncodingError("unknown encoding", _ERROR_DETAILS_);
+			throw EncodingError("unknown encoding", _ERROR_DETAILS_);
 	}
 
 	return result;

@@ -20,8 +20,8 @@ public:
 	const char* ErrorFile = "test_file.cpp";
 	const size_t ErrorLine = 1;
 
-	core::NotImplementedException ConstCharConstructorError;
-	core::NotImplementedException StringConstructorError;
+	NotImplementedException ConstCharConstructorError;
+	NotImplementedException StringConstructorError;
 
 	explicit NotImplementedExceptionTestCase()
 		: ConstCharConstructorError("Test error message from NotImplementedExceptionTestCase", this->ErrorLine, this->ErrorFunction, this->ErrorFile),

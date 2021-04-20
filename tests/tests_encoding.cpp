@@ -111,7 +111,7 @@ TEST(TestCase_encoding, encode_ascii_StrictModeThrowEncodingErrorCharIsGreaterTh
 {
 	ASSERT_THROW(
 		encoding::encode_ascii(std::string(1, (char)128), encoding::STRICT),
-		core::EncodingError
+		EncodingError
 	);
 }
 
@@ -119,7 +119,7 @@ TEST(TestCase_encoding, encode_ascii_StrictModeThrowEncodingErrorCharIsLessThan0
 {
 	ASSERT_THROW(
 		encoding::encode_ascii(std::string(1, (char)-1), encoding::STRICT),
-		core::EncodingError
+		EncodingError
 	);
 }
 
@@ -186,7 +186,7 @@ TEST(TestCase_encoding, encode_iso_8859_1_StrictModeThrowEncodingErrorCharIsGrea
 {
 	ASSERT_THROW(
 		encoding::encode_iso_8859_1("Ž", encoding::STRICT),
-		core::EncodingError
+		EncodingError
 	);
 }
 

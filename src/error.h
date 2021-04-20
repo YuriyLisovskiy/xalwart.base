@@ -16,7 +16,7 @@
 #include "./_def_.h"
 
 
-__CORE_BEGIN__
+__MAIN_NAMESPACE_BEGIN__
 
 // Supported error types.
 enum error_type
@@ -103,16 +103,16 @@ struct Error
 	}
 };
 
-__CORE_END__
+__MAIN_NAMESPACE_END__
 
 // Writes `error_type` object to stream.
-inline std::ostream& operator<<(std::ostream& os, const xw::core::error_type& type)
+inline std::ostream& operator<<(std::ostream& os, const xw::error_type& type)
 {
 	return os << to_string(type);
 }
 
 // Formats and writes `Error` object to stream.
-inline std::ostream& operator<<(std::ostream& os, const xw::core::Error& err)
+inline std::ostream& operator<<(std::ostream& os, const xw::Error& err)
 {
 	return os << "\nFile \"" << err.file << "\", line " << err.line << ", in " << err.func << '\n' << err.msg;
 }

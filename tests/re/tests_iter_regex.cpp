@@ -31,7 +31,7 @@ TEST_F(TestCase_IterRegex, setup_IsInitialized)
 
 TEST_F(TestCase_IterRegex, setup_IsNotInitialized)
 {
-	ASSERT_THROW(this->regex.search_next(), core::RuntimeError);
+	ASSERT_THROW(this->regex.search_next(), RuntimeError);
 }
 
 TEST_F(TestCase_IterRegex, search_next_Found)

@@ -7,7 +7,7 @@
 #include "./event_loop.h"
 
 
-__CORE_BEGIN__
+__MAIN_NAMESPACE_BEGIN__
 
 void EventLoop::_join_threads()
 {
@@ -70,4 +70,4 @@ inline void EventLoop::wait_for_threads()
 	this->_is_finished = true;
 }
 
-__CORE_END__
+__MAIN_NAMESPACE_END__

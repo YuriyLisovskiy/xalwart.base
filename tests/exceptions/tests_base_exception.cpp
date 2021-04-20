@@ -20,7 +20,7 @@ public:
 	const char* ErrorFile = "test_file.cpp";
 	const size_t ErrorLine = 1;
 
-	core::BaseException ConstCharConstructorError;
+	BaseException ConstCharConstructorError;
 
 	explicit BaseExceptionTestCase()
 		: ConstCharConstructorError("Test error message from BaseExceptionTestCase", this->ErrorLine, this->ErrorFunction, this->ErrorFile)

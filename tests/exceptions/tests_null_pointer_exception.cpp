@@ -20,8 +20,8 @@ public:
 	const char* ErrorFile = "test_file.cpp";
 	const size_t ErrorLine = 1;
 
-	core::NullPointerException ConstCharConstructorError;
-	core::NullPointerException StringConstructorError;
+	NullPointerException ConstCharConstructorError;
+	NullPointerException StringConstructorError;
 
 	explicit NullPointerExceptionTestCase()
 		: ConstCharConstructorError("Test error message from NullPointerExceptionTestCase", this->ErrorLine, this->ErrorFunction, this->ErrorFile),
