@@ -98,4 +98,7 @@ __TYPES_BEGIN__
 template <typename T>
 concept object_based_type_c = std::is_base_of_v<obj::Object, T>;
 
+template <typename T>
+concept object_based_iterator_type_c = std::is_base_of_v<obj::Object, iterator_v_type<T>>;
+
 __TYPES_END__

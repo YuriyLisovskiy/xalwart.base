@@ -3,7 +3,8 @@
  *
  * Copyright (c) 2021 Yuriy Lisovskiy
  *
- * Wrapper for sequential containers based on `std::list` for rendering in templates.
+ * Wrapper for sequential containers based on `std::list`
+ * for rendering in templates.
  */
 
 #pragma once
@@ -61,22 +62,6 @@ protected:
 		return res;
 	}
 
-public:
-
-	// Default constructor.
-	inline explicit Sequence() = default;
-
-	// Constructs Sequence from container.
-	inline explicit Sequence(container_type value) : container(std::move(value))
-	{
-	}
-
-	// Constructs Sequence from initializer list.
-	inline explicit Sequence(std::initializer_list<value_type> list)
-	{
-		this->container = std::move(list);
-	}
-
 	// Iterates through sequential container using iterators.
 	//
 	// `begin`, `end`: iterators of the container.
@@ -92,6 +77,22 @@ public:
 		{
 			func(i++, &(*it));
 		}
+	}
+
+public:
+
+	// Default constructor.
+	inline explicit Sequence() = default;
+
+	// Constructs Sequence from container.
+	inline explicit Sequence(container_type value) : container(std::move(value))
+	{
+	}
+
+	// Constructs Sequence from initializer list.
+	inline explicit Sequence(std::initializer_list<value_type> list)
+	{
+		this->container = std::move(list);
 	}
 
 	// Iterates through sequential container in given direction.

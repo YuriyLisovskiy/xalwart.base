@@ -378,7 +378,7 @@ public:
 	static const Timedelta RESOLUTION;
 
 public:
-	Date(ushort year, ushort month, ushort day);
+	explicit Date(ushort year = 1970, ushort month = 1, ushort day = 1);
 
 	// Construct a date from a POSIX timestamp (like time()).
 	static Date from_timestamp(time_t t);
@@ -660,8 +660,8 @@ public:
 	static const Timedelta RESOLUTION;
 
 public:
-	Datetime(
-		ushort year, ushort month, ushort day,
+	explicit Datetime(
+		ushort year = 1970, ushort month = 1, ushort day = 1,
 		ushort hour = 0, ushort minute = 0, ushort second = 0,
 		uint microsecond = 0,
 		const std::shared_ptr<Timezone>& tz_info = nullptr,
