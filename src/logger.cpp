@@ -122,7 +122,7 @@ void Logger::_write_to_stream(const std::string& msg, Color colour, char end)
 			this->_set_colour(colour);
 		}
 
-		stream->write(msg + std::string(1, end));
+		stream->write(msg + (end != '\0' ? std::string(1, end) : ""));
 		if (is_console)
 		{
 			this->_set_colour(Color::DEFAULT);
