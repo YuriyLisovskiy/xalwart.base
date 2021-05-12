@@ -139,6 +139,12 @@ T* require_non_null(T* p, const char* message)
 }
 
 template <typename T>
+T* require_non_null(T* p, const std::string& message)
+{
+	return require_non_null(p, message.c_str());
+}
+
+template <typename T>
 T* require_non_null(T* p)
 {
 	return require_non_null<T>(

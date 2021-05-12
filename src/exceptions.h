@@ -14,6 +14,7 @@
  *	- FileError
  *	- ImproperlyConfigured
  *	- InterruptException
+ *	- KeyError
  *	- ParseError
  *	- RuntimeError
  *	- MultiPartParserError
@@ -153,6 +154,7 @@ public:
 	static void initialize();
 };
 
+DEF_EXCEPTION_WITH_BASE(KeyError, BaseException, "key error");
 DEF_EXCEPTION_WITH_BASE(ParseError, BaseException, "parse error");
 DEF_EXCEPTION_WITH_BASE(RuntimeError, BaseException, "runtime error");
 DEF_EXCEPTION_WITH_BASE(MultiPartParserError, ParseError, "multipart parser error");
