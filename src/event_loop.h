@@ -80,6 +80,12 @@ public:
 		}
 	}
 
+	// Deleted copy constructor.
+	EventLoop(const EventLoop& other) = delete;
+
+	// Deleted copy-assignment.
+	EventLoop& operator=(const EventLoop& other) = delete;
+
 	inline ~EventLoop()
 	{
 		this->wait_for_threads();
