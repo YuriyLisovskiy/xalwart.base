@@ -1,9 +1,9 @@
-name: "alpine-gcc"
+name: "test alpine g++"
 on:
   push:
     branches:
       - 'dev'
-      - '!master'
+      - 'master'
   pull_request:
     branches:
       - '**'

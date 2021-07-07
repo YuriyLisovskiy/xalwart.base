@@ -17,6 +17,19 @@ using uint = unsigned int;
 #define __MAIN_NAMESPACE_BEGIN__ namespace xw {
 #define __MAIN_NAMESPACE_END__ }
 
+__MAIN_NAMESPACE_BEGIN__
+
+namespace v
+{
+const uint major = 0;
+const uint minor = 0;
+const uint patch = 0;
+
+const std::string version = std::to_string(major) + "." + std::to_string(minor) + "." + std::to_string(patch);
+};
+
+__MAIN_NAMESPACE_END__
+
 // xw::path
 #define __PATH_BEGIN__ __MAIN_NAMESPACE_BEGIN__ namespace path {
 #define __PATH_END__ } __MAIN_NAMESPACE_END__

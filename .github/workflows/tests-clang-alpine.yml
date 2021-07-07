@@ -1,9 +1,9 @@
-name: "alpine-clang"
+name: "test alpine clang++"
 on:
   push:
     branches:
       - 'dev'
-      - '!master'
+      - 'master'
   pull_request:
     branches:
       - '**'

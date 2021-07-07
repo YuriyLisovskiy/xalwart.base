@@ -1,9 +1,9 @@
-name: "ubuntu-clang"
+name: "test ubuntu clang++"
 on:
   push:
     branches:
       - 'dev'
-      - '!master'
+      - 'master'
   pull_request:
     branches:
       - '**'
