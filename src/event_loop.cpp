@@ -49,7 +49,7 @@ void EventLoop::_run()
 	}
 }
 
-inline void EventLoop::wait_for_threads()
+void EventLoop::wait_for_threads()
 {
 	if (this->_is_finished || this->_quit)
 	{

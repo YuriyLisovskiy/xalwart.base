@@ -36,7 +36,7 @@ public:
 	Dict() = default;
 
 	// Constructs `Dict` instance from `std::map`.
-	explicit Dict(const std::map<KeyT, ValT>& src_map)
+	Dict(const std::map<KeyT, ValT>& src_map)
 	{
 		this->_map = src_map;
 	}
