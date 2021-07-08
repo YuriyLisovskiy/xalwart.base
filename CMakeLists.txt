@@ -4,7 +4,7 @@ set(CMAKE_CXX_STANDARD 20)
 
 set(FRAMEWORK_NAME "xalwart")
 set(LIBRARY_NAME "${FRAMEWORK_NAME}.core")
-set(LIBRARY_VERSION "0.0.1")
+set(LIBRARY_VERSION "0.0.0")
 
 project(${LIBRARY_NAME})
 
@@ -29,7 +29,16 @@ message(STATUS "[INFO] Sources found: ${SOURCES_COUNT}")
 
 # Build shared library.
 set(FULL_LIBRARY_NAME ${LIBRARY_NAME}-${LIBRARY_VERSION})
-add_library(${FULL_LIBRARY_NAME} STATIC ${SOURCES})
+
+if (NOT LIB_SHARED)
+    set(LIB_SHARED no)
+endif()
+
+if (${LIB_SHARED})
+    add_library(${FULL_LIBRARY_NAME} SHARED ${SOURCES})
+else()
+    add_library(${FULL_LIBRARY_NAME} STATIC ${SOURCES})
+endif()
 
 # Install library.
 install(
