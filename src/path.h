@@ -20,7 +20,7 @@
 
 #ifdef __windows__
 
-#error "Path utilities is not supported on Windows"
+#include "./_path/nt.h"
 
 #endif // __windows__
 

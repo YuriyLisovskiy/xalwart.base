@@ -3211,7 +3211,7 @@ TEST(TestCase_Fundamental, Test_Str_UnsignedInt)
 
 TEST(TestCase_Fundamental, Test_Str_LongInt)
 {
-	auto value = types::Fundamental<long int>(-8765434567);
+	auto value = types::Fundamental<long int>(-876544567);
 	auto actual = value.__str__();
 	auto expected = std::string("-8765434567");
 	ASSERT_EQ(actual, expected);
@@ -3219,7 +3219,7 @@ TEST(TestCase_Fundamental, Test_Str_LongInt)
 
 TEST(TestCase_Fundamental, Test_Str_UnsignedLongInt)
 {
-	auto value = types::Fundamental<unsigned long int>(34567898765);
+	auto value = types::Fundamental<unsigned long int>(34598765);
 	auto actual = value.__str__();
 	auto expected = std::string("34567898765");
 	ASSERT_EQ(actual, expected);

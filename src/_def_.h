@@ -11,6 +11,10 @@
 // C++ libraries.
 #include <iterator>
 
+#ifdef _MSC_VER
+#include <string>
+#endif
+
 using uint = unsigned int;
 
 // xw

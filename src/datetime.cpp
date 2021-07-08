@@ -15,6 +15,7 @@
 
 #ifdef _MSC_VER
 #include <algorithm>
+#include <sstream>
 #else
 #include <cmath>
 #endif
@@ -1536,7 +1537,7 @@ Datetime Datetime::_from_timestamp(
 		// thus we can't perform fold detection for values of time less
 		// than the max time fold. See comments in _datetime module's
 		// version of this method for more details.
-		#if __windows__
+		#ifdef __windows__
 		if (t < max_fold_seconds)
 		{
 			return result;

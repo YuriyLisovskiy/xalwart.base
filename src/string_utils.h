@@ -104,7 +104,7 @@ template <str_or_char_iterator_type IteratorT>
 std::string join(const char* delimiter, IteratorT begin, IteratorT end)
 {
 	std::string result;
-	for (str_or_char_iterator_type auto it = begin; it != end; it++)
+	for (auto it = begin; it != end; it++)
 	{
 		result += *it;
 		if (std::next(it) != end)

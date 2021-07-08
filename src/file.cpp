@@ -9,6 +9,10 @@
 // C++ libraries.
 #include <cmath>
 
+#ifndef _MSC_VER
+#include <sys/stat.h>
+#endif
+
 // Core libraries.
 #include "./exceptions.h"
 #include "./string_utils.h"
@@ -278,18 +282,24 @@ bool File::multiple_chunks(size_t chunk_size)
 
 struct stat file_stat(const std::string& file_path)
 {
-#if defined(_WIN32) || defined(_WIN64)
-	//	auto fp = str::replace(file_path, "/", "\\");
-	struct stat buf;
-	stat(file_path.c_str(), &buf);
+	struct stat buf{};
+	auto ret = stat(file_path.c_str(), &buf);
+	if (ret != 0)
+	{
+		if (ret == ENOENT)
+		{
+			throw FileError(
+				"file '" + file_path + "' does not exist", _ERROR_DETAILS_
+			);
+		}
+
+		throw FileError(
+			"unable to obtain file information: '" + file_path + "'",
+			_ERROR_DETAILS_
+		);
+	}
+
 	return buf;
-#elif defined(__unix__) || defined(__linux__)
-	struct stat result{};
-	::stat(file_path.c_str(), &result);
-	return result;
-#else
-#error Library is not supported on this platform
-#endif
 }
 
 __MAIN_NAMESPACE_END__

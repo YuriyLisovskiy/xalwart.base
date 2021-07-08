@@ -44,19 +44,6 @@ std::string dirname(const std::string& p)
 	return head;
 }
 
-size_t get_size(const std::string& p)
-{
-	std::ifstream ifs(p, std::ifstream::ate | std::ifstream::binary);
-	if (!ifs.is_open())
-	{
-		throw FileError("can not access file '" + p + "'", _ERROR_DETAILS_);
-	}
-
-	size_t result = ifs.tellg();
-	ifs.close();
-	return result;
-}
-
 std::string cwd()
 {
 	return std::filesystem::current_path();

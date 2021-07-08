@@ -6,6 +6,11 @@
 
 #include "./string_utils.h"
 
+#ifdef _MSC_VER
+// C++ libraries.
+#include <algorithm>
+#endif
+
 
 __STR_BEGIN__
 

@@ -6,6 +6,11 @@
 
 #include "./generic.h"
 
+#ifdef _MSC_VER
+// C++ libraries.
+#include <algorithm>
+#endif
+
 
 __PATH_BEGIN__
 

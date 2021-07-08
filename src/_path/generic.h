@@ -14,8 +14,19 @@
 // Module definitions.
 #include "../_def_.h"
 
+// Core libraries.
+#include "../file.h"
+
 
 __PATH_BEGIN__
+
+// `p`: path to access.
+//
+// Returns file size in bytes.
+inline size_t get_size(const std::string& p)
+{
+	return file_stat(p).st_size;
+}
 
 // Split a path in root and extension.
 // The extension is everything starting at the last dot in the last
