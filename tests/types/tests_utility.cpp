@@ -62,20 +62,20 @@ TEST(TestCase_utility, to_object_List)
 
 TEST(TestCase_utility, to_object_StdMap)
 {
-	auto container = std::map<types::string, types::_float>{
-		{"a", 14.5f},
-		{"b", 7.7f},
-		{"c", 0.99f},
+	auto container = std::map<types::string, types::_int>{
+		{"a", 14},
+		{"b", 7},
+		{"c", 0},
 	};
-	ASSERT_EQ(types::to_object(container).get()->__str__(), "{{\"a\", 14.5}, {\"b\", 7.7}, {\"c\", 0.99}}");
+	ASSERT_EQ(types::to_object(container).get()->__str__(), "{{\"a\", 14}, {\"b\", 7}, {\"c\", 0}}");
 }
 
 TEST(TestCase_utility, to_object_Map)
 {
-	auto container = types::map<types::string, types::_float>{
-		{"a", 14.5f},
-		{"b", 7.7f},
-		{"c", 0.99f},
+	auto container = types::map<types::string, types::_int>{
+		{"a", 14},
+		{"b", -7},
+		{"c", 0},
 	};
-	ASSERT_EQ(types::to_object(container).get()->__str__(), R"({{"a", 14.5}, {"b", 7.7}, {"c", 0.99}})");
+	ASSERT_EQ(types::to_object(container).get()->__str__(), R"({{"a", 14}, {"b", -7}, {"c", 0}})");
 }
