@@ -47,6 +47,5 @@ lib/
 
 # Additional stuff
 Dockerfile*
-.dockerignore
 Makefile
 venv/
