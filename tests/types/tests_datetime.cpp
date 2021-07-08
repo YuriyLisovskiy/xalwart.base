@@ -21,7 +21,7 @@ protected:
 
 	void SetUp() override
 	{
-		this->now = dt::Datetime::now();
+		this->now = dt::Datetime::now(std::make_shared<dt::Timezone>(dt::Timezone::UTC));
 		this->date = types::Date(this->now.date());
 		this->time = types::Time(this->now.time());
 		this->datetime = types::Datetime(this->now);
@@ -157,10 +157,13 @@ TEST_F(TestCase_Datetime, __repr__Time)
 TEST_F(TestCase_Datetime, __cmp__Time_less)
 {
 	auto t = this->now.time();
-	auto other = types::Time(
-		dt::Time(t.hour() + 1, t.minute(), t.second(), t.microsecond(), nullptr, t.fold())
-	);
-	ASSERT_EQ(this->time.__cmp__(&other), -1);
+	if (t.hour() != 23)
+	{
+		auto other = types::Time(
+			dt::Time(t.hour() + 1, t.minute(), t.second(), t.microsecond(), nullptr, t.fold())
+		);
+		ASSERT_EQ(this->time.__cmp__(&other), -1);
+	}
 }
 
 TEST_F(TestCase_Datetime, __cmp__Time_eq)
@@ -173,10 +176,13 @@ TEST_F(TestCase_Datetime, __cmp__Time_eq)
 TEST_F(TestCase_Datetime, __cmp__Time_greater)
 {
 	auto t = this->now.time();
-	auto other = types::Time(
-		dt::Time(t.hour() - 1, t.minute(), t.second(), t.microsecond(), nullptr, t.fold())
-	);
-	ASSERT_EQ(this->time.__cmp__(&other), 1);
+	if (t.hour() != 0)
+	{
+		auto other = types::Time(
+			dt::Time(t.hour() - 1, t.minute(), t.second(), t.microsecond(), nullptr, t.fold())
+		);
+		ASSERT_EQ(this->time.__cmp__(&other), 1);
+	}
 }
 
 TEST_F(TestCase_Datetime, operator_bool_Time)
@@ -198,19 +204,25 @@ TEST_F(TestCase_Datetime, operator_equals_Time_True)
 TEST_F(TestCase_Datetime, operator_equals_Time_False)
 {
 	auto t = this->now.time();
-	auto other = types::Time(
-		dt::Time(t.hour() - 1, t.minute(), t.second(), t.microsecond(), nullptr, t.fold())
-	);
-	ASSERT_FALSE(this->time == other);
+	if (t.hour() != 0)
+	{
+		auto other = types::Time(
+			dt::Time(t.hour() - 1, t.minute(), t.second(), t.microsecond(), nullptr, t.fold())
+		);
+		ASSERT_FALSE(this->time == other);
+	}
 }
 
 TEST_F(TestCase_Datetime, operator_not_equals_Time_True)
 {
 	auto t = this->now.time();
-	auto other = types::Time(
-		dt::Time(t.hour() + 1, t.minute(), t.second(), t.microsecond(), nullptr, t.fold())
-	);
-	ASSERT_TRUE(this->time != other);
+	if (t.hour() != 23)
+	{
+		auto other = types::Time(
+			dt::Time(t.hour() + 1, t.minute(), t.second(), t.microsecond(), nullptr, t.fold())
+		);
+		ASSERT_TRUE(this->time != other);
+	}
 }
 
 TEST_F(TestCase_Datetime, operator_not_equals_Time_False)
@@ -222,10 +234,13 @@ TEST_F(TestCase_Datetime, operator_not_equals_Time_False)
 TEST_F(TestCase_Datetime, operator_less_Time_True)
 {
 	auto t = this->now.time();
-	auto other = types::Time(
-		dt::Time(t.hour() + 1, t.minute(), t.second(), t.microsecond(), nullptr, t.fold())
-	);
-	ASSERT_TRUE(this->time < other);
+	if (t.hour() != 23)
+	{
+		auto other = types::Time(
+			dt::Time(t.hour() + 1, t.minute(), t.second(), t.microsecond(), nullptr, t.fold())
+		);
+		ASSERT_TRUE(this->time < other);
+	}
 }
 
 TEST_F(TestCase_Datetime, operator_less_Time_False)
@@ -237,31 +252,40 @@ TEST_F(TestCase_Datetime, operator_less_Time_False)
 TEST_F(TestCase_Datetime, operator_less_or_equals_Time_True)
 {
 	auto t = this->now.time();
-	auto other = types::Time(
-		dt::Time(t.hour() + 1, t.minute(), t.second(), t.microsecond(), nullptr, t.fold())
-	);
-	ASSERT_TRUE(this->time <= other);
+	if (t.hour() != 23)
+	{
+		auto other = types::Time(
+			dt::Time(t.hour() + 1, t.minute(), t.second(), t.microsecond(), nullptr, t.fold())
+		);
+		ASSERT_TRUE(this->time <= other);
+	}
 
-	other = types::Time(this->now.time());
+	auto other = types::Time(this->now.time());
 	ASSERT_TRUE(this->time <= other);
 }
 
 TEST_F(TestCase_Datetime, operator_less_or_equals_Time_False)
 {
 	auto t = this->now.time();
-	auto other = types::Time(
-		dt::Time(t.hour() - 1, t.minute(), t.second(), t.microsecond(), nullptr, t.fold())
-	);
-	ASSERT_FALSE(this->time <= other);
+	if (t.hour() != 0)
+	{
+		auto other = types::Time(
+			dt::Time(t.hour() - 1, t.minute(), t.second(), t.microsecond(), nullptr, t.fold())
+		);
+		ASSERT_FALSE(this->time <= other);
+	}
 }
 
 TEST_F(TestCase_Datetime, operator_greater_Time_True)
 {
 	auto t = this->now.time();
-	auto other = types::Time(
-		dt::Time(t.hour() - 1, t.minute(), t.second(), t.microsecond(), nullptr, t.fold())
-	);
-	ASSERT_TRUE(this->time > other);
+	if (t.hour() != 0)
+	{
+		auto other = types::Time(
+			dt::Time(t.hour() - 1, t.minute(), t.second(), t.microsecond(), nullptr, t.fold())
+		);
+		ASSERT_TRUE(this->time > other);
+	}
 }
 
 TEST_F(TestCase_Datetime, operator_greater_Time_False)
@@ -273,22 +297,28 @@ TEST_F(TestCase_Datetime, operator_greater_Time_False)
 TEST_F(TestCase_Datetime, operator_greater_or_equals_Time_True)
 {
 	auto t = this->now.time();
-	auto other = types::Time(
-		dt::Time(t.hour() - 1, t.minute(), t.second(), t.microsecond(), nullptr, t.fold())
-	);
-	ASSERT_TRUE(this->time >= other);
+	if (t.hour() != 0)
+	{
+		auto other = types::Time(
+			dt::Time(t.hour() - 1, t.minute(), t.second(), t.microsecond(), nullptr, t.fold())
+		);
+		ASSERT_TRUE(this->time >= other);
+	}
 
-	other = types::Time(this->now.time());
+	auto other = types::Time(this->now.time());
 	ASSERT_TRUE(this->time >= other);
 }
 
 TEST_F(TestCase_Datetime, operator_greater_or_equals_Time_False)
 {
 	auto t = this->now.time();
-	auto other = types::Time(
-		dt::Time(t.hour() + 1, t.minute(), t.second(), t.microsecond(), nullptr, t.fold())
-	);
-	ASSERT_FALSE(this->time >= other);
+	if (t.hour() != 23)
+	{
+		auto other = types::Time(
+			dt::Time(t.hour() + 1, t.minute(), t.second(), t.microsecond(), nullptr, t.fold())
+		);
+		ASSERT_FALSE(this->time >= other);
+	}
 }
 
 TEST_F(TestCase_Datetime, __str__Datetime)
