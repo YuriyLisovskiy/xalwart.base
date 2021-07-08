@@ -8,8 +8,10 @@
 
 #pragma once
 
-// C++ libraries.
-// TODO
+// C++ libraries
+#include <deque>
+#include <list>
+#include <forward_list>
 
 // Module definitions.
 #include "./_def_.h"
@@ -20,11 +22,12 @@
 #include "./string.h"
 #include "./datetime.h"
 #include "./sequence.h"
-//#include "./map.h"
+#include "./map.h"
 
 
 __TYPES_BEGIN__
 
+// Converts any iterable container to 'xw::types::Sequence'.
 template <object_based_iterator_type_c IteratorT>
 Sequence<iterator_v_type<IteratorT>> to_sequence(IteratorT begin, IteratorT end)
 {
@@ -34,7 +37,9 @@ Sequence<iterator_v_type<IteratorT>> to_sequence(IteratorT begin, IteratorT end)
 	return result;
 }
 
-// TESTME: to_object
+// Converts fundamentals, 'std::string', 'const char*', 'xw::dt::Date',
+// 'xw::dt::Time', 'xw::dt::Datetime' or 'xw::obj::Object'-based instances
+// to 'std::shared_ptr<const xw::obj::Object>'.
 template <typename T>
 std::shared_ptr<const obj::Object> to_object(const T& value)
 {
@@ -69,6 +74,60 @@ std::shared_ptr<const obj::Object> to_object(const T& value)
 	);
 }
 
-// TODO add `to_object` function for `Sequence` and `Map`.
+// Converts 'std::array' to 'std::shared_ptr<const xw::obj::Object>'
+template <object_based_type_c T, std::size_t _Nm>
+std::shared_ptr<const obj::Object> to_object(const std::array<T, _Nm>& v)
+{
+	return std::make_shared<Sequence<T>>(to_sequence(v.begin(), v.end()));
+}
+
+// Converts 'std::vector' to 'std::shared_ptr<const xw::obj::Object>'
+template <object_based_type_c T>
+std::shared_ptr<const obj::Object> to_object(const std::vector<T>& v)
+{
+	return std::make_shared<Sequence<T>>(to_sequence(v.begin(), v.end()));
+}
+
+// Converts 'std::deque' to 'std::shared_ptr<const xw::obj::Object>'
+template <object_based_type_c T>
+std::shared_ptr<const obj::Object> to_object(const std::deque<T>& v)
+{
+	return std::make_shared<Sequence<T>>(to_sequence(v.begin(), v.end()));
+}
+
+// Converts 'std::forward_list' to 'std::shared_ptr<const xw::obj::Object>'
+template <object_based_type_c T>
+std::shared_ptr<const obj::Object> to_object(const std::forward_list<T>& v)
+{
+	return std::make_shared<Sequence<T>>(to_sequence(v.begin(), v.end()));
+}
+
+// Converts 'std::list' to 'std::shared_ptr<const xw::obj::Object>'
+template <object_based_type_c T>
+std::shared_ptr<const obj::Object> to_object(const std::list<T>& v)
+{
+	return std::make_shared<Sequence<T>>(to_sequence(v.begin(), v.end()));
+}
+
+// Converts 'xw::types::Sequence' to 'std::shared_ptr<const xw::obj::Object>'
+template <object_based_type_c T>
+std::shared_ptr<const obj::Object> to_object(const Sequence<T>& v)
+{
+	return std::make_shared<Sequence<T>>(v);
+}
+
+// Converts 'std::map' to 'std::shared_ptr<const xw::obj::Object>'
+template <object_based_type_c KeyT, object_based_type_c ValT>
+std::shared_ptr<const obj::Object> to_object(const std::map<KeyT, ValT>& v)
+{
+	return std::make_shared<Map<KeyT, ValT>>(v);
+}
+
+// Converts 'xw::types::Map' to 'std::shared_ptr<const xw::obj::Object>'
+template <object_based_type_c KeyT, object_based_type_c ValT>
+std::shared_ptr<const obj::Object> to_object(const Map<KeyT, ValT>& v)
+{
+	return std::make_shared<Map<KeyT, ValT>>(v);
+}
 
 __TYPES_END__

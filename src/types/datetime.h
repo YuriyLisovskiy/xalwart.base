@@ -58,7 +58,7 @@ public:
 	[[nodiscard]]
 	inline std::string __repr__() const override
 	{
-		return "'" + this->__str__() + "'";
+		return "\"" + this->__str__() + "\"";
 	}
 
 	// Compares two objects.
@@ -103,43 +103,42 @@ public:
 	}
 
 	// Operator equals.
-	inline bool operator== (const DateTimeT& other) const
+	inline bool operator== (const _DatetimeClass<DateTimeT>& other) const
 	{
 		return this->value == other.value;
 	}
 
 	// Operator not equals.
-	inline bool operator!= (const DateTimeT& other) const
+	inline bool operator!= (const _DatetimeClass<DateTimeT>& other) const
 	{
 		return this->value != other.value;
 	}
 
 	// Operator less.
-	inline bool operator< (const DateTimeT& other) const
+	inline bool operator< (const _DatetimeClass<DateTimeT>& other) const
 	{
 		return this->value < other.value;
 	}
 
 	// Operator less or equals.
-	inline bool operator<= (const DateTimeT& other) const
+	inline bool operator<= (const _DatetimeClass<DateTimeT>& other) const
 	{
 		return this->value <= other.value;
 	}
 
 	// Operator greater.
-	inline bool operator> (const DateTimeT& other) const
+	inline bool operator> (const _DatetimeClass<DateTimeT>& other) const
 	{
 		return this->value > other.value;
 	}
 
 	// Operator greater or equals.
-	inline bool operator>= (const DateTimeT& other) const
+	inline bool operator>= (const _DatetimeClass<DateTimeT>& other) const
 	{
 		return this->value >= other.value;
 	}
 };
 
-// TESTME: Date
 class Date final : public _DatetimeClass<dt::Date>
 {
 public:
@@ -159,7 +158,6 @@ public:
 	}
 };
 
-// TESTME: Time
 class Time final : public _DatetimeClass<dt::Time>
 {
 public:
@@ -179,7 +177,6 @@ public:
 	}
 };
 
-// TESTME: Datetime
 class Datetime final : public _DatetimeClass<dt::Datetime>
 {
 public:

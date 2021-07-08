@@ -131,7 +131,7 @@ TEST_F(TestCase_Map, __cmp__ThrowsIncompatibleTypes)
 
 TEST_F(TestCase_Map, __str__)
 {
-	std::string expected = "{{14.7, 11}, {Hello, 10}}";
+	std::string expected = R"({{"14.7", 11}, {"Hello", 10}})";
 	auto actual = this->string_int_map.__str__();
 	ASSERT_EQ(expected, actual);
 }
@@ -145,7 +145,7 @@ TEST_F(TestCase_Map, __str__Empty)
 
 TEST_F(TestCase_Map, __repr__)
 {
-	std::string expected = "{{'14.7', 11}, {'Hello', 10}}";
+	std::string expected = R"({{"14.7", 11}, {"Hello", 10}})";
 	auto actual = this->string_int_map.__repr__();
 	ASSERT_EQ(expected, actual);
 }

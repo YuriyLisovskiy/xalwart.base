@@ -20,9 +20,9 @@
 __TYPES_BEGIN__
 
 template<class T>
-concept fundamental_type = std::is_fundamental_v<T>;
+concept fundamental_type_c = std::is_fundamental_v<T>;
 
-template <fundamental_type InternalT>
+template <fundamental_type_c InternalT>
 class Fundamental final : public obj::Object
 {
 protected:
@@ -31,7 +31,7 @@ protected:
 protected:
 
 	// Compares two fundamentals.
-	template <fundamental_type OtherT>
+	template <fundamental_type_c OtherT>
 	[[nodiscard]]
 	inline short _cmp_result(OtherT other_val) const
 	{
@@ -55,7 +55,7 @@ public:
 	};
 
 	// Constructs `Fundamental` from value of basic type.
-	inline explicit Fundamental(InternalT val) : Fundamental()
+	inline Fundamental(InternalT val) : Fundamental()
 	{
 		this->internal_value = std::move(val);
 	}
@@ -86,7 +86,7 @@ public:
 
 	// Casts internal type to `T` and returns a new `Fundamental`
 	// object.
-	template <fundamental_type T>
+	template <fundamental_type_c T>
 	[[nodiscard]]
 	inline Fundamental<T> fit_to()
 	{
@@ -223,7 +223,11 @@ public:
 			return value;
 		}
 
-		if constexpr (std::is_same_v<InternalT, signed char> || std::is_same_v<InternalT, unsigned char>)
+		if constexpr (
+			std::is_same_v<InternalT, signed char> ||
+			std::is_same_v<InternalT, unsigned char> ||
+			std::is_same_v<InternalT, char>
+		)
 		{
 			return std::string(1, this->internal_value);
 		}
@@ -234,6 +238,15 @@ public:
 	[[nodiscard]]
 	inline std::string __repr__() const override
 	{
+		if constexpr (
+			std::is_same_v<InternalT, signed char> ||
+			std::is_same_v<InternalT, unsigned char> ||
+			std::is_same_v<InternalT, char>
+		)
+		{
+			return "'" + std::string(1, this->internal_value) + "'";
+		}
+
 		return this->__str__();
 	}
 
@@ -367,7 +380,7 @@ public:
 		return Fundamental<InternalT>(value.internal_value >> ic);
 	}
 
-	template <fundamental_type other_internal_type>
+	template <fundamental_type_c other_internal_type>
 	inline friend Fundamental<InternalT> operator<<(
 		const Fundamental<InternalT>& left, const Fundamental<other_internal_type>& right
 	)
@@ -375,7 +388,7 @@ public:
 		return Fundamental<InternalT>(left.internal_value << right.internal_value);
 	}
 
-	template <fundamental_type other_internal_type>
+	template <fundamental_type_c other_internal_type>
 	inline friend Fundamental<InternalT> operator>>(
 		const Fundamental<InternalT>& left, const Fundamental<other_internal_type>& right
 	)
@@ -389,7 +402,7 @@ public:
 		return *this;
 	}
 
-	template <fundamental_type T>
+	template <fundamental_type_c T>
 	inline Fundamental<InternalT>& operator+= (const T& other)
 	{
 		this->internal_value += other;
@@ -402,7 +415,7 @@ public:
 		return *this;
 	}
 
-	template <fundamental_type T>
+	template <fundamental_type_c T>
 	inline Fundamental<InternalT>& operator-= (const T& other)
 	{
 		this->internal_value -= other;
@@ -415,7 +428,7 @@ public:
 		return *this;
 	}
 
-	template <fundamental_type T>
+	template <fundamental_type_c T>
 	inline Fundamental<InternalT>& operator*= (const T& other)
 	{
 		this->internal_value *= other;
@@ -428,7 +441,7 @@ public:
 		return *this;
 	}
 
-	template <fundamental_type T>
+	template <fundamental_type_c T>
 	inline Fundamental<InternalT>& operator/= (const T& other)
 	{
 		this->internal_value /= other;
@@ -441,35 +454,35 @@ public:
 		return *this;
 	}
 
-	template <fundamental_type T>
+	template <fundamental_type_c T>
 	inline Fundamental<InternalT>& operator%= (const T& other)
 	{
 		this->internal_value %= other;
 		return *this;
 	}
 
-	template <fundamental_type other_internal_type>
+	template <fundamental_type_c other_internal_type>
 	inline Fundamental<InternalT>& operator&= (const Fundamental<other_internal_type>& other)
 	{
 		this->internal_value &= other.internal_value;
 		return *this;
 	}
 
-	template <fundamental_type T>
+	template <fundamental_type_c T>
 	inline Fundamental<InternalT>& operator&= (const T& other)
 	{
 		this->internal_value &= other;
 		return *this;
 	}
 
-	template <fundamental_type other_internal_type>
+	template <fundamental_type_c other_internal_type>
 	inline Fundamental<InternalT>& operator|= (const Fundamental<other_internal_type>& other)
 	{
 		this->internal_value |= other.internal_value;
 		return *this;
 	}
 
-	template <fundamental_type T>
+	template <fundamental_type_c T>
 	inline Fundamental<InternalT>& operator|= (const T& other)
 	{
 		this->internal_value |= other;
@@ -482,7 +495,7 @@ public:
 		return *this;
 	}
 
-	template <fundamental_type T>
+	template <fundamental_type_c T>
 	inline Fundamental<InternalT>& operator^= (const T& other)
 	{
 		this->internal_value ^= other;
@@ -526,7 +539,27 @@ public:
 	}
 };
 
+// Lower-case wrapper for Fundamental<T> type.
 template <typename T>
 using fundamental = Fundamental<T>;
+
+using _char = fundamental<char>;
+using unsigned_char = fundamental<unsigned char>;
+using signed_char = fundamental<signed char>;
+using _int = fundamental<int>;
+using unsigned_int = fundamental<unsigned int>;
+using signed_int = fundamental<signed int>;
+using short_int = fundamental<short int>;
+using unsigned_short_int = fundamental<unsigned short int>;
+using signed_short_int = fundamental<signed short int>;
+using long_int = fundamental<long int>;
+using signed_long_int = fundamental<signed long int>;
+using unsigned_long_int = fundamental<unsigned long int>;
+using long_long_int = fundamental<long long int>;
+using unsigned_long_long_int = fundamental<unsigned long long int>;
+using _float = fundamental<float>;
+using _double = fundamental<double>;
+using long_double = fundamental<long double>;
+using _wchar_t = fundamental<wchar_t>;
 
 __TYPES_END__

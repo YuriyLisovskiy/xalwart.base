@@ -162,7 +162,7 @@ public:
 	{
 		return "{" + this->aggregate(
 			", ",
-			[](const obj::Object* item) -> std::string { return item ? item->__str__() : "nullptr"; }
+			[](const obj::Object* item) -> std::string { return item ? item->__repr__() : "nullptr"; }
 		) + "}";
 	}
 

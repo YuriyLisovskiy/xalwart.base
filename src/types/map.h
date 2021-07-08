@@ -165,7 +165,7 @@ public:
 		return "{" + this->aggregate(
 			", ", [](const obj::Object* key, const obj::Object* value) -> std::string
 			{
-				return "{" + (key ? key->__str__() : "nullptr") + ", " + (value ? value->__str__() : "nullptr") + "}";
+				return "{" + (key ? key->__repr__() : "nullptr") + ", " + (value ? value->__repr__() : "nullptr") + "}";
 			}
 		) + "}";
 	}

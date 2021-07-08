@@ -48,7 +48,7 @@ public:
 	[[nodiscard]]
 	inline std::string __repr__() const override
 	{
-		return "'" + this->value + "'";
+		return "\"" + this->value + "\"";
 	}
 
 	// Compares two objects.

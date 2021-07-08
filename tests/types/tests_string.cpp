@@ -22,7 +22,7 @@ TEST(TestCase_String, __str__)
 TEST(TestCase_String, __repr__)
 {
 	std::string s = "Some string to check.";
-	auto expected = "'" + s + "'";
+	auto expected = "\"" + s + "\"";
 	auto actual = types::String(s).__repr__();
 	ASSERT_EQ(expected, actual);
 }

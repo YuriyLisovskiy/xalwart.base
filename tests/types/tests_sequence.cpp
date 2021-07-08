@@ -127,7 +127,7 @@ TEST_F(TestCase_Sequence, __cmp__ThrowsIncompatibleTypes)
 
 TEST_F(TestCase_Sequence, __str__)
 {
-	std::string expected = "{Hello, 14.7}";
+	std::string expected = R"({"Hello", "14.7"})";
 	auto actual = this->string_sequence.__str__();
 	ASSERT_EQ(expected, actual);
 }
@@ -141,7 +141,7 @@ TEST_F(TestCase_Sequence, __str__Empty)
 
 TEST_F(TestCase_Sequence, __repr__)
 {
-	std::string expected = "{'Hello', '14.7'}";
+	std::string expected = R"({"Hello", "14.7"})";
 	auto actual = this->string_sequence.__repr__();
 	ASSERT_EQ(expected, actual);
 }
