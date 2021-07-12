@@ -16,7 +16,7 @@ function(add_tests SUB_DIR SUB_NAME)
     if (WIN32)
         target_link_libraries(${FULL_BIN} PUBLIC gtest_main)
     endif()
-    target_link_libraries(${FULL_BIN} PUBLIC gtest stdc++fs ${FULL_LIBRARY_NAME})
+    target_link_libraries(${FULL_BIN} PUBLIC gtest stdc++fs ${LIBRARY_NAME})
 endfunction()
 
 function(add_sub_tests SUB_NAME)
