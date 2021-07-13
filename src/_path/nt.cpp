@@ -15,7 +15,7 @@
 #include <sys/stat.h>
 #endif
 
-// Core libraries.
+// Base libraries.
 #include "../exceptions.h"
 
 

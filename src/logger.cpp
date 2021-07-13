@@ -9,7 +9,7 @@
 // C++ libraries.
 #include <cstring>
 
-// Core libraries.
+// Base libraries.
 #include "./datetime.h"
 
 

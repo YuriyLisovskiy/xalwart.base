@@ -69,17 +69,17 @@ public:
 
 	// Tries to open a file.
 	//
-	// Throws `core::FileError` if file name is not empty.
+	// Throws `FileError` if file name is not empty.
 	void open();
 
 	// Saves file without closing.
 	//
-	// Throws `core::FileError` if file is not opened.
+	// Throws `FileError` if file is not opened.
 	void save();
 
 	// Closes the file without saving.
 	//
-	// Throws `core::FileError` if file is not opened.
+	// Throws `FileError` if file is not opened.
 	void close();
 
 	// Returns `true` if file is open, `false` otherwise.
@@ -90,22 +90,22 @@ public:
 
 	// Reads `n` bytes from file.
 	//
-	// Throws `core::FileError` if file is not opened.
+	// Throws `FileError` if file is not opened.
 	std::vector<unsigned char> read(size_t n=-1);
 
 	// Reads `n` characters from file.
 	//
-	// Throws `core::FileError` if file is not opened.
+	// Throws `FileError` if file is not opened.
 	std::string read_str(size_t n=-1);
 
 	// Writes a vector of bytes to the file.
 	//
-	// Throws `core::FileError` if file is not opened.
+	// Throws `FileError` if file is not opened.
 	void write(const std::vector<unsigned char>& bytes);
 
 	// Writes string to a file.
 	//
-	// Throws `core::FileError` if file is not opened.
+	// Throws `FileError` if file is not opened.
 	inline void write(const std::string& str)
 	{
 		this->write(std::vector<unsigned char>(str.begin(), str.end()));
@@ -114,12 +114,12 @@ public:
 	// Synchronizes the associated stream buffer with its
 	// controlled output sequence.
 	//
-	// Throws `core::FileError` if file is not opened.
+	// Throws `FileError` if file is not opened.
 	File& flush();
 
 	// Returns the size of file.
 	//
-	// Throws `core::FileError` if file is not opened.
+	// Throws `FileError` if file is not opened.
 	size_t size();
 
 	// This function first clears eofbit. It does not count the
@@ -143,13 +143,13 @@ public:
 	// Divides file into chunks of given size, read them
 	// and returns as vector of string vectors.
 	//
-	// Throws `core::FileError` if file is not opened.
+	// Throws `FileError` if file is not opened.
 	std::vector<std::vector<unsigned char>> chunks(size_t chunk_size=-1);
 
 	// Checks if file can be divided into chunks of
 	// given size.
 	//
-	// Throws `core::FileError` if file is not opened.
+	// Throws `FileError` if file is not opened.
 	bool multiple_chunks(size_t chunk_size=-1);
 
 	// Returns file path.

@@ -13,7 +13,7 @@
 // Module definitions.
 #include "./_def_.h"
 
-// Core libraries.
+// Base libraries.
 #include "./dict.h"
 
 

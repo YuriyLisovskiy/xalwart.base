@@ -9,7 +9,7 @@
 // C++ libraries.
 #include <sstream>
 
-// Core libraries.
+// Base libraries.
 #include "./exceptions.h"
 
 

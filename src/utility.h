@@ -3,7 +3,7 @@
  *
  * Copyright (c) 2019-2021 Yuriy Lisovskiy
  *
- * Core utilities.
+ * Base utilities.
  */
 
 #pragma once
@@ -14,7 +14,7 @@
 // Module definitions.
 #include "./_def_.h"
 
-// Core libraries.
+// Base libraries.
 #include "./datetime.h"
 #include "./exceptions.h"
 

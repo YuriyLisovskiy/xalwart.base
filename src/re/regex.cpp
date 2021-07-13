@@ -6,7 +6,7 @@
 
 #include "./regex.h"
 
-// Core libraries.
+// Base libraries.
 #include "../exceptions.h"
 
 

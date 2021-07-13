@@ -14,7 +14,7 @@
 // Module definitions.
 #include "./_def_.h"
 
-// Core libraries.
+// Base libraries.
 #include "./request_context.h"
 #include "../collections/dict.h"
 

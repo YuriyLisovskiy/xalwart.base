@@ -6,7 +6,7 @@
 
 #include "./iter_regex.h"
 
-// Core libraries.
+// Base libraries.
 #include "../exceptions.h"
 
 

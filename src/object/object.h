@@ -15,7 +15,7 @@
 // Module definitions.
 #include "./_def_.h"
 
-// Core libraries.
+// Base libraries.
 #include "./meta.h"
 #include "../exceptions.h"
 
@@ -31,7 +31,7 @@ public:
 
 	// Returns `attr_name` attribute value of the object.
 	//
-	// Throws `core::AttributeError` by default.
+	// Throws `AttributeError` by default.
 	[[nodiscard]]
 	virtual inline std::shared_ptr<const Object> __get_attr__(const char* attr_name) const
 	{
@@ -46,7 +46,7 @@ public:
 	// `attr_name`: name of an attribute to set.
 	// `data`: pointer to data which should be set.
 	//
-	// Throws `core::AttributeError` by default.
+	// Throws `AttributeError` by default.
 	virtual inline void __set_attr__(const char* attr_name, const void* data)
 	{
 		throw AttributeError(
@@ -93,7 +93,7 @@ public:
 	// Returns 0 if objects are equal, -1 if 'this' is less
 	// than 'other' otherwise returns 1.
 	//
-	// Throws core::NotImplementedException by default.
+	// Throws NotImplementedException by default.
 	[[nodiscard]]
 	virtual inline short __cmp__(const Object* other) const
 	{
@@ -106,7 +106,7 @@ public:
 	// Returns boolean representation of the object.
 	// Used in logical comparisons.
 	//
-	// Throws core::NotImplementedException by default.
+	// Throws NotImplementedException by default.
 	explicit virtual operator bool () const
 	{
 		throw NotImplementedException(

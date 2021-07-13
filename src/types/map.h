@@ -14,7 +14,7 @@
 // Module definitions.
 #include "./_def_.h"
 
-// Core libraries.
+// Base libraries.
 #include "./abc.h"
 
 
@@ -138,7 +138,7 @@ public:
 	// Compares two sequential containers with the same type
 	// of value.
 	//
-	// Throws `core::TypeError` if `other` has different type.
+	// Throws `TypeError` if `other` has different type.
 	[[nodiscard]]
 	inline short __cmp__(const Object* other) const override
 	{

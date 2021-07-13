@@ -11,7 +11,7 @@
 // Module definitions.
 #include "./_def_.h"
 
-// Core libraries.
+// Base libraries.
 #include "../object/object.h"
 
 
@@ -53,7 +53,7 @@ public:
 
 	// Compares two objects.
 	//
-	// Throws `core::TypeError` if `other` is not `String`-type object.
+	// Throws `TypeError` if `other` is not `String`-type object.
 	[[nodiscard]]
 	short __cmp__(const Object* other) const override;
 

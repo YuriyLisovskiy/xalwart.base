@@ -3,7 +3,7 @@
  *
  * Copyright (c) 2019-2021 Yuriy Lisovskiy
  *
- * Definitions of `core` module.
+ * Definitions of `base` module.
  */
 
 #pragma once
@@ -23,7 +23,7 @@ using uint = unsigned int;
 
 __MAIN_NAMESPACE_BEGIN__
 
-namespace v
+namespace base::v
 {
 const uint major = 0;
 const uint minor = 1;
