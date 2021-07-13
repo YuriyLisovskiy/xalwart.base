@@ -11,7 +11,7 @@
 // Module definitions.
 #include "./_def_.h"
 
-// Core libraries.
+// Base libraries.
 #include "../object/object.h"
 
 

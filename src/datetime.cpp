@@ -20,7 +20,7 @@
 #include <cmath>
 #endif
 
-// Core libraries.
+// Base libraries.
 #include "./sys.h"
 
 

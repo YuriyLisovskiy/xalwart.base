@@ -13,7 +13,7 @@
 #include <filesystem>
 #include <unistd.h>
 
-// Core libraries.
+// Base libraries.
 #include "../string_utils.h"
 #include "../exceptions.h"
 

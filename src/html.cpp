@@ -6,7 +6,7 @@
 
 #include "./html.h"
 
-// Core libraries.
+// Base libraries.
 #include "./string_utils.h"
 
 

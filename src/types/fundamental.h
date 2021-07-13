@@ -11,7 +11,7 @@
 // Module definitions.
 #include "./_def_.h"
 
-// Core libraries.
+// Base libraries.
 #include "../object/object.h"
 #include "../string_utils.h"
 #include "../exceptions.h"
@@ -95,7 +95,7 @@ public:
 
 	// Compares `Fundamental` types.
 	//
-	// Throws `core::TypeError` if `other` object is not
+	// Throws `TypeError` if `other` object is not
 	// `Fundamental` type.
 	[[nodiscard]]
 	inline short __cmp__(const Object* other) const override

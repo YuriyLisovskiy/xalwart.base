@@ -15,7 +15,7 @@
 #include <cxxabi.h>
 #endif
 
-// Core libraries.
+// Base libraries.
 #include "./string_utils.h"
 
 

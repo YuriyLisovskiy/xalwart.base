@@ -19,10 +19,10 @@ jobs:
         run: |
           sudo docker build --build-arg alpine_version=${{ matrix.alpine_version }} \
                             -f docker/alpine/clang.Dockerfile \
-                            --tag=xalwart.core-test:alpine-clang .
+                            --tag=xalwart.base-test:alpine-clang .
       - name: Run Tests
         run: |
-          sudo docker run xalwart.core-test:alpine-clang
+          sudo docker run xalwart.base-test:alpine-clang
   alpine-gcc:
     name: "alpine-${{ matrix.alpine_version }} [gcc-10]"
     runs-on: ubuntu-18.04
@@ -36,10 +36,10 @@ jobs:
         run: |
           sudo docker build --build-arg alpine_version=${{ matrix.alpine_version }} \
                             -f docker/alpine/gcc.Dockerfile \
-                            --tag=xalwart.core-test:alpine-gcc .
+                            --tag=xalwart.base-test:alpine-gcc .
       - name: Run Tests
         run: |
-          sudo docker run xalwart.core-test:alpine-gcc
+          sudo docker run xalwart.base-test:alpine-gcc
   ubuntu-clang:
     name: "${{ matrix.os }} [clang-${{ matrix.compiler_version }}]"
     runs-on: ${{ matrix.os }}

@@ -12,7 +12,7 @@
 // Module definitions.
 #include "./_def_.h"
 
-// Core libraries.
+// Base libraries.
 #include "../datetime.h"
 #include "../object/object.h"
 
@@ -63,7 +63,7 @@ public:
 
 	// Compares two objects.
 	//
-	// Throws `core::TypeError` if `other` is not `DateTimeT` object.
+	// Throws `TypeError` if `other` is not `DateTimeT` object.
 	[[nodiscard]]
 	inline short __cmp__(const Object* other) const override
 	{

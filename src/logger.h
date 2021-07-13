@@ -15,7 +15,7 @@
 // Module definitions.
 #include "./_def_.h"
 
-// Core libraries.
+// Base libraries.
 #include "./exceptions.h"
 #include "./file.h"
 #include "./thread_pool.h"

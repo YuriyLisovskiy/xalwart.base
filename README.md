@@ -1,4 +1,4 @@
-## xalwart.core
+## xalwart.base
 [![c++](https://img.shields.io/badge/c%2B%2B-20-6c85cf)](https://isocpp.org/)
 [![cmake](https://img.shields.io/badge/cmake-%3E=3.12-success)](https://cmake.org/)
 [![alpine](https://img.shields.io/badge/Alpine_Linux-0D597F?style=flat&logo=alpine-linux&logoColor=white)](https://alpinelinux.org/)
@@ -7,8 +7,8 @@
 ## Build Status
 | @ | Build |
 |---|---|
-| Dev branch: | [![CI](https://github.com/YuriyLisovskiy/xalwart.core/actions/workflows/ci.yml/badge.svg?branch=dev)](https://github.com/YuriyLisovskiy/xalwart.core/actions/workflows/ci.yml?query=branch%3Adev) |
-| Master branch: | [![CI](https://github.com/YuriyLisovskiy/xalwart.core/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/YuriyLisovskiy/xalwart.core/actions/workflows/ci.yml?query=branch%3Amaster) |
+| Dev branch: | [![CI](https://github.com/YuriyLisovskiy/xalwart.base/actions/workflows/ci.yml/badge.svg?branch=dev)](https://github.com/YuriyLisovskiy/xalwart.base/actions/workflows/ci.yml?query=branch%3Adev) |
+| Master branch: | [![CI](https://github.com/YuriyLisovskiy/xalwart.base/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/YuriyLisovskiy/xalwart.base/actions/workflows/ci.yml?query=branch%3Amaster) |
 
 ## Requirements
 The following compilers are tested with the CI system, and are known to work

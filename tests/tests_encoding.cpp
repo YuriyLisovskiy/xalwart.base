@@ -1,5 +1,5 @@
 /**
- * core/tests_encoding.cpp
+ * tests_encoding.cpp
  *
  * Copyright (c) 2019, 2021 Yuriy Lisovskiy
  */

@@ -6,7 +6,7 @@
 
 #include "./meta.h"
 
-// Core libraries.
+// Base libraries.
 #include "./object.h"
 #include "../string_utils.h"
 
