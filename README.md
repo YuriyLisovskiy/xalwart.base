@@ -15,25 +15,26 @@ on Alpine Linux and Ubuntu.
 To build the library from source CMake 3.12 or later is required.
 
 ## Build Status
+| @ | Build |
+|---|---|
+| Dev branch: | [![CI](https://github.com/YuriyLisovskiy/xalwart.core/actions/workflows/ci.yml/badge.svg?branch=dev)](https://github.com/YuriyLisovskiy/xalwart.core/actions/workflows/ci.yml?query=branch%3Adev) |
+| Master branch: | [![CI](https://github.com/YuriyLisovskiy/xalwart.core/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/YuriyLisovskiy/xalwart.core/actions/workflows/ci.yml?query=branch%3Amaster) |
 
-* ### clang++
-  [![Test Alpine Linux](https://github.com/YuriyLisovskiy/xalwart.core/actions/workflows/tests-clang-alpine.yml/badge.svg)](https://github.com/YuriyLisovskiy/xalwart.core/actions/workflows/tests-clang-alpine.yml) [![Test Ubuntu](https://github.com/YuriyLisovskiy/xalwart.core/actions/workflows/tests-clang-ubuntu.yml/badge.svg)](https://github.com/YuriyLisovskiy/xalwart.core/actions/workflows/tests-clang-ubuntu.yml)
-
-* ### g++
-  [![Test Alpine Linux](https://github.com/YuriyLisovskiy/xalwart.core/actions/workflows/tests-gcc-alpine.yml/badge.svg)](https://github.com/YuriyLisovskiy/xalwart.core/actions/workflows/tests-gcc-alpine.yml) [![Test Ubuntu](https://github.com/YuriyLisovskiy/xalwart.core/actions/workflows/tests-gcc-ubuntu.yml/badge.svg)](https://github.com/YuriyLisovskiy/xalwart.core/actions/workflows/tests-gcc-ubuntu.yml)
-
-## Build and Install
+## Compile from Source
 
 ```bash
 mkdir build && cd build
 cmake -DCMAKE_BUILD_TYPE=Release ..
-make && sudo make install
+make
+
+# for linux:
+sudo make install
 ```
 
 ## Testing
 ```bash
 mkdir build && cd build
-cmake -DCMAKE_BUILD_TYPE=Debug .. && make
+cmake -DCMAKE_BUILD_TYPE=Debug .. && make unittests-all
 ```
 
 Use valgrind to check for memory leaks:
