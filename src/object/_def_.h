@@ -1,31 +1,19 @@
-/*
- * Copyright (c) 2019-2020 Yuriy Lisovskiy
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 /**
- * core/object/_def_.h
+ * object/_def_.h
  *
- * Purpose: core/object module's definitions.
+ * Copyright (c) 2019-2021 Yuriy Lisovskiy
+ *
+ * Definitions of `object` module.
  */
 
 #pragma once
 
 #include "../_def_.h"
 
+// xw::obj
+#define __OBJ_BEGIN__ __MAIN_NAMESPACE_BEGIN__ namespace obj {
+#define __OBJ_END__ } __MAIN_NAMESPACE_END__
 
-// core::object
-#define __OBJECT_BEGIN__ __CORE_BEGIN__ namespace object {
-#define __OBJECT_END__ } __CORE_END__
+// xw::obj::meta
+#define __OBJ_META_BEGIN__ __OBJ_BEGIN__ namespace meta {
+#define __OBJ_META_END__ } __OBJ_END__

@@ -1,79 +1,133 @@
-/*
- * Copyright (c) 2020 Yuriy Lisovskiy
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 /**
- * core/types/utility.h
+ * types/utility.h
  *
- * Purpose:
- * TODO:
+ * Copyright (c) 2021 Yuriy Lisovskiy
+ *
+ * Types utilities.
  */
 
 #pragma once
 
-// C++ libraries.
-#include <type_traits>
+// C++ libraries
+#include <deque>
+#include <list>
+#include <forward_list>
 
 // Module definitions.
 #include "./_def_.h"
 
+// Core libraries.
+#include "../utility.h"
+#include "./fundamental.h"
+#include "./string.h"
+#include "./datetime.h"
+#include "./sequence.h"
+#include "./map.h"
+
 
 __TYPES_BEGIN__
 
-template <typename Base, typename Derived>
-constexpr bool is_base_of()
+// Converts any iterable container to 'xw::types::Sequence'.
+template <object_based_iterator_type_c IteratorT>
+Sequence<iterator_v_type<IteratorT>> to_sequence(IteratorT begin, IteratorT end)
 {
-	if constexpr (std::is_pointer<Base>::value && std::is_pointer<Derived>::value)
-	{
-		using T1 = typename std::remove_pointer<Base>::type;
-		using T2 = typename std::remove_pointer<Derived>::type;
-		return std::is_base_of<T1, T2>::value;
-	}
-
-	if constexpr (std::is_pointer<Base>::value )
-	{
-		using T1 = typename std::remove_pointer<Base>::type;
-		return std::is_base_of<T1, Derived>::value;
-	}
-
-	if constexpr (std::is_pointer<Derived>::value)
-	{
-		using T2 = typename std::remove_pointer<Derived>::type;
-		return std::is_base_of<Base, T2>::value;
-	}
-
-	return std::is_base_of<Base, Derived>::value;
+	using T = iterator_v_type<IteratorT>;
+	Sequence<T> result;
+	*result = std::list<T>(begin, end);
+	return result;
 }
 
-template <typename Derived, typename Base>
-constexpr bool is_base_of(const Base&)
+// Converts fundamentals, 'std::string', 'const char*', 'xw::dt::Date',
+// 'xw::dt::Time', 'xw::dt::Datetime' or 'xw::obj::Object'-based instances
+// to 'std::shared_ptr<const xw::obj::Object>'.
+template <typename T>
+std::shared_ptr<const obj::Object> to_object(const T& value)
 {
-	return is_base_of<Base, Derived>();
-}
-
-template <typename LeftT, typename RightT>
-constexpr bool is_instance(const RightT& value)
-{
-	if constexpr (std::is_pointer<RightT>::value)
+	if constexpr (std::is_fundamental_v<T>)
 	{
-		using T = typename std::remove_pointer<RightT>::type;
-		return std::is_same<LeftT, T>::value || std::is_base_of<LeftT, T>::value;
+		return std::make_shared<Fundamental<T>>(value);
+	}
+	else if constexpr (std::is_same_v<T, std::string> || std::is_same_v<T, const char*>)
+	{
+		return std::make_shared<types::String>(value);
+	}
+	else if constexpr (std::is_same_v<T, dt::Date>)
+	{
+		return std::make_shared<Date>(value);
+	}
+	else if constexpr (std::is_same_v<T, dt::Time>)
+	{
+		return std::make_shared<Time>(value);
+	}
+	else if constexpr (std::is_same_v<T, dt::Datetime>)
+	{
+		return std::make_shared<Datetime>(value);
+	}
+	else if constexpr (std::is_base_of_v<obj::Object, T>)
+	{
+		return std::make_shared<T>(value);
 	}
 
-	return std::is_same<LeftT, RightT>::value || std::is_base_of<LeftT, RightT>::value;
+	throw TypeError(
+		"unable to convert value, '" + util::demangle(typeid(T).name()) + "' type is not supported",
+		_ERROR_DETAILS_
+	);
+}
+
+// Converts 'std::array' to 'std::shared_ptr<const xw::obj::Object>'
+template <object_based_type_c T, std::size_t _Nm>
+std::shared_ptr<const obj::Object> to_object(const std::array<T, _Nm>& v)
+{
+	return std::make_shared<Sequence<T>>(to_sequence(v.begin(), v.end()));
+}
+
+// Converts 'std::vector' to 'std::shared_ptr<const xw::obj::Object>'
+template <object_based_type_c T>
+std::shared_ptr<const obj::Object> to_object(const std::vector<T>& v)
+{
+	return std::make_shared<Sequence<T>>(to_sequence(v.begin(), v.end()));
+}
+
+// Converts 'std::deque' to 'std::shared_ptr<const xw::obj::Object>'
+template <object_based_type_c T>
+std::shared_ptr<const obj::Object> to_object(const std::deque<T>& v)
+{
+	return std::make_shared<Sequence<T>>(to_sequence(v.begin(), v.end()));
+}
+
+// Converts 'std::forward_list' to 'std::shared_ptr<const xw::obj::Object>'
+template <object_based_type_c T>
+std::shared_ptr<const obj::Object> to_object(const std::forward_list<T>& v)
+{
+	return std::make_shared<Sequence<T>>(to_sequence(v.begin(), v.end()));
+}
+
+// Converts 'std::list' to 'std::shared_ptr<const xw::obj::Object>'
+template <object_based_type_c T>
+std::shared_ptr<const obj::Object> to_object(const std::list<T>& v)
+{
+	return std::make_shared<Sequence<T>>(to_sequence(v.begin(), v.end()));
+}
+
+// Converts 'xw::types::Sequence' to 'std::shared_ptr<const xw::obj::Object>'
+template <object_based_type_c T>
+std::shared_ptr<const obj::Object> to_object(const Sequence<T>& v)
+{
+	return std::make_shared<Sequence<T>>(v);
+}
+
+// Converts 'std::map' to 'std::shared_ptr<const xw::obj::Object>'
+template <object_based_type_c KeyT, object_based_type_c ValT>
+std::shared_ptr<const obj::Object> to_object(const std::map<KeyT, ValT>& v)
+{
+	return std::make_shared<Map<KeyT, ValT>>(v);
+}
+
+// Converts 'xw::types::Map' to 'std::shared_ptr<const xw::obj::Object>'
+template <object_based_type_c KeyT, object_based_type_c ValT>
+std::shared_ptr<const obj::Object> to_object(const Map<KeyT, ValT>& v)
+{
+	return std::make_shared<Map<KeyT, ValT>>(v);
 }
 
 __TYPES_END__

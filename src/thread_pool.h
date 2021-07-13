@@ -1,25 +1,7 @@
-/*
- * Copyright (c) 2019-2020 Yuriy Lisovskiy
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 /**
- * core/thread_pool.h
+ * thread_pool.h
  *
- * Purpose:
- * 	Queued thread pool for executing functions in parallel.
+ * Copyright (c) 2019-2021 Yuriy Lisovskiy
  */
 
 #pragma once
@@ -34,50 +16,96 @@
 #include "./_def_.h"
 
 
-__CORE_INTERNAL_BEGIN__
+__MAIN_NAMESPACE_BEGIN__
 
+// Queued thread pool for executing functions in parallel.
 class ThreadPool
 {
 private:
+
+	// Thread pool name.
 	std::string _name;
+
+	// Guard for blocking queue when pushing a new tasks.
 	std::mutex _lock_guard;
+
+	// Vector of workers of thread pool.
 	std::vector<std::thread> _threads;
+
+	// Number of parallel threads.
 	size_t _threads_count;
+
+	// Queue of functions which is waiting to be run.
 	std::queue<std::function<void(void)>> _queue;
+
+	// Condition variable for threads' notification
+	// when pushing a new tasks.
 	std::condition_variable _cond_var;
+
+	// Indicates whether thread pool must finish all tasks
+	// and close threads.
 	bool _quit = false;
+
+	// Indicates whether workers are running or not.
 	bool _is_finished;
 
 public:
-	explicit ThreadPool(size_t threads_count = 1);
-	~ThreadPool();
 
-	/// Pushes and copies function to queue.
+	// Constructor.
+	//
+	// `name`: thread pool name, used for debugging.
+	// `threads_count`: number of parallel threads.
+	explicit ThreadPool(std::string name, size_t threads_count=1);
+
+	// Waits until all threads finishes.
+	inline ~ThreadPool()
+	{
+		this->wait();
+	}
+
+	// Pushes and copies function to queue.
+	//
+	// `func`: function to call.
 	void push(const std::function<void(void)>& func);
 
-	/// Pushes and moves function to queue.
+	// Pushes and moves function to queue.
+	//
+	// `func`: function to call.
 	void push(std::function<void(void)>&& func);
 
-	/// Returns threads count.
-	[[nodiscard]] size_t threads_count() const;
+	// Returns threads count.
+	[[nodiscard]]
+	inline size_t threads_count() const
+	{
+		return this->_threads_count;
+	}
 
-	/// Waits until all threads finishes.
+	// Waits until all threads finishes.
 	void wait();
 
+	// Waits for threads shutdown.
+	inline void close()
+	{
+		this->wait();
+	}
+
+	// Joins all threads.
 	void join();
 
-	/// Deleted constructors.
+	// Deleted constructors.
 	ThreadPool(const ThreadPool& other) = delete;
 	ThreadPool(ThreadPool&& other) = delete;
 
-	/// Deleted operators.
+	// Deleted operators.
 	ThreadPool& operator=(const ThreadPool& other) = delete;
 	ThreadPool& operator=(ThreadPool&& other) = delete;
 
 private:
 
-	/// Dispatches function from queue and executes it.
+	// Dispatches function from queue and executes it.
+	//
+	// `idx`: thread index.
 	void _thread_handler(int idx);
 };
 
-__CORE_INTERNAL_END__
+__MAIN_NAMESPACE_END__

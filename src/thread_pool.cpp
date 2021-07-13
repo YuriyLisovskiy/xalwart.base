@@ -1,84 +1,57 @@
-/*
- * Copyright (c) 2019-2020 Yuriy Lisovskiy
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 /**
- * An implementation of core/thread_pool.h
+ * thread_pool.cpp
+ *
+ * Copyright (c) 2019-2021 Yuriy Lisovskiy
  */
 
 #include "./thread_pool.h"
 
 
-__CORE_INTERNAL_BEGIN__
+__MAIN_NAMESPACE_BEGIN__
 
-ThreadPool::ThreadPool(size_t threads_count) : _threads(threads_count)
+ThreadPool::ThreadPool(std::string name, size_t threads_count) : _name(std::move(name))
 {
 	this->_threads_count = threads_count;
 	this->_is_finished = false;
-	int idx = 0;
-	for (auto& thread : this->_threads)
+	for (size_t idx = 0; idx < threads_count; idx++)
 	{
-		thread = std::thread(&ThreadPool::_thread_handler, this, idx++);
+		this->_threads.emplace_back(&ThreadPool::_thread_handler, this, idx);
 	}
-}
-
-ThreadPool::~ThreadPool()
-{
-	this->wait();
 }
 
 void ThreadPool::push(const std::function<void(void)>& func)
 {
-	std::unique_lock<std::mutex> lock(this->_lock_guard);
-	this->_queue.push(func);
+	{
+		std::unique_lock<std::mutex> lock(this->_lock_guard);
+		this->_queue.push(func);
+	}
 
-	// Manual unlocking is done before notifying, to avoid waking up
-	// the waiting thread only to block again (see notify_one for details)
-	lock.unlock();
-	this->_cond_var.notify_one();
+	this->_cond_var.notify_all();
 }
 
 void ThreadPool::push(std::function<void(void)>&& func)
 {
-	std::unique_lock<std::mutex> lock(this->_lock_guard);
-	this->_queue.push(std::move(func));
+	{
+		std::unique_lock<std::mutex> lock(this->_lock_guard);
+		this->_queue.push(std::move(func));
+	}
 
-	// Manual unlocking is done before notifying, to avoid waking up
-	// the waiting thread only to block again (see notify_one for details)
-	lock.unlock();
-	this->_cond_var.notify_one();
-}
-
-size_t ThreadPool::threads_count() const
-{
-	return this->_threads_count;
+	this->_cond_var.notify_all();
 }
 
 void ThreadPool::wait()
 {
-	if (this->_is_finished)
+	if (this->_is_finished || this->_quit)
 	{
 		return;
 	}
 
 	// Signal to dispatch threads that it's time to wrap up.
-	std::unique_lock<std::mutex> lock(this->_lock_guard);
-	this->_quit = true;
+	{
+		std::unique_lock<std::mutex> lock(this->_lock_guard);
+		this->_quit = true;
+	}
 
-	lock.unlock();
 	this->_cond_var.notify_all();
 
 	std::this_thread::sleep_for(std::chrono::milliseconds(10));
@@ -101,26 +74,30 @@ void ThreadPool::join()
 
 void ThreadPool::_thread_handler(int idx)
 {
-	std::unique_lock<std::mutex> guard(this->_lock_guard);
-	do
+	while (!this->_quit)
 	{
+		std::unique_lock<std::mutex> guard(this->_lock_guard);
+
 		// Wait until we have data or a quit signal.
 		this->_cond_var.wait(guard, [this] {
 			return (!this->_queue.empty() || this->_quit);
 		});
-
-		// After wait, we own the lock.
-		if (!this->_quit && !this->_queue.empty())
+		if (this->_quit)
 		{
-			auto func = std::move(this->_queue.front());
-			this->_queue.pop();
-
-			// Unlock now that we're done messing with the queue.
-			guard.unlock();
-			func();
-			guard.lock();
+			break;
 		}
-	} while (!this->_quit);
+
+		if (this->_queue.empty())
+		{
+			continue;
+		}
+
+		auto func = this->_queue.front();
+		this->_queue.pop();
+
+		guard.unlock();
+		func();
+	}
 }
 
-__CORE_INTERNAL_END__
+__MAIN_NAMESPACE_END__

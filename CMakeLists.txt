@@ -1,24 +1,15 @@
-cmake_minimum_required(VERSION 3.13)
+cmake_minimum_required(VERSION 3.12)
 
-set(CMAKE_CXX_STANDARD 17)
-
-project(XalwartCore)
+set(CMAKE_CXX_STANDARD 20)
 
 set(FRAMEWORK_NAME "xalwart")
-set(LIBRARY_NAME "xalwart.core")
-set(LIBRARY_VERSION "0.0.1")
+set(LIBRARY_NAME "${FRAMEWORK_NAME}.core")
+set(LIBRARY_VERSION "0.0.0")
 
-function(remove_dirs SRC_LIST)
-    foreach(entry ${SRC_LIST})
-        if (IS_DIRECTORY ${entry})
-            list(REMOVE_ITEM SRC_LIST ${entry})
-        endif()
-    endforeach()
-endfunction(remove_dirs)
+project(${LIBRARY_NAME})
 
-function(list_exclude SRC_LIST EXPR)
-    list(FILTER ${SRC_LIST} EXCLUDE REGEX ${EXPR})
-endfunction(list_exclude)
+set(GNU_INCLUDE_DIR /usr/local/include)
+set(GNU_LIB_DIR /usr/local/lib)
 
 function(print SRC_LIST)
     foreach(entry ${SRC_LIST})
@@ -26,5 +17,41 @@ function(print SRC_LIST)
     endforeach(entry)
 endfunction(print)
 
-add_subdirectory(src)
-add_subdirectory(tests)
+set(LIB_SRC_DIR ${PROJECT_SOURCE_DIR}/src)
+file(GLOB_RECURSE SOURCES LIST_DIRECTORIES true ${LIB_SRC_DIR}/*.h ${LIB_SRC_DIR}/*.cpp)
+foreach(entry ${SOURCES})
+    if (IS_DIRECTORY ${entry})
+        list(REMOVE_ITEM SOURCES ${entry})
+    endif()
+endforeach()
+list(LENGTH SOURCES SOURCES_COUNT)
+message(STATUS "[INFO] Sources found: ${SOURCES_COUNT}")
+
+# Build shared library.
+if (NOT LIB_SHARED)
+    set(LIB_SHARED no)
+endif()
+
+if (${LIB_SHARED})
+    add_library(${LIBRARY_NAME} SHARED ${SOURCES})
+else()
+    add_library(${LIBRARY_NAME} STATIC ${SOURCES})
+endif()
+
+# Install library.
+install(
+    TARGETS ${LIBRARY_NAME}
+    ARCHIVE DESTINATION ${GNU_LIB_DIR}
+    LIBRARY DESTINATION ${GNU_LIB_DIR}
+)
+
+install(
+    DIRECTORY "${LIB_SRC_DIR}/"
+    DESTINATION ${GNU_INCLUDE_DIR}/${LIBRARY_NAME}
+    FILES_MATCHING
+    PATTERN "*.h"
+)
+
+if ("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
+    add_subdirectory(tests)
+endif()

@@ -1,22 +1,7 @@
-/*
- * Copyright (c) 2019-2020 Yuriy Lisovskiy
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 /**
- * An implementation of core/utility.h
+ * utility.cpp
+ *
+ * Copyright (c) 2019-2021 Yuriy Lisovskiy
  */
 
 #include "./utility.h"
@@ -30,8 +15,8 @@
 #include <cxxabi.h>
 #endif
 
-// Framework modules.
-#include "./strings.h"
+// Core libraries.
+#include "./string_utils.h"
 
 
 __UTILITY_BEGIN__
@@ -44,7 +29,7 @@ __UTILITY_BEGIN__
 std::string demangle(const char* name)
 {
 #ifdef _MSC_VER
-	return core::str::ltrim(core::str::ltrim(name, "class"));
+	return str::ltrim(name, "class");
 #else
 	int status = -4;
 	std::unique_ptr<char, void(*)(void*)> res {
@@ -81,7 +66,7 @@ std::string format_datetime(
 		zone = dt->strftime("%z");
 	}
 
-	return internal::_format_timetuple_and_zone(&now, zone);
+	return _format_timetuple_and_zone(&now, zone);
 }
 
 std::string format_date(
@@ -92,7 +77,7 @@ std::string format_date(
 	// 2822 requires that day and month names be the English abbreviations.
 	if (!time_val)
 	{
-		time_val = dt::internal::_time();
+		time_val = dt::_time();
 	}
 
 	std::shared_ptr<dt::Datetime> dt;
@@ -120,23 +105,18 @@ std::string format_date(
 	return format_datetime(dt.get(), use_gmt);
 }
 
-__UTILITY_END__
-
-
-__UTILITY_INTERNAL_BEGIN__
-
 std::string _format_timetuple_and_zone(
 	dt::tm_tuple* time_tuple, const std::string& zone
 )
 {
-	return dt::internal::_DAY_NAMES[((time_tuple->tm_wday+6)%7)+1] + ", " +
-		dt::internal::_lf(time_tuple->tm_mday) + " " +
-		dt::internal::_MONTH_NAMES[time_tuple->tm_mon+1] + " " +
-		dt::internal::_lf(time_tuple->tm_year, 4) + " " +
-		dt::internal::_lf(time_tuple->tm_hour) + ":" +
-		dt::internal::_lf(time_tuple->tm_min) + ":" +
-		dt::internal::_lf(time_tuple->tm_sec) + " " +
+	return dt::_DAY_NAMES[time_tuple->tm_wday+1] + ", " +
+		dt::_lf(time_tuple->tm_mday) + " " +
+		dt::_MONTH_NAMES[time_tuple->tm_mon] + " " +
+		dt::_lf(time_tuple->tm_year, 4) + " " +
+		dt::_lf(time_tuple->tm_hour) + ":" +
+		dt::_lf(time_tuple->tm_min) + ":" +
+		dt::_lf(time_tuple->tm_sec) + " " +
 		zone;
 }
 
-__UTILITY_INTERNAL_END__
+__UTILITY_END__

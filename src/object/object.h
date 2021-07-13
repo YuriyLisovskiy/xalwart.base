@@ -1,149 +1,126 @@
-/*
- * Copyright (c) 2020 Yuriy Lisovskiy
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 /**
- * core/object/object.h
+ * object/object.h
  *
- * Purpose:
- * 	Main parent for all derived classes which need to be rendered
- * 	or for some other purposes.
+ * Copyright (c) 2020-2021 Yuriy Lisovskiy
+ *
+ * Main parent for all derived classes which need to be rendered
+ * or for some other purposes.
  */
 
 #pragma once
 
 // C++ libraries.
-#include <map>
-#include <functional>
+#include <sstream>
 
 // Module definitions.
 #include "./_def_.h"
 
-// Framework modules.
-#include "./type.h"
+// Core libraries.
+#include "./meta.h"
+#include "../exceptions.h"
 
 
-__OBJECT_BEGIN__
-
-struct Attr
-{
-private:
-	typedef std::function<Object*()> attr_getter;
-	typedef std::function<void(Object*)> attr_setter;
-
-	attr_getter _getter = nullptr;
-	attr_setter _setter = nullptr;
-
-public:
-	Attr() = default;
-
-	explicit Attr(attr_getter getter) : _getter(std::move(getter))
-	{
-	}
-
-	explicit Attr(attr_setter setter) : _setter(std::move(setter))
-	{
-	}
-
-	Attr(
-		attr_getter getter, attr_setter setter
-	) : _getter(std::move(getter)), _setter(std::move(setter))
-	{
-	}
-
-	Object* get()
-	{
-		if (this->_getter)
-		{
-			return this->_getter();
-		}
-
-		return nullptr;
-	}
-
-	[[nodiscard]] Object* get() const
-	{
-		if (this->_getter)
-		{
-			return this->_getter();
-		}
-
-		return nullptr;
-	}
-
-	void set(Object* val_ptr)
-	{
-		if (this->_setter)
-		{
-			this->_setter(val_ptr);
-		}
-	}
-};
+__OBJ_BEGIN__
 
 class Object
 {
-private:
-	std::string _object_address;
-
-protected:
-	[[nodiscard]] std::string __address__() const;
-
 public:
-	std::map<std::string, Attr> __attrs__;
+	Object() = default;
 
-	Object();
 	virtual ~Object() = default;
 
-	virtual Object* __get_attr__(const char* attr_name) const;
-	virtual void __set_attr__(const char* attr_name, Object* ptr);
-	bool __has_attr__(const char* attr_name) const;
-
-	/// Returns 0 if objects are equal, -1 if 'this' is less
-	///  than 'other' otherwise returns 1.
-	/// Can be overridden.
-	virtual short __cmp__(const Object* other) const;
-
-	[[nodiscard]] virtual unsigned long __hash__() const;
-
-	[[nodiscard]] Type __type__() const;
-
-	template <typename _CastT>
-	_CastT __cast__() const
+	// Returns `attr_name` attribute value of the object.
+	//
+	// Throws `core::AttributeError` by default.
+	[[nodiscard]]
+	virtual inline std::shared_ptr<const Object> __get_attr__(const char* attr_name) const
 	{
-		if constexpr (std::is_pointer<_CastT>::value)
-		{
-			return ((_CastT)this);
-		}
-
-		return *((_CastT*)this);
+		throw AttributeError(
+			"'" + this->__type__().name() + "' object has no attribute '" + std::string(attr_name) + "'",
+			_ERROR_DETAILS_
+		);
 	}
 
-	[[nodiscard]] virtual std::string __str__() const;
-	[[nodiscard]] virtual std::string __repr__() const;
+	// Sets a new value to attribute.
+	//
+	// `attr_name`: name of an attribute to set.
+	// `data`: pointer to data which should be set.
+	//
+	// Throws `core::AttributeError` by default.
+	virtual inline void __set_attr__(const char* attr_name, const void* data)
+	{
+		throw AttributeError(
+			"'" + this->__type__().name() + "' object has no attribute '" + std::string(attr_name) + "'",
+			_ERROR_DETAILS_
+		);
+	}
 
-	bool operator<(const Object& other) const;
-	bool operator==(const Object& other) const;
-	bool operator!=(const Object& other) const;
-	bool operator>(const Object& other) const;
-	bool operator<=(const Object& other) const;
-	bool operator>=(const Object& other) const;
+	// Checks whether object has attribute or not.
+	//
+	// `attr_name`: name of an attribute to check.
+	//
+	// Returns `false` by default.
+	[[nodiscard]]
+	virtual inline bool __has_attr__(const char* attr_name) const
+	{
+		return false;
+	}
 
-	friend std::ostream& operator<<(std::ostream& out, Object& obj);
+	// Returns basic meta information about the object.
+	[[nodiscard]]
+	inline meta::Type __type__() const
+	{
+		return meta::Type(*this);
+	}
 
-	explicit virtual operator bool () const;
+	// Default string representation of an object.
+	[[nodiscard]]
+	virtual inline std::string __str__() const
+	{
+		std::stringstream oss;
+		oss << static_cast<const void*>(this);
+		return "<" + this->__type__().name() + " object at " + oss.str() + ">";
+	}
+
+	// Used for debugging. By default returns '__str__()' with
+	// single quotes.
+	[[nodiscard]]
+	virtual inline std::string __repr__() const
+	{
+		return "'" + this->__str__() + "'";
+	}
+
+	// Returns 0 if objects are equal, -1 if 'this' is less
+	// than 'other' otherwise returns 1.
+	//
+	// Throws core::NotImplementedException by default.
+	[[nodiscard]]
+	virtual inline short __cmp__(const Object* other) const
+	{
+		throw NotImplementedException(
+			"Object of type '" + this->__type__().name() + "' does not support comparison",
+			_ERROR_DETAILS_
+		);
+	}
+
+	// Returns boolean representation of the object.
+	// Used in logical comparisons.
+	//
+	// Throws core::NotImplementedException by default.
+	explicit virtual operator bool () const
+	{
+		throw NotImplementedException(
+			"'" + this->__type__().name() + "::operator bool() const' is not implemented",
+			_ERROR_DETAILS_
+		);
+	}
+
+	// Negates and returns the result of `operator bool()`
+	// by default.
+	virtual inline bool operator! () const
+	{
+		return !this->operator bool();
+	}
 };
 
-__OBJECT_END__
+__OBJ_END__
