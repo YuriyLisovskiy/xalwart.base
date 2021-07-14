@@ -1,5 +1,5 @@
 ARG alpine_version=3.13
-ARG build_shared_lib=off
+ARG build_shared_lib="false"
 
 FROM alpine:$alpine_version
 

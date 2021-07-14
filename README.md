@@ -29,7 +29,8 @@ make
 sudo make install
 ```
 > Temporary it is necessary to build a shared library instead of static because
-> the last one is not working properly causing undefined reference errors.
+> the last one is not working properly causing undefined reference errors when
+> using [xalwart](https://github.com/YuriyLisovskiy/xalwart) library.
 
 ## Testing
 ```bash

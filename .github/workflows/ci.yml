@@ -6,53 +6,35 @@ on:
       - master
       - dev
 jobs:
-  alpine-clang:
-    name: "alpine-${{ matrix.alpine_version }} [clang-10]"
+  alpine:
+    name: "alpine-${{ matrix.alpine_version }} [${{ matrix.compiler }}-10] [shared: ${{ matrix.build_shared_lib }}]"
     runs-on: ubuntu-18.04
     strategy:
       fail-fast: false
       matrix:
         alpine_version: [3.13]
-        build_shared_lib: [on, off]
+        build_shared_lib: ["true", "false"]
+        compiler: [clang, gcc]
     steps:
       - uses: actions/checkout@v2
       - name: Build the Container
         run: |
           sudo docker build --build-arg alpine_version=${{ matrix.alpine_version }} \
                             --build-arg build_shared_lib=${{ matrix.build_shared_lib }} \
-                            -f docker/alpine/clang.Dockerfile \
-                            --tag=xalwart.base-test:alpine-clang .
+                            -f docker/alpine/${{ matrix.compiler }}.Dockerfile \
+                            --tag=xalwart.base-test:alpine-${{ matrix.compiler }} .
       - name: Run Tests
         run: |
-          sudo docker run xalwart.base-test:alpine-clang
-  alpine-gcc:
-    name: "alpine-${{ matrix.alpine_version }} [gcc-10]"
-    runs-on: ubuntu-18.04
-    strategy:
-      fail-fast: false
-      matrix:
-        alpine_version: [3.13]
-        build_shared_lib: [on, off]
-    steps:
-      - uses: actions/checkout@v2
-      - name: Build the Container
-        run: |
-          sudo docker build --build-arg alpine_version=${{ matrix.alpine_version }} \
-                            --build-arg build_shared_lib=${{ matrix.build_shared_lib }} \
-                            -f docker/alpine/gcc.Dockerfile \
-                            --tag=xalwart.base-test:alpine-gcc .
-      - name: Run Tests
-        run: |
-          sudo docker run xalwart.base-test:alpine-gcc
+          sudo docker run xalwart.base-test:alpine-${{ matrix.compiler }}
   ubuntu-clang:
-    name: "${{ matrix.os }} [clang-${{ matrix.compiler_version }}]"
+    name: "${{ matrix.os }} [clang-${{ matrix.compiler_version }}] [shared: ${{ matrix.build_shared_lib }}]"
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
         os: [ubuntu-18.04, ubuntu-20.04]
         compiler_version: [10]
-        build_shared_lib: [on, off]
+        build_shared_lib: ["true", "false"]
     steps:
       - uses: actions/checkout@v2
       - name: Install Compiler
@@ -83,14 +65,14 @@ jobs:
         run: |
           sudo valgrind --leak-check=full ./build/tests/unittests-all
   ubuntu-gcc:
-    name: "${{ matrix.os }} [gcc-${{ matrix.compiler_version }}]"
+    name: "${{ matrix.os }} [gcc-${{ matrix.compiler_version }}] [shared: ${{ matrix.build_shared_lib }}]"
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
         os: [ubuntu-18.04, ubuntu-20.04]
         compiler_version: [10]
-        build_shared_lib: [on, off]
+        build_shared_lib: ["true", "false"]
     steps:
       - uses: actions/checkout@v2
       - name: Install Compiler and Check Version
