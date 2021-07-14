@@ -1,8 +1,8 @@
 FROM alpine:3.13
 
-ARG build_shared_lib=off
 ARG cc=clang
 ARG cxx=clang++
+ARG build_shared_lib=off
 
 RUN echo "ipv6" >> /etc/modules
 

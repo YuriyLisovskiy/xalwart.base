@@ -12,8 +12,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        build_shared_lib: [on, off]
-        compiler: [clang, gcc]
+        build_shared_lib: [ on, off ]
+        compiler: [ clang, gcc ]
     steps:
       - uses: actions/checkout@v2
       - name: Build the Container
@@ -32,10 +32,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-18.04, ubuntu-20.04]
-        compiler_version: [10]
-        compiler: [clang, gcc]
-        build_shared_lib: [on, off]
+        os: [ ubuntu-18.04, ubuntu-20.04 ]
+        compiler_version: [ 10 ]
+        compiler: [ clang, gcc ]
+        build_shared_lib: [ on, off ]
     steps:
       - uses: actions/checkout@v2
       - name: "Install clang-${{ matrix.compiler_version }}"
