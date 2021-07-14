@@ -1,7 +1,6 @@
-ARG alpine_version=3.13
-ARG build_shared_lib="false"
+FROM alpine:3.13
 
-FROM alpine:$alpine_version
+ARG build_shared_lib=off
 
 RUN echo "ipv6" >> /etc/modules
 
