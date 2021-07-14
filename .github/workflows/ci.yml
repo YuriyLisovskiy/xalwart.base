@@ -13,11 +13,13 @@ jobs:
       fail-fast: false
       matrix:
         alpine_version: [3.13]
+        build_shared_lib: [on, off]
     steps:
       - uses: actions/checkout@v2
       - name: Build the Container
         run: |
           sudo docker build --build-arg alpine_version=${{ matrix.alpine_version }} \
+                            --build-arg build_shared_lib=${{ matrix.build_shared_lib }} \
                             -f docker/alpine/clang.Dockerfile \
                             --tag=xalwart.base-test:alpine-clang .
       - name: Run Tests
@@ -30,11 +32,13 @@ jobs:
       fail-fast: false
       matrix:
         alpine_version: [3.13]
+        build_shared_lib: [on, off]
     steps:
       - uses: actions/checkout@v2
       - name: Build the Container
         run: |
           sudo docker build --build-arg alpine_version=${{ matrix.alpine_version }} \
+                            --build-arg build_shared_lib=${{ matrix.build_shared_lib }} \
                             -f docker/alpine/gcc.Dockerfile \
                             --tag=xalwart.base-test:alpine-gcc .
       - name: Run Tests
@@ -48,6 +52,7 @@ jobs:
       matrix:
         os: [ubuntu-18.04, ubuntu-20.04]
         compiler_version: [10]
+        build_shared_lib: [on, off]
     steps:
       - uses: actions/checkout@v2
       - name: Install Compiler
@@ -70,7 +75,9 @@ jobs:
           cd build/ && \
           sudo cmake -DCMAKE_CXX_COMPILER=clang++-${{ matrix.compiler_version }} \
                      -DCMAKE_C_COMPILER=clang-${{ matrix.compiler_version }} \
-                     -DCMAKE_BUILD_TYPE=Debug .. && \
+                     -DCMAKE_BUILD_TYPE=Debug \
+                     -DBUILD_SHARED_LIB=${{ matrix.build_shared_lib }} \
+                     .. && \
           sudo make unittests-all
       - name: Run Tests
         run: |
@@ -83,6 +90,7 @@ jobs:
       matrix:
         os: [ubuntu-18.04, ubuntu-20.04]
         compiler_version: [10]
+        build_shared_lib: [on, off]
     steps:
       - uses: actions/checkout@v2
       - name: Install Compiler and Check Version
@@ -114,7 +122,9 @@ jobs:
           cd build/ && \
           sudo cmake -DCMAKE_CXX_COMPILER=g++-${{ matrix.compiler_version }} \
                      -DCMAKE_C_COMPILER=gcc-${{ matrix.compiler_version }} \
-                     -DCMAKE_BUILD_TYPE=Debug .. && \
+                     -DCMAKE_BUILD_TYPE=Debug \
+                     -DBUILD_SHARED_LIB=${{ matrix.build_shared_lib }} \
+                     .. && \
           sudo make unittests-all
       - name: Run Tests
         run: |

@@ -49,7 +49,7 @@ public:
 	//
 	// `expr`: regular expression pattern.
 	// `sot`: syntax options for regular expression.
-	explicit IterRegex(
+	inline explicit IterRegex(
 		const std::string& expr, std::regex_constants::syntax_option_type sot
 	) : _raw_expr(expr), _is_initialized(false)
 	{

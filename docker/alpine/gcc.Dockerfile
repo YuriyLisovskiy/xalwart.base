@@ -1,4 +1,5 @@
 ARG alpine_version=3.13
+ARG build_shared_lib=off
 
 FROM alpine:$alpine_version
 
@@ -30,7 +31,9 @@ RUN mkdir build && \
     cd build && \
     cmake -DCMAKE_CXX_COMPILER=g++ \
           -DCMAKE_C_COMPILER=gcc \
-          -DCMAKE_BUILD_TYPE=Debug .. && \
+          -DCMAKE_BUILD_TYPE=Debug \
+          -DBUILD_SHARED_LIB=$build_shared_lib \
+          .. && \
     make unittests-all
 
 CMD valgrind --leak-check=full $APP_HOME/build/tests/unittests-all
