@@ -42,11 +42,9 @@ jobs:
           sudo apt update -y
           sudo pip install --upgrade cmake
           sudo apt install -y clang-${{ matrix.compiler_version }} valgrind
-          sudo update-alternatives --install /usr/bin/cc cc /usr/bin/cc 40
-          sudo update-alternatives --install /usr/bin/cc cc /usr/bin/clang-${{ matrix.compiler_version }} 60
-          sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/c++ 40
-          sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++-${{ matrix.compiler_version }} 60
+          sudo update-alternatives --install /usr/bin/cc cc /usr/bin/clang-${{ matrix.compiler_version }} 30
           sudo update-alternatives --set cc /usr/bin/clang-${{ matrix.compiler_version }}
+          sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++-${{ matrix.compiler_version }} 30
           sudo update-alternatives --set c++ /usr/bin/clang++-${{ matrix.compiler_version }}
       - name: "Install gcc-${{ matrix.compiler_version }}"
         if: ${{ matrix.compiler == 'gcc' }}
@@ -55,11 +53,9 @@ jobs:
           sudo apt update -y
           sudo pip install --upgrade cmake
           sudo apt install -y gcc-${{ matrix.compiler_version }} g++-${{ matrix.compiler_version }} valgrind
-          sudo update-alternatives --install /usr/bin/cc cc /usr/bin/cc 40
-          sudo update-alternatives --install /usr/bin/cc cc /usr/bin/gcc-${{ matrix.compiler_version }} 60
-          sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/c++ 40
-          sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/g++-${{ matrix.compiler_version }} 60
+          sudo update-alternatives --install /usr/bin/cc cc /usr/bin/gcc-${{ matrix.compiler_version }} 30
           sudo update-alternatives --set cc /usr/bin/gcc-${{ matrix.compiler_version }}
+          sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/g++-${{ matrix.compiler_version }} 30
           sudo update-alternatives --set c++ /usr/bin/g++-${{ matrix.compiler_version }}
       - name: Build and Install Google Test Framework
         run: |
