@@ -6,7 +6,7 @@ on:
       - master
       - dev
 jobs:
-  alpine:
+  test-alpine:
     name: "alpine-3.13 [${{ matrix.compiler }}-10] [shared: ${{ matrix.build_shared_lib }}]"
     runs-on: ubuntu-18.04
     strategy:
@@ -19,12 +19,14 @@ jobs:
       - name: Build the Container
         run: |
           sudo docker build --build-arg build_shared_lib=${{ matrix.build_shared_lib }} \
-                            -f docker/alpine/${{ matrix.compiler }}.Dockerfile \
+                            --build-arg cc=${{ matrix.compiler }} \
+                            --build-arg cxx=$(bash ./scripts/get_cxx_name_by_cc.sh ${{ matrix.compiler }}) \
+                            -f docker/alpine/Dockerfile \
                             --tag=xalwart.base-test:alpine-${{ matrix.compiler }} .
       - name: Run Tests
         run: |
           sudo docker run xalwart.base-test:alpine-${{ matrix.compiler }}
-  ubuntu-clang:
+  test-ubuntu:
     name: "${{ matrix.os }} [${{ matrix.compiler }}-${{ matrix.compiler_version }}] [shared: ${{ matrix.build_shared_lib }}]"
     runs-on: ${{ matrix.os }}
     strategy:
@@ -62,15 +64,14 @@ jobs:
           git clone -q https://github.com/google/googletest.git
           sudo mkdir -p ./googletest/build
           cd ./googletest/build
-          sudo cmake -DCMAKE_C_COMPILER=${{ matrix.compiler }}-${{ matrix.compiler_version }} ..
+          sudo cmake ..
           sudo make
           sudo make install
       - name: Build the Library and Tests
         run: |
           sudo mkdir build
           cd build/
-          sudo cmake -DCMAKE_C_COMPILER=${{ matrix.compiler }}-${{ matrix.compiler_version }} \
-                     -DCMAKE_BUILD_TYPE=Debug \
+          sudo cmake -DCMAKE_BUILD_TYPE=Debug \
                      -DBUILD_SHARED_LIB=${{ matrix.build_shared_lib }} \
                      ..
           sudo make unittests-all

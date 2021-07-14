@@ -46,6 +46,6 @@ include/
 lib/
 
 # Additional stuff
-Dockerfile*
+/Dockerfile*
 Makefile
 venv/
