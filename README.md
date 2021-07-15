@@ -19,7 +19,7 @@ on Alpine Linux and Ubuntu.
 To build the library from source CMake 3.12 or later is required.
 
 ## Compile from Source
-* `BUILD_SHARED_LIB` stands by building a shared or static library (`off` by default).
+* `BUILD_SHARED_LIB` means to build a shared or static library (`off` by default).
 ```bash
 mkdir build && cd build
 cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIB=on ..

@@ -4,10 +4,14 @@ Dockerfile*
 .git/
 .github/
 
-# Project stuff
+# Project stuff (directories)
 .idea/
 cmake-build-*
 build/
+docker/
+
+# Project stuff (files)
+.bumpversion.cfg
+Makefile
 README.md
 VERSION
-Makefile
