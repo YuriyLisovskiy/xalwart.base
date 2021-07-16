@@ -1,4 +1,4 @@
-FROM xalwart/gtest:1.11.0-{{ cc }}-{{ compiler_version }}-alpine-{{ os_version }}
+FROM xalwart/gtest:1.11.0-{{ cc }}-{{ compiler_version }}-ubuntu-{{ os_version }}
 
 ARG build_shared_lib=off
 
@@ -6,9 +6,7 @@ COPY . .
 
 RUN mkdir build && \
     cd build && \
-    cmake -DCMAKE_C_COMPILER={{ cc }} \
-          -DCMAKE_CXX_COMPILER={{ cxx }} \
-          -DCMAKE_BUILD_TYPE=Debug \
+    cmake -DCMAKE_BUILD_TYPE=Debug \
           -DBUILD_SHARED_LIB=$build_shared_lib \
           .. && \
     make unittests-all

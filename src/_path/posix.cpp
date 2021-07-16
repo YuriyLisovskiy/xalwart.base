@@ -9,7 +9,6 @@
 #ifdef __unix__
 
 // C++ libraries.
-#include <fstream>
 #include <filesystem>
 #include <unistd.h>
 

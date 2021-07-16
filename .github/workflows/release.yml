@@ -24,7 +24,7 @@ jobs:
           git config --local user.name "YuriyLisovskiy"
           pip install bump2version
           set -x
-          bump2version $(bash ./scripts/commit_msg_to_version.sh)
+          bump2version $(bash ./misc/commit_msg_to_version.sh)
           echo ::set-output name=lib_version::$(cat VERSION)
       - name: Push the Commit
         run: |

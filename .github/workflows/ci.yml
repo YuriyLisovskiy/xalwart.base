@@ -6,78 +6,28 @@ on:
       - master
       - dev
 jobs:
-  test-alpine:
-    name: "alpine-3.13 [${{ matrix.compiler }}-10] [shared: ${{ matrix.build_shared_lib }}]"
+  test:
+    name: "${{ matrix.os }} [${{ matrix.compiler }}-${{ matrix.compiler_version }}] [shared: ${{ matrix.build_shared_lib }}]"
     runs-on: ubuntu-18.04
     strategy:
       fail-fast: false
       matrix:
-        build_shared_lib: [ on, off ]
+        os: [ "alpine-3.13", "ubuntu-18.04", "ubuntu-20.04" ]
         compiler: [ clang, gcc ]
+        compiler_version: [ 10 ]
+        build_shared_lib: [ on, off ]
     steps:
       - uses: actions/checkout@v2
+      - name: Generate Dockerfile
+        run: |
+          python docker/compile.py --os=${{ matrix.os }} \
+                                   --compiler=${{ matrix.compiler }}-${{ matrix.compiler_version }} \
+                                   --out=./test.Dockerfile
       - name: Build the Container
         run: |
           sudo docker build --build-arg build_shared_lib=${{ matrix.build_shared_lib }} \
-                            --build-arg cc=${{ matrix.compiler }} \
-                            --build-arg cxx=$(bash ./scripts/get_cxx_name_by_cc.sh ${{ matrix.compiler }}) \
-                            -f docker/alpine/Dockerfile \
-                            --tag=xalwart.base-test:alpine-${{ matrix.compiler }} .
+                            -f ./test.Dockerfile \
+                            --tag=xalwart.base:test-${{ matrix.os }}-${{ matrix.compiler }}-${{ matrix.compiler_version }} .
       - name: Run Tests
         run: |
-          sudo docker run xalwart.base-test:alpine-${{ matrix.compiler }}
-  test-ubuntu:
-    name: "${{ matrix.os }} [${{ matrix.compiler }}-${{ matrix.compiler_version }}] [shared: ${{ matrix.build_shared_lib }}]"
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ ubuntu-18.04, ubuntu-20.04 ]
-        compiler_version: [ 10 ]
-        compiler: [ clang, gcc ]
-        build_shared_lib: [ on, off ]
-    steps:
-      - uses: actions/checkout@v2
-      - name: "Install clang-${{ matrix.compiler_version }}"
-        if: ${{ matrix.compiler == 'clang' }}
-        run: |
-          sudo apt update -y
-          sudo pip install --upgrade cmake
-          sudo apt install -y clang-${{ matrix.compiler_version }} valgrind
-          sudo update-alternatives --install /usr/bin/cc cc /usr/bin/clang-${{ matrix.compiler_version }} 30
-          sudo update-alternatives --set cc /usr/bin/clang-${{ matrix.compiler_version }}
-          sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++-${{ matrix.compiler_version }} 30
-          sudo update-alternatives --set c++ /usr/bin/clang++-${{ matrix.compiler_version }}
-      - name: "Install gcc-${{ matrix.compiler_version }}"
-        if: ${{ matrix.compiler == 'gcc' }}
-        run: |
-          sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
-          sudo apt update -y
-          sudo pip install --upgrade cmake
-          sudo apt install -y gcc-${{ matrix.compiler_version }} g++-${{ matrix.compiler_version }} valgrind
-          sudo update-alternatives --install /usr/bin/cc cc /usr/bin/gcc-${{ matrix.compiler_version }} 30
-          sudo update-alternatives --set cc /usr/bin/gcc-${{ matrix.compiler_version }}
-          sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/g++-${{ matrix.compiler_version }} 30
-          sudo update-alternatives --set c++ /usr/bin/g++-${{ matrix.compiler_version }}
-      - name: Build and Install Google Test Framework
-        run: |
-          git clone -q https://github.com/google/googletest.git
-          sudo mkdir -p ./googletest/build
-          cd ./googletest/build
-          sudo cmake ..
-          sudo make
-          sudo make install
-      - name: Update Links and Cache of Linker
-        run: |
-          sudo ldconfig
-      - name: Build the Library and Tests
-        run: |
-          sudo mkdir build
-          cd build/
-          sudo cmake -DCMAKE_BUILD_TYPE=Debug \
-                     -DBUILD_SHARED_LIB=${{ matrix.build_shared_lib }} \
-                     ..
-          sudo make unittests-all
-      - name: Run Tests
-        run: |
-          sudo valgrind --leak-check=full ./build/tests/unittests-all
+          sudo docker run xalwart.base:test-${{ matrix.os }}-${{ matrix.compiler }}-${{ matrix.compiler_version }}

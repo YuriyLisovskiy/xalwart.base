@@ -33,12 +33,21 @@ sudo make install
 > using [xalwart](https://github.com/YuriyLisovskiy/xalwart) library.
 
 ## Testing
-```bash
-mkdir build && cd build
-cmake -DCMAKE_BUILD_TYPE=Debug .. && make unittests-all
-```
-
-Use valgrind to check for memory leaks:
-```bash
-valgrind --leak-check=full ./tests/unittests-all
-```
+* Current machine:
+  ```bash
+  mkdir build && cd build
+  cmake -DCMAKE_BUILD_TYPE=Debug -DBUILD_SHARED_LIB=on .. && make unittests-all
+  valgrind --leak-check=full ./tests/unittests-all
+  ```
+* Docker:
+  ```bash
+  # Install Jinja2
+  pip install -r docker/requirements.txt
+  
+  # Generate Dockerfile
+  python docker/compile.py --os=alpine-3.13 --compiler=clang-10 --out=./Dockerfile
+  
+  # Build and run the container
+  docker build --build-args build_shared_lib=on -t xalwart.base:test .
+  docker run xalwart.base:test
+  ```
