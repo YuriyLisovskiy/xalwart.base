@@ -20,8 +20,8 @@ jobs:
       - uses: actions/checkout@v2
       - name: Generate Dockerfile
         run: |
-          pip install -r docker/requirements.txt
-          python docker/compile.py --os=${{ matrix.os }} \
+          pip3 install -r docker/requirements.txt
+          python3 docker/compile.py --os=${{ matrix.os }} \
                                    --compiler=${{ matrix.compiler }}-${{ matrix.compiler_version }} \
                                    --out=./test.Dockerfile
       - name: Build the Container
