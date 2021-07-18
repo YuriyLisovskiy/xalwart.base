@@ -41,13 +41,5 @@ sudo make install
   ```
 * Docker:
   ```bash
-  # Install Jinja2
-  pip install -r docker/requirements.txt
-  
-  # Generate Dockerfile
-  python docker/compile.py --os=alpine-3.13 --compiler=clang-10 --out=./Dockerfile
-  
-  # Build and run the container
-  docker build --build-args build_shared_lib=on -t xalwart.base:test .
-  docker run xalwart.base:test
+  # TODO:
   ```

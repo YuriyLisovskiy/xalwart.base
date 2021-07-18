@@ -6,8 +6,27 @@ on:
       - master
       - dev
 jobs:
+  compile-lib:
+    name: Build the library and upload it to artifacts
+    runs-on: ubuntu-18.04
+    strategy:
+      fail-fast: false
+      matrix:
+        build_shared_lib: [ on, off ]
+    steps:
+      - name: Build the Library
+        run: |
+          sudo docker run -it -v $PWD:/app xalwart/gcc:10-alpine-3.13 \
+                          bash /app/misc/build.sh alpine dev ${{ matrix.build_shared_lib }}
+      - name: Upload the Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: xalwart.base-linux-dev.tar.gz
+          path: xalwart.base-linux-dev.tar.gz
+          retention-days: 90
   test:
     name: "${{ matrix.os }} [${{ matrix.compiler }}-${{ matrix.compiler_version }}] [shared: ${{ matrix.build_shared_lib }}]"
+    needs: [compile-lib]
     runs-on: ubuntu-18.04
     strategy:
       fail-fast: false
@@ -18,17 +37,17 @@ jobs:
         build_shared_lib: [ on, off ]
     steps:
       - uses: actions/checkout@v2
-      - name: Generate Dockerfile
+      - name: Download the Artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: xalwart.base-linux-dev.tar.gz
+          path: xalwart.base-linux-dev.tar.gz
+      - name: Unpack Base Library
         run: |
-          pip3 install -r docker/requirements.txt
-          python3 docker/compile.py --os=${{ matrix.os }} \
-                                   --compiler=${{ matrix.compiler }}-${{ matrix.compiler_version }} \
-                                   --out=./test.Dockerfile
-      - name: Build the Container
-        run: |
-          sudo docker build --build-arg build_shared_lib=${{ matrix.build_shared_lib }} \
-                            -f ./test.Dockerfile \
-                            --tag=xalwart.base:test-${{ matrix.os }}-${{ matrix.compiler }}-${{ matrix.compiler_version }} .
+          mkdir xalwart.base
+          tar -xvzf xalwart.base-linux-dev.tar.gz -C xalwart.base/
       - name: Run Tests
         run: |
-          sudo docker run xalwart.base:test-${{ matrix.os }}-${{ matrix.compiler }}-${{ matrix.compiler_version }}
+          sudo docker run -it -v $PWD:/app \
+                          xalwart/gtest:1.11.0-${{ matrix.compiler }}-${{ matrix.compiler_version }}-${{ matrix.os }} \
+                          bash /app/misc/test.sh ${{ matrix.os }}

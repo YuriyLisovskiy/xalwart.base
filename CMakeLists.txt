@@ -11,47 +11,19 @@ project(${LIBRARY_NAME})
 set(GNU_INCLUDE_DIR /usr/local/include)
 set(GNU_LIB_DIR /usr/local/lib)
 
-function(print SRC_LIST)
-    foreach(entry ${SRC_LIST})
-        message(${entry})
-    endforeach(entry)
-endfunction(print)
-
-set(LIB_SRC_DIR ${PROJECT_SOURCE_DIR}/src)
-file(GLOB_RECURSE SOURCES LIST_DIRECTORIES true ${LIB_SRC_DIR}/*.h ${LIB_SRC_DIR}/*.cpp)
-foreach(entry ${SOURCES})
-    if (IS_DIRECTORY ${entry})
-        list(REMOVE_ITEM SOURCES ${entry})
-    endif()
-endforeach()
-list(LENGTH SOURCES SOURCES_COUNT)
-message(STATUS "[INFO] Sources found: ${SOURCES_COUNT}")
-
-# Build shared library.
-if (NOT BUILD_SHARED_LIB)
-    set(BUILD_SHARED_LIB off)
+if (NOT BUILD_LIB)
+    set(BUILD_LIB on)
 endif()
 
-if (${BUILD_SHARED_LIB})
-    add_library(${LIBRARY_NAME} SHARED ${SOURCES})
-else()
-    add_library(${LIBRARY_NAME} STATIC ${SOURCES})
+if (${BUILD_LIB})
+    add_subdirectory(src)
 endif()
 
-# Install library.
-install(
-    TARGETS ${LIBRARY_NAME}
-    ARCHIVE DESTINATION ${GNU_LIB_DIR}
-    LIBRARY DESTINATION ${GNU_LIB_DIR}
-)
+if (NOT BUILD_TESTS)
+    set(BUILD_TESTS off)
+endif()
 
-install(
-    DIRECTORY "${LIB_SRC_DIR}/"
-    DESTINATION ${GNU_INCLUDE_DIR}/${LIBRARY_NAME}
-    FILES_MATCHING
-    PATTERN "*.h"
-)
-
-if ("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
+if (${BUILD_TESTS})
+    enable_testing()
     add_subdirectory(tests)
 endif()
