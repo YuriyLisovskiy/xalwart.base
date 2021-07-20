@@ -23,8 +23,6 @@ using uint = unsigned int;
 
 __MAIN_NAMESPACE_BEGIN__
 
-namespace base::v
-{
 struct version_t
 {
 	uint major;
@@ -33,6 +31,8 @@ struct version_t
 
 	version_t(const std::string& v);
 	version_t(uint major, uint minor, uint patch);
+
+	std::string to_string() const;
 
 	bool operator< (const version_t& other) const;
 	bool operator<= (const version_t& other) const;
@@ -51,7 +51,9 @@ struct version_t
 	friend std::ostream& operator<< (std::ostream& stream, const version_t& v);
 };
 
-const auto version = version_t("0.0.0");
+namespace base::v
+{
+const inline auto version = version_t("0.0.0");
 };
 
 __MAIN_NAMESPACE_END__

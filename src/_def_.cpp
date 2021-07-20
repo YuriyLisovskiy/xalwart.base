@@ -15,23 +15,6 @@
 
 __MAIN_NAMESPACE_BEGIN__
 
-namespace base::v
-{
-version_t::version_t(const std::string& v)
-{
-	auto parts = str::split(v, '.');
-	this->major = std::stoi(parts[0]);
-	this->minor = std::stoi(parts[1]);
-	this->patch = std::stoi(parts[2]);
-}
-
-version_t::version_t(uint major, uint minor, uint patch)
-{
-	this->major = major;
-	this->minor = minor;
-	this->patch = patch;
-}
-
 int compare_numbers(uint l, uint r)
 {
 	if (l == r)
@@ -60,6 +43,26 @@ int compare_versions(const version_t& l, const version_t& r)
 	}
 
 	return ret;
+}
+
+version_t::version_t(const std::string& v)
+{
+	auto parts = str::split(v, '.');
+	this->major = std::stoi(parts[0]);
+	this->minor = std::stoi(parts[1]);
+	this->patch = std::stoi(parts[2]);
+}
+
+version_t::version_t(uint major, uint minor, uint patch)
+{
+	this->major = major;
+	this->minor = minor;
+	this->patch = patch;
+}
+
+std::string version_t::to_string() const
+{
+	return std::to_string(this->major) + "." + std::to_string(this->minor) + "." + std::to_string(this->patch);
 }
 
 bool version_t::operator< (const version_t& other) const
@@ -130,7 +133,6 @@ std::ostream& operator<< (std::ostream& stream, const version_t& v)
 {
 	stream << v.major << "." << v.minor << "." << v.patch;
 	return stream;
-}
 }
 
 __MAIN_NAMESPACE_END__
