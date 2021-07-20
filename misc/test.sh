@@ -9,6 +9,9 @@ cp -r xalwart.base /usr/local/include
 cd ../lib || exit 1
 cp libxalwart.base* /usr/local/lib
 
+# Update linker cache.
+ldconfig /etc/ld.so.conf.d
+
 # Build tests.
 mkdir -p /app/build
 cd /app/build || exit 1
