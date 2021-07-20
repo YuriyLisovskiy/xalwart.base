@@ -20,7 +20,7 @@ jobs:
       - name: Build the Library
         run: |
           sudo docker run -i -v $PWD:/app xalwart/gcc:10-alpine-3.13 \
-                          bash -c "ls && /app && ls /bin"
+                          bash -c "ls && ls /app && ls /bin"
 #          sudo docker run -i -v $PWD:/app xalwart/gcc:10-alpine-3.13 \
 #                          bash /app/misc/build.sh alpine dev ${{ matrix.build_shared_lib }}
 #      - name: Upload the Artifact
