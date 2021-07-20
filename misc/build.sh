@@ -33,6 +33,6 @@ cd /usr/local || exit 1
 mkdir -p "${BUILD_PATH}"/include
 mkdir -p "${BUILD_PATH}"/lib
 cd include/ || exit 1
-cp xalwart.base "${BUILD_PATH}"/include
+cp -r xalwart.base "${BUILD_PATH}"/include
 cd ../lib/ || exit 1
 cp libxalwart.base* "${BUILD_PATH}"/lib
