@@ -2,6 +2,7 @@
 
 SYSTEM_NAME=$1
 CC_NAME=$2
+CC_VERSION=$3
 
 if [[ "${CC_NAME}" == "gcc" ]]; then
   CXX_NAME="g++"
@@ -16,14 +17,14 @@ cd /app/build || exit 1
 
 # Build the library.
 if [[ "${SYSTEM_NAME}" == "alpine"* ]]; then
-  cmake -DCMAKE_C_COMPILER="${CC_NAME}" \
-          -DCMAKE_CXX_COMPILER="${CXX_NAME}" \
-          -DCMAKE_BUILD_TYPE=Release \
-          -DBUILD_SHARED_LIBS=ON \
-          ..
+  cmake -D CMAKE_C_COMPILER="${CC_NAME}" \
+        -D CMAKE_CXX_COMPILER="${CXX_NAME}" \
+        -D CMAKE_BUILD_TYPE=Release \
+        -D BUILD_SHARED_LIBS=ON \
+        ..
 elif [[ "${SYSTEM_NAME}" == "ubuntu"* ]]; then
-  cmake -DCMAKE_BUILD_TYPE=Release \
-        -DBUILD_SHARED_LIBS=ON \
+  cmake -D CMAKE_BUILD_TYPE=Release \
+        -D BUILD_SHARED_LIBS=ON \
         ..
 else
   echo "System is not supported: ${SYSTEM_NAME}" && exit 1
@@ -31,7 +32,7 @@ fi
 make xalwart.base && make install
 
 # Copy installed library to the result directory.
-BUILD_PATH=/app/xalwart.base-"${SYSTEM_NAME}"
+BUILD_PATH=/app/xalwart.base-"${SYSTEM_NAME}"-"${CC_NAME}"-"${CC_VERSION}"
 cd /usr/local || exit 1
 mkdir -p "${BUILD_PATH}"/include
 mkdir -p "${BUILD_PATH}"/lib

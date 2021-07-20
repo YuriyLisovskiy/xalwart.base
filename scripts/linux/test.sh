@@ -2,6 +2,7 @@
 
 SYSTEM_NAME=$1
 CC_NAME=$2
+CC_VERSION=$3
 
 if [[ "${CC_NAME}" == "gcc" ]]; then
   CXX_NAME="g++"
@@ -12,7 +13,7 @@ else
 fi
 
 # Install the library.
-cd /app/xalwart.base-"${SYSTEM_NAME}"/include || exit 1
+cd /app/xalwart.base-"${SYSTEM_NAME}"-"${CC_NAME}"-"${CC_VERSION}"/include || exit 1
 cp -r xalwart.base /usr/local/include
 cd ../lib || exit 1
 cp libxalwart.base* /usr/local/lib
