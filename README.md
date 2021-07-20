@@ -19,15 +19,13 @@ on Alpine Linux and Ubuntu.
 To build the library from source CMake 3.12 or later is required.
 
 ## Compile from Source
-* `BUILD_SHARED_LIBS` means to build a shared or static library (`off` by default).
+* `BUILD_SHARED_LIBS` means to build a shared or static library (`ON` by default).
 ```bash
 git clone https://github.com/YuriyLisovskiy/xalwart.base.git
 cd xalwart.base
 mkdir build
 cd build
-cmake -D CMAKE_BUILD_TYPE=Release \
-      -D BUILD_SHARED_LIBS=ON \
-      ..
+cmake -D CMAKE_BUILD_TYPE=Release ..
 make
 
 # for linux:
@@ -42,7 +40,6 @@ make install
 mkdir build
 cd build
 cmake -D CMAKE_BUILD_TYPE=Debug \
-      -D BUILD_SHARED_LIBS=ON \
       -D XW_BUILD_TESTS=ON \
       ..
 make unittests-all
