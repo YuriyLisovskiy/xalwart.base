@@ -24,8 +24,8 @@ jobs:
         run: |
           sudo docker run -i \
                           -v ${{ github.workspace }}:/app \
-                          xalwart/gcc:10-${{ matrix.os.name }}-${{ matrix.os.version }} \
-                          bash /app/misc/build.sh ${{ matrix.os.name }} ${{ matrix.lib_type }}
+                          xalwart/clang:10-${{ matrix.os.name }}-${{ matrix.os.version }} \
+                          bash /app/misc/build.sh ${{ matrix.os.name }} ${{ matrix.lib_type }} clang
       - name: Upload the Artifact
         uses: actions/upload-artifact@v2
         with:
@@ -61,4 +61,4 @@ jobs:
           sudo docker run -i \
                           -v ${{ github.workspace }}:/app \
                           xalwart/gtest:1.11.0-${{ matrix.compiler }}-${{ matrix.compiler_version }}-${{ matrix.os.name }}-${{ matrix.os.version }} \
-                          bash /app/misc/test.sh ${{ matrix.os.name }} ${{ matrix.lib_type }}
+                          bash /app/misc/test.sh ${{ matrix.os.name }} ${{ matrix.lib_type }} ${{ matrix.compiler }}
