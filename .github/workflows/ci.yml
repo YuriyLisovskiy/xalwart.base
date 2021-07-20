@@ -48,6 +48,6 @@ jobs:
           tar -xvzf xalwart.base-linux-dev.tar.gz -C xalwart.base/
       - name: Run Tests
         run: |
-          sudo docker run -it -v $PWD:/app \
+          sudo docker run -i -v $PWD:/app \
                           xalwart/gtest:1.11.0-${{ matrix.compiler }}-${{ matrix.compiler_version }}-${{ matrix.os }} \
                           bash /app/misc/test.sh ${{ matrix.os }}
