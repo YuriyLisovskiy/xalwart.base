@@ -26,7 +26,7 @@ cd xalwart.base
 mkdir build
 cd build
 cmake -D CMAKE_BUILD_TYPE=Release \
-      -D BUILD_SHARED_LIB=ON \
+      -D BUILD_SHARED_LIBS=ON \
       ..
 make
 
