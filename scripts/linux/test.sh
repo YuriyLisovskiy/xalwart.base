@@ -13,10 +13,9 @@ else
 fi
 
 # Install the library.
-cd /app/xalwart.base-"${SYSTEM_NAME}"-"${CC_NAME}"-"${CC_VERSION}"/include || exit 1
-cp -r xalwart.base /usr/local/include
-cd ../lib || exit 1
-cp libxalwart.base* /usr/local/lib
+cd /app/xalwart.base-"${SYSTEM_NAME}"-"${CC_NAME}"-"${CC_VERSION}" || exit 1
+cp -r include/. /usr/local/include
+cp -r lib/. /usr/local/lib
 
 # Update linker cache.
 ldconfig /etc/ld.so.conf.d
