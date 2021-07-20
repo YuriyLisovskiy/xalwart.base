@@ -19,13 +19,13 @@ jobs:
         run: |
           sudo docker run -i \
                           -v ${{ github.workspace }}:/app \
-                          xalwart/gcc:10-alpine-3.13 \
-                          bash /app/misc/build.sh alpine dev ${{ matrix.lib_type }}
+                          xalwart/gcc:10-ubuntu-18.04 \
+                          bash /app/misc/build.sh ${{ matrix.lib_type }}
       - name: Upload the Artifact
         uses: actions/upload-artifact@v2
         with:
-          name: xalwart.base-linux-dev-${{ matrix.lib_type }}
-          path: xalwart.base-linux-dev-${{ matrix.lib_type }}
+          name: xalwart.base-${{ matrix.lib_type }}-linux
+          path: xalwart.base-${{ matrix.lib_type }}-linux
           retention-days: 90
   test:
     name: "${{ matrix.os }} [${{ matrix.compiler }}-${{ matrix.compiler_version }}] [${{ matrix.lib_type }}]"
@@ -43,11 +43,11 @@ jobs:
       - name: Download the Artifact
         uses: actions/download-artifact@v2
         with:
-          name: xalwart.base-linux-dev-${{ matrix.lib_type }}
-          path: xalwart.base-linux-dev-${{ matrix.lib_type }}
-      - name: Run Tests
+          name: xalwart.base-${{ matrix.lib_type }}-linux
+          path: xalwart.base-${{ matrix.lib_type }}-linux
+      - name: Build and Run Tests
         run: |
           sudo docker run -i \
                           -v ${{ github.workspace }}:/app \
                           xalwart/gtest:1.11.0-${{ matrix.compiler }}-${{ matrix.compiler_version }}-${{ matrix.os }} \
-                          bash /app/misc/test.sh ${{ matrix.os }} dev ${{ matrix.lib_type }}
+                          bash /app/misc/test.sh ${{ matrix.lib_type }}

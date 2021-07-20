@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 
-SYSTEM_NAME=$1
-LIB_VERSION=$2
-LIB_TYPE=$3
+LIB_TYPE=$1
+SYSTEM_NAME=$(grep -Po '(?<=^ID=)\w*$' /etc/os-release)
 
 if [[ "${LIB_TYPE}" == "shared" ]]; then
   BUILD_SHARED_LIB="on"
@@ -12,6 +11,8 @@ fi
 
 mkdir -p /app/build
 cd /app/build || exit 1
+
+# Build the library.
 if [[ "${SYSTEM_NAME}" == "alpine"* ]]; then
   cmake -DCMAKE_C_COMPILER=cc \
           -DCMAKE_CXX_COMPILER=c++ \
@@ -27,8 +28,8 @@ else
 fi
 make xalwart.base && make install
 
-BUILD_PATH=/app/xalwart.base-linux-"${LIB_VERSION}"-"${LIB_TYPE}"
-
+# Copy installed library to the result directory.
+BUILD_PATH=/app/xalwart.base-"${LIB_TYPE}"-linux
 cd /usr/local || exit 1
 mkdir -p "${BUILD_PATH}"/include
 mkdir -p "${BUILD_PATH}"/lib
