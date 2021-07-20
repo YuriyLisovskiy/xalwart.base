@@ -2,7 +2,13 @@
 
 SYSTEM_NAME=$1
 LIB_VERSION=$2
-BUILD_SHARED_LIB=$3
+LIB_TYPE=$3
+
+if [[ "${LIB_TYPE}" == "shared" ]]; then
+  BUILD_SHARED_LIB="on"
+else
+  BUILD_SHARED_LIB="off"
+fi
 
 mkdir -p /app/build
 cd /app/build || exit 1
@@ -20,5 +26,13 @@ else
   echo "System is not supported: ${SYSTEM_NAME}" && exit 1
 fi
 make xalwart.base && make install
+
+BUILD_PATH=/app/xalwart.base-linux-"${LIB_VERSION}"-"${LIB_TYPE}"
+
 cd /usr/local || exit 1
-tar -cvzf /app/xalwart.base-linux-"${LIB_VERSION}".tar.gz lib/libxalwart.base* include/xalwart.base
+mkdir -p "${BUILD_PATH}"/include
+mkdir -p "${BUILD_PATH}"/lib
+cd include/ || exit 1
+cp xalwart.base "${BUILD_PATH}"/include
+cd ../lib/ || exit 1
+cp libxalwart.base* "${BUILD_PATH}"/lib

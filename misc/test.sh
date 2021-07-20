@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
 
 SYSTEM_NAME=$1
+LIB_VERSION=$2
+LIB_TYPE=$3
 
-cd /app/xalwart.base/include || exit 1
+cd /app/xalwart.base-linux-"${LIB_VERSION}"-"${LIB_TYPE}"/include || exit 1
 cp -r xalwart.base /usr/local/include
 cd ../lib || exit 1
 cp libxalwart.base* /usr/local/lib
