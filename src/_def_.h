@@ -25,11 +25,33 @@ __MAIN_NAMESPACE_BEGIN__
 
 namespace base::v
 {
-const uint major = 0;
-const uint minor = 1;
-const uint patch = 0;
+struct version_t
+{
+	uint major;
+	uint minor;
+	uint patch;
 
-const std::string version = std::to_string(major) + "." + std::to_string(minor) + "." + std::to_string(patch);
+	version_t(const std::string& v);
+	version_t(uint major, uint minor, uint patch);
+
+	bool operator< (const version_t& other) const;
+	bool operator<= (const version_t& other) const;
+	bool operator> (const version_t& other) const;
+	bool operator>= (const version_t& other) const;
+	bool operator== (const version_t& other) const;
+	bool operator!= (const version_t& other) const;
+
+	bool operator< (const char* v) const;
+	bool operator<= (const char* v) const;
+	bool operator> (const char* v) const;
+	bool operator>= (const char* v) const;
+	bool operator== (const char* v) const;
+	bool operator!= (const char* v) const;
+
+	friend std::ostream& operator<< (std::ostream& stream, const version_t& v);
+};
+
+const auto version = version_t("0.0.0");
 };
 
 __MAIN_NAMESPACE_END__

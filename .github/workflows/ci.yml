@@ -17,20 +17,19 @@ jobs:
             version: 3.13
           - name: ubuntu
             version: 18.04
-        lib_type: [ shared, static ]
     steps:
       - uses: actions/checkout@v2
       - name: Build the Library
         run: |
           sudo docker run -i \
                           -v ${{ github.workspace }}:/app \
-                          xalwart/clang:10-${{ matrix.os.name }}-${{ matrix.os.version }} \
-                          bash /app/misc/build.sh ${{ matrix.os.name }} ${{ matrix.lib_type }} clang
+                          xalwart/gcc:10-${{ matrix.os.name }}-${{ matrix.os.version }} \
+                          bash /app/ci/build.sh ${{ matrix.os.name }} gcc
       - name: Upload the Artifact
         uses: actions/upload-artifact@v2
         with:
-          name: xalwart.base-${{ matrix.lib_type }}-${{ matrix.os.name }}
-          path: xalwart.base-${{ matrix.lib_type }}-${{ matrix.os.name }}
+          name: xalwart.base-${{ matrix.os.name }}
+          path: xalwart.base-${{ matrix.os.name }}
           retention-days: 90
   test:
     name: "${{ matrix.os.name }}-${{ matrix.os.version }} [${{ matrix.compiler }}-${{ matrix.compiler_version }}] [${{ matrix.lib_type }}]"
@@ -48,17 +47,16 @@ jobs:
             version: 20.04
         compiler: [ clang, gcc ]
         compiler_version: [ 10 ]
-        lib_type: [ shared, static ]
     steps:
       - uses: actions/checkout@v2
       - name: Download the Artifact
         uses: actions/download-artifact@v2
         with:
-          name: xalwart.base-${{ matrix.lib_type }}-${{ matrix.os.name }}
-          path: xalwart.base-${{ matrix.lib_type }}-${{ matrix.os.name }}
+          name: xalwart.base-${{ matrix.os.name }}
+          path: xalwart.base-${{ matrix.os.name }}
       - name: Build and Run Tests
         run: |
           sudo docker run -i \
                           -v ${{ github.workspace }}:/app \
                           xalwart/gtest:1.11.0-${{ matrix.compiler }}-${{ matrix.compiler_version }}-${{ matrix.os.name }}-${{ matrix.os.version }} \
-                          bash /app/misc/test.sh ${{ matrix.os.name }} ${{ matrix.lib_type }} ${{ matrix.compiler }}
+                          bash /app/ci/test.sh ${{ matrix.os.name }} ${{ matrix.compiler }}

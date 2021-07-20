@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 
 SYSTEM_NAME=$1
-LIB_TYPE=$2
-CC_NAME=$3
+CC_NAME=$2
 
 if [[ "${CC_NAME}" == "gcc" ]]; then
   CXX_NAME="g++"
@@ -13,7 +12,7 @@ else
 fi
 
 # Install the library.
-cd /app/xalwart.base-"${LIB_TYPE}"-"${SYSTEM_NAME}"/include || exit 1
+cd /app/xalwart.base-"${SYSTEM_NAME}"/include || exit 1
 cp -r xalwart.base /usr/local/include
 cd ../lib || exit 1
 cp libxalwart.base* /usr/local/lib
@@ -25,16 +24,16 @@ ldconfig /etc/ld.so.conf.d
 mkdir -p /app/build
 cd /app/build || exit 1
 if [[ "${SYSTEM_NAME}" == "alpine"* ]]; then
-  cmake -DCMAKE_C_COMPILER="${CC_NAME}" \
-          -DCMAKE_CXX_COMPILER="${CXX_NAME}" \
-          -DCMAKE_BUILD_TYPE=Release \
-          -DBUILD_LIB=off \
-          -DBUILD_TESTS=on \
-          ..
+  cmake -D CMAKE_C_COMPILER="${CC_NAME}" \
+        -D CMAKE_CXX_COMPILER="${CXX_NAME}" \
+        -D CMAKE_BUILD_TYPE=Release \
+        -D XW_BUILD_LIB=OFF \
+        -D XW_BUILD_TESTS=ON \
+        ..
 elif [[ "${SYSTEM_NAME}" == "ubuntu"* ]]; then
-  cmake -DCMAKE_BUILD_TYPE=Release \
-        -DBUILD_LIB=off \
-        -DBUILD_TESTS=on \
+  cmake -D CMAKE_BUILD_TYPE=Release \
+        -D XW_BUILD_LIB=OFF \
+        -D XW_BUILD_TESTS=ON \
         ..
 else
   echo "System is not supported: ${SYSTEM_NAME}" && exit 1

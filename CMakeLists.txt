@@ -11,19 +11,13 @@ project(${LIBRARY_NAME})
 set(GNU_INCLUDE_DIR /usr/local/include)
 set(GNU_LIB_DIR /usr/local/lib)
 
-if (NOT DEFINED BUILD_LIB)
-    set(BUILD_LIB on)
-endif()
-
-if (${BUILD_LIB})
+option(XW_BUILD_LIB "Build the library." ON)
+if (${XW_BUILD_LIB})
     add_subdirectory(src)
 endif()
 
-if (NOT DEFINED BUILD_TESTS)
-    set(BUILD_TESTS off)
-endif()
-
-if (${BUILD_TESTS})
+option(XW_BUILD_TESTS "Build the library." OFF)
+if (${XW_BUILD_TESTS})
     enable_testing()
     add_subdirectory(tests)
 endif()

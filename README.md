@@ -19,27 +19,32 @@ on Alpine Linux and Ubuntu.
 To build the library from source CMake 3.12 or later is required.
 
 ## Compile from Source
-* `BUILD_SHARED_LIB` means to build a shared or static library (`off` by default).
+* `BUILD_SHARED_LIBS` means to build a shared or static library (`off` by default).
 ```bash
-mkdir build && cd build
-cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIB=on ..
+git clone https://github.com/YuriyLisovskiy/xalwart.base.git
+cd xalwart.base
+mkdir build
+cd build
+cmake -D CMAKE_BUILD_TYPE=Release \
+      -D BUILD_SHARED_LIB=ON \
+      ..
 make
 
 # for linux:
-sudo make install
+make install
 ```
 > Temporary it is necessary to build a shared library instead of static because
 > the last one is not working properly causing undefined reference errors when
 > using [xalwart](https://github.com/YuriyLisovskiy/xalwart) library.
 
 ## Testing
-* Current machine:
-  ```bash
-  mkdir build && cd build
-  cmake -DCMAKE_BUILD_TYPE=Debug -DBUILD_SHARED_LIB=on .. && make unittests-all
-  valgrind --leak-check=full ./tests/unittests-all
-  ```
-* Docker:
-  ```bash
-  # TODO:
-  ```
+```bash
+mkdir build
+cd build
+cmake -D CMAKE_BUILD_TYPE=Debug \
+      -D BUILD_SHARED_LIBS=ON \
+      -D XW_BUILD_TESTS=ON \
+      ..
+make unittests-all
+valgrind --leak-check=full ./tests/unittests-all
+```
