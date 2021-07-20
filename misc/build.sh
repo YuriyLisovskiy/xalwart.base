@@ -29,7 +29,7 @@ fi
 make xalwart.base && make install
 
 # Copy installed library to the result directory.
-BUILD_PATH=/app/xalwart.base-"${LIB_TYPE}"-linux
+BUILD_PATH=/app/xalwart.base-"${LIB_TYPE}"-"${SYSTEM_NAME}"
 cd /usr/local || exit 1
 mkdir -p "${BUILD_PATH}"/include
 mkdir -p "${BUILD_PATH}"/lib

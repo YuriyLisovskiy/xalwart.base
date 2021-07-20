@@ -4,7 +4,7 @@ SYSTEM_NAME=$1
 LIB_TYPE=$2
 
 # Install the library.
-cd /app/xalwart.base-"${LIB_TYPE}"-linux/include || exit 1
+cd /app/xalwart.base-"${LIB_TYPE}"-"${SYSTEM_NAME}"/include || exit 1
 cp -r xalwart.base /usr/local/include
 cd ../lib || exit 1
 cp libxalwart.base* /usr/local/lib

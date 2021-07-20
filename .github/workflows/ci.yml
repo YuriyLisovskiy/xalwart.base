@@ -12,6 +12,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        os:
+          - name: alpine
+            version: 3.13
+          - name: ubuntu
+            version: 18.04
         lib_type: [ shared, static ]
     steps:
       - uses: actions/checkout@v2
@@ -19,22 +24,28 @@ jobs:
         run: |
           sudo docker run -i \
                           -v ${{ github.workspace }}:/app \
-                          xalwart/gcc:10-ubuntu-18.04 \
-                          bash /app/misc/build.sh ubuntu ${{ matrix.lib_type }}
+                          xalwart/gcc:10-${{ matrix.os.name }}-${{ matrix.os.version }} \
+                          bash /app/misc/build.sh ${{ matrix.os.name }} ${{ matrix.lib_type }}
       - name: Upload the Artifact
         uses: actions/upload-artifact@v2
         with:
-          name: xalwart.base-${{ matrix.lib_type }}-linux
-          path: xalwart.base-${{ matrix.lib_type }}-linux
+          name: xalwart.base-${{ matrix.lib_type }}-${{ matrix.os.name }}
+          path: xalwart.base-${{ matrix.lib_type }}-${{ matrix.os.name }}
           retention-days: 90
   test:
-    name: "${{ matrix.os }} [${{ matrix.compiler }}-${{ matrix.compiler_version }}] [${{ matrix.lib_type }}]"
+    name: "${{ matrix.os.name }}-${{ matrix.os.version }} [${{ matrix.compiler }}-${{ matrix.compiler_version }}] [${{ matrix.lib_type }}]"
     needs: [compile-lib]
     runs-on: ubuntu-18.04
     strategy:
       fail-fast: false
       matrix:
-        os: [ "alpine-3.13", "ubuntu-18.04", "ubuntu-20.04" ]
+        os:
+          - name: alpine
+            version: 3.13
+          - name: ubuntu
+            version: 18.04
+          - name: ubuntu
+            version: 20.04
         compiler: [ clang, gcc ]
         compiler_version: [ 10 ]
         lib_type: [ shared, static ]
@@ -43,11 +54,11 @@ jobs:
       - name: Download the Artifact
         uses: actions/download-artifact@v2
         with:
-          name: xalwart.base-${{ matrix.lib_type }}-linux
-          path: xalwart.base-${{ matrix.lib_type }}-linux
+          name: xalwart.base-${{ matrix.lib_type }}-${{ matrix.os.name }}
+          path: xalwart.base-${{ matrix.lib_type }}-${{ matrix.os.name }}
       - name: Build and Run Tests
         run: |
           sudo docker run -i \
                           -v ${{ github.workspace }}:/app \
-                          xalwart/gtest:1.11.0-${{ matrix.compiler }}-${{ matrix.compiler_version }}-${{ matrix.os }} \
-                          bash /app/misc/test.sh ${{ matrix.os }} ${{ matrix.lib_type }}
+                          xalwart/gtest:1.11.0-${{ matrix.compiler }}-${{ matrix.compiler_version }}-${{ matrix.os.name }}-${{ matrix.os.version }} \
+                          bash /app/misc/test.sh ${{ matrix.os.name }} ${{ matrix.lib_type }}
