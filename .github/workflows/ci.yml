@@ -18,14 +18,14 @@ jobs:
         run: |
           sudo docker run -i -v $PWD:/app xalwart/gcc:10-alpine-3.13 \
                           bash -c "ls /app"
-          sudo docker run -i -v $PWD:/app xalwart/gcc:10-alpine-3.13 \
-                          bash /app/misc/build.sh alpine dev ${{ matrix.build_shared_lib }}
-      - name: Upload the Artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: xalwart.base-linux-dev.tar.gz
-          path: xalwart.base-linux-dev.tar.gz
-          retention-days: 90
+#          sudo docker run -i -v $PWD:/app xalwart/gcc:10-alpine-3.13 \
+#                          bash /app/misc/build.sh alpine dev ${{ matrix.build_shared_lib }}
+#      - name: Upload the Artifact
+#        uses: actions/upload-artifact@v2
+#        with:
+#          name: xalwart.base-linux-dev.tar.gz
+#          path: xalwart.base-linux-dev.tar.gz
+#          retention-days: 90
   test:
     name: "${{ matrix.os }} [${{ matrix.compiler }}-${{ matrix.compiler_version }}] [shared: ${{ matrix.build_shared_lib }}]"
     needs: [compile-lib]
