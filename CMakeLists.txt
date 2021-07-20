@@ -11,7 +11,7 @@ project(${LIBRARY_NAME})
 set(GNU_INCLUDE_DIR /usr/local/include)
 set(GNU_LIB_DIR /usr/local/lib)
 
-if (NOT BUILD_LIB)
+if (NOT DEFINED BUILD_LIB)
     set(BUILD_LIB on)
 endif()
 
@@ -19,7 +19,7 @@ if (${BUILD_LIB})
     add_subdirectory(src)
 endif()
 
-if (NOT BUILD_TESTS)
+if (NOT DEFINED BUILD_TESTS)
     set(BUILD_TESTS off)
 endif()
 
