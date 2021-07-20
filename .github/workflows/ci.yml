@@ -14,9 +14,12 @@ jobs:
       matrix:
         build_shared_lib: [ on, off ]
     steps:
+      - uses: actions/checkout@v2
       - name: Build the Library
         run: |
-          sudo docker run -i -v ${{ github.workspace }}:/app xalwart/gcc:10-alpine-3.13 \
+          sudo docker run -i \
+                          -v ${{ github.workspace }}:/app \
+                          xalwart/gcc:10-alpine-3.13 \
                           bash /app/misc/build.sh alpine dev ${{ matrix.build_shared_lib }}
       - name: Upload the Artifact
         uses: actions/upload-artifact@v2
@@ -48,6 +51,7 @@ jobs:
           tar -xvzf xalwart.base-linux-dev.tar.gz -C xalwart.base/
       - name: Run Tests
         run: |
-          sudo docker run -i -v ${{ github.workspace }}:/app \
+          sudo docker run -i \
+                          -v ${{ github.workspace }}:/app \
                           xalwart/gtest:1.11.0-${{ matrix.compiler }}-${{ matrix.compiler_version }}-${{ matrix.os }} \
                           bash /app/misc/test.sh ${{ matrix.os }}
