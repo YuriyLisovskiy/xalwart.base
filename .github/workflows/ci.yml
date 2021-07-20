@@ -24,7 +24,7 @@ jobs:
           sudo docker run -i \
                           -v ${{ github.workspace }}:/app \
                           xalwart/gcc:10-${{ matrix.os.name }}-${{ matrix.os.version }} \
-                          bash /app/ci/build.sh ${{ matrix.os.name }} gcc
+                          bash /app/scripts/linux/build.sh ${{ matrix.os.name }} gcc
       - name: Upload the Artifact
         uses: actions/upload-artifact@v2
         with:
@@ -32,7 +32,7 @@ jobs:
           path: xalwart.base-${{ matrix.os.name }}
           retention-days: 90
   test:
-    name: "${{ matrix.os.name }}-${{ matrix.os.version }} [${{ matrix.compiler }}-${{ matrix.compiler_version }}] [${{ matrix.lib_type }}]"
+    name: "${{ matrix.os.name }}-${{ matrix.os.version }} [${{ matrix.compiler }}-${{ matrix.compiler_version }}]"
     needs: [compile-lib]
     runs-on: ubuntu-18.04
     strategy:
@@ -59,4 +59,4 @@ jobs:
           sudo docker run -i \
                           -v ${{ github.workspace }}:/app \
                           xalwart/gtest:1.11.0-${{ matrix.compiler }}-${{ matrix.compiler_version }}-${{ matrix.os.name }}-${{ matrix.os.version }} \
-                          bash /app/ci/test.sh ${{ matrix.os.name }} ${{ matrix.compiler }}
+                          bash /app/scripts/linux/test.sh ${{ matrix.os.name }} ${{ matrix.compiler }}

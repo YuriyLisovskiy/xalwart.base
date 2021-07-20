@@ -91,7 +91,7 @@ bool version_t::operator== (const version_t& other) const
 
 bool version_t::operator!= (const version_t& other) const
 {
-	return compare_versions(*this, other) != 1;
+	return compare_versions(*this, other) != 0;
 }
 
 bool version_t::operator< (const char* v) const
@@ -123,7 +123,7 @@ bool version_t::operator== (const char* v) const
 
 bool version_t::operator!= (const char* v) const
 {
-	return compare_versions(*this, version_t(v)) != 1;
+	return compare_versions(*this, version_t(v)) != 0;
 }
 
 std::ostream& operator<< (std::ostream& stream, const version_t& v)
