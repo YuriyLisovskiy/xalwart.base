@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-LIB_TYPE=$1
-SYSTEM_NAME=$(grep -Po '(?<=^ID=)\w*$' /etc/os-release)
+SYSTEM_NAME=$1
+LIB_TYPE=$2
 
 # Install the library.
 cd /app/xalwart.base-"${LIB_TYPE}"-linux/include || exit 1

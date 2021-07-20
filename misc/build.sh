@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-LIB_TYPE=$1
-SYSTEM_NAME=$(grep -Po '(?<=^ID=)\w*$' /etc/os-release)
+SYSTEM_NAME=$1
+LIB_TYPE=$2
 
 if [[ "${LIB_TYPE}" == "shared" ]]; then
   BUILD_SHARED_LIB="on"
