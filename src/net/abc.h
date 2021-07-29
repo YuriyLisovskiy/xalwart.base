@@ -16,7 +16,7 @@
 
 // Base libraries.
 #include "./request_context.h"
-#include "../collections/dict.h"
+#include "../collections/dictionary.h"
 
 
 __NET_ABC_BEGIN__
@@ -38,7 +38,7 @@ public:
 
 	// Returns server's environment variables.
 	[[nodiscard]]
-	virtual collections::Dict<std::string, std::string> environ() const = 0;
+	virtual collections::Dictionary<std::string, std::string> environ() const = 0;
 
 protected:
 

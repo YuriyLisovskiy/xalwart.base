@@ -9,7 +9,7 @@
 
 __NET_BEGIN__
 
-collections::Dict<unsigned short int, std::pair<std::string, std::string>> HTTP_STATUS(
+collections::Dictionary<unsigned short int, std::pair<std::string, std::string>> HTTP_STATUS(
 	std::map<unsigned short int, std::pair<std::string, std::string>>{
 
 		// Informational

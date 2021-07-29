@@ -3,9 +3,9 @@
  *
  * Copyright (c) 2019, 2021 Yuriy Lisovskiy
  *
- * Template container based on `collections::Dict` with additional
- * methods (extended `collections::Dict`). Main difference is that
- * `MultiValueDict` can contain multiple values in one key.
+ * Template container based on 'BaseDictionary' with additional
+ * get/set methods. Main difference from 'Dictionary' is that
+ * 'MultiDictionary' can contain multiple values by one key.
  */
 
 #pragma once
@@ -14,24 +14,24 @@
 #include "./_def_.h"
 
 // Base libraries.
-#include "./dict.h"
+#include "./base_dictionary.h"
 
 
 __COLLECTIONS_BEGIN__
 
 template <typename KeyT, typename ValT>
-class MultiValueDict : public Dict<KeyT, std::vector<ValT>>
+class MultiDictionary : public BaseDictionary<KeyT, std::vector<ValT>>
 {
 public:
 
 	// Constructs empty multi-value dictionary.
-	MultiValueDict() : Dict<KeyT, std::vector<ValT>>()
+	MultiDictionary() : BaseDictionary<KeyT, std::vector<ValT>>()
 	{
 	}
 
 	// Constructs `MultiValueDict` instance from `std::map`.
-	explicit MultiValueDict(const std::map<KeyT, std::vector<ValT>>& src_map)
-		: Dict<KeyT, std::vector<ValT>>(src_map)
+	explicit MultiDictionary(const std::map<KeyT, std::vector<ValT>>& src_map) :
+		BaseDictionary<KeyT, std::vector<ValT>>(src_map)
 	{
 	}
 
@@ -41,14 +41,14 @@ public:
 	// `_default`: a default value to be returned if key does not exist.
 	//
 	// Returns first value of `std::vector` by given key.
-	inline ValT get(KeyT key, ValT _default = ValT())
+	inline ValT get(KeyT key, ValT _default=ValT{}) const
 	{
 		if (this->contains(key))
 		{
-			std::vector<ValT> vec = this->_map[key];
+			const auto& vec = this->_map.at(key);
 			if (vec.size() > 0)
 			{
-				return vec.at(vec.size() - 1);
+				return vec.at(0);
 			}
 		}
 
@@ -61,7 +61,7 @@ public:
 	// `_default`: a default vector of values to be returned if key does not exist.
 	//
 	// Returns `std::vector` of values by given key.
-	inline std::vector<ValT> get(KeyT key, std::vector<ValT> _default) const override
+	inline std::vector<ValT> getlist(KeyT key, std::vector<ValT> _default=std::vector<ValT>{}) const
 	{
 		if (this->contains(key))
 		{
@@ -77,16 +77,16 @@ public:
 	// `value`: new value to construct `std::vector`.
 	inline void set(KeyT key, ValT value)
 	{
-		this->_map[key] = std::vector<ValT>{value};
+		this->_map.insert(std::make_pair(key, std::vector<ValT>{value}));
 	}
 
 	// Sets new vector of values by given key.
 	//
 	// `key`: new key or existing key.
 	// `value`: new `std::vector`.
-	inline void set(KeyT key, std::vector<ValT> value) override
+	inline void set(KeyT key, std::vector<ValT> value)
 	{
-		this->_map[key] = value;
+		this->_map.insert(std::make_pair(key, value));
 	}
 
 	// Appends new value by given key.
@@ -94,11 +94,11 @@ public:
 	//
 	// `key`: new key or existing key.
 	// `value`: new value to append to `std::vector`.
-	inline void append(KeyT key, ValT val)
+	inline void add(KeyT key, ValT val)
 	{
 		if (this->contains(key))
 		{
-			this->_map[key].push_back(val);
+			this->_map.at(key).push_back(val);
 		}
 		else
 		{
@@ -111,13 +111,13 @@ public:
 	//
 	// `key`: new key or existing key.
 	// `value`: new `std::vector` of values to append to `std::vector`.
-	inline void append(KeyT key, std::vector<ValT> vec)
+	inline void add(KeyT key, std::vector<ValT> vec)
 	{
 		if (this->contains(key))
 		{
 			for (const auto& item : vec)
 			{
-				this->_map[key].push_back(item);
+				this->_map.at(key).push_back(item);
 			}
 		}
 		else

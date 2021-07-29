@@ -15,7 +15,7 @@
 #include "./_def_.h"
 
 // Base libraries.
-#include "../collections/dict.h"
+#include "../collections/dictionary.h"
 
 
 __NET_BEGIN__
@@ -45,7 +45,7 @@ struct RequestContext
 	std::string content;
 
 	// Accumulates request's headers.
-	collections::Dict<std::string, std::string> headers;
+	collections::Dictionary<std::string, std::string> headers;
 
 	// Contains the size of request's content.
 	unsigned long long content_size{};
@@ -106,7 +106,7 @@ struct RequestContext
 
 // Function type that handles the request.
 typedef std::function<uint(
-	RequestContext*, collections::Dict<std::string, std::string>
+	RequestContext*, collections::Dictionary<std::string, std::string>
 )> HandlerFunc;
 
 __NET_END__

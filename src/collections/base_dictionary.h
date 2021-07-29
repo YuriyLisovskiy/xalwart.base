@@ -1,9 +1,10 @@
 /**
- * collections/dict.h
+ * collections/base.h
  *
  * Copyright (c) 2019, 2021 Yuriy Lisovskiy
  *
- * Template container based on `std::map` with additional methods.
+ * Base dictionary container based on `std::map`.
+ * Get/set methods must be implemented in child containers.
  */
 
 #pragma once
@@ -19,7 +20,7 @@
 __COLLECTIONS_BEGIN__
 
 template <typename KeyT, typename ValT>
-class Dict
+class BaseDictionary
 {
 protected:
 	// An actual container.
@@ -33,37 +34,12 @@ public:
 	typedef typename std::map<KeyT, ValT>::const_reverse_iterator const_reverse_iterator;
 
 	// Constructs empty dictionary.
-	Dict() = default;
+	BaseDictionary() = default;
 
 	// Constructs `Dict` instance from `std::map`.
-	Dict(const std::map<KeyT, ValT>& src_map)
+	BaseDictionary(const std::map<KeyT, ValT>& src_map)
 	{
 		this->_map = src_map;
-	}
-
-	// Returns value by key if it exists, otherwise returns `_default`.
-	//
-	// `key`: dict key which holds some value.
-	// `_default`: a default value to be returned if key does not exist.
-	//
-	// Returns value by given key.
-	virtual inline ValT get(KeyT key, ValT _default = ValT()) const
-	{
-		if (this->contains(key))
-		{
-			return this->_map.at(key);
-		}
-
-		return _default;
-	}
-
-	// Sets new value by given key.
-	//
-	// `key`: new key or existing key.
-	// `value`: new value.
-	virtual inline void set(KeyT key, ValT value)
-	{
-		this->_map[key] = value;
 	}
 
 	// Removes value from dictionary by it's key.
@@ -84,6 +60,7 @@ public:
 	}
 
 	// Returns dictionary's current size.
+	[[nodiscard]]
 	inline size_t size() const
 	{
 		return this->_map.size();
@@ -102,7 +79,8 @@ public:
 	// Checks if dictionary is empty.
 	//
 	// Returns `true` if dict is empty, `false` otherwise.
-	bool inline is_empty() const
+	[[nodiscard]]
+	bool inline empty() const
 	{
 		return this->_map.empty();
 	}
@@ -165,12 +143,6 @@ public:
 	inline const_reverse_iterator rend() const noexcept
 	{
 		return this->_map.rend();
-	}
-
-	// Returns an address to value by key.
-	inline ValT& operator[] (const KeyT& key)
-	{
-		return this->_map[key];
 	}
 };
 

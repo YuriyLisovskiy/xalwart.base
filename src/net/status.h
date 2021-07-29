@@ -16,11 +16,11 @@
 #include "./_def_.h"
 
 // Base libraries.
-#include "../collections/dict.h"
+#include "../collections/dictionary.h"
 
 
 __NET_BEGIN__
 
-extern collections::Dict<unsigned short int, std::pair<std::string, std::string>> HTTP_STATUS;
+extern collections::Dictionary<unsigned short int, std::pair<std::string, std::string>> HTTP_STATUS;
 
 __NET_END__
