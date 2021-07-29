@@ -60,7 +60,10 @@ public:
 	// `s`: string to match.
 	//
 	// Returns `true` if string is matched, `false` otherwise.
-	bool match(const std::string& s);
+	inline bool match(const std::string& s) const
+	{
+		return std::regex_match(s, this->_expr);
+	}
 
 	// Searches for substrings in given string.
 	//

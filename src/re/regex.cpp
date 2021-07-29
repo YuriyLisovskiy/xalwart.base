@@ -25,11 +25,6 @@ Regex& Regex::operator= (const Regex& other)
 	return *this;
 }
 
-bool Regex::match(const std::string& s)
-{
-	return std::regex_match(s, this->_expr);
-}
-
 bool Regex::search(const std::string& s)
 {
 	this->_groups.clear();
