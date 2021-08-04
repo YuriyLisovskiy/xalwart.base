@@ -158,14 +158,18 @@ struct item_return{ typedef T type; };
 template<typename T>
 typename item_return<T>::type as(const void*);
 
+// TESTME: as<short int>
+// TODO: docs for 'as<short int>'
 template<>
 struct item_return<short int>{ typedef short int type; };
 template<>
 inline short int as<short int>(const void* data)
 {
-	return std::stoi((const char*)data);
+	return (short int)std::stoi((const char*)data);
 }
 
+// TESTME: as<unsigned short int>
+// TODO: docs for 'as<unsigned short int>'
 template<>
 struct item_return<unsigned short int>{ typedef unsigned short int type; };
 template<>
@@ -174,6 +178,8 @@ inline unsigned short int as<unsigned short int>(const void* data)
 	return std::stoi((const char*)data);
 }
 
+// TESTME: as<unsigned int>
+// TODO: docs for 'as<unsigned int>'
 template<>
 struct item_return<unsigned int>{ typedef unsigned int type; };
 template<>
@@ -182,6 +188,8 @@ inline unsigned int as<unsigned int>(const void* data)
 	return std::stoi((const char*)data);
 }
 
+// TESTME: as<int>
+// TODO: docs for 'as<int>'
 template<>
 struct item_return<int>{ typedef int type; };
 template<>
@@ -190,6 +198,8 @@ inline int as<int>(const void* data)
 	return std::stoi((const char*)data);
 }
 
+// TESTME: as<long int>
+// TODO: docs for 'as<long int>'
 template<>
 struct item_return<long int>{ typedef long int type; };
 template<>
@@ -198,6 +208,8 @@ inline long int as<long int>(const void* data)
 	return std::stol((const char*)data);
 }
 
+// TESTME: as<unsigned long int>
+// TODO: docs for 'as<unsigned long int>'
 template<>
 struct item_return<unsigned long int>{ typedef unsigned long int type; };
 template<>
@@ -206,6 +218,8 @@ inline unsigned long int as<unsigned long int>(const void* data)
 	return std::stoul((const char*)data);
 }
 
+// TESTME: as<long long int>
+// TODO: docs for 'as<long long int>'
 template<>
 struct item_return<long long int>{ typedef long long int type; };
 template<>
@@ -214,6 +228,8 @@ inline long long int as<long long int>(const void* data)
 	return std::stoll((const char*)data);
 }
 
+// TESTME: as<unsigned long long int>
+// TODO: docs for 'as<unsigned long long int>'
 template<>
 struct item_return<unsigned long long int>{ typedef unsigned long long int type; };
 template<>
@@ -222,6 +238,8 @@ inline unsigned long long int as<unsigned long long int>(const void* data)
 	return std::stoull((const char*)data);
 }
 
+// TESTME: as<float>
+// TODO: docs for 'as<float>'
 template<>
 struct item_return<float>{ typedef float type; };
 template<>
@@ -230,6 +248,8 @@ inline float as<float>(const void* data)
 	return std::stof((const char*)data);
 }
 
+// TESTME: as<double>
+// TODO: docs for 'as<double>'
 template<>
 struct item_return<double>{ typedef double type; };
 template<>
@@ -238,6 +258,8 @@ inline double as<double>(const void* data)
 	return std::stod((const char*)data);
 }
 
+// TESTME: as<long double>
+// TODO: docs for 'as<long double>'
 template<>
 struct item_return<long double>{ typedef long double type; };
 template<>
@@ -246,20 +268,41 @@ inline long double as<long double>(const void* data)
 	return std::stold((const char*)data);
 }
 
+// TESTME: as<std::string>
+// TODO: docs for 'as<std::string>'
 template<>
 struct item_return<std::string>{ typedef std::string type; };
 template<>
 inline std::string as<std::string>(const void* data)
 {
-	return std::string((const char*)data);
+	return {((const char*) data)};
 }
 
+// TESTME: as<const char*>
+// TODO: docs for 'as<const char*>'
 template<>
 struct item_return<const char*>{ typedef const char* type; };
 template<>
 inline const char* as<const char*>(const void* data)
 {
 	return (const char*)data;
+}
+
+// TESTME: tuple_for_each
+// TODO: docs for 'tuple_for_each'
+template<std::size_t I = 0, typename FuncT, typename... Tp>
+inline typename std::enable_if<I == sizeof...(Tp), void>::type tuple_for_each(std::tuple<Tp...> &, FuncT)
+{
+	// Unused arguments are given no names.
+}
+
+// TESTME: tuple_for_each
+// TODO: docs for 'tuple_for_each'
+template<std::size_t I = 0, typename FuncT, typename... Tp>
+inline typename std::enable_if<I < sizeof...(Tp), void>::type tuple_for_each(std::tuple<Tp...>& t, FuncT f)
+{
+	f(I, std::get<I>(t));
+	tuple_for_each<I + 1, FuncT, Tp...>(t, f);
 }
 
 __UTILITY_END__

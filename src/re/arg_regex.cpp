@@ -28,13 +28,16 @@ bool ArgRegex::search(const std::string& s)
 {
 	auto is_found = std::regex_search(s, this->_matches, this->_rgx);
 	this->_groups.clear();
+	this->_list_groups.clear();
 	if (is_found)
 	{
 		for (size_t i = 1; i < this->_matches.size(); i++)
 		{
 			if (this->_matches[i].matched)
 			{
-				this->_groups[this->_keys[i - 1]] = this->_matches[i].str();
+				auto str_match = this->_matches[i].str();
+				this->_groups[this->_keys[i - 1]] = str_match;
+				this->_list_groups.push_back(str_match);
 			}
 		}
 	}

@@ -18,6 +18,9 @@
 // Module definitions.
 #include "./_def_.h"
 
+// Base libraries.
+#include "../utility.h"
+
 
 __RE_BEGIN__
 
@@ -48,6 +51,9 @@ private:
 
 	// Found groups.
 	std::map<std::string, std::string> _groups;
+
+	// List of found groups in same order as provided in regex.
+	std::vector<std::string> _list_groups;
 
 private:
 
@@ -95,6 +101,23 @@ public:
 	inline std::map<std::string, std::string> args() const
 	{
 		return this->_groups;
+	}
+
+	// Builds the tuple from found groups.
+	template <typename ...Args>
+	inline std::tuple<Args...> tuple() const
+	{
+		std::tuple<Args...> result;
+		auto sz = this->_list_groups.size();
+		if (sz != std::tuple_size_v<std::tuple<Args...>>)
+		{
+			throw ArgumentError("expected result does not match found arguments count", _ERROR_DETAILS_);
+		}
+
+		util::tuple_for_each(result, [this](size_t i, auto& elem) -> void {
+			elem = util::as<typename std::remove_reference<decltype(elem)>::type>(this->_list_groups[i].c_str());
+		});
+		return result;
 	}
 
 	// Returns arg by given key.
