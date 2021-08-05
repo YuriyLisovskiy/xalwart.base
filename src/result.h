@@ -19,9 +19,9 @@
 __MAIN_NAMESPACE_BEGIN__
 
 template <typename T>
-concept result_type = std::is_default_constructible_v<T>;
+concept result_type_c = std::is_default_constructible_v<T>;
 
-template <result_type ValueT>
+template <result_type_c ValueT>
 class Result final
 {
 private:
