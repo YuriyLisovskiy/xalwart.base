@@ -15,7 +15,7 @@ class SocketErrorTestCase : public ::testing::Test
 {
 public:
 	const char* WhatErrorMessage = "Test error message from SocketErrorTestCase";
-	const char* FullErrorMessage = "SocketError: Test error message from SocketErrorTestCase";
+	const char* FullErrorMessage = "xw::SocketError: Test error message from SocketErrorTestCase";
 	const char* ErrorFunction = "testFunc";
 	const char* ErrorFile = "test_file.cpp";
 	const size_t ErrorLine = 1;

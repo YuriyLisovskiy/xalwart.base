@@ -15,7 +15,7 @@ class ArgumentErrorTestCase : public ::testing::Test
 {
 public:
 	const char* WhatErrorMessage = "Test error message from ArgumentErrorTestCase";
-	const char* FullErrorMessage = "ArgumentError: Test error message from ArgumentErrorTestCase";
+	const char* FullErrorMessage = "xw::ArgumentError: Test error message from ArgumentErrorTestCase";
 	const char* ErrorFunction = "testFunc";
 	const char* ErrorFile = "test_file.cpp";
 	const size_t ErrorLine = 1;

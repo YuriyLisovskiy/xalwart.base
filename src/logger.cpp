@@ -93,8 +93,8 @@ void Logger::_log(
 		if (line != 0 && std::strlen(file) > 0 && std::strlen(function) > 0)
 		{
 			full_msg = "\n\tFile \"" + std::string(file) + "\", line "
-			           + std::to_string(line) + ", in "
-			           + std::string(function) + "\n" + msg;
+				+ std::to_string(line) + ", in "
+				+ std::string(function) + "\n" + msg;
 		}
 		else
 		{

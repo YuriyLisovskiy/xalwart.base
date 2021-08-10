@@ -1,7 +1,7 @@
 /**
  * tests/exceptions/tests_encoding_error.cpp
  *
- * Copyright (c) 2019 Yuriy Lisovskiy
+ * Copyright (c) 2019, 2021 Yuriy Lisovskiy
  */
 
 #include <gtest/gtest.h>
@@ -15,7 +15,7 @@ class EncodingErrorTestCase : public ::testing::Test
 {
 public:
 	const char* WhatErrorMessage = "Test error message from EncodingErrorTestCase";
-	const char* FullErrorMessage = "EncodingError: Test error message from EncodingErrorTestCase";
+	const char* FullErrorMessage = "xw::EncodingError: Test error message from EncodingErrorTestCase";
 	const char* ErrorFunction = "testFunc";
 	const char* ErrorFile = "test_file.cpp";
 	const size_t ErrorLine = 1;

@@ -1,7 +1,7 @@
 /**
  * tests/exceptions/tests_runtime_error.cpp
  *
- * Copyright (c) 2019 Yuriy Lisovskiy
+ * Copyright (c) 2019, 2021 Yuriy Lisovskiy
  */
 
 #include <gtest/gtest.h>
@@ -15,7 +15,7 @@ class RuntimeErrorTestCase : public ::testing::Test
 {
 public:
 	const char* WhatErrorMessage = "Test error message from RuntimeErrorTestCase";
-	const char* FullErrorMessage = "RuntimeError: Test error message from RuntimeErrorTestCase";
+	const char* FullErrorMessage = "xw::RuntimeError: Test error message from RuntimeErrorTestCase";
 	const char* ErrorFunction = "testFunc";
 	const char* ErrorFile = "test_file.cpp";
 	const size_t ErrorLine = 1;

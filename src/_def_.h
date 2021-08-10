@@ -58,6 +58,10 @@ const inline auto version = version_t("0.0.0");
 
 __MAIN_NAMESPACE_END__
 
+// xw::exc
+#define __EXC_BEGIN__ __MAIN_NAMESPACE_BEGIN__ namespace exc {
+#define __EXC_END__ } __MAIN_NAMESPACE_END__
+
 // xw::path
 #define __PATH_BEGIN__ __MAIN_NAMESPACE_BEGIN__ namespace path {
 #define __PATH_END__ } __MAIN_NAMESPACE_END__
@@ -118,7 +122,7 @@ public:\
 		const char* message = default_message,\
 		int line=0, const char* function="", const char* file=""\
 	)\
-		: name(message, line, function, file, #name)\
+		: name(message, line, function, file, ("xw::" + std::string(#name)).c_str())\
 	{\
 	}\
 \

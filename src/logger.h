@@ -19,7 +19,6 @@
 #include "./exceptions.h"
 #include "./file.h"
 #include "./thread_pool.h"
-#include "./error.h"
 
 
 __LOG_BEGIN__
@@ -248,21 +247,6 @@ public:
 	// Logs exception with `fatal` logging level if it is enabled in config.
 	virtual void fatal(const BaseException& exc) = 0;
 
-	// Logs `Error` with `info` logging level if it is enabled in config.
-	virtual void info(const Error& exc) = 0;
-
-	// Logs `Error` with `debug` logging level if it is enabled in config.
-	virtual void debug(const Error& exc) = 0;
-
-	// Logs `Error` with `warning` logging level if it is enabled in config.
-	virtual void warning(const Error& exc) = 0;
-
-	// Logs `Error` with `error` logging level if it is enabled in config.
-	virtual void error(const Error& exc) = 0;
-
-	// Logs `Error` with `fatal` logging level if it is enabled in config.
-	virtual void fatal(const Error& exc) = 0;
-
 	// Sets a config for logger.
 	virtual void set_config(const Config& config) = 0;
 };
@@ -423,36 +407,6 @@ public:
 	inline void fatal(const BaseException& exc) override
 	{
 		this->fatal(exc.get_message(), exc.line(), exc.function(), exc.file());
-	}
-
-	// Logs `Error` with `info` logging level if it is enabled in config.
-	inline void info(const Error& exc) override
-	{
-		this->info(exc.get_message(), exc.line, exc.func.c_str(), exc.file.c_str());
-	}
-
-	// Logs `Error` with `debug` logging level if it is enabled in config.
-	inline void debug(const Error& exc) override
-	{
-		this->debug(exc.get_message(), exc.line, exc.func.c_str(), exc.file.c_str());
-	}
-
-	// Logs `Error` with `warning` logging level if it is enabled in config.
-	inline void warning(const Error& exc) override
-	{
-		this->warning(exc.get_message(), exc.line, exc.func.c_str(), exc.file.c_str());
-	}
-
-	// Logs `Error` with `error` logging level if it is enabled in config.
-	inline void error(const Error& exc) override
-	{
-		this->error(exc.get_message(), exc.line, exc.func.c_str(), exc.file.c_str());
-	}
-
-	// Logs `Error` with `fatal` logging level if it is enabled in config.
-	inline void fatal(const Error& exc) override
-	{
-		this->fatal(exc.get_message(), exc.line, exc.func.c_str(), exc.file.c_str());
 	}
 
 	// Sets a config for logger.

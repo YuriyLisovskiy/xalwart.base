@@ -5,7 +5,7 @@
  *
  * 	- BaseException - main exception class
  *
- * Exception-based exceptions:
+ * List of exceptions:
  *	- AttributeError
  *	- ArgumentError
  *	- BadSignature
@@ -68,7 +68,7 @@ public:
 
 	// Initializes exception with type name.
 	inline BaseException(const char* message, int line, const char* function, const char* file)
-		: BaseException(message, line, function, file, "BaseException")
+		: BaseException(message, line, function, file, "xw::BaseException")
 	{
 	}
 
@@ -142,7 +142,7 @@ protected:
 public:
 	inline explicit InterruptException(
 		const char* message, int line=0, const char* function="", const char* file=""
-	) : InterruptException(message, line, function, file, "InterruptException")
+	) : InterruptException(message, line, function, file, "xw::InterruptException")
 	{
 	}
 
@@ -164,7 +164,7 @@ DEF_EXCEPTION_WITH_BASE(NotImplementedException, BaseException, "not implemented
 DEF_EXCEPTION_WITH_BASE(NullPointerException, BaseException, "null pointer exception");
 
 // Socket exception representation.
-// Additionally holds number of socket error.
+// However, holds number of socket error.
 class SocketError : public BaseException
 {
 private:
@@ -184,7 +184,7 @@ public:
 	// Initializes exception with type name.
 	inline explicit SocketError(
 		int err_no, const char* message, int line=0, const char* function="", const char* file=""
-	) : SocketError(err_no, message, line, function, file, "SocketError")
+	) : SocketError(err_no, message, line, function, file, "xw::SocketError")
 	{
 	}
 

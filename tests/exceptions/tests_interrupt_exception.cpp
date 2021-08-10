@@ -1,7 +1,7 @@
 /**
  * tests/exceptions/tests_interrupt_exception.cpp
  *
- * Copyright (c) 2019 Yuriy Lisovskiy
+ * Copyright (c) 2019, 2021 Yuriy Lisovskiy
  */
 
 #include <gtest/gtest.h>
@@ -15,7 +15,7 @@ class InterruptExceptionTestCase : public ::testing::Test
 {
 public:
 	const char* WhatErrorMessage = "Test error message from InterruptExceptionTestCase";
-	const char* FullErrorMessage = "InterruptException: Test error message from InterruptExceptionTestCase";
+	const char* FullErrorMessage = "xw::InterruptException: Test error message from InterruptExceptionTestCase";
 	const char* ErrorFunction = "testFunc";
 	const char* ErrorFile = "test_file.cpp";
 	const size_t ErrorLine = 1;

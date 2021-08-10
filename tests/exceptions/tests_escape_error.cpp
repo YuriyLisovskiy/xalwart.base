@@ -15,7 +15,7 @@ class EscapeErrorTestCase : public ::testing::Test
 {
 public:
 	const char* WhatErrorMessage = "Test error message from EscapeErrorTestCase";
-	const char* FullErrorMessage = "EscapeError: Test error message from EscapeErrorTestCase";
+	const char* FullErrorMessage = "xw::EscapeError: Test error message from EscapeErrorTestCase";
 	const char* ErrorFunction = "testFunc";
 	const char* ErrorFile = "test_file.cpp";
 	const size_t ErrorLine = 1;
