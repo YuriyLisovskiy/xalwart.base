@@ -169,7 +169,7 @@ class SocketError : public BaseException
 {
 private:
 
-	// Number of socket error.
+	// Socket error code.
 	int _errno;
 
 protected:
