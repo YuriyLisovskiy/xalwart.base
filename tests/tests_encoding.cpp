@@ -64,22 +64,6 @@ TEST(TestCase_encoding, _escape_char_Safe)
 	ASSERT_EQ(expected, actual);
 }
 
-TEST(TestCase_encoding, encode_url_WithSpecialSymbols)
-{
-	std::string expected("https://hostName/deepLinkAction.do?userName=peter%40nable.com&password=Hello%25There&method=defaultDashboard");
-	std::string to_encode("https://hostName/deepLinkAction.do?userName=peter@nable.com&password=Hello%There&method=defaultDashboard");
-	auto actual = encoding::encode_url(to_encode);
-	ASSERT_EQ(expected, actual);
-}
-
-TEST(TestCase_encoding, encode_url_Unicode)
-{
-	std::string expected = "https://www.google.com/?q=%E3%83%95%E3%82%A9%E3%83%BC%E3%83%87%E3%82%A3%E3%83%BC";
-	std::string to_encode = "https://www.google.com/?q=フォーディー";
-	auto actual = encoding::encode_url(to_encode);
-	ASSERT_EQ(expected, actual);
-}
-
 TEST(TestCase_encoding, quote)
 {
 	std::string expected = "%C5%A0";

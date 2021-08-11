@@ -42,8 +42,7 @@ void Config::add_file_stream(const std::string& fp)
 }
 
 void Logger::_log(
-	const std::string& msg, int line, const char* function,
-	const char* file, Logger::log_level_enum level
+	const std::string& msg, int line, const char* function, const char* file, Logger::LogLevel level
 )
 {
 	this->_thread_pool->push([this, level, line, file, function, msg]() -> void {
@@ -52,27 +51,27 @@ void Logger::_log(
 		Color colour;
 		switch (level)
 		{
-			case Logger::log_level_enum::ll_warning:
+			case Logger::LogLevel::Warning:
 				level_name = "[warning]";
 				is_enabled = this->_config.enable_warning;
 				colour = Color::YELLOW;
 				break;
-			case Logger::log_level_enum::ll_error:
+			case Logger::LogLevel::Error:
 				level_name = "[error]";
 				is_enabled = this->_config.enable_error;
 				colour = Color::RED;
 				break;
-			case Logger::log_level_enum::ll_debug:
+			case Logger::LogLevel::Debug:
 				level_name = "[debug]";
 				is_enabled = this->_config.enable_debug;
 				colour = Color::MAGENTA;
 				break;
-			case Logger::log_level_enum::ll_fatal:
+			case Logger::LogLevel::Fatal:
 				level_name = "[fatal]";
 				is_enabled = this->_config.enable_fatal;
 				colour = Color::BOLD_RED;
 				break;
-			case Logger::log_level_enum::ll_trace:
+			case Logger::LogLevel::Trace:
 				level_name = "[trace]";
 				is_enabled = this->_config.enable_trace;
 				colour = Color::BOLD_RED;
@@ -102,7 +101,7 @@ void Logger::_log(
 		}
 
 		std::string result;
-		if (level != ll_trace)
+		if (level != LogLevel::Trace)
 		{
 			result = "[" + dt::Datetime::now().strftime("%F %T") + "] ";
 		}

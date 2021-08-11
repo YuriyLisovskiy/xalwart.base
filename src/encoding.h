@@ -30,9 +30,6 @@ __ENCODING_BEGIN__
 // `safe`: characters which should be ignored.
 extern void _escape_char(std::ostringstream& stream, char c, const std::string& safe="");
 
-// Encodes url using percent-encoding.
-extern std::string encode_url(const std::string& url);
-
 // Encodes string to hex using `_escape_char(...)`.
 //
 // `s`: input string.

@@ -111,16 +111,16 @@ public:
 	}
 };
 
-DEF_EXCEPTION_WITH_BASE(AttributeError, BaseException, "attribute error");
-DEF_EXCEPTION_WITH_BASE(ArgumentError, BaseException, "argument error");
-DEF_EXCEPTION_WITH_BASE(BadSignature, BaseException, "bad signature error");
-DEF_EXCEPTION_WITH_BASE(CommandError, BaseException, "command error");
+DEF_EXCEPTION_WITH_BASE(AttributeError, BaseException, "attribute error", "");
+DEF_EXCEPTION_WITH_BASE(ArgumentError, BaseException, "argument error", "");
+DEF_EXCEPTION_WITH_BASE(BadSignature, BaseException, "bad signature error", "");
+DEF_EXCEPTION_WITH_BASE(CommandError, BaseException, "command error", "");
 
 // Redirect to scheme not in allowed list.
-DEF_EXCEPTION_WITH_BASE(EncodingError, BaseException, "encoding error");
-DEF_EXCEPTION_WITH_BASE(EscapeError, BaseException, "escape error");
-DEF_EXCEPTION_WITH_BASE(FileError, BaseException, "file error");
-DEF_EXCEPTION_WITH_BASE(ImproperlyConfigured, BaseException, "improperly configured");
+DEF_EXCEPTION_WITH_BASE(EncodingError, BaseException, "encoding error", "");
+DEF_EXCEPTION_WITH_BASE(EscapeError, BaseException, "escape error", "");
+DEF_EXCEPTION_WITH_BASE(FileError, BaseException, "file error", "");
+DEF_EXCEPTION_WITH_BASE(ImproperlyConfigured, BaseException, "improperly configured", "");
 
 // Used for handling execution interrupts.
 class InterruptException : public BaseException
@@ -156,12 +156,12 @@ public:
 	static void initialize();
 };
 
-DEF_EXCEPTION_WITH_BASE(KeyError, BaseException, "key error");
-DEF_EXCEPTION_WITH_BASE(ParseError, BaseException, "parse error");
-DEF_EXCEPTION_WITH_BASE(RuntimeError, BaseException, "runtime error");
-DEF_EXCEPTION_WITH_BASE(MultiPartParserError, ParseError, "multipart parser error");
-DEF_EXCEPTION_WITH_BASE(NotImplementedException, BaseException, "not implemented");
-DEF_EXCEPTION_WITH_BASE(NullPointerException, BaseException, "null pointer exception");
+DEF_EXCEPTION_WITH_BASE(KeyError, BaseException, "key error", "");
+DEF_EXCEPTION_WITH_BASE(ParseError, BaseException, "parse error", "");
+DEF_EXCEPTION_WITH_BASE(RuntimeError, BaseException, "runtime error", "");
+DEF_EXCEPTION_WITH_BASE(MultiPartParserError, ParseError, "multipart parser error", "");
+DEF_EXCEPTION_WITH_BASE(NotImplementedException, BaseException, "not implemented", "");
+DEF_EXCEPTION_WITH_BASE(NullPointerException, BaseException, "null pointer exception", "");
 
 // Socket exception representation.
 // However, holds number of socket error.
@@ -202,7 +202,7 @@ public:
 	}
 };
 
-DEF_EXCEPTION_WITH_BASE(ValueError, BaseException, "value error");
-DEF_EXCEPTION_WITH_BASE(TypeError, BaseException, "type error");
+DEF_EXCEPTION_WITH_BASE(ValueError, BaseException, "value error", "");
+DEF_EXCEPTION_WITH_BASE(TypeError, BaseException, "type error", "");
 
 __MAIN_NAMESPACE_END__

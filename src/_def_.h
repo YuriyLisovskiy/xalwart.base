@@ -103,7 +103,7 @@ __MAIN_NAMESPACE_END__
 #endif
 
 // Declares exception's class with given base.
-#define DEF_EXCEPTION_WITH_BASE(name, base, default_message)\
+#define DEF_EXCEPTION_WITH_BASE(name, base, default_message, additional_namespace_name)\
 class name : public base\
 {\
 protected:\
@@ -118,8 +118,9 @@ public:\
 	explicit name(\
 		const char* message = default_message,\
 		int line=0, const char* function="", const char* file=""\
+	) : name(\
+		message, line, function, file, ("xw::" + std::string(additional_namespace_name) + std::string(#name)).c_str() \
 	)\
-		: name(message, line, function, file, ("xw::" + std::string(#name)).c_str())\
 	{\
 	}\
 \

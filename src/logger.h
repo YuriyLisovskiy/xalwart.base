@@ -284,7 +284,7 @@ public:
 	// 'info' logging level if it is enabled in config.
 	inline void info(const std::string& msg, int line, const char* function, const char* file) override
 	{
-		this->_log(msg, line, function, file, Logger::log_level_enum::ll_info);
+		this->_log(msg, line, function, file, Logger::LogLevel::Info);
 	}
 
 	// Logs given text with 'info' logging level if it is enabled in config.
@@ -297,7 +297,7 @@ public:
 	// 'debug' logging level if it is enabled in config.
 	inline void debug(const std::string& msg, int line, const char* function, const char* file) override
 	{
-		this->_log(msg, line, function, file, Logger::log_level_enum::ll_debug);
+		this->_log(msg, line, function, file, Logger::LogLevel::Debug);
 	}
 
 	// Logs given text with 'debug' logging level if it is enabled in config.
@@ -310,7 +310,7 @@ public:
 	// 'warning' logging level if it is enabled in config.
 	inline void warning(const std::string& msg, int line, const char* function, const char* file) override
 	{
-		this->_log(msg, line, function, file, Logger::log_level_enum::ll_warning);
+		this->_log(msg, line, function, file, Logger::LogLevel::Warning);
 	}
 
 	// Logs given text with 'warning' logging level if it is enabled in config.
@@ -323,7 +323,7 @@ public:
 	// 'error' logging level if it is enabled in config.
 	inline void error(const std::string& msg, int line, const char* function, const char* file) override
 	{
-		this->_log(msg, line, function, file, Logger::log_level_enum::ll_error);
+		this->_log(msg, line, function, file, Logger::LogLevel::Error);
 	}
 
 	// Logs given text with 'error' logging level if it is enabled in config.
@@ -336,7 +336,7 @@ public:
 	// 'fatal' logging level if it is enabled in config.
 	inline void fatal(const std::string& msg, int line, const char* function, const char* file) override
 	{
-		this->_log(msg, line, function, file, Logger::log_level_enum::ll_fatal);
+		this->_log(msg, line, function, file, Logger::LogLevel::Fatal);
 	}
 
 	// Logs given text with 'fatal' logging level if it is enabled in config.
@@ -349,7 +349,7 @@ public:
 	// 'trace' logging level if it is enabled in config.
 	inline void trace(const std::string& msg, int line, const char* function, const char* file) override
 	{
-		this->_log(msg, line, function, file, Logger::log_level_enum::ll_trace);
+		this->_log(msg, line, function, file, Logger::LogLevel::Trace);
 	}
 
 	// Logs given text with 'trace' logging level if it is enabled in config.
@@ -441,9 +441,9 @@ private:
 #endif
 
 	// Supported logging levels.
-	enum log_level_enum
+	enum class LogLevel
 	{
-		ll_info, ll_debug, ll_warning, ll_error, ll_fatal, ll_trace
+		Info, Debug, Warning, Error, Fatal, Trace
 	};
 
 	// Logger configuration.
@@ -457,7 +457,7 @@ private:
 	// Logs message with given parameters.
 	void _log(
 		const std::string& msg, int line, const char* function,
-		const char* file, Logger::log_level_enum level
+		const char* file, Logger::LogLevel level
 	);
 
 	// Writes message to all given streams.
