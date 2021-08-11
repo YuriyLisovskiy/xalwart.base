@@ -153,15 +153,15 @@ T* require_non_null(T* p)
 }
 
 template<typename T>
-struct item_return{ typedef T type; };
+struct ItemReturn{ typedef T type; };
 
 template<typename T>
-typename item_return<T>::type as(const void*);
+typename ItemReturn<T>::type as(const void*);
 
 // TESTME: as<short int>
 // TODO: docs for 'as<short int>'
 template<>
-struct item_return<short int>{ typedef short int type; };
+struct ItemReturn<short int>{ typedef short int type; };
 template<>
 inline short int as<short int>(const void* data)
 {
@@ -171,7 +171,7 @@ inline short int as<short int>(const void* data)
 // TESTME: as<unsigned short int>
 // TODO: docs for 'as<unsigned short int>'
 template<>
-struct item_return<unsigned short int>{ typedef unsigned short int type; };
+struct ItemReturn<unsigned short int>{ typedef unsigned short int type; };
 template<>
 inline unsigned short int as<unsigned short int>(const void* data)
 {
@@ -181,7 +181,7 @@ inline unsigned short int as<unsigned short int>(const void* data)
 // TESTME: as<unsigned int>
 // TODO: docs for 'as<unsigned int>'
 template<>
-struct item_return<unsigned int>{ typedef unsigned int type; };
+struct ItemReturn<unsigned int>{ typedef unsigned int type; };
 template<>
 inline unsigned int as<unsigned int>(const void* data)
 {
@@ -191,7 +191,7 @@ inline unsigned int as<unsigned int>(const void* data)
 // TESTME: as<int>
 // TODO: docs for 'as<int>'
 template<>
-struct item_return<int>{ typedef int type; };
+struct ItemReturn<int>{ typedef int type; };
 template<>
 inline int as<int>(const void* data)
 {
@@ -201,7 +201,7 @@ inline int as<int>(const void* data)
 // TESTME: as<long int>
 // TODO: docs for 'as<long int>'
 template<>
-struct item_return<long int>{ typedef long int type; };
+struct ItemReturn<long int>{ typedef long int type; };
 template<>
 inline long int as<long int>(const void* data)
 {
@@ -211,7 +211,7 @@ inline long int as<long int>(const void* data)
 // TESTME: as<unsigned long int>
 // TODO: docs for 'as<unsigned long int>'
 template<>
-struct item_return<unsigned long int>{ typedef unsigned long int type; };
+struct ItemReturn<unsigned long int>{ typedef unsigned long int type; };
 template<>
 inline unsigned long int as<unsigned long int>(const void* data)
 {
@@ -221,7 +221,7 @@ inline unsigned long int as<unsigned long int>(const void* data)
 // TESTME: as<long long int>
 // TODO: docs for 'as<long long int>'
 template<>
-struct item_return<long long int>{ typedef long long int type; };
+struct ItemReturn<long long int>{ typedef long long int type; };
 template<>
 inline long long int as<long long int>(const void* data)
 {
@@ -231,7 +231,7 @@ inline long long int as<long long int>(const void* data)
 // TESTME: as<unsigned long long int>
 // TODO: docs for 'as<unsigned long long int>'
 template<>
-struct item_return<unsigned long long int>{ typedef unsigned long long int type; };
+struct ItemReturn<unsigned long long int>{ typedef unsigned long long int type; };
 template<>
 inline unsigned long long int as<unsigned long long int>(const void* data)
 {
@@ -241,7 +241,7 @@ inline unsigned long long int as<unsigned long long int>(const void* data)
 // TESTME: as<float>
 // TODO: docs for 'as<float>'
 template<>
-struct item_return<float>{ typedef float type; };
+struct ItemReturn<float>{ typedef float type; };
 template<>
 inline float as<float>(const void* data)
 {
@@ -251,7 +251,7 @@ inline float as<float>(const void* data)
 // TESTME: as<double>
 // TODO: docs for 'as<double>'
 template<>
-struct item_return<double>{ typedef double type; };
+struct ItemReturn<double>{ typedef double type; };
 template<>
 inline double as<double>(const void* data)
 {
@@ -261,7 +261,7 @@ inline double as<double>(const void* data)
 // TESTME: as<long double>
 // TODO: docs for 'as<long double>'
 template<>
-struct item_return<long double>{ typedef long double type; };
+struct ItemReturn<long double>{ typedef long double type; };
 template<>
 inline long double as<long double>(const void* data)
 {
@@ -271,7 +271,7 @@ inline long double as<long double>(const void* data)
 // TESTME: as<std::string>
 // TODO: docs for 'as<std::string>'
 template<>
-struct item_return<std::string>{ typedef std::string type; };
+struct ItemReturn<std::string>{ typedef std::string type; };
 template<>
 inline std::string as<std::string>(const void* data)
 {
@@ -281,7 +281,7 @@ inline std::string as<std::string>(const void* data)
 // TESTME: as<const char*>
 // TODO: docs for 'as<const char*>'
 template<>
-struct item_return<const char*>{ typedef const char* type; };
+struct ItemReturn<const char*>{ typedef const char* type; };
 template<>
 inline const char* as<const char*>(const void* data)
 {

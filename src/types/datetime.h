@@ -20,11 +20,11 @@
 __TYPES_BEGIN__
 
 template <typename T>
-concept date_time_type_c = std::is_same_v<T, dt::Date> ||
+concept date_time_type = std::is_same_v<T, dt::Date> ||
 	std::is_same_v<T, dt::Time> ||
 	std::is_same_v<T, dt::Datetime>;
 
-template <date_time_type_c DateTimeT>
+template <date_time_type DateTimeT>
 class _DatetimeClass : public obj::Object
 {
 protected:

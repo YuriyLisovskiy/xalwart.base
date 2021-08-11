@@ -21,7 +21,7 @@
 
 __TYPES_BEGIN__
 
-template <object_based_type_c ValueT>
+template <object_based_type ValueT>
 class Sequence : public obj::Object, public abc::SequenceContainer
 {
 public:

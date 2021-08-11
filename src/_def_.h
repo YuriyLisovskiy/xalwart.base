@@ -23,23 +23,24 @@ using uint = unsigned int;
 
 __MAIN_NAMESPACE_BEGIN__
 
-struct version_t
+struct Version
 {
 	uint major;
 	uint minor;
 	uint patch;
 
-	version_t(const std::string& v);
-	version_t(uint major, uint minor, uint patch);
+	explicit Version(const std::string& v);
+	Version(uint major, uint minor, uint patch);
 
+	[[nodiscard]]
 	std::string to_string() const;
 
-	bool operator< (const version_t& other) const;
-	bool operator<= (const version_t& other) const;
-	bool operator> (const version_t& other) const;
-	bool operator>= (const version_t& other) const;
-	bool operator== (const version_t& other) const;
-	bool operator!= (const version_t& other) const;
+	bool operator< (const Version& other) const;
+	bool operator<= (const Version& other) const;
+	bool operator> (const Version& other) const;
+	bool operator>= (const Version& other) const;
+	bool operator== (const Version& other) const;
+	bool operator!= (const Version& other) const;
 
 	bool operator< (const char* v) const;
 	bool operator<= (const char* v) const;
@@ -48,19 +49,15 @@ struct version_t
 	bool operator== (const char* v) const;
 	bool operator!= (const char* v) const;
 
-	friend std::ostream& operator<< (std::ostream& stream, const version_t& v);
+	friend std::ostream& operator<< (std::ostream& stream, const Version& v);
 };
 
 namespace base::v
 {
-const inline auto version = version_t("0.0.0");
-};
+inline const auto version = Version("0.0.0");
+}
 
 __MAIN_NAMESPACE_END__
-
-// xw::exc
-#define __EXC_BEGIN__ __MAIN_NAMESPACE_BEGIN__ namespace exc {
-#define __EXC_END__ } __MAIN_NAMESPACE_END__
 
 // xw::path
 #define __PATH_BEGIN__ __MAIN_NAMESPACE_BEGIN__ namespace path {

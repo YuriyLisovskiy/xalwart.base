@@ -30,7 +30,7 @@ int compare_numbers(uint l, uint r)
 	return -1;
 }
 
-int compare_versions(const version_t& l, const version_t& r)
+int compare_versions(const Version& l, const Version& r)
 {
 	auto ret = compare_numbers(l.major, r.major);
 	if (ret == 0)
@@ -45,7 +45,7 @@ int compare_versions(const version_t& l, const version_t& r)
 	return ret;
 }
 
-version_t::version_t(const std::string& v)
+Version::Version(const std::string& v)
 {
 	auto parts = str::split(v, '.');
 	this->major = std::stoi(parts[0]);
@@ -53,83 +53,83 @@ version_t::version_t(const std::string& v)
 	this->patch = std::stoi(parts[2]);
 }
 
-version_t::version_t(uint major, uint minor, uint patch)
+Version::Version(uint major, uint minor, uint patch)
 {
 	this->major = major;
 	this->minor = minor;
 	this->patch = patch;
 }
 
-std::string version_t::to_string() const
+std::string Version::to_string() const
 {
 	return std::to_string(this->major) + "." + std::to_string(this->minor) + "." + std::to_string(this->patch);
 }
 
-bool version_t::operator< (const version_t& other) const
+bool Version::operator< (const Version& other) const
 {
 	return compare_versions(*this, other) == -1;
 }
 
-bool version_t::operator<= (const version_t& other) const
+bool Version::operator<= (const Version& other) const
 {
 	auto ret = compare_versions(*this, other);
 	return ret == 0 || ret == -1;
 }
 
-bool version_t::operator> (const version_t& other) const
+bool Version::operator> (const Version& other) const
 {
 	return compare_versions(*this, other) == 1;
 }
 
-bool version_t::operator>= (const version_t& other) const
+bool Version::operator>= (const Version& other) const
 {
 	auto ret = compare_versions(*this, other);
 	return ret == 0 || ret == 1;
 }
 
-bool version_t::operator== (const version_t& other) const
+bool Version::operator== (const Version& other) const
 {
 	return compare_versions(*this, other) == 0;
 }
 
-bool version_t::operator!= (const version_t& other) const
+bool Version::operator!= (const Version& other) const
 {
 	return compare_versions(*this, other) != 0;
 }
 
-bool version_t::operator< (const char* v) const
+bool Version::operator< (const char* v) const
 {
-	return compare_versions(*this, version_t(v)) == -1;
+	return compare_versions(*this, Version(v)) == -1;
 }
 
-bool version_t::operator<= (const char* v) const
+bool Version::operator<= (const char* v) const
 {
-	auto ret = compare_versions(*this, version_t(v));
+	auto ret = compare_versions(*this, Version(v));
 	return ret == 0 || ret == -1;
 }
 
-bool version_t::operator> (const char* v) const
+bool Version::operator> (const char* v) const
 {
-	return compare_versions(*this, version_t(v)) == 1;
+	return compare_versions(*this, Version(v)) == 1;
 }
 
-bool version_t::operator>= (const char* v) const
+bool Version::operator>= (const char* v) const
 {
-	auto ret = compare_versions(*this, version_t(v));
+	auto ret = compare_versions(*this, Version(v));
 	return ret == 0 || ret == 1;
 }
 
-bool version_t::operator== (const char* v) const
+bool Version::operator== (const char* v) const
 {
-	return compare_versions(*this, version_t(v)) == 0;
+	return compare_versions(*this, Version(v)) == 0;
 }
 
-bool version_t::operator!= (const char* v) const
+bool Version::operator!= (const char* v) const
 {
-	return compare_versions(*this, version_t(v)) != 0;
+	return compare_versions(*this, Version(v)) != 0;
 }
 
-std::ostream& operator<< (std::ostream& stream, const version_t& v)
+std::ostream& operator<< (std::ostream& stream, const Version& v)
 {
 	stream << v.major << "." << v.minor << "." << v.patch;
 	return stream;

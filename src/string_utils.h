@@ -88,7 +88,7 @@ concept str_or_char_type =
 	std::is_same_v<std::string, T> || std::is_same_v<const char*, T> || std::is_same_v<char, T>;
 
 template <typename T>
-concept str_or_char_iterator_type =
+concept str_or_char_iterator =
 	std::is_same_v<std::string, typename std::iterator_traits<T>::value_type> ||
 	std::is_same_v<const char*, typename std::iterator_traits<T>::value_type> ||
 	std::is_same_v<char, typename std::iterator_traits<T>::value_type>;
@@ -100,7 +100,7 @@ concept str_or_char_iterator_type =
 //
 // Returns string with joined items. If range is empty, returns empty
 // string.
-template <str_or_char_iterator_type IteratorT>
+template <str_or_char_iterator IteratorT>
 std::string join(const char* delimiter, IteratorT begin, IteratorT end)
 {
 	std::string result;
@@ -130,10 +130,10 @@ std::string join(const char* delimiter, const std::initializer_list<T>& list)
 }
 
 template <typename T>
-concept numeric_type_c = std::is_fundamental_v<T> && !std::is_same_v<char, T>;
+concept numeric_type = std::is_fundamental_v<T> && !std::is_same_v<char, T>;
 
 template <typename T>
-concept numeric_iterator_type_c =
+concept numeric_iterator =
 	std::is_fundamental_v<typename std::iterator_traits<T>::value_type> &&
 	!std::is_same_v<char, typename std::iterator_traits<T>::value_type>;
 
@@ -144,11 +144,11 @@ concept numeric_iterator_type_c =
 //
 // Returns string with joined items. If range is empty, returns empty
 // string.
-template <numeric_iterator_type_c IteratorT>
+template <numeric_iterator IteratorT>
 std::string join(const char* delimiter, IteratorT begin, IteratorT end)
 {
 	std::string result;
-	for (numeric_iterator_type_c auto it = begin; it != end; it++)
+	for (numeric_iterator auto it = begin; it != end; it++)
 	{
 		result += std::to_string(*it);
 		if (std::next(it) != end)
@@ -167,7 +167,7 @@ std::string join(const char* delimiter, IteratorT begin, IteratorT end)
 //
 // Returns string with joined items. If range is empty, returns empty
 // string.
-template <numeric_type_c T>
+template <numeric_type T>
 std::string join(const char* delimiter, const std::initializer_list<T>& list)
 {
 	return join(delimiter, list.begin(), list.end());
