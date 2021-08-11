@@ -106,7 +106,7 @@ struct RequestContext
 
 // Function type that handles the request.
 typedef std::function<uint(
-	RequestContext*, collections::Dictionary<std::string, std::string>
+	RequestContext*, const collections::Dictionary<std::string, std::string>&
 )> HandlerFunc;
 
 __NET_END__
