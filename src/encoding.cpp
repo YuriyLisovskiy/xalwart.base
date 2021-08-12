@@ -15,9 +15,9 @@
 
 __ENCODING_BEGIN__
 
-const std::string _HEX_DIGITS = "0123456789ABCDEF";
+inline constexpr const char* HEX_DIGITS = "0123456789ABCDEF";
 
-void _escape_char(std::ostringstream& stream, char c, const std::string& safe)
+void escape_char(std::ostringstream& stream, char c, const std::string& safe)
 {
 	if ((c >= '0' && c <= '9') ||
 	    (c >= 'a' && c <= 'z') ||
@@ -30,8 +30,8 @@ void _escape_char(std::ostringstream& stream, char c, const std::string& safe)
 	else
 	{
 		stream << '%';
-		stream << _HEX_DIGITS[(c & 0xF0) >> 4];
-		stream << _HEX_DIGITS[(c & 0x0F) ];
+		stream << HEX_DIGITS[(c & 0xF0) >> 4];
+		stream << HEX_DIGITS[(c & 0x0F) ];
 	}
 }
 
@@ -40,7 +40,7 @@ std::string quote(const std::string& s, const std::string& safe)
 	std::ostringstream oss;
 	for (const auto& c : s)
 	{
-		_escape_char(oss, c, safe);
+		escape_char(oss, c, safe);
 	}
 
 	return oss.str();
@@ -57,14 +57,14 @@ std::string encode_ascii(const std::string& s, Mode mode)
 		{
 			switch (mode)
 			{
-				case Mode::STRICT:
+				case Mode::Strict:
 					throw EncodingError(
 						"'ascii' codec can't encode character in position " + std::to_string(i) + ": ordinal not in range [0;127]",
 						_ERROR_DETAILS_
 					);
-				case Mode::IGNORE:
+				case Mode::Ignore:
 					continue;
-				case Mode::REPLACE:
+				case Mode::Replace:
 					res += '?';
 					continue;
 			}
@@ -121,14 +121,14 @@ std::string encode_iso_8859_1(const std::string& s, Mode mode)
 			{
 				switch (mode)
 				{
-					case Mode::STRICT:
+					case Mode::Strict:
 						throw EncodingError(
 							"'iso_8859_1' codec can't encode character: ordinal not in range [0;255]",
 							_ERROR_DETAILS_
 						);
-					case Mode::IGNORE:
+					case Mode::Ignore:
 						break;
-					case Mode::REPLACE:
+					case Mode::Replace:
 						out += '?';
 						break;
 				}
@@ -139,26 +139,26 @@ std::string encode_iso_8859_1(const std::string& s, Mode mode)
 	return out;
 }
 
-std::string encode_utf_8(const std::string& s, Mode mode)
+std::string encode_utf_8(const std::string& s, Mode /* mode */)
 {
 	// !IMPORTANT!
 	// Check if it is not required to encode the string on Windows.
 	return s;
 }
 
-std::string encode(const std::string& s, encoding enc, Mode mode)
+std::string encode(const std::string& s, Encoding enc, Mode mode)
 {
 	std::string result;
 	switch (enc)
 	{
-		case ascii:
+		case Encoding::ASCII:
 			result = encode_ascii(s, mode);
 			break;
-		case latin_1:
-		case iso_8859_1:
+		case Encoding::Latin_1:
+		case Encoding::ISO_8859_1:
 			result = encode_iso_8859_1(s, mode);
 			break;
-		case utf_8:
+		case Encoding::Utf_8:
 			result = encode_utf_8(s, mode);
 			break;
 		default:

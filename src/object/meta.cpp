@@ -23,7 +23,7 @@ Type::Type(const Object& obj)
 		this->_namespace = str::rtrim(full_name.front(), ":");
 	}
 
-	this->_name = full_name.back();
+	this->_name = *(full_name.end() - 1);
 }
 
 __OBJ_META_END__

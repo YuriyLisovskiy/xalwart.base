@@ -3,7 +3,7 @@
  *
  * Copyright (c) 2020-2021 Yuriy Lisovskiy
  *
- * Definitions of `types` module.
+ * Definitions of 'types' module.
  */
 
 #pragma once

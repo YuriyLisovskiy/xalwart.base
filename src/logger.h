@@ -154,25 +154,25 @@ public:
 class ILogger
 {
 public:
-	enum Color
+	enum class Color
 	{
-		DEFAULT,
-		BLACK,
-		RED,
-		GREEN,
-		YELLOW,
-		BLUE,
-		MAGENTA,
-		CYAN,
-		WHITE,
-		BOLD_BLACK,
-		BOLD_RED,
-		BOLD_GREEN,
-		BOLD_YELLOW,
-		BOLD_BLUE,
-		BOLD_MAGENTA,
-		BOLD_CYAN,
-		BOLD_WHITE,
+		Default,
+		Black,
+		Red,
+		Green,
+		Yellow,
+		Blue,
+		Magenta,
+		Cyan,
+		White,
+		BoldBlack,
+		BoldRed,
+		BoldGreen,
+		BoldYellow,
+		BoldBlue,
+		BoldMagenta,
+		BoldCyan,
+		BoldWhite,
 	};
 
 	// Set indicator whether to use colours in console or not.
@@ -376,7 +376,7 @@ public:
 	// Logs text if it is enable in config.
 	inline void print(const std::string& msg) override
 	{
-		this->print(msg, Color::DEFAULT, '\n');
+		this->print(msg, Color::Default, '\n');
 	}
 
 	// Logs exception with `info` logging level if it is enabled in config.
@@ -420,23 +420,23 @@ private:
 
 	// Colours for nice output to a console stream.
 	std::map<Color, const char*> _colors = {
-		{DEFAULT, "\033[0m"},
-		{BLACK, "\033[30m"},
-		{RED, "\033[31m"},
-		{GREEN, "\033[32m"},
-		{YELLOW, "\033[33m"},
-		{BLUE, "\033[34m"},
-		{MAGENTA, "\033[35m"},
-		{CYAN, "\033[36m"},
-		{WHITE, "\033[37m"},
-		{BOLD_BLACK, "\033[1m\033[30m"},
-		{BOLD_RED, "\033[1m\033[31m"},
-		{BOLD_GREEN, "\033[1m\033[32m"},
-		{BOLD_YELLOW, "\033[1m\033[33m"},
-		{BOLD_BLUE, "\033[1m\033[34m"},
-		{BOLD_MAGENTA, "\033[1m\033[35m"},
-		{BOLD_CYAN, "\033[1m\033[36m"},
-		{BOLD_WHITE, "\033[1m\033[37m"},
+		{Color::Default, "\033[0m"},
+		{Color::Black, "\033[30m"},
+		{Color::Red, "\033[31m"},
+		{Color::Green, "\033[32m"},
+		{Color::Yellow, "\033[33m"},
+		{Color::Blue, "\033[34m"},
+		{Color::Magenta, "\033[35m"},
+		{Color::Cyan, "\033[36m"},
+		{Color::White, "\033[37m"},
+		{Color::BoldBlack, "\033[1m\033[30m"},
+		{Color::BoldRed, "\033[1m\033[31m"},
+		{Color::BoldGreen, "\033[1m\033[32m"},
+		{Color::BoldYellow, "\033[1m\033[33m"},
+		{Color::BoldBlue, "\033[1m\033[34m"},
+		{Color::BoldMagenta, "\033[1m\033[35m"},
+		{Color::BoldCyan, "\033[1m\033[36m"},
+		{Color::BoldWhite, "\033[1m\033[37m"},
 	};
 #endif
 
@@ -456,8 +456,7 @@ private:
 
 	// Logs message with given parameters.
 	void _log(
-		const std::string& msg, int line, const char* function,
-		const char* file, Logger::LogLevel level
+		const std::string& msg, int line, const char* function, const char* file, Logger::LogLevel level
 	);
 
 	// Writes message to all given streams.

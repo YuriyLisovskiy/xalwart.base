@@ -54,32 +54,32 @@ void Logger::_log(
 			case Logger::LogLevel::Warning:
 				level_name = "[warning]";
 				is_enabled = this->_config.enable_warning;
-				colour = Color::YELLOW;
+				colour = Color::Yellow;
 				break;
 			case Logger::LogLevel::Error:
 				level_name = "[error]";
 				is_enabled = this->_config.enable_error;
-				colour = Color::RED;
+				colour = Color::Red;
 				break;
 			case Logger::LogLevel::Debug:
 				level_name = "[debug]";
 				is_enabled = this->_config.enable_debug;
-				colour = Color::MAGENTA;
+				colour = Color::Magenta;
 				break;
 			case Logger::LogLevel::Fatal:
 				level_name = "[fatal]";
 				is_enabled = this->_config.enable_fatal;
-				colour = Color::BOLD_RED;
+				colour = Color::BoldRed;
 				break;
 			case Logger::LogLevel::Trace:
 				level_name = "[trace]";
 				is_enabled = this->_config.enable_trace;
-				colour = Color::BOLD_RED;
+				colour = Color::BoldRed;
 				break;
 			default:
 				level_name = "[info]";
 				is_enabled = this->_config.enable_info;
-				colour = Color::CYAN;
+				colour = Color::Cyan;
 				break;
 		}
 
@@ -124,7 +124,7 @@ void Logger::_write_to_stream(const std::string& msg, Color colour, char end)
 		stream->write(msg + (end != '\0' ? std::string(1, end) : ""));
 		if (is_console)
 		{
-			this->_set_colour(Color::DEFAULT);
+			this->_set_colour(Color::Default);
 		}
 
 		stream->flush();
@@ -138,7 +138,7 @@ void Logger::_set_colour(Color colour) const
 	{
 		if (this->_colors.find(colour) == this->_colors.end())
 		{
-			colour = Color::DEFAULT;
+			colour = Color::Default;
 		}
 
 		std::cout << this->_colors.at(colour);

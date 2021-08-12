@@ -3,7 +3,7 @@
  *
  * Copyright (c) 2019-2021 Yuriy Lisovskiy
  *
- * Definitions of `base` module.
+ * Definitions of the main module.
  */
 
 #pragma once

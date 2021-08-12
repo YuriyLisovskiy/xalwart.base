@@ -3,7 +3,7 @@
  *
  * Copyright (c) 2021 Yuriy Lisovskiy
  *
- * Definitions of `net` module.
+ * Definitions of 'net' module.
  */
 
 #pragma once

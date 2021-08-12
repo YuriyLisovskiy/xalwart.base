@@ -75,8 +75,8 @@ std::shared_ptr<const obj::Object> to_object(const T& value)
 }
 
 // Converts 'std::array' to 'std::shared_ptr<const xw::obj::Object>'
-template <object_based_type T, std::size_t _Nm>
-std::shared_ptr<const obj::Object> to_object(const std::array<T, _Nm>& v)
+template <object_based_type T, std::size_t Nm>
+std::shared_ptr<const obj::Object> to_object(const std::array<T, Nm>& v)
 {
 	return std::make_shared<Sequence<T>>(to_sequence(v.begin(), v.end()));
 }

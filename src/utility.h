@@ -128,27 +128,28 @@ extern std::string _format_timetuple_and_zone(
 );
 
 template <typename T>
-T* require_non_null(T* p, const char* message)
+T* require_non_null(T* p, const char* message, int line=0, const char* function="", const char* file="")
 {
 	if (p == nullptr)
 	{
-		throw NullPointerException(message, _ERROR_DETAILS_);
+		throw NullPointerException(message, line, function, file);
 	}
 
 	return p;
 }
 
 template <typename T>
-T* require_non_null(T* p, const std::string& message)
+T* require_non_null(T* p, const std::string& message, int line=0, const char* function="", const char* file="")
 {
-	return require_non_null(p, message.c_str());
+	return require_non_null(p, message.c_str(), line, function, file);
 }
 
 template <typename T>
-T* require_non_null(T* p)
+T* require_non_null(T* p, int line=0, const char* function="", const char* file="")
 {
 	return require_non_null<T>(
-		p, ("pointer to object of type '" + demangle(typeid(T).name()) + "' is nullptr").c_str()
+		p, ("pointer to object of type '" + demangle(typeid(T).name()) + "' is nullptr").c_str(),
+		line, function, file
 	);
 }
 

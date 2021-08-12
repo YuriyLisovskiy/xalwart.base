@@ -28,26 +28,26 @@ __ENCODING_BEGIN__
 // `stream`: target stream.
 // `c`: char to write.
 // `safe`: characters which should be ignored.
-extern void _escape_char(std::ostringstream& stream, char c, const std::string& safe="");
+extern void escape_char(std::ostringstream& stream, char c, const std::string& safe="");
 
-// Encodes string to hex using `_escape_char(...)`.
+// Encodes string to hex using `escape_char(...)`.
 //
 // `s`: input string.
 // `safe`: characters which should be ignored.
 extern std::string quote(const std::string& s, const std::string& safe="");
 
 // Supported encodings.
-enum encoding
+enum class Encoding
 {
-	ascii, latin_1, iso_8859_1, utf_8
+	ASCII, Latin_1, ISO_8859_1, Utf_8
 };
 
 // Supported modes.
-enum Mode
+enum class Mode
 {
-	STRICT, // throw EncodingError if string violates encoding rules;
-	IGNORE, // remove offending symbols from string;
-	REPLACE // replace offending symbols by question mark ('?').
+	Strict, // throw EncodingError if string violates encoding rules;
+	Ignore, // remove offending symbols from string;
+	Replace // replace offending symbols by question mark ('?').
 };
 
 // Encodes string to ASCII string.
@@ -82,6 +82,6 @@ extern std::string encode_utf_8(const std::string& s, Mode mode);
 // `mode`: target mode.
 //
 // Returns encoded copy input string.
-extern std::string encode(const std::string& s, encoding enc, Mode mode=Mode::STRICT);
+extern std::string encode(const std::string& s, Encoding enc, Mode mode=Mode::Strict);
 
 __ENCODING_END__

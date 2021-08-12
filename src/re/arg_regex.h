@@ -27,12 +27,9 @@ __RE_BEGIN__
 class ArgRegex final
 {
 private:
-	enum state_enum
+	enum class StateEnum
 	{
-		s_str,
-		s_check_if_arg,
-		s_arg_name,
-		s_regex
+		Str, CheckIfArg, ArgName, Regex
 	};
 
 	std::smatch _matches;
