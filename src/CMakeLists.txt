@@ -9,10 +9,20 @@ endforeach()
 list(LENGTH SOURCES SOURCES_COUNT)
 message(STATUS "[INFO] Sources found: ${SOURCES_COUNT}")
 
+set(LIB_VENDOR_DIR ${PROJECT_SOURCE_DIR}/vendor)
+file(GLOB_RECURSE VENDOR_SOURCES LIST_DIRECTORIES true ${LIB_VENDOR_DIR}/*.h ${LIB_VENDOR_DIR}/*.cpp)
+foreach(entry ${VENDOR_SOURCES})
+    if (IS_DIRECTORY ${entry})
+        list(REMOVE_ITEM VENDOR_SOURCES ${entry})
+    endif()
+endforeach()
+list(LENGTH VENDOR_SOURCES VENDOR_SOURCES_COUNT)
+message(STATUS "[INFO] Vendor sources found: ${VENDOR_SOURCES_COUNT}")
+
 option(BUILD_SHARED_LIBS "Build shared libraries (DLLs)." ON)
 
 # Add the library.
-add_library(${LIBRARY_NAME} ${SOURCES})
+add_library(${LIBRARY_NAME} ${VENDOR_SOURCES} ${SOURCES})
 
 # Install the library.
 install(
@@ -22,6 +32,12 @@ install(
 )
 install(
     DIRECTORY "${LIB_SRC_DIR}/"
+    DESTINATION ${GNU_INCLUDE_DIR}/${LIBRARY_NAME}
+    FILES_MATCHING
+    PATTERN "*.h"
+)
+install(
+    DIRECTORY "${LIB_VENDOR_DIR}/"
     DESTINATION ${GNU_INCLUDE_DIR}/${LIBRARY_NAME}
     FILES_MATCHING
     PATTERN "*.h"
