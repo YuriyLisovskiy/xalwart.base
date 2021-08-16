@@ -15,14 +15,12 @@
 __PATH_BEGIN__
 
 void _split_text(
-	const std::string& full_path,
-	char sep, char alt_sep, char ext_sep,
-	std::string& root_out, std::string& ext_out
+	const std::string& full_path, char sep, char alt_sep, char ext_sep, std::string& root_out, std::string& ext_out
 )
 {
 	root_out = full_path;
 	ext_out = "";
-	long sep_idx = full_path.rfind(sep);
+	auto sep_idx = (long long)full_path.rfind(sep);
 	if (sep_idx == std::string::npos)
 	{
 		sep_idx = -1;
@@ -30,7 +28,7 @@ void _split_text(
 
 	if (alt_sep != '\0')
 	{
-		long altsep_idx = full_path.rfind(alt_sep);
+		auto altsep_idx = (long long)full_path.rfind(alt_sep);
 		if (altsep_idx == std::string::npos)
 		{
 			altsep_idx = -1;
@@ -39,7 +37,7 @@ void _split_text(
 		sep_idx = std::max(sep_idx, altsep_idx);
 	}
 
-	long dot_idx = full_path.rfind(ext_sep);
+	auto dot_idx = (long long)full_path.rfind(ext_sep);
 	if (dot_idx == std::string::npos)
 	{
 		dot_idx = -1;

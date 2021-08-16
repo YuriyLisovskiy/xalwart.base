@@ -90,7 +90,7 @@ public:
 	// `fp`: path to file.
 	explicit FileStream(const std::string& fp)
 	{
-		this->_file = std::make_shared<File>(fp, File::open_mode::a);
+		this->_file = std::make_shared<File>(fp, File::OpenMode::AppendReadWrite);
 		this->_file->open();
 	}
 

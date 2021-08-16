@@ -45,7 +45,7 @@ inline bool contains(const ItemT& item, IteratorT begin, IteratorT end)
 // Returns `true` if sequence contains item, `false` otherwise.
 // Returns `false` if the range is empty.
 template <typename ItemT>
-bool contains(const ItemT& item, const std::initializer_list<ItemT>& sequence)
+inline bool contains(const ItemT& item, const std::initializer_list<ItemT>& sequence)
 {
 	return contains(item, sequence.begin(), sequence.end());
 }
@@ -87,9 +87,7 @@ extern std::string demangle(const char* name);
 // `use_gmt`: indicates whether to use GMT or not.
 //
 // Returns formatted datetime as `std::string`.
-extern std::string format_datetime(
-	const dt::Datetime* dt, bool use_gmt = false
-);
+extern std::string format_datetime(const dt::Datetime* dt, bool use_gmt = false);
 
 // Returns a date string as specified by RFC 2822, e.g.:
 //
@@ -111,9 +109,7 @@ extern std::string format_datetime(
 // `use_gmt`: indicates whether to use GMT or not.
 //
 // Returns formatted datetime as `std::string`.
-extern std::string format_date(
-	time_t time_val, bool local_time = false, bool use_gmt = false
-);
+extern std::string format_date(time_t time_val, bool local_time = false, bool use_gmt = false);
 
 // Formats datetime from 'dt::time_tuple' and zone name as specified by RFC 2822, e.g.:
 //
@@ -123,12 +119,10 @@ extern std::string format_date(
 // `zone`: time zone name.
 //
 // Returns formatted datetime as `std::string`.
-extern std::string _format_timetuple_and_zone(
-	dt::tm_tuple* time_tuple, const std::string& zone
-);
+extern std::string _format_timetuple_and_zone(dt::tm_tuple* time_tuple, const std::string& zone);
 
 template <typename T>
-T* require_non_null(T* p, const char* message, int line=0, const char* function="", const char* file="")
+inline T* require_non_null(T* p, const char* message, int line=0, const char* function="", const char* file="")
 {
 	if (p == nullptr)
 	{
@@ -139,13 +133,13 @@ T* require_non_null(T* p, const char* message, int line=0, const char* function=
 }
 
 template <typename T>
-T* require_non_null(T* p, const std::string& message, int line=0, const char* function="", const char* file="")
+inline T* require_non_null(T* p, const std::string& message, int line=0, const char* function="", const char* file="")
 {
 	return require_non_null(p, message.c_str(), line, function, file);
 }
 
 template <typename T>
-T* require_non_null(T* p, int line=0, const char* function="", const char* file="")
+inline T* require_non_null(T* p, int line=0, const char* function="", const char* file="")
 {
 	return require_non_null<T>(
 		p, ("pointer to object of type '" + demangle(typeid(T).name()) + "' is nullptr").c_str(),

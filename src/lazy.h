@@ -44,15 +44,13 @@ public:
 	{
 		if (!this->_initializer)
 		{
-			throw std::runtime_error(
-				"lambda function for lazy initialization is required but not set"
-			);
+			throw std::runtime_error("lambda function for lazy initialization is required but not set");
 		}
 	}
 
 	// Initializes value if it was not done yet and
 	// returns an address to initialized value.
-	operator const T& () const
+	explicit operator const T& () const
 	{
 		return get();
 	}

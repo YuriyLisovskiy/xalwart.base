@@ -191,7 +191,8 @@ public:
 		}
 
 		throw TypeError(
-			"'__cmp__' not supported between instances of '" + this->__type__().name() + "' and '" + other->__type__().name() + "'",
+			"'__cmp__' not supported between instances of '" + this->__type__().name() +
+			"' and '" + other->__type__().name() + "'",
 			_ERROR_DETAILS_
 		);
 	}
@@ -543,10 +544,10 @@ public:
 template <typename T>
 using fundamental = Fundamental<T>;
 
-using _char = fundamental<char>;
+using char_ = fundamental<char>;
 using unsigned_char = fundamental<unsigned char>;
 using signed_char = fundamental<signed char>;
-using _int = fundamental<int>;
+using int_ = fundamental<int>;
 using unsigned_int = fundamental<unsigned int>;
 using signed_int = fundamental<signed int>;
 using short_int = fundamental<short int>;
@@ -557,9 +558,9 @@ using signed_long_int = fundamental<signed long int>;
 using unsigned_long_int = fundamental<unsigned long int>;
 using long_long_int = fundamental<long long int>;
 using unsigned_long_long_int = fundamental<unsigned long long int>;
-using _float = fundamental<float>;
-using _double = fundamental<double>;
+using float_ = fundamental<float>;
+using double_ = fundamental<double>;
 using long_double = fundamental<long double>;
-using _wchar_t = fundamental<wchar_t>;
+using wchar_t_ = fundamental<wchar_t>;
 
 __TYPES_END__

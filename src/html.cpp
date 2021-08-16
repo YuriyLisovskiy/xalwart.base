@@ -15,14 +15,10 @@ __HTML_BEGIN__
 std::string escape(std::string input, bool quote)
 {
 	input = str::replace(input, "&", "&amp;"); // Must be done first!
-	input = str::replace(
-		str::replace(input, "<", "&lt;"), ">", "&gt;"
-	);
+	input = str::replace(str::replace(input, "<", "&lt;"), ">", "&gt;");
 	if (quote)
 	{
-		input = str::replace(
-			str::replace(input, "\"", "&quot;"), "'", "&#x27;"
-		);
+		input = str::replace(str::replace(input, "\"", "&quot;"), "'", "&#x27;");
 	}
 
 	return input;

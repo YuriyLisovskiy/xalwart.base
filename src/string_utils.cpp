@@ -71,18 +71,14 @@ void url_split_type(const std::string& url, std::string& scheme, std::string& da
 std::string lower(const std::string& s)
 {
 	std::string res(s);
-	std::transform(res.begin(), res.end(), res.begin(), [](auto c) -> auto {
-		return std::tolower(c);
-	});
+	std::transform(res.begin(), res.end(), res.begin(), [](auto c) -> auto { return std::tolower(c); });
 	return res;
 }
 
 std::string upper(const std::string& s)
 {
 	std::string res(s);
-	std::transform(res.begin(), res.end(), res.begin(), [](auto c) -> auto {
-		return std::toupper(c);
-	});
+	std::transform(res.begin(), res.end(), res.begin(), [](auto c) -> auto { return std::toupper(c); });
 	return res;
 }
 
@@ -261,9 +257,7 @@ size_t count(const std::string& s, char ch)
 	return res;
 }
 
-std::string cut_edges(
-	std::string s, size_t left_n, size_t right_n, bool trim_whitespace
-)
+std::string cut_edges(std::string s, size_t left_n, size_t right_n, bool trim_whitespace)
 {
 	if (s.size() >= left_n + right_n)
 	{
@@ -286,9 +280,7 @@ std::string cut_edges(
 	return s;
 }
 
-std::string replace(
-	std::string src, const std::string& old_sub, const std::string& new_sub
-)
+std::string replace(std::string src, const std::string& old_sub, const std::string& new_sub)
 {
 	if (src.empty() || old_sub.empty())
 	{
@@ -311,9 +303,7 @@ std::string replace(
 	return src;
 }
 
-std::string make_text_list(
-	const std::vector<std::string>& list, const std::string& last
-)
+std::string make_text_list(const std::vector<std::string>& list, const std::string& last)
 {
 	if (list.empty())
 	{

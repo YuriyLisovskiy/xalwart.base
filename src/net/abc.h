@@ -3,7 +3,7 @@
  *
  * Copyright (c) 2020-2021 Yuriy Lisovskiy
  *
- * Abstract base classes for `net` module.
+ * Abstract base classes for 'net' module.
  */
 
 #pragma once
@@ -30,7 +30,7 @@ public:
 	// Binds socket.
 	virtual void bind(const std::string& address, uint16_t port) = 0;
 
-	// Listens the socket.
+	// Listens bound socket.
 	virtual void listen(const std::string& startup_message) = 0;
 
 	// Shutdowns and closes server socket.

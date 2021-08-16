@@ -58,11 +58,6 @@ extern std::string basename(const std::string& p);
 // Returns the directory component of a path name.
 extern std::string dirname(const std::string& p);
 
-// `p`: path to access.
-//
-// Returns file size in bytes.
-extern size_t get_size(const std::string& p);
-
 template <typename... PartT>
 void _join(std::string& out, const std::string& b, const PartT&... p)
 {

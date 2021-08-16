@@ -19,7 +19,9 @@
 
 
 __OBJ_BEGIN__
+
 class Object;
+
 __OBJ_END__
 
 

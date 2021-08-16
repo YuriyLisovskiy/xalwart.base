@@ -10,10 +10,9 @@
 
 // C++ libraries.
 #include <regex>
-
-#ifdef _MSC_VER
+#include <string>
+#include <vector>
 #include <map>
-#endif
 
 // Module definitions.
 #include "./_def_.h"
@@ -121,9 +120,7 @@ public:
 	//
 	// If arg is not found returns empty string.
 	[[nodiscard]]
-	std::string arg(
-		const std::string& key, const std::string& default_val=""
-	) const;
+	std::string arg(const std::string& key, const std::string& default_val="") const;
 
 	// Returns parts without arguments.
 	[[nodiscard]]

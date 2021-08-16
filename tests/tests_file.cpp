@@ -93,7 +93,7 @@ TEST_F(ReadFileTestCase, TestReadString)
 
 TEST_F(ReadFileTestCase, TestReadBinaryMode)
 {
-	File f(this->testReadFilePath, File::rb);
+	File f(this->testReadFilePath, File::OpenMode::ReadBinary);
 	f.open();
 
 	ASSERT_TRUE(f.is_open());
@@ -176,7 +176,7 @@ class WriteFileTestCase : public ::testing::Test
 {
 protected:
 	const std::string testFilePath = path::cwd() + "/TestWriteFile.txt";
-	File file = File(this->testFilePath, File::w);
+	File file = File(this->testFilePath, File::OpenMode::WriteOnly);
 
 	void SetUp() override
 	{
@@ -243,7 +243,7 @@ TEST_F(WriteFileTestCase, TestWriteString)
 
 TEST_F(WriteFileTestCase, TestWriteBinaryMode)
 {
-	File f(this->testFilePath, File::wb);
+	File f(this->testFilePath, File::OpenMode::WriteBinary);
 	f.open();
 
 	ASSERT_TRUE(f.is_open());

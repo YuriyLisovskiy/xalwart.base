@@ -36,9 +36,7 @@ inline size_t get_size(const std::string& p)
 // Generic implementation of splitext, to be parametrized with
 // the separators.
 extern void _split_text(
-	const std::string& full_path,
-	char sep, char alt_sep, char ext_sep,
-	std::string& root_out, std::string& ext_out
+	const std::string& full_path, char sep, char alt_sep, char ext_sep, std::string& root_out, std::string& ext_out
 );
 
 __PATH_END__

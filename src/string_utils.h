@@ -44,9 +44,8 @@ extern int _normalize_exp(double* val);
 // Returns string with joined items. If range is empty, returns empty
 // string.
 template <typename IterBegin, typename IterEnd>
-std::string join(
-	const char* delimiter,
-	IterBegin begin, IterEnd end,
+inline std::string join(
+	const char* delimiter, IterBegin begin, IterEnd end,
 	const std::function<std::string(
 		const typename std::iterator_traits<IterBegin>::value_type&
 	)>& func
@@ -75,9 +74,8 @@ std::string join(
 // Returns string with joined items. If range is empty, returns empty
 // string.
 template <typename T>
-std::string join(
-	const char* delimiter, const std::initializer_list<T>& list,
-	const std::function<std::string(const T&)>& func
+inline std::string join(
+	const char* delimiter, const std::initializer_list<T>& list, const std::function<std::string(const T&)>& func
 )
 {
 	return join(delimiter, list.begin(), list.end(), func);
@@ -101,10 +99,10 @@ concept str_or_char_iterator =
 // Returns string with joined items. If range is empty, returns empty
 // string.
 template <str_or_char_iterator IteratorT>
-std::string join(const char* delimiter, IteratorT begin, IteratorT end)
+inline std::string join(const char* delimiter, IteratorT begin, IteratorT end)
 {
 	std::string result;
-	for (auto it = begin; it != end; it++)
+	for (str_or_char_iterator auto it = begin; it != end; it++)
 	{
 		result += *it;
 		if (std::next(it) != end)
@@ -124,7 +122,7 @@ std::string join(const char* delimiter, IteratorT begin, IteratorT end)
 // Returns string with joined items. If range is empty, returns empty
 // string.
 template <str_or_char_type T>
-std::string join(const char* delimiter, const std::initializer_list<T>& list)
+inline std::string join(const char* delimiter, const std::initializer_list<T>& list)
 {
 	return join(delimiter, list.begin(), list.end());
 }
@@ -145,7 +143,7 @@ concept numeric_iterator =
 // Returns string with joined items. If range is empty, returns empty
 // string.
 template <numeric_iterator IteratorT>
-std::string join(const char* delimiter, IteratorT begin, IteratorT end)
+inline std::string join(const char* delimiter, IteratorT begin, IteratorT end)
 {
 	std::string result;
 	for (numeric_iterator auto it = begin; it != end; it++)
@@ -168,7 +166,7 @@ std::string join(const char* delimiter, IteratorT begin, IteratorT end)
 // Returns string with joined items. If range is empty, returns empty
 // string.
 template <numeric_type T>
-std::string join(const char* delimiter, const std::initializer_list<T>& list)
+inline std::string join(const char* delimiter, const std::initializer_list<T>& list)
 {
 	return join(delimiter, list.begin(), list.end());
 }
@@ -292,9 +290,7 @@ extern size_t count(const std::string& s, char ch);
 // `left_n`: left edge.
 // `right_n`: right edge.
 // `trim_whitespace`: indicates whether to trim whitespaces or not.
-extern std::string cut_edges(
-	std::string s, size_t left_n, size_t right_n, bool trim_whitespace=true
-);
+extern std::string cut_edges(std::string s, size_t left_n, size_t right_n, bool trim_whitespace=true);
 
 // Replaces old substring with new substring.
 //
@@ -303,11 +299,7 @@ extern std::string cut_edges(
 // `new_sub`: new substring to insert.
 //
 // If `old_sub` is empty, returns string without changes.
-extern std::string replace(
-	std::string src,
-	const std::string& old_sub,
-	const std::string& new_sub
-);
+extern std::string replace(std::string src, const std::string& old_sub, const std::string& new_sub);
 
 // Creates text from input vector of strings.
 //
@@ -319,8 +311,6 @@ extern std::string replace(
 // first `n - 1` items concatenated with `last` string and the
 // last item of the sequence.
 // Example: 'one, two and three'.
-extern std::string make_text_list(
-	const std::vector<std::string>& list, const std::string& last
-);
+extern std::string make_text_list(const std::vector<std::string>& list, const std::string& last);
 
 __STR_END__

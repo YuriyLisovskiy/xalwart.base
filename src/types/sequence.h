@@ -37,8 +37,7 @@ protected:
 	// Used for `__str__()` and `__repr__()` methods.
 	[[nodiscard]]
 	virtual inline std::string aggregate(
-		const std::string& separator,
-		const std::function<std::string(const obj::Object*)>& func
+		const std::string& separator, const std::function<std::string(const obj::Object*)>& func
 	) const
 	{
 		auto begin = this->container.begin();
@@ -68,8 +67,7 @@ protected:
 	// `func`: function which handles an item and it's index.
 	template <typename IteratorT>
 	inline void look_through(
-		IteratorT begin, IteratorT end,
-		const std::function<void(size_t, const obj::Object*)>& func
+		IteratorT begin, IteratorT end, const std::function<void(size_t, const obj::Object*)>& func
 	) const
 	{
 		size_t i = 0;
@@ -151,7 +149,8 @@ public:
 		}
 
 		throw TypeError(
-			"'__cmp__' not supported between instances of '" + this->__type__().name() + "' and '" + other->__type__().name() + "'",
+			"'__cmp__' not supported between instances of '" + this->__type__().name() +
+			"' and '" + other->__type__().name() + "'",
 			_ERROR_DETAILS_
 		);
 	}
@@ -161,8 +160,7 @@ public:
 	inline std::string __str__() const override
 	{
 		return "{" + this->aggregate(
-			", ",
-			[](const obj::Object* item) -> std::string { return item ? item->__repr__() : "nullptr"; }
+			", ", [](const obj::Object* item) -> std::string { return item ? item->__repr__() : "nullptr"; }
 		) + "}";
 	}
 
@@ -172,8 +170,7 @@ public:
 	inline std::string __repr__() const override
 	{
 		return "{" + this->aggregate(
-			", ",
-			[](const obj::Object* item) -> std::string { return item ? item->__repr__() : "'nullptr'"; }
+			", ", [](const obj::Object* item) -> std::string { return item ? item->__repr__() : "'nullptr'"; }
 		) + "}";
 	}
 };

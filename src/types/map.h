@@ -38,8 +38,7 @@ protected:
 	// Used for `__str__()` and `__repr__()` methods.
 	[[nodiscard]]
 	virtual inline std::string aggregate(
-		const std::string& separator,
-		const std::function<std::string(const obj::Object*, const obj::Object*)>& func
+		const std::string& separator, const std::function<std::string(const obj::Object*, const obj::Object*)>& func
 	) const
 	{
 		auto begin = this->container.begin();
@@ -85,8 +84,7 @@ public:
 	// `func`: function which handles an item and it's index.
 	template <typename IteratorT>
 	inline void look_through(
-		IteratorT begin, IteratorT end,
-		const std::function<void(size_t, const obj::Object*, const obj::Object*)>& func
+		IteratorT begin, IteratorT end, const std::function<void(size_t, const obj::Object*, const obj::Object*)>& func
 	) const
 	{
 		size_t i = 0;
@@ -101,8 +99,7 @@ public:
 	// `func`: function which handles key, value and index.
 	// `reversed`: iteration direction option.
 	inline void look_through(
-		const std::function<void(size_t, const obj::Object*, const obj::Object*)>& func,
-		bool reversed
+		const std::function<void(size_t, const obj::Object*, const obj::Object*)>& func, bool reversed
 	) const override
 	{
 		if (reversed)
@@ -153,7 +150,8 @@ public:
 		}
 
 		throw TypeError(
-			"'__cmp__' not supported between instances of '" + this->__type__().name() + "' and '" + other->__type__().name() + "'",
+			"'__cmp__' not supported between instances of '" + this->__type__().name() +
+			"' and '" + other->__type__().name() + "'",
 			_ERROR_DETAILS_
 		);
 	}

@@ -61,8 +61,7 @@ public:
 	//     - second: value
 	// `reversed`: sets the direction of iterating.
 	virtual void look_through(
-		const std::function<void(size_t, const obj::Object*)>& func,
-		bool reversed
+		const std::function<void(size_t, const obj::Object*)>& func, bool reversed
 	) const = 0;
 };
 
@@ -86,12 +85,12 @@ public:
 	//     - third: value
 	// `reversed`: sets the direction of iterating.
 	virtual void look_through(
-		const std::function<void(size_t, const obj::Object*, const obj::Object*)>& func,
-		bool reversed
+		const std::function<void(size_t, const obj::Object*, const obj::Object*)>& func, bool reversed
 	) const = 0;
 };
 
 __TYPES_ABC_END__
+
 
 __TYPES_BEGIN__
 

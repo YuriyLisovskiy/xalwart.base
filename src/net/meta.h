@@ -17,8 +17,8 @@
 
 __NET_META_BEGIN__
 
-const std::string SERVER_NAME = "SERVER_NAME";
+inline constexpr const char* SERVER_NAME = "SERVER_NAME";
 
-const std::string SERVER_PORT = "SERVER_PORT";
+inline constexpr const char* SERVER_PORT = "SERVER_PORT";
 
 __NET_META_END__

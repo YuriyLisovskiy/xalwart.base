@@ -32,37 +32,37 @@ TEST(TestCase_utility, to_sequence_Empty)
 
 TEST(TestCase_utility, to_object_Array)
 {
-	auto container = std::array<types::_char, 3>{'a', 'b', 'c'};
+	auto container = std::array<types::char_, 3>{'a', 'b', 'c'};
 	ASSERT_EQ(types::to_object(container).get()->__str__(), "{'a', 'b', 'c'}");
 }
 
 TEST(TestCase_utility, to_object_Vector)
 {
-	auto container = std::vector<types::_char>{'a', 'b', 'c'};
+	auto container = std::vector<types::char_>{'a', 'b', 'c'};
 	ASSERT_EQ(types::to_object(container).get()->__str__(), "{'a', 'b', 'c'}");
 }
 
 TEST(TestCase_utility, to_object_Deque)
 {
-	auto container = std::deque<types::_char>{'a', 'b', 'c'};
+	auto container = std::deque<types::char_>{'a', 'b', 'c'};
 	ASSERT_EQ(types::to_object(container).get()->__str__(), "{'a', 'b', 'c'}");
 }
 
 TEST(TestCase_utility, to_object_Forward_list)
 {
-	auto container = std::forward_list<types::_char>{'a', 'b', 'c'};
+	auto container = std::forward_list<types::char_>{'a', 'b', 'c'};
 	ASSERT_EQ(types::to_object(container).get()->__str__(), "{'a', 'b', 'c'}");
 }
 
 TEST(TestCase_utility, to_object_List)
 {
-	auto container = std::list<types::_char>{'a', 'b', 'c'};
+	auto container = std::list<types::char_>{'a', 'b', 'c'};
 	ASSERT_EQ(types::to_object(container).get()->__str__(), "{'a', 'b', 'c'}");
 }
 
 TEST(TestCase_utility, to_object_StdMap)
 {
-	auto container = std::map<types::string, types::_int>{
+	auto container = std::map<types::string, types::int_>{
 		{"a", 14},
 		{"b", 7},
 		{"c", 0},
@@ -72,7 +72,7 @@ TEST(TestCase_utility, to_object_StdMap)
 
 TEST(TestCase_utility, to_object_Map)
 {
-	auto container = types::map<types::string, types::_int>{
+	auto container = types::map<types::string, types::int_>{
 		{"a", 14},
 		{"b", -7},
 		{"c", 0},

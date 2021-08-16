@@ -10,12 +10,11 @@
 
 // C++ libraries.
 #include <functional>
+#include <string>
+#include <map>
 
 // Module definitions.
 #include "./_def_.h"
-
-// Base libraries.
-#include "../collections/dictionary.h"
 
 
 __NET_BEGIN__
@@ -45,7 +44,7 @@ struct RequestContext
 	std::string content;
 
 	// Accumulates request's headers.
-	collections::Dictionary<std::string, std::string> headers;
+	std::map<std::string, std::string> headers;
 
 	// Contains the size of request's content.
 	unsigned long long content_size{};
@@ -63,8 +62,8 @@ struct RequestContext
 
 	std::function<bool(const char* data, size_t n)> write;
 
-	// Checks if current protocol major and minor versions are equal to
-	// provided.
+	// Checks if current protocol major and minor versions are
+	// the same as provided.
 	[[nodiscard]]
 	inline bool proto_v_eq_to(short major, short minor) const
 	{
@@ -105,8 +104,6 @@ struct RequestContext
 };
 
 // Function type that handles the request.
-typedef std::function<uint(
-	RequestContext*, const collections::Dictionary<std::string, std::string>&
-)> HandlerFunc;
+typedef std::function<uint(RequestContext*, const std::map<std::string, std::string>&)> HandlerFunc;
 
 __NET_END__

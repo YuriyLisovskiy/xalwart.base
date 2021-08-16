@@ -29,34 +29,34 @@ __MAIN_NAMESPACE_BEGIN__
 class File final
 {
 public:
-	enum open_mode
+	enum class OpenMode
 	{
-		r,   // read-only
-		rb,  // read in binary mode (read-only)
-		rw,  // read and write
-		rwb, // read and write in binary mode
-		w,   // write-only
-		wb,  // write in binary mode (write-only)
-		a,   // append (write-only)
-		arw  // append (read and write)
+		ReadOnly,           // read-only
+		ReadBinary,         // read in binary mode (read-only)
+		ReadWrite,          // read and write
+		ReadWriteBinary,    // read and write in binary mode
+		WriteOnly,          // write-only
+		WriteBinary,        // write in binary mode (write-only)
+		AppendReadOnly,     // append (write-only)
+		AppendReadWrite     // append (read and write)
 	};
 
 private:
-	enum file_mode_enum
+	enum class FileMode
 	{
-		m_read_only, m_write_only, m_both
+		ReadOnly, WriteOnly, ReadWrite
 	};
 
 	size_t _default_chunk_size;
 	std::fstream _file;
 	std::string _name;
-	file_mode_enum _file_mode;
+	FileMode _file_mode;
 	std::ios_base::openmode _mode;
 
 public:
 
 	// Initializes file name and mode.
-	explicit File(const std::string& name="", open_mode mode=open_mode::r);
+	explicit File(const std::string& name="", OpenMode mode=OpenMode::ReadOnly);
 
 	// Deleted constructor.
 	File(const File& other) = delete;

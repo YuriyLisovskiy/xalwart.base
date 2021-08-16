@@ -59,7 +59,8 @@ std::string encode_ascii(const std::string& s, Mode mode)
 			{
 				case Mode::Strict:
 					throw EncodingError(
-						"'ascii' codec can't encode character in position " + std::to_string(i) + ": ordinal not in range [0;127]",
+						"'ascii' codec can't encode character in position " + std::to_string(i) +
+						": ordinal not in range [0;127]",
 						_ERROR_DETAILS_
 					);
 				case Mode::Ignore:
