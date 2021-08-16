@@ -26,7 +26,7 @@ File::File(const std::string& name, OpenMode mode)
 	this->_name = name;
 	switch (mode)
 	{
-		case OpenMode::ReadOnly:
+		case OpenMode::Read:
 			this->_mode = std::ios::in;
 			this->_file_mode = FileMode::ReadOnly;
 			break;
@@ -42,7 +42,7 @@ File::File(const std::string& name, OpenMode mode)
 			this->_file_mode = FileMode::ReadWrite;
 			this->_mode = std::ios::out | std::ios::in | std::ios::binary;
 			break;
-		case OpenMode::WriteOnly:
+		case OpenMode::Write:
 			this->_file_mode = FileMode::WriteOnly;
 			this->_mode = std::ios::out;
 			break;
@@ -50,7 +50,7 @@ File::File(const std::string& name, OpenMode mode)
 			this->_file_mode = FileMode::WriteOnly;
 			this->_mode = std::ios::out | std::ios::binary;
 			break;
-		case OpenMode::AppendReadOnly:
+		case OpenMode::AppendRead:
 			this->_file_mode = FileMode::WriteOnly;
 			this->_mode = std::ios::out | std::ios::app;
 			break;

@@ -23,7 +23,7 @@ using byte = unsigned char;
 
 std::vector<byte> strToBytes(const std::string& s)
 {
-	return std::vector<byte>(s.cbegin(), s.cend());
+	return {s.cbegin(), s.cend()};
 }
 
 void removeFile(const std::string& path)
@@ -176,7 +176,7 @@ class WriteFileTestCase : public ::testing::Test
 {
 protected:
 	const std::string testFilePath = path::cwd() + "/TestWriteFile.txt";
-	File file = File(this->testFilePath, File::OpenMode::WriteOnly);
+	File file = File(this->testFilePath, File::OpenMode::Write);
 
 	void SetUp() override
 	{

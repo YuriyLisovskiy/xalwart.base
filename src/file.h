@@ -31,13 +31,13 @@ class File final
 public:
 	enum class OpenMode
 	{
-		ReadOnly,           // read-only
+		Read,               // read-only
 		ReadBinary,         // read in binary mode (read-only)
 		ReadWrite,          // read and write
 		ReadWriteBinary,    // read and write in binary mode
-		WriteOnly,          // write-only
+		Write,              // write-only
 		WriteBinary,        // write in binary mode (write-only)
-		AppendReadOnly,     // append (write-only)
+		AppendRead,         // append (write-only)
 		AppendReadWrite     // append (read and write)
 	};
 
@@ -56,7 +56,7 @@ private:
 public:
 
 	// Initializes file name and mode.
-	explicit File(const std::string& name="", OpenMode mode=OpenMode::ReadOnly);
+	explicit File(const std::string& name="", OpenMode mode=OpenMode::Read);
 
 	// Deleted constructor.
 	File(const File& other) = delete;
