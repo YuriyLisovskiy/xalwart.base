@@ -82,7 +82,7 @@ TEST(TestCase_path, split_text_WithoutRoot)
 
 TEST(TestCase_path, split_text_WithoutExt)
 {
-	std::string str_sep = std::string(1, path::sep);
+	std::string str_sep = std::string(1, path::path_sep);
 	std::string expected_root = "hello" + str_sep + "world" + str_sep + "file";
 	std::string actual_root, actual_ext;
 	path::split_text("hello" + str_sep + "world" + str_sep + "file", actual_root, actual_ext);
@@ -92,7 +92,7 @@ TEST(TestCase_path, split_text_WithoutExt)
 
 TEST(TestCase_path, split_text_RootAndExt)
 {
-	auto str_sep = std::string(1, path::sep);
+	auto str_sep = std::string(1, path::path_sep);
 	auto str_ext_sep = std::string(1, path::ext_sep);
 	std::string expected_root = "hello" + str_sep + "world";
 	std::string expected_ext = str_ext_sep + "file";
@@ -104,7 +104,7 @@ TEST(TestCase_path, split_text_RootAndExt)
 
 TEST(TestCase_path, split_text_RootAndExtWithAltSeparatorAfterSeparator)
 {
-	auto str_sep = std::string(1, path::sep);
+	auto str_sep = std::string(1, path::path_sep);
 	auto str_ext_sep = std::string(1, path::ext_sep);
 	std::string expected_root = "hello" + str_sep + "worl~d";
 	std::string expected_ext = str_ext_sep + "file";
@@ -116,7 +116,7 @@ TEST(TestCase_path, split_text_RootAndExtWithAltSeparatorAfterSeparator)
 
 TEST(TestCase_path, split_text_RootAndExtWithAltSeparatorBeforeSeparator)
 {
-	auto str_sep = std::string(1, path::sep);
+	auto str_sep = std::string(1, path::path_sep);
 	auto str_ext_sep = std::string(1, path::ext_sep);
 	std::string expected_root = "hello~" + str_sep + "world";
 	std::string expected_ext = str_ext_sep + "file";
@@ -128,7 +128,7 @@ TEST(TestCase_path, split_text_RootAndExtWithAltSeparatorBeforeSeparator)
 
 TEST(TestCase_path, split_text_RootAndExtWithAltSeparatorAfterExt)
 {
-	auto str_sep = std::string(1, path::sep);
+	auto str_sep = std::string(1, path::path_sep);
 	auto str_ext_sep = std::string(1, path::ext_sep);
 	std::string expected_root = "hello" + str_sep + "world";
 	std::string expected_ext = str_ext_sep + "f~ile";
@@ -141,13 +141,13 @@ TEST(TestCase_path, split_text_RootAndExtWithAltSeparatorAfterExt)
 TEST(TestCase_path, exists_False)
 {
 	ASSERT_FALSE(path::exists(
-		std::string(1, path::current_dir) + std::string(1, path::sep) + "some-file.txt"
+			std::string(1, path::current_dir) + std::string(1, path::path_sep) + "some-file.txt"
 	));
 }
 
 TEST(TestCase_path, exists_True)
 {
-	std::string fp = std::string(1, path::current_dir) + std::string(1, path::sep) + "some-file.txt";
+	std::string fp = std::string(1, path::current_dir) + std::string(1, path::path_sep) + "some-file.txt";
 	std::ofstream fs(fp);
 	if (fs.is_open())
 	{
@@ -175,13 +175,13 @@ TEST(TestCase_path, basename_WithoutBaseDir)
 TEST(TestCase_path, basename_WithCurrentDir)
 {
 	auto file_name = "file.txt";
-	auto actual = path::basename(std::string(1, path::current_dir) + std::string(1, path::sep) + file_name);
+	auto actual = path::basename(std::string(1, path::current_dir) + std::string(1, path::path_sep) + file_name);
 	ASSERT_EQ(file_name, actual);
 }
 
 TEST(TestCase_path, basename_WithDir)
 {
-	auto str_sep = std::string(1, path::sep);
+	auto str_sep = std::string(1, path::path_sep);
 	auto file_name = "file.txt";
 	auto actual = path::basename("hello" + str_sep + "dir" + str_sep + file_name);
 	ASSERT_EQ(file_name, actual);
@@ -202,13 +202,13 @@ TEST(TestCase_path, dirname_WithoutBaseDir)
 TEST(TestCase_path, dirname_WithCurrentDir)
 {
 	auto dir_name = std::string(1, path::current_dir);
-	auto actual = path::dirname(dir_name + std::string(1, path::sep) + "file.txt");
+	auto actual = path::dirname(dir_name + std::string(1, path::path_sep) + "file.txt");
 	ASSERT_EQ(dir_name, actual);
 }
 
 TEST(TestCase_path, dirname_WithDir)
 {
-	auto str_sep = std::string(1, path::sep);
+	auto str_sep = std::string(1, path::path_sep);
 	auto dir_name = "hello" + str_sep + "dir";
 	auto actual = path::dirname(dir_name + str_sep + "file.txt");
 	ASSERT_EQ(dir_name, actual);
@@ -253,14 +253,14 @@ TEST(TestCase_path, join_Single)
 
 TEST(TestCase_path, join_Double)
 {
-	std::string expected = "hello" + std::string(1, path::sep) + "dir";
+	std::string expected = "hello" + std::string(1, path::path_sep) + "dir";
 	auto actual = path::join("hello", "dir");
 	ASSERT_EQ(expected, actual);
 }
 
 TEST(TestCase_path, join_SeveralParts)
 {
-	auto str_sep = std::string(1, path::sep);
+	auto str_sep = std::string(1, path::path_sep);
 	std::string expected = "some" + str_sep + "dir" + str_sep + "to" + str_sep + "secret.file";
 	auto actual = path::join("some", "dir", "to", "secret.file");
 	ASSERT_EQ(expected, actual);
@@ -268,7 +268,7 @@ TEST(TestCase_path, join_SeveralParts)
 
 TEST(TestCase_path, join_WithMiddleAbsolutePath)
 {
-	auto str_sep = std::string(1, path::sep);
+	auto str_sep = std::string(1, path::path_sep);
 	std::string expected = str_sep + "dir" + str_sep + "file.txt";
 	auto actual = path::join("some", str_sep + "dir", "file.txt");
 	ASSERT_EQ(expected, actual);
@@ -276,7 +276,7 @@ TEST(TestCase_path, join_WithMiddleAbsolutePath)
 
 TEST(TestCase_path, join_WithLastEmptyPart)
 {
-	auto str_sep = std::string(1, path::sep);
+	auto str_sep = std::string(1, path::path_sep);
 	std::string expected = "some" + str_sep + "dir" + str_sep;
 	auto actual = path::join("some", "dir", "");
 	ASSERT_EQ(expected, actual);
@@ -284,12 +284,12 @@ TEST(TestCase_path, join_WithLastEmptyPart)
 
 TEST(TestCase_path, is_absolute_True)
 {
-	auto str_sep = std::string(1, path::sep);
+	auto str_sep = std::string(1, path::path_sep);
 	ASSERT_TRUE(path::is_absolute(str_sep + "some" + str_sep + "location"));
 }
 
 TEST(TestCase_path, is_absolute_False)
 {
-	auto str_sep = std::string(1, path::sep);
+	auto str_sep = std::string(1, path::path_sep);
 	ASSERT_FALSE(path::is_absolute("some" + str_sep + "location"));
 }

@@ -28,8 +28,8 @@ __PATH_BEGIN__
 inline const char current_dir = '.';
 inline const char* parent_dir = "..";
 inline const char ext_sep = '.';
-inline const char sep ='/';
-inline const char path_sep = ':';
+inline const char path_sep ='/';
+inline const char path_list_sep = ':';
 inline const char* def_path = "/bin:/usr/bin";
 inline const char alt_sep = '\0';
 inline const char* dev_null = "/dev/null";
@@ -40,7 +40,7 @@ inline const char* dev_null = "/dev/null";
 // It is always true that `root + ext == p`.
 inline void split_text(const std::string& full_path, std::string& root_out, std::string& ext_out)
 {
-	_split_text(full_path, path::sep, path::alt_sep, path::ext_sep, root_out, ext_out);
+	_split_text(full_path, path::path_sep, path::alt_sep, path::ext_sep, root_out, ext_out);
 }
 
 // `p`: path to check.
@@ -61,17 +61,17 @@ extern std::string dirname(const std::string& p);
 template <typename... PartT>
 void _join(std::string& out, const std::string& b, const PartT&... p)
 {
-	if (b.starts_with(path::sep))
+	if (b.starts_with(path::path_sep))
 	{
 		out = b;
 	}
-	else if (out.empty() || out.ends_with(path::sep))
+	else if (out.empty() || out.ends_with(path::path_sep))
 	{
 		out += b;
 	}
 	else
 	{
-		out += std::string(1, path::sep) + b;
+		out += std::string(1, path::path_sep) + b;
 	}
 
 	if constexpr (sizeof...(p) > 0)
@@ -109,7 +109,7 @@ extern std::string cwd();
 // Returns `true` if path is absolute, `false` otherwise.
 inline bool is_absolute(const std::string& p)
 {
-	return p.starts_with(path::sep);
+	return p.starts_with(path::path_sep);
 }
 
 __PATH_END__

@@ -26,18 +26,18 @@ bool exists(const std::string& p)
 
 std::string basename(const std::string& p)
 {
-	size_t pos = p.rfind(path::sep);
+	size_t pos = p.rfind(path::path_sep);
 	return p.substr(pos == std::string::npos ? 0 : pos + 1);
 }
 
 std::string dirname(const std::string& p)
 {
-	size_t pos = p.rfind(path::sep);
+	size_t pos = p.rfind(path::path_sep);
 	auto i = pos == std::string::npos ? 0 : pos + 1;
 	auto head = p.substr(0, i);
-	if (!head.empty() && head != std::string(head.size(), path::sep))
+	if (!head.empty() && head != std::string(head.size(), path::path_sep))
 	{
-		head = str::rtrim(head, path::sep);
+		head = str::rtrim(head, path::path_sep);
 	}
 
 	return head;

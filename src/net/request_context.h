@@ -16,8 +16,20 @@
 // Module definitions.
 #include "./_def_.h"
 
+// Base libraries.
+#include "../io.h"
+
 
 __NET_BEGIN__
+
+enum SocketReaderState
+{
+	Done,
+	TimedOut,
+	ConnectionBroken,
+	Failed,
+	Eof
+};
 
 struct RequestContext
 {
@@ -41,7 +53,7 @@ struct RequestContext
 	bool keep_alive{};
 
 	// Contains body of http request.
-	std::string content;
+	io::IReader* body;
 
 	// Accumulates request's headers.
 	std::map<std::string, std::string> headers;

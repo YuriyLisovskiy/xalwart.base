@@ -71,7 +71,7 @@ std::pair<std::string, std::string> split_drive(const std::string& p)
 {
 	if (p.size() > 2)
 	{
-		std::string s_sep = std::string(1, sep),
+		std::string s_sep = std::string(1, path_sep),
 			s_alt_sep = std::string(1, alt_sep),
 			colon = ":";
 		auto norm_p = str::replace(p, s_alt_sep, s_sep);
@@ -129,6 +129,28 @@ bool is_absolute(const std::string& p)
 
 	auto s = split_drive(p).second;
 	return !s.empty() && str::contains("\\/", s[0]);
+}
+
+std::pair<std::string, std::string> prefix_and_suffix(const std::string& pattern)
+{
+	if (str::contains(pattern, path_sep))
+	{
+		throw ArgumentError("pattern contains path separator", _ERROR_DETAILS_);
+	}
+
+	std::string prefix, suffix;
+	auto pos = pattern.find_last_of('*');
+	if (pos != std::string::npos)
+	{
+		prefix = pattern.substr(0, pos);
+		suffix = pattern.substr(pos + 1);
+	}
+	else
+	{
+		prefix = pattern;
+	}
+
+	return {prefix, suffix};
 }
 
 __PATH_END__

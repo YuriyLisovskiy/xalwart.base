@@ -95,6 +95,10 @@ __MAIN_NAMESPACE_END__
 #define __LOG_BEGIN__ __MAIN_NAMESPACE_BEGIN__ namespace log {
 #define __LOG_END__ } __MAIN_NAMESPACE_END__
 
+// xw::io
+#define __IO_BEGIN__ __MAIN_NAMESPACE_BEGIN__ namespace io {
+#define __IO_END__ } __MAIN_NAMESPACE_END__
+
 // Required parameters for built-in logger.
 #ifdef _MSC_VER
 #define _ERROR_DETAILS_ __LINE__, __FUNCTION__, __FILE__

@@ -25,8 +25,8 @@ __PATH_BEGIN__
 inline const char current_dir = '.';
 inline const char* parent_dir = "..";
 inline const char ext_sep = '.';
-inline const char sep = '\\';
-inline const char path_sep = ';';
+inline const char path_sep = '\\';
+inline const char path_list_sep = ';';
 inline const char alt_sep = '/';
 inline const char* def_path = ".;C:\\bin";
 inline const char* dev_null = "nul";
@@ -43,7 +43,7 @@ extern std::pair<std::string, std::string> split(const std::string& p);
 // It is always true that `root + ext == p`.
 inline void split_text(const std::string& full_path, std::string& root_out, std::string& ext_out)
 {
-	_split_text(full_path, path::sep, path::alt_sep, path::ext_sep, root_out, ext_out);
+	_split_text(full_path, path::path_sep, path::alt_sep, path::ext_sep, root_out, ext_out);
 }
 
 // `p`: path to check.
@@ -117,7 +117,7 @@ void _join(
 	// Second path is relative to the first
 	if (!result_path.empty() && !str::contains(seps, *result_path.end()))
 	{
-		result_path = result_path + sep;
+		result_path = result_path + path_sep;
 	}
 
 	result_path = result_path + p_path;
@@ -127,7 +127,7 @@ void _join(
 	}
 }
 
-// Join two or more pathname components, inserting 'path::sep'
+// Join two or more pathname components, inserting 'path::path_sep'
 // as needed. If any component is an absolute path, all previous path
 // components will be discarded. An empty last part will result in a path
 // that ends with a separator.
@@ -151,7 +151,7 @@ std::string join(const std::string& a, const PartT&... p)
 		!result_drive.empty() && *result_drive.end() != colon
 	)
 	{
-		return result_drive + sep + result_path;
+		return result_drive + path_sep + result_path;
 	}
 
 	return result_drive + result_path;

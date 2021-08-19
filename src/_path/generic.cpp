@@ -6,8 +6,8 @@
 
 #include "./generic.h"
 
-#ifdef _MSC_VER
 // C++ libraries.
+#ifdef _MSC_VER
 #include <algorithm>
 #endif
 
