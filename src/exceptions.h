@@ -166,5 +166,7 @@ DEF_EXCEPTION_WITH_BASE(TypeError, BaseException, "type error", "");
 DEF_EXCEPTION_WITH_BASE(IOError, BaseException, "io error", "");
 DEF_EXCEPTION_WITH_BASE(ReaderError, IOError, "reader error", "");
 DEF_EXCEPTION_WITH_BASE(WriterError, IOError, "writer error", "");
+DEF_EXCEPTION_WITH_BASE(ServerError, BaseException, "server error", "");
+DEF_EXCEPTION_WITH_BASE(EntityTooLargeError, ServerError, "entity too large  error", "");
 
 __MAIN_NAMESPACE_END__

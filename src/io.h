@@ -28,11 +28,11 @@ public:
 	virtual bool read_line(std::string& buffer) = 0;
 
 	/**
-	 * Reads all bytes from stream.
+	 * Reads `max_count` or less bytes from stream.
 	 *
 	 * \return `true` if there are more bytes to read, `false` otherwise.
 	 */
-	virtual bool read_all(std::string& buffer) = 0;
+	virtual bool read(std::string& buffer, size_t max_count) = 0;
 
 	/**
 	 * Closes the stream.
