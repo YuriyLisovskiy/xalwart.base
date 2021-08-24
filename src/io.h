@@ -20,9 +20,44 @@ __IO_BEGIN__
 class IReader
 {
 public:
-	virtual int read_line(std::string& buffer, size_t max_n) = 0;
+	/**
+	 * Reads all bytes from stream before `\r\n` sequence.
+	 *
+	 * \return `true` if there are more bytes to read, `false` otherwise.
+	 */
+	virtual bool read_line(std::string& buffer) = 0;
 
-	virtual int read(std::string& buffer, size_t n) = 0;
+	/**
+	 * Reads all bytes from stream.
+	 *
+	 * \return `true` if there are more bytes to read, `false` otherwise.
+	 */
+	virtual bool read_all(std::string& buffer) = 0;
+
+	/**
+	 * Closes the stream.
+	 *
+	 * \return `true` if the operation is successful, `false` otherwise.
+	 */
+	virtual bool close_reader() = 0;
+};
+
+class IWriter
+{
+public:
+	/**
+	 * Writes `count` bytes to stream.
+	 *
+	 * \return `true` if the operation is successful, `false` otherwise.
+	 */
+	virtual bool write(const char* buffer, ssize_t count) = 0;
+
+	/**
+	 * Closes the stream.
+	 *
+	 * \return `true` if the operation is successful, `false` otherwise.
+	 */
+	virtual bool close_writer() = 0;
 };
 
 __IO_END__

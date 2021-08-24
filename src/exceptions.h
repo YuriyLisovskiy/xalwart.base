@@ -159,50 +159,12 @@ public:
 DEF_EXCEPTION_WITH_BASE(KeyError, BaseException, "key error", "");
 DEF_EXCEPTION_WITH_BASE(ParseError, BaseException, "parse error", "");
 DEF_EXCEPTION_WITH_BASE(RuntimeError, BaseException, "runtime error", "");
-DEF_EXCEPTION_WITH_BASE(MultiPartParserError, ParseError, "multipart parser error", "");
 DEF_EXCEPTION_WITH_BASE(NotImplementedException, BaseException, "not implemented", "");
 DEF_EXCEPTION_WITH_BASE(NullPointerException, BaseException, "null pointer exception", "");
-
-// Socket exception representation.
-// However, holds number of socket error.
-class SocketError : public BaseException
-{
-private:
-
-	// Socket error code.
-	int _errno;
-
-protected:
-	inline SocketError(
-		int err_no, const char* message, int line, const char* function, const char* file, const char* type
-	) : BaseException(message, line, function, file, type), _errno(err_no)
-	{
-	}
-
-public:
-
-	// Initializes exception with type name.
-	inline explicit SocketError(
-		int err_no, const char* message, int line=0, const char* function="", const char* file=""
-	) : SocketError(err_no, message, line, function, file, "xw::SocketError")
-	{
-	}
-
-	inline explicit SocketError(
-		int err_no, const std::string& message, int line=0, const char* function="", const char* file=""
-	) : SocketError(err_no, message.c_str(), line, function, file)
-	{
-	}
-
-	// Returns number of socket error.
-	[[nodiscard]]
-	inline int err_no() const
-	{
-		return this->_errno;
-	}
-};
-
 DEF_EXCEPTION_WITH_BASE(ValueError, BaseException, "value error", "");
 DEF_EXCEPTION_WITH_BASE(TypeError, BaseException, "type error", "");
+DEF_EXCEPTION_WITH_BASE(IOError, BaseException, "io error", "");
+DEF_EXCEPTION_WITH_BASE(ReaderError, IOError, "reader error", "");
+DEF_EXCEPTION_WITH_BASE(WriterError, IOError, "writer error", "");
 
 __MAIN_NAMESPACE_END__

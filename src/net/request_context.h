@@ -22,15 +22,6 @@
 
 __NET_BEGIN__
 
-enum SocketReaderState
-{
-	Done,
-	TimedOut,
-	ConnectionBroken,
-	Failed,
-	Eof
-};
-
 struct RequestContext
 {
 	// Major part of http protocol version.
