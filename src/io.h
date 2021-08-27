@@ -25,14 +25,14 @@ public:
 	 *
 	 * \return `true` if there are more bytes to read, `false` otherwise.
 	 */
-	virtual bool read_line(std::string& buffer) = 0;
+	virtual ssize_t read_line(std::string& buffer) = 0;
 
 	/**
 	 * Reads `max_count` or less bytes from stream.
 	 *
 	 * \return `true` if there are more bytes to read, `false` otherwise.
 	 */
-	virtual bool read(std::string& buffer, size_t max_count) = 0;
+	virtual ssize_t read(std::string& buffer, size_t max_count) = 0;
 
 	/**
 	 * Closes the stream.
@@ -50,7 +50,7 @@ public:
 	 *
 	 * \return `true` if the operation is successful, `false` otherwise.
 	 */
-	virtual bool write(const char* buffer, ssize_t count) = 0;
+	virtual ssize_t write(const char* buffer, ssize_t count) = 0;
 
 	/**
 	 * Closes the stream.
@@ -58,6 +58,21 @@ public:
 	 * \return `true` if the operation is successful, `false` otherwise.
 	 */
 	virtual bool close_writer() = 0;
+};
+
+class IStream : public IReader, public IWriter
+{
+public:
+
+	/**
+	 * Closes input and output streams.
+	 *
+	 * \return `true` if both operations are successful, `false` otherwise.
+	 */
+	inline virtual bool close()
+	{
+		return this->close_reader() && this->close_writer();
+	}
 };
 
 __IO_END__

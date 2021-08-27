@@ -10,13 +10,13 @@
 
 // C++ libraries.
 #include <string>
+#include <map>
 
 // Module definitions.
 #include "./_def_.h"
 
 // Base libraries.
 #include "./request_context.h"
-#include "../collections/dictionary.h"
 
 
 __NET_ABC_BEGIN__
@@ -25,8 +25,6 @@ __NET_ABC_BEGIN__
 class IServer
 {
 public:
-	virtual void setup_handler(net::HandlerFunc handler) = 0;
-
 	// Binds socket.
 	virtual void bind(const std::string& address, uint16_t port) = 0;
 
@@ -38,12 +36,12 @@ public:
 
 	// Returns server's environment variables.
 	[[nodiscard]]
-	virtual collections::Dictionary<std::string, std::string> environ() const = 0;
+	virtual std::map<std::string, std::string> get_environment() const = 0;
 
 protected:
 
 	// Initializes environment variables of the server.
-	virtual void init_environ() = 0;
+	virtual void initialize_environment() = 0;
 };
 
 __NET_ABC_END__
