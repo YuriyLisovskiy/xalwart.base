@@ -157,7 +157,6 @@ public:
 };
 
 DEF_EXCEPTION_WITH_BASE(KeyError, BaseException, "key error", "");
-DEF_EXCEPTION_WITH_BASE(ParseError, BaseException, "parse error", "");
 DEF_EXCEPTION_WITH_BASE(RuntimeError, BaseException, "runtime error", "");
 DEF_EXCEPTION_WITH_BASE(NotImplementedException, BaseException, "not implemented", "");
 DEF_EXCEPTION_WITH_BASE(NullPointerException, BaseException, "null pointer exception", "");
@@ -167,6 +166,45 @@ DEF_EXCEPTION_WITH_BASE(IOError, BaseException, "io error", "");
 DEF_EXCEPTION_WITH_BASE(ReaderError, IOError, "reader error", "");
 DEF_EXCEPTION_WITH_BASE(WriterError, IOError, "writer error", "");
 DEF_EXCEPTION_WITH_BASE(ServerError, BaseException, "server error", "");
+DEF_EXCEPTION_WITH_BASE(ParseError, ServerError, "parse error", "");
 DEF_EXCEPTION_WITH_BASE(EntityTooLargeError, ServerError, "entity too large  error", "");
+
+// TESTME: LineTooLongError
+// TODO: docs for 'LineTooLongError'
+class LineTooLongError : public ParseError
+{
+protected:
+	inline LineTooLongError(
+		const char* message, int line, const char* function, const char* file, const char* type
+	) : ParseError(message, line, function, file, type)
+	{
+	}
+
+public:
+	inline explicit LineTooLongError(
+		const std::string& message, int line=0, const char* function="", const char* file=""
+	) : LineTooLongError(message.c_str(), line, function, file, "xw::LineTooLongError")
+	{
+	}
+};
+
+// TESTME: TooMuchHeadersError
+// TODO: docs for 'TooMuchHeadersError'
+class TooMuchHeadersError : public ParseError
+{
+protected:
+	inline TooMuchHeadersError(
+		const char* message, int line, const char* function, const char* file, const char* type
+	) : ParseError(message, line, function, file, type)
+	{
+	}
+
+public:
+	inline explicit TooMuchHeadersError(
+		const std::string& message, int line=0, const char* function="", const char* file=""
+	) : TooMuchHeadersError(message.c_str(), line, function, file, "xw::TooMuchHeadersError")
+	{
+	}
+};
 
 __MAIN_NAMESPACE_END__

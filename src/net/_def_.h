@@ -28,4 +28,7 @@ __NET_BEGIN__
 
 using StatusCode = unsigned int;
 
+inline const int MAX_LINE_LENGTH = 65536;
+inline const int MAX_HEADERS_NUMBER = 100;
+
 __NET_END__

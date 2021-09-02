@@ -12,6 +12,7 @@
 #include <functional>
 #include <string>
 #include <map>
+#include <memory>
 
 // Module definitions.
 #include "./_def_.h"
@@ -71,7 +72,7 @@ struct RequestContext
 	bool keep_alive{};
 
 	// Contains body of http request.
-	io::IReader* body;
+	std::shared_ptr<io::IReader> body;
 
 	// Accumulates request's headers.
 	std::map<std::string, std::string> headers;
