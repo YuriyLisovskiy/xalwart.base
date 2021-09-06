@@ -14,7 +14,11 @@
 
 __NET_BEGIN__
 
-size_t parse_headers(std::map<std::string, std::string>& result, io::IReader* reader, size_t max_request_size)
+size_t parse_headers(
+	std::map<std::string, std::string>& result, io::IReader* reader,
+	size_t max_header_length,
+	size_t max_headers_count
+)
 {
 	const short HEADER_KEY = 0, HEADER_VALUE = 1;
 	size_t total_bytes_read = 0;
@@ -22,17 +26,10 @@ size_t parse_headers(std::map<std::string, std::string>& result, io::IReader* re
 	while (reader->read_line(header_line))
 	{
 		total_bytes_read += header_line.size();
-		if (total_bytes_read > max_request_size)
-		{
-			throw EntityTooLargeError(
-				"Request entity exceeds " + std::to_string(max_request_size) + " bytes", _ERROR_DETAILS_
-			);
-		}
-
-		if (header_line.size() > MAX_LINE_LENGTH)
+		if (header_line.size() > max_header_length)
 		{
 			throw LineTooLongError(
-				"The header contains a value that exceeds " + std::to_string(MAX_LINE_LENGTH) + " bytes",
+				"The header contains a value that exceeds " + std::to_string(max_header_length) + " bytes",
 				_ERROR_DETAILS_
 			);
 		}
@@ -41,10 +38,10 @@ size_t parse_headers(std::map<std::string, std::string>& result, io::IReader* re
 		auto full_header = str::split(
 			encoding::encode_iso_8859_1(header_line, encoding::Mode::Strict), ':', 1
 		);
-		if (result.size() > MAX_HEADERS_NUMBER)
+		if (result.size() > max_headers_count)
 		{
 			throw TooMuchHeadersError(
-				"Headers count exceeds " + std::to_string(MAX_HEADERS_NUMBER), _ERROR_DETAILS_
+				"Headers count exceeds " + std::to_string(max_headers_count), _ERROR_DETAILS_
 			);
 		}
 

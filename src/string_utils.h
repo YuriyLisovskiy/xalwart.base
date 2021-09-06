@@ -442,6 +442,8 @@ inline size_t find_if(
 		{
 			return position;
 		}
+
+		position++;
 	}
 
 	return npos;

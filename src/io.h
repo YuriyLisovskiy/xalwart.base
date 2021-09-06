@@ -60,7 +60,32 @@ public:
 	virtual bool close_writer() = 0;
 };
 
+// TODO: docs for 'IBufferedReader'
+class IBufferedReader : public io::IReader
+{
+public:
+	virtual ssize_t peek(std::string& buffer, ssize_t max_count) = 0;
+
+	[[nodiscard]]
+	virtual ssize_t buffered() const = 0;
+};
+
 class IStream : public IReader, public IWriter
+{
+public:
+
+	/**
+	 * Closes input and output streams.
+	 *
+	 * \return `true` if both operations are successful, `false` otherwise.
+	 */
+	inline virtual bool close()
+	{
+		return this->close_reader() && this->close_writer();
+	}
+};
+
+class IBufferedStream : public IBufferedReader, public IWriter
 {
 public:
 
