@@ -71,20 +71,6 @@ void url_split_type(const std::string& url, std::string& scheme, std::string& da
 	}
 }
 
-std::string lower(const std::string& s)
-{
-	std::string res(s);
-	std::transform(res.begin(), res.end(), res.begin(), [](auto c) -> auto { return std::tolower(c); });
-	return res;
-}
-
-std::string upper(const std::string& s)
-{
-	std::string res(s);
-	std::transform(res.begin(), res.end(), res.begin(), [](auto c) -> auto { return std::toupper(c); });
-	return res;
-}
-
 std::vector<std::wstring> split(const std::wstring& s, wchar_t delimiter, long n)
 {
 	bool count_splits = true;

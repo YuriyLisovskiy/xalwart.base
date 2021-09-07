@@ -212,18 +212,6 @@ inline bool contains(const std::string& s, char chr)
 	return s.find(chr) != std::string::npos;
 }
 
-// Converts all uppercase letters to lowercase.
-//
-// `s`: string with uppercase letters.
-[[deprecated]]
-extern std::string lower(const std::string& s);
-
-// Converts all lowercase letters to uppercase.
-//
-// `s`: string with lowercase letters.
-[[deprecated]]
-extern std::string upper(const std::string& s);
-
 // Converts all uppercase letters to lowercase in `std::string`.
 //
 // `s`: string with uppercase letters.
