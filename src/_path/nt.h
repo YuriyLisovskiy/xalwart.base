@@ -97,7 +97,7 @@ void _join(
 	}
 	else if (!p_drive.empty() && p_drive != result_drive)
 	{
-		if (str::lower(p_drive) != str::lower(result_drive))
+		if (str::to_lower(p_drive) != str::to_lower(result_drive))
 		{
 			// Different drives => ignore the first path entirely
 			result_drive = p_drive;

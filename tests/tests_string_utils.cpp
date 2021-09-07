@@ -189,14 +189,14 @@ TEST(TestCase_string_utils, contains_False)
 TEST(TestCase_string_utils, lower)
 {
 	std::string expected = "hello, world!!1!!!111";
-	auto actual = str::lower("HeLlO, WorlD!!1!!!111");
+	auto actual = str::to_lower("HeLlO, WorlD!!1!!!111");
 	ASSERT_EQ(expected, actual);
 }
 
 TEST(TestCase_string_utils, upper)
 {
 	std::string expected = "HELLO, WORLD!!1!!!111$$$&";
-	auto actual = str::upper("hello, WoRlD!!1!!!111$$$&");
+	auto actual = str::to_upper("hello, WoRlD!!1!!!111$$$&");
 	ASSERT_EQ(expected, actual);
 }
 
