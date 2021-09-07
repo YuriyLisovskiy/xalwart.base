@@ -168,6 +168,8 @@ DEF_EXCEPTION_WITH_BASE(WriterError, IOError, "writer error", "");
 DEF_EXCEPTION_WITH_BASE(ServerError, BaseException, "server error", "");
 DEF_EXCEPTION_WITH_BASE(ParseError, ServerError, "parse error", "");
 DEF_EXCEPTION_WITH_BASE(EntityTooLargeError, ServerError, "entity too large  error", "");
+DEF_EXCEPTION_WITH_BASE(EoF, BaseException, "EOF", "");
+DEF_EXCEPTION_WITH_BASE(UnexpectedEoF, EoF, "unexpected EOF", "");
 
 // TESTME: LineTooLongError
 // TODO: docs for 'LineTooLongError'

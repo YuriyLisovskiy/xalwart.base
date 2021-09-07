@@ -28,4 +28,6 @@ __NET_BEGIN__
 
 using StatusCode = unsigned int;
 
+inline const static size_t DEFAULT_BUFFER_SIZE = 65535;
+
 __NET_END__

@@ -72,7 +72,7 @@ struct RequestContext
 	bool keep_alive{};
 
 	// Contains body of http request.
-	std::shared_ptr<io::IBufferedReader> body;
+	std::shared_ptr<io::ILimitedBufferedStream> body;
 
 	// Accumulates request's headers.
 	std::map<std::string, std::string> headers;

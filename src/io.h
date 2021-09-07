@@ -50,7 +50,7 @@ public:
 	 *
 	 * \return `true` if the operation is successful, `false` otherwise.
 	 */
-	virtual ssize_t write(const char* buffer, ssize_t count) = 0;
+	virtual ssize_t write(const char* buffer, size_t count) = 0;
 
 	/**
 	 * Closes the stream.
@@ -60,44 +60,37 @@ public:
 	virtual bool close_writer() = 0;
 };
 
-// TODO: docs for 'IBufferedReader'
-class IBufferedReader : public io::IReader
+// TODO: docs for 'ILimiter'
+class ILimiter
 {
 public:
-	virtual ssize_t peek(std::string& buffer, ssize_t max_count) = 0;
+	/**
+	 * Negative limit means that reader has no limit.
+	 */
+	virtual void set_limit(ssize_t limit) = 0;
+
+	[[nodiscard]]
+	virtual ssize_t limit() const = 0;
+};
+
+// TODO: docs for 'IBuffer'
+class IBuffer
+{
+public:
+	virtual ssize_t peek(std::string& buffer, size_t max_count) = 0;
 
 	[[nodiscard]]
 	virtual ssize_t buffered() const = 0;
 };
 
-class IStream : public IReader, public IWriter
+// TODO: docs for 'IBufferedReader'
+class IBufferedReader : public IReader, public IBuffer
 {
-public:
-
-	/**
-	 * Closes input and output streams.
-	 *
-	 * \return `true` if both operations are successful, `false` otherwise.
-	 */
-	inline virtual bool close()
-	{
-		return this->close_reader() && this->close_writer();
-	}
 };
 
-class IBufferedStream : public IBufferedReader, public IWriter
+// TODO: docs for 'ILimitedBufferedStream'
+class ILimitedBufferedStream : public IBufferedReader, public IWriter, public ILimiter
 {
-public:
-
-	/**
-	 * Closes input and output streams.
-	 *
-	 * \return `true` if both operations are successful, `false` otherwise.
-	 */
-	inline virtual bool close()
-	{
-		return this->close_reader() && this->close_writer();
-	}
 };
 
 __IO_END__
