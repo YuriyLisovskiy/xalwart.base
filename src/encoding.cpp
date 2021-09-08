@@ -154,7 +154,7 @@ bool is_space(wchar_t c)
 	return _is_excluding_latin(unicode::WHITE_SPACE, c);
 }
 
-bool is_hex(char c)
+bool is_hex(wchar_t c)
 {
 	if ('0' <= c && c <= '9')
 	{
@@ -174,7 +174,7 @@ bool is_hex(char c)
 	return false;
 }
 
-char unhex(char c)
+wchar_t unhex(wchar_t c)
 {
 	if ('0' <= c && c <= '9')
 	{

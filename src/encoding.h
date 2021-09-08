@@ -49,10 +49,10 @@ extern bool _is_excluding_latin(const unicode::RangeTable& range_table, wchar_t 
 bool is_space(wchar_t c);
 
 // TESTME: is_hex
-extern bool is_hex(char c);
+extern bool is_hex(wchar_t c);
 
 // TESTME: unhex
-extern char unhex(char c);
+extern wchar_t unhex(wchar_t c);
 
 // Converts character to percent-encoded character and writes it to stream.
 //
