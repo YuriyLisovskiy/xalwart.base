@@ -441,22 +441,6 @@ TEST(TestCase_string_utils, trim_CustomChars)
 	ASSERT_EQ(actual, expected);
 }
 
-TEST(TestCase_string_utils, count_Found)
-{
-	std::string s = "Hello, World!";
-	size_t expected = 3;
-	auto actual = str::count(s, 'l');
-	ASSERT_EQ(expected, actual);
-}
-
-TEST(TestCase_string_utils, count_NotFound)
-{
-	std::string s = "Hello, World!";
-	size_t expected = 0;
-	auto actual = str::count(s, 'w');
-	ASSERT_EQ(expected, actual);
-}
-
 TEST(TestCase_string_utils, cut_edges_LeftOnly)
 {
 	std::string expected = ", World!";
