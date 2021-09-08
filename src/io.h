@@ -88,8 +88,13 @@ class IBufferedReader : public IReader, public IBuffer
 {
 };
 
+// TODO: docs for 'ILimitedBufferedReader'
+class ILimitedBufferedReader : public IBufferedReader, public ILimiter
+{
+};
+
 // TODO: docs for 'ILimitedBufferedStream'
-class ILimitedBufferedStream : public IBufferedReader, public IWriter, public ILimiter
+class ILimitedBufferedStream : public ILimitedBufferedReader, public IWriter
 {
 };
 

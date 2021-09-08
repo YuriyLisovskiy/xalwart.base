@@ -377,14 +377,6 @@ inline std::string trim_func(const std::string& s, const std::function<bool(char
 	return wstring_to_string(trim_func(string_to_wstring(s), func));
 }
 
-// Calculates number of entries of char `ch` in string `str`.
-//
-// `src`: input string to count from.
-// `ch`: symbol to count its occurrences.
-//
-// Returns non-negative integer.
-extern size_t count(const std::string& s, char ch);
-
 // Cut chars from the left side of input string and chars
 // from the right side of the string. Additionally trims
 // whitespace if needed.

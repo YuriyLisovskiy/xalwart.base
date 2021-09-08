@@ -262,20 +262,6 @@ std::wstring trim_func(const std::wstring& s, const std::function<bool(wchar_t)>
 	return s.substr(l_pos, r_pos - l_pos + 1);
 }
 
-size_t count(const std::string& s, char ch)
-{
-	size_t res = 0;
-	for (const auto& c : s)
-	{
-		if (c == ch)
-		{
-			res++;
-		}
-	}
-
-	return res;
-}
-
 std::string cut_edges(std::string s, size_t left_n, size_t right_n, bool trim_whitespace)
 {
 	if (s.size() >= left_n + right_n)

@@ -59,6 +59,10 @@ inline const auto version = Version("0.0.0");
 
 __MAIN_NAMESPACE_END__
 
+// xw::abc
+#define __ABC_BEGIN__ __MAIN_NAMESPACE_BEGIN__ namespace abc {
+#define __ABC_END__ } __MAIN_NAMESPACE_END__
+
 // xw::path
 #define __PATH_BEGIN__ __MAIN_NAMESPACE_BEGIN__ namespace path {
 #define __PATH_END__ } __MAIN_NAMESPACE_END__
