@@ -15,7 +15,7 @@ __OBJ_META_BEGIN__
 
 Type::Type(const Object& obj)
 {
-	std::string s = util::demangle(typeid(obj).name());
+	std::string s = demangle(typeid(obj).name());
 	auto full_name = str::rsplit(s, ':', 1);
 	if (full_name.size() == 2)
 	{

@@ -9,55 +9,15 @@
 #pragma once
 
 // C++ libraries.
+#include <string>
 #include <iterator>
 
-#ifdef _MSC_VER
-#include <string>
-#endif
-
-using uint = unsigned int;
+// Base libraries.
+#include "./exceptions.h"
 
 // xw
 #define __MAIN_NAMESPACE_BEGIN__ namespace xw {
 #define __MAIN_NAMESPACE_END__ }
-
-__MAIN_NAMESPACE_BEGIN__
-
-struct Version
-{
-	uint major;
-	uint minor;
-	uint patch;
-
-	explicit Version(const std::string& v);
-	Version(uint major, uint minor, uint patch);
-
-	[[nodiscard]]
-	std::string to_string() const;
-
-	bool operator< (const Version& other) const;
-	bool operator<= (const Version& other) const;
-	bool operator> (const Version& other) const;
-	bool operator>= (const Version& other) const;
-	bool operator== (const Version& other) const;
-	bool operator!= (const Version& other) const;
-
-	bool operator< (const char* v) const;
-	bool operator<= (const char* v) const;
-	bool operator> (const char* v) const;
-	bool operator>= (const char* v) const;
-	bool operator== (const char* v) const;
-	bool operator!= (const char* v) const;
-
-	friend std::ostream& operator<< (std::ostream& stream, const Version& v);
-};
-
-namespace base::v
-{
-inline const auto version = Version("0.0.0");
-}
-
-__MAIN_NAMESPACE_END__
 
 // xw::abc
 #define __ABC_BEGIN__ __MAIN_NAMESPACE_BEGIN__ namespace abc {
@@ -110,40 +70,79 @@ __MAIN_NAMESPACE_END__
 #define _ERROR_DETAILS_ __LINE__, __PRETTY_FUNCTION__, __FILE__
 #endif
 
-// Declares exception's class with given base.
-#define DEF_EXCEPTION_WITH_BASE(name, base, default_message, additional_namespace_name)\
-class name : public base\
-{\
-protected:\
-	name(\
-		const char* message, int line, const char* function, const char* file, const char* type\
-	)\
-		: base(message, line, function, file, type)\
-	{\
-	}\
-\
-public:\
-	explicit name(\
-		const char* message = default_message,\
-		int line=0, const char* function="", const char* file=""\
-	) : name(\
-		message, line, function, file, ("xw::" + std::string(additional_namespace_name) + std::string(#name)).c_str() \
-	)\
-	{\
-	}\
-\
-	explicit name(\
-		const std::string& message = default_message,\
-		int line=0, const char* function="", const char* file=""\
-	)\
-		: name(message.c_str(), line, function, file)\
-	{\
-	}\
-}
+using uint = unsigned int;
+
 
 __MAIN_NAMESPACE_BEGIN__
 
 template <typename T>
 using iterator_v_type = typename std::iterator_traits<T>::value_type;
+
+struct Version
+{
+	uint major;
+	uint minor;
+	uint patch;
+
+	explicit Version(const std::string& v);
+	Version(uint major, uint minor, uint patch);
+
+	[[nodiscard]]
+	std::string to_string() const;
+
+	bool operator< (const Version& other) const;
+	bool operator<= (const Version& other) const;
+	bool operator> (const Version& other) const;
+	bool operator>= (const Version& other) const;
+	bool operator== (const Version& other) const;
+	bool operator!= (const Version& other) const;
+
+	bool operator< (const char* v) const;
+	bool operator<= (const char* v) const;
+	bool operator> (const char* v) const;
+	bool operator>= (const char* v) const;
+	bool operator== (const char* v) const;
+	bool operator!= (const char* v) const;
+
+	friend std::ostream& operator<< (std::ostream& stream, const Version& v);
+};
+
+namespace base::v
+{
+static inline const auto version = Version("0.0.0");
+}
+
+// Converts type name to full name.
+//
+// `name`: result of 'typeid(...).name()' call.
+//
+// Returns full name.
+extern std::string demangle(const char* name);
+
+template <typename T>
+inline T* require_non_null(T* p, const char* message, int line=0, const char* function="", const char* file="")
+{
+	if (p == nullptr)
+	{
+		throw NullPointerException(message, line, function, file);
+	}
+
+	return p;
+}
+
+template <typename T>
+inline T* require_non_null(T* p, const std::string& message, int line=0, const char* function="", const char* file="")
+{
+	return require_non_null(p, message.c_str(), line, function, file);
+}
+
+template <typename T>
+inline T* require_non_null(T* p, int line=0, const char* function="", const char* file="")
+{
+	return require_non_null<T>(
+		p, ("pointer to object of type '" + demangle(typeid(T).name()) + "' is nullptr").c_str(),
+		line, function, file
+	);
+}
 
 __MAIN_NAMESPACE_END__

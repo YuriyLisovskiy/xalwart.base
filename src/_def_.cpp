@@ -7,7 +7,12 @@
 #include "./_def_.h"
 
 // C++ libraries.
+#include <memory>
 #include <ostream>
+
+#ifndef _MSC_VER
+#include <cxxabi.h>
+#endif
 
 // Base libraries.
 #include "./string_utils.h"
@@ -133,6 +138,25 @@ std::ostream& operator<< (std::ostream& stream, const Version& v)
 {
 	stream << v.major << "." << v.minor << "." << v.patch;
 	return stream;
+}
+
+// Statuses:
+// 0 - operation succeeded
+// 1 - a memory allocation failure occurred
+// 2 - mangled_name is not a valid name under the C++ ABI mangling rules
+// 3 - one of the arguments is invalid
+std::string demangle(const char* name)
+{
+#ifdef _MSC_VER
+	return str::ltrim(name, "class");
+#else
+	int status = -4;
+	std::unique_ptr<char, void(*)(void*)> res {
+		abi::__cxa_demangle(name, nullptr, nullptr, &status), std::free
+	};
+
+	return status == 0 ? res.get() : name;
+#endif
 }
 
 __MAIN_NAMESPACE_END__

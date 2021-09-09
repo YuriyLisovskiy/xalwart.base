@@ -69,7 +69,7 @@ std::shared_ptr<const obj::Object> to_object(const T& value)
 	}
 
 	throw TypeError(
-		"unable to convert value, '" + util::demangle(typeid(T).name()) + "' type is not supported",
+		"unable to convert value, '" + demangle(typeid(T).name()) + "' type is not supported",
 		_ERROR_DETAILS_
 	);
 }

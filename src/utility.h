@@ -70,13 +70,6 @@ inline long index_of(const ItemT& item, IteratorT begin, IteratorT end)
 	return std::distance(begin, it);
 }
 
-// Converts type name to full name.
-//
-// `name`: result of 'typeid(...).name()' call.
-//
-// Returns full name.
-extern std::string demangle(const char* name);
-
 // Turn a datetime into a date string as specified in RFC 2822.
 //
 // If usegmt is True, dt must be an aware datetime with an offset of zero.  In
@@ -120,32 +113,6 @@ extern std::string format_date(time_t time_val, bool local_time = false, bool us
 //
 // Returns formatted datetime as `std::string`.
 extern std::string _format_timetuple_and_zone(dt::tm_tuple* time_tuple, const std::string& zone);
-
-template <typename T>
-inline T* require_non_null(T* p, const char* message, int line=0, const char* function="", const char* file="")
-{
-	if (p == nullptr)
-	{
-		throw NullPointerException(message, line, function, file);
-	}
-
-	return p;
-}
-
-template <typename T>
-inline T* require_non_null(T* p, const std::string& message, int line=0, const char* function="", const char* file="")
-{
-	return require_non_null(p, message.c_str(), line, function, file);
-}
-
-template <typename T>
-inline T* require_non_null(T* p, int line=0, const char* function="", const char* file="")
-{
-	return require_non_null<T>(
-		p, ("pointer to object of type '" + demangle(typeid(T).name()) + "' is nullptr").c_str(),
-		line, function, file
-	);
-}
 
 template<typename T>
 struct ItemReturn{ typedef T type; };

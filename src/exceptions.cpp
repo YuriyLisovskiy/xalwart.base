@@ -9,6 +9,9 @@
 // C++ libraries.
 #include <csignal>
 
+// Base libraries.
+#include "./_def_.h"
+
 
 __MAIN_NAMESPACE_BEGIN__
 

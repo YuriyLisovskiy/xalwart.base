@@ -31,12 +31,9 @@
 // C++ libraries.
 #include <string>
 
-// Module definitions.
-#include "./_def_.h"
 
-
-__MAIN_NAMESPACE_BEGIN__
-
+namespace xw
+{
 // Base exception which is used in framework.
 // Used to build new exception types.
 class BaseException : public std::exception
@@ -110,6 +107,37 @@ public:
 		return this->_exception_type + ": " + this->_message;
 	}
 };
+
+// Declares exception's class with given base.
+#define DEF_EXCEPTION_WITH_BASE(name, base, default_message, additional_namespace_name)\
+class name : public base\
+{\
+protected:\
+	name(\
+		const char* message, int line, const char* function, const char* file, const char* type\
+	)\
+		: base(message, line, function, file, type)\
+	{\
+	}\
+\
+public:\
+	explicit name(\
+		const char* message = default_message,\
+		int line=0, const char* function="", const char* file=""\
+	) : name(\
+		message, line, function, file, ("xw::" + std::string(additional_namespace_name) + std::string(#name)).c_str() \
+	)\
+	{\
+	}\
+\
+	explicit name(\
+		const std::string& message = default_message,\
+		int line=0, const char* function="", const char* file=""\
+	)\
+		: name(message.c_str(), line, function, file)\
+	{\
+	}\
+}
 
 DEF_EXCEPTION_WITH_BASE(AttributeError, BaseException, "attribute error", "");
 DEF_EXCEPTION_WITH_BASE(ArgumentError, BaseException, "argument error", "");
@@ -209,4 +237,4 @@ public:
 	}
 };
 
-__MAIN_NAMESPACE_END__
+} // namespace xw

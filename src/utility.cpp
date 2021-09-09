@@ -11,8 +11,6 @@
 
 #ifdef _MSC_VER
 #include <stdexcept>
-#else
-#include <cxxabi.h>
 #endif
 
 // Base libraries.
@@ -20,26 +18,6 @@
 
 
 __UTILITY_BEGIN__
-
-// Statuses:
-// 0 - operation succeeded
-// 1 - a memory allocation failure occurred
-// 2 - mangled_name is not a valid name under the C++ ABI mangling rules
-// 3 - one of the arguments is invalid
-std::string demangle(const char* name)
-{
-#ifdef _MSC_VER
-	return str::ltrim(name, "class");
-#else
-	int status = -4;
-	std::unique_ptr<char, void(*)(void*)> res {
-		abi::__cxa_demangle(name, nullptr, nullptr, &status),
-		std::free
-	};
-
-	return status == 0 ? res.get() : name;
-#endif
-}
 
 std::string format_datetime(const dt::Datetime* dt, bool use_gmt)
 {

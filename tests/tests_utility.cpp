@@ -49,7 +49,7 @@ TEST(TestCase_utility, index_of_NotFound)
 TEST(TestCase_utility, demangle_BuiltInType)
 {
 	std::string expected = "float";
-	auto actual = util::demangle(typeid(float).name());
+	auto actual = demangle(typeid(float).name());
 	ASSERT_EQ(expected, actual);
 }
 
@@ -59,7 +59,7 @@ TEST(TestCase_utility, demangle_CustomType)
 	{
 	};
 	std::string expected = "TestCase_utility_demangle_CustomType_Test::TestBody()::CustomType";
-	auto actual = util::demangle(typeid(CustomType).name());
+	auto actual = demangle(typeid(CustomType).name());
 	ASSERT_EQ(expected, actual);
 }
 
@@ -122,13 +122,13 @@ TEST(TestCase_utility, format_date_WithGMT)
 TEST(TestCase_utility, require_non_null_ThrowsNullPointerException)
 {
 	int* a = nullptr;
-	ASSERT_THROW(util::require_non_null(a), NullPointerException);
+	ASSERT_THROW(require_non_null(a), NullPointerException);
 }
 
 TEST(TestCase_utility, require_non_null_NotThrows)
 {
 	int a = 10;
-	ASSERT_NO_THROW(util::require_non_null(&a));
+	ASSERT_NO_THROW(require_non_null(&a));
 }
 
 TEST(TestCase_utility, as_short_int)
