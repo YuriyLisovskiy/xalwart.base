@@ -91,7 +91,7 @@ struct RequestContext
 	// Indicates whether request is chunked or not.
 	bool chunked{};
 
-	std::function<bool(const char* data, size_t n)> write;
+	std::shared_ptr<io::IWriter> response_writer;
 };
 
 __NET_END__
