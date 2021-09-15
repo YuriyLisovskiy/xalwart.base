@@ -14,23 +14,24 @@ __CONFIG_BEGIN__
 
 void YAMLLoggerComponent::initialize(const YAML::Node& node) const
 {
+	log::Config logger_config{};
+	logger_config.enable_info = true;
+	logger_config.enable_debug = true;
+	logger_config.enable_warning = true;
+	logger_config.enable_error = true;
+	logger_config.enable_fatal = true;
+	logger_config.enable_trace = true;
+	logger_config.enable_print = true;
+	bool use_colors = true;
 	if (node && node.IsMap())
 	{
-		log::Config logger_config{};
-		logger_config.enable_info = true;
-		logger_config.enable_debug = true;
-		logger_config.enable_warning = true;
-		logger_config.enable_error = true;
-		logger_config.enable_fatal = true;
-		logger_config.enable_trace = true;
-		logger_config.enable_print = true;
-
 		this->initialize_levels(logger_config, node["levels"]);
 		this->initialize_out(logger_config, node["out"], this->base_directory);
-
-		this->logger = std::make_shared<log::Logger>(logger_config);
-		this->logger->use_colors(node["use_colors"].as<bool>(true));
+		use_colors = node["use_colors"].as<bool>(use_colors);
 	}
+
+	this->logger = std::make_shared<log::Logger>(logger_config);
+	this->logger->use_colors(use_colors);
 }
 
 void YAMLLoggerComponent::overwrite(const YAML::Node& from_component, YAML::Node& to_component) const
