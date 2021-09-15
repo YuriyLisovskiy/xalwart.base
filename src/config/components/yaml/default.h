@@ -25,6 +25,8 @@ __CONFIG_BEGIN__
 
 using YAMLComponent = AbstractComponent<YAML::Node>;
 
+// TESTME: YAMLMapComponent
+// TODO: docs for 'YAMLMapComponent'
 class YAMLMapComponent : public YAMLComponent
 {
 public:
@@ -50,6 +52,8 @@ protected:
 	std::list<std::pair<std::string, std::unique_ptr<YAMLComponent>>> components;
 };
 
+// TESTME: YAMLSequenceComponent
+// TODO: docs for 'YAMLSequenceComponent'
 class YAMLSequenceComponent : public YAMLComponent
 {
 public:
@@ -77,6 +81,8 @@ protected:
 	std::function<void(const YAML::Node& /* sequence_node */)> handler;
 };
 
+// TESTME: YAMLScalarComponent
+// TODO: docs for 'YAMLScalarComponent'
 class YAMLScalarComponent : public YAMLComponent
 {
 public:
