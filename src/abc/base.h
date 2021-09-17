@@ -1,9 +1,9 @@
 /**
- * abc.h
+ * abc/abc.h
  *
  * Copyright (c) 2021 Yuriy Lisovskiy
  *
- * Abstract base classes for main module.
+ * Abstract base classes for 'base' library.
  */
 
 #pragma once
