@@ -13,6 +13,7 @@
 #include <memory>
 #include <vector>
 #include <map>
+#include <optional>
 
 // Base libraries.
 #include <xalwart.base/object/object.h>
@@ -51,7 +52,8 @@ public:
 	virtual ~ITemplate() = default;
 
 	// Renders template code using given context.
-	virtual std::string render(IContext* context) = 0;
+	[[nodiscard]]
+	virtual std::string render(IContext* context) const = 0;
 };
 
 // TODO: docs for 'IEngine'
@@ -62,15 +64,18 @@ public:
 
 	// Return a pointer to compiled BaseTemplate object for the given template code,
 	// handling template inheritance recursively.
-	virtual std::shared_ptr<ITemplate> from_string(const std::string& template_code) = 0;
+	[[nodiscard]]
+	virtual std::shared_ptr<ITemplate> from_string(const std::string& template_code) const = 0;
 
 	// Return a pointer to compiled BaseTemplate object for the given template name,
 	// handling template inheritance recursively.
-	virtual std::shared_ptr<ITemplate> get_template(const std::string& template_name) = 0;
+	[[nodiscard]]
+	virtual std::shared_ptr<ITemplate> get_template(const std::string& template_name) const = 0;
 
 	virtual void load_libraries() = 0;
 
-	virtual std::string name() = 0;
+	[[nodiscard]]
+	virtual std::string name() const = 0;
 };
 
 // TODO: docs for 'ILoader'
@@ -79,13 +84,18 @@ class ILoader
 public:
 	virtual ~ILoader() = default;
 
+	[[nodiscard]]
 	virtual std::shared_ptr<ITemplate> get_template(
-		const std::string& template_path, const std::vector<std::string>& dirs, IEngine* engine
-	) = 0;
+		const std::string& template_path, const std::vector<std::string>& dirs, const IEngine* engine
+	) const = 0;
 
+	[[nodiscard]]
 	virtual std::map<std::string, std::shared_ptr<ITemplate>> cache_templates(
-		const std::vector<std::string>& dirs, IEngine* engine
-	) = 0;
+		const std::vector<std::string>& dirs, const IEngine* engine
+	) const = 0;
+
+	[[nodiscard]]
+	virtual std::string name() const = 0;
 };
 
 // TODO: docs for 'ILibrary'
@@ -101,7 +111,9 @@ public:
 	// `var_name` is non-empty string when the result of `Function` should be
 	// written to a variable and pushed to context.
 	using Function = std::function<std::string(
-		IContext*, const std::vector<Argument>&, const std::string& /* var_name */
+		IContext*, const std::vector<Argument>&,
+		const std::optional<std::string>& /* var_name */,
+		size_t /* function_call_line */
 	)>;
 
 	virtual ~ILibrary() = default;
