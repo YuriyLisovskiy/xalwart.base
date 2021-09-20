@@ -32,33 +32,39 @@ private:
 
 	std::smatch _matches;
 
-	// Original regular expression pattern.
+	/** Original regular expression pattern.
+	 */
 	std::string _orig;
 
-	// Regex instance without parameters.
+	/** Regex instance without parameters.
+	 */
 	std::regex _rgx;
 
-	// Vector of parsed parts between arguments.
+	/** Vector of parsed parts between arguments.
+	 */
 	std::vector<std::string> _pattern_parts;
 
-	// Vector of parsed arguments.
+	/** Vector of parsed arguments.
+	 */
 	std::vector<std::string> _keys;
 
-	// Found groups.
+	/** Found groups.
+	 */
 	std::map<std::string, std::string> _groups;
 
-	// List of found groups in same order as provided in regex.
+	/** List of found groups in same order as provided in regex.
+	 */
 	std::vector<std::string> _list_groups;
 
 private:
 
-	// Parses original pattern. Searches for arguments names
-	// and separates it from actual regular expression.
+	/** Parses original pattern. Searches for arguments names
+	 * and separates it from actual regular expression.
+	 */
 	std::string _parse(const std::string& pattern);
 
 public:
 
-	/** The default constructor. */
 	inline explicit ArgRegex() : ArgRegex("")
 	{
 	}
@@ -70,8 +76,6 @@ public:
 		this->_rgx = std::regex(this->_parse(this->_orig));
 	}
 
-	/** Copy assignment operator.
-	 */
 	ArgRegex& operator= (const ArgRegex& other);
 
 	/** Matches string with regular expression.
@@ -91,9 +95,8 @@ public:
 	 */
 	bool search(const std::string& s);
 
-	/** Returns found args
-	 *
-	 * \return map of arguments
+	/**
+	 * \return found arguments
 	 */
 	[[nodiscard]]
 	inline std::map<std::string, std::string> args() const
@@ -107,7 +110,7 @@ public:
 	 * \throw ArgumentError when tuple and group lengths are not equals
 	 */
 	template <typename ...Args>
-	inline std::tuple<Args...> tuple() const
+	inline std::tuple<Args...> args_tuple() const
 	{
 		std::tuple<Args...> result;
 		auto sz = this->_list_groups.size();
@@ -148,7 +151,7 @@ public:
 	 * \return regular expression as `std::string`
 	 */
 	[[nodiscard]]
-	inline std::string str() const
+	inline std::string to_string() const
 	{
 		return this->_orig;
 	}
