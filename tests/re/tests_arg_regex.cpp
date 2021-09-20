@@ -64,7 +64,7 @@ TEST_F(TestCase_ArgRegex, arg_Existent)
 TEST_F(TestCase_ArgRegex, tuple_Existent)
 {
 	this->regex.search("accounts/1/picture/flower.jpeg");
-	auto tuple = this->regex.tuple<int, std::string>();
+	auto tuple = this->regex.args_tuple<int, std::string>();
 	ASSERT_EQ(std::get<0>(tuple), 1);
 	ASSERT_EQ(std::get<1>(tuple), "flower.jpeg");
 }
@@ -72,7 +72,7 @@ TEST_F(TestCase_ArgRegex, tuple_Existent)
 TEST_F(TestCase_ArgRegex, tuple_ThrowsSizeMismatch)
 {
 	this->regex.search("accounts/1/picture/flower.jpeg");
-	ASSERT_THROW(this->regex.tuple<int>(), ArgumentError);
+	ASSERT_THROW(this->regex.args_tuple<int>(), ArgumentError);
 }
 
 TEST_F(TestCase_ArgRegex, arg_NonExistent)
@@ -92,6 +92,6 @@ TEST_F(TestCase_ArgRegex, parts)
 TEST_F(TestCase_ArgRegex, str)
 {
 	ASSERT_EQ(
-		this->regex.str(), R"(accounts/<id>(\d+)/picture/<name>(\w+\.jpeg))"
+		this->regex.to_string(), R"(accounts/<id>(\d+)/picture/<name>(\w+\.jpeg))"
 	);
 }
