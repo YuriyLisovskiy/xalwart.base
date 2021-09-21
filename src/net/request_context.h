@@ -25,8 +25,8 @@ __NET_BEGIN__
 
 struct ProtocolVersion
 {
-	size_t major{};
-	size_t minor{};
+	unsigned short major{};
+	unsigned short minor{};
 
 	inline bool operator== (const ProtocolVersion& other) const
 	{

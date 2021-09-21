@@ -117,7 +117,7 @@ bool _is_excluding_latin(const unicode::RangeTable& range_table, wchar_t c)
 	auto r16 = range_table.r16;
 	auto offset = range_table.latin_offset;
 
-	// Compare as uint32 to correctly handle negative runes.
+	// Compare as uint32 to correctly handle negative values.
 	if (r16.size() > offset && c <= r16[r16.size() - 1].hi)
 	{
 		return _is16({r16.begin() + offset, r16.end()}, (uint16_t)c);
@@ -131,7 +131,7 @@ bool _is_excluding_latin(const unicode::RangeTable& range_table, wchar_t c)
 	return false;
 }
 
-bool is_space(wchar_t c)
+bool is_space(unsigned char c)
 {
 	if (c <= unicode::MAX_LATIN_1)
 	{
@@ -154,7 +154,7 @@ bool is_space(wchar_t c)
 	return _is_excluding_latin(unicode::WHITE_SPACE, c);
 }
 
-bool is_hex(wchar_t c)
+bool is_hex(unsigned char c)
 {
 	if ('0' <= c && c <= '9')
 	{
@@ -174,21 +174,21 @@ bool is_hex(wchar_t c)
 	return false;
 }
 
-wchar_t unhex(wchar_t c)
+unsigned char unhex(unsigned char c)
 {
 	if ('0' <= c && c <= '9')
 	{
-		return (char)(c - '0');
+		return (unsigned char)(c - '0');
 	}
 
 	if ('a' <= c && c <= 'f')
 	{
-		return (char)(c - 'a' + 10);
+		return (unsigned char)(c - 'a' + 10);
 	}
 
 	if ('A' <= c && c <= 'F')
 	{
-		return (char)(c - 'A' + 10);
+		return (unsigned char)(c - 'A' + 10);
 	}
 
 	return 0;

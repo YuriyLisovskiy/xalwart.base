@@ -46,13 +46,13 @@ extern bool _is_excluding_latin(const unicode::RangeTable& range_table, wchar_t 
 //	'\t', '\n', '\v', '\f', '\r', ' ', U+0085 (NEL), U+00A0 (NBSP).
 //
 // The original implementation is in Golang 1.15.8: unicode/graphic.go
-bool is_space(wchar_t c);
+bool is_space(unsigned char c);
 
 // TESTME: is_hex
-extern bool is_hex(wchar_t c);
+extern bool is_hex(unsigned char c);
 
 // TESTME: unhex
-extern wchar_t unhex(wchar_t c);
+extern unsigned char unhex(unsigned char c);
 
 // Converts character to percent-encoded character and writes it to stream.
 //
