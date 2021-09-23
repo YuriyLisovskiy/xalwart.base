@@ -48,7 +48,7 @@ void Logger::_log(
 	const std::string& message, int line, const char* function, const char* file, Level level
 )
 {
-	if (!this->config.has_eny_level())
+	if (!this->config.has_eny_level() || !this->config.is_enabled(level))
 	{
 		return;
 	}
