@@ -22,7 +22,7 @@
 __NET_ABC_BEGIN__
 
 // Base class (interface) for server implementation.
-class IServer
+class Server
 {
 public:
 	// Binds socket.
@@ -37,6 +37,11 @@ public:
 	// Returns server's environment variables.
 	[[nodiscard]]
 	virtual std::map<std::string, std::string> get_environment() const = 0;
+
+	// Mark server development if it is not production-ready.
+	// This will notify user not to use it for production.
+	[[nodiscard]]
+	virtual bool is_development() const = 0;
 
 protected:
 
