@@ -16,6 +16,7 @@
 
 // Base libraries.
 #include "../exceptions.h"
+#include "../json/json.h"
 
 
 __ABC_BEGIN__
@@ -103,6 +104,14 @@ class StringSerializable
 public:
 	[[nodiscard]]
 	virtual std::string to_string() const = 0;
+};
+
+// TODO: docs for 'JsonSerializable'
+class JsonSerializable
+{
+public:
+	[[nodiscard]]
+	virtual nlohmann::json to_json() const = 0;
 };
 
 __ABC_END__

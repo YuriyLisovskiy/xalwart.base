@@ -15,10 +15,10 @@
 
 __LOG_BEGIN__
 
-Logger::Logger(Config cfg) : _config(std::move(cfg))
+Logger::Logger(Config cfg) : config(std::move(cfg))
 {
-	this->_worker = std::make_unique<ThreadedWorker>(THREADS_COUNT);
-	this->_worker->AbstractWorker::add_task_listener<LogTask>([this](AbstractWorker*, LogTask& task)
+	this->worker = std::make_unique<ThreadedWorker>(THREADS_COUNT);
+	this->worker->AbstractWorker::add_task_listener<LogTask>([this](AbstractWorker*, LogTask& task)
 	{
 		auto level_data = task.level.data();
 		std::string full_message;
@@ -48,12 +48,12 @@ void Logger::_log(
 	const std::string& message, int line, const char* function, const char* file, Level level
 )
 {
-	if (!this->_config.has_eny_level())
+	if (!this->config.has_eny_level())
 	{
 		return;
 	}
 
-	this->_worker->AbstractWorker::inject_task<LogTask>(LogTask{
+	this->worker->AbstractWorker::inject_task<LogTask>(LogTask{
 		.level = level, .message = message, .line = line, .function = function, .file = file
 	});
 }
@@ -61,7 +61,7 @@ void Logger::_log(
 void Logger::_write_to_stream(const std::string& message, Color color, char end)
 {
 	auto full_message = message + (end != '\0' ? std::string(1, end) : "");
-	for (auto& stream : this->_config.streams)
+	for (auto& stream : this->config.streams)
 	{
 		auto is_console = stream->is_console();
 		this->_set_color(color, is_console);
@@ -79,7 +79,7 @@ void Logger::_set_color(Color color, bool is_console_stream) const
 	}
 
 #if defined(__unix__) || defined(__linux__)
-	if (this->_config.use_colors)
+	if (this->config.use_colors)
 	{
 		if (this->_colors.find(color) == this->_colors.end())
 		{

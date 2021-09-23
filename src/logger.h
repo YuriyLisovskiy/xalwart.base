@@ -296,17 +296,17 @@ public:
 
 	inline void enable_colors() override
 	{
-		this->_config.use_colors = true;
+		this->config.use_colors = true;
 	}
 
 	inline void disable_colors() override
 	{
-		this->_config.use_colors = false;
+		this->config.use_colors = false;
 	}
 
 	inline ~Logger() override
 	{
-		this->_worker->stop();
+		this->worker->stop();
 	}
 
 	// Logs given text, line, function name and file name with
@@ -377,7 +377,7 @@ public:
 	// Logs text with custom colour and ending if it is enable in config.
 	inline void print(const std::string& msg, Color colour, char end) override
 	{
-		if (this->_config.is_enabled(Level::Print))
+		if (this->config.is_enabled(Level::Print))
 		{
 			this->_write_to_stream(msg, colour, end);
 		}
@@ -419,7 +419,17 @@ public:
 		this->error(exc.get_message(), exc.line(), exc.function(), exc.file());
 	}
 
-private:
+protected:
+	struct LogTask : public AbstractWorker::Task
+	{
+	public:
+		Level level;
+		std::string message;
+		int line;
+		const char* function;
+		const char* file;
+	};
+
 	static inline const size_t THREADS_COUNT = 1;
 
 #if defined(__unix__) || defined(__linux__)
@@ -445,11 +455,12 @@ private:
 	};
 #endif
 
-	Config _config;
+	Config config;
 
 	// Worker for non-blocking logging.
-	std::unique_ptr<ThreadedWorker> _worker;
+	std::unique_ptr<ThreadedWorker> worker;
 
+private:
 	void _log(const std::string& message, int line, const char* function, const char* file, Level level);
 
 	// Writes message to all streams one by one.
@@ -457,16 +468,6 @@ private:
 
 	// Sets the color only for console stream.
 	void _set_color(Color colour, bool is_console_stream) const;
-};
-
-struct LogTask : public AbstractWorker::Task
-{
-public:
-	Level level;
-	std::string message;
-	int line;
-	const char* function;
-	const char* file;
 };
 
 __LOG_END__
