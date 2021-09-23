@@ -11,6 +11,7 @@
 // C++ libraries.
 #include <map>
 #include <iostream>
+#include <memory>
 
 // Module definitions.
 #include "./_def_.h"
@@ -18,15 +19,18 @@
 // Base libraries.
 #include "./exceptions.h"
 #include "./file.h"
-#include "./thread_pool.h"
+#include "./abc/base.h"
+#include "./workers/threaded_worker.h"
 
 
 __LOG_BEGIN__
 
-class Stream
+// TESTME: AbstractStream
+// TODO: docs for 'AbstractStream'
+class AbstractStream
 {
 public:
-	virtual ~Stream() = default;
+	virtual ~AbstractStream() = default;
 
 	// Assumes writing of text to stream.
 	virtual void write(const std::string& text) = 0;
@@ -34,7 +38,7 @@ public:
 	// Assumes flushing the stream.
 	virtual void flush() = 0;
 
-	// Must return `true` for file streams, `false` otherwise.
+	// Must return 'true' for file streams, 'false' otherwise.
 	[[nodiscard]]
 	virtual inline bool is_file() const
 	{
@@ -49,19 +53,21 @@ public:
 	}
 };
 
-class ConsoleStream final : public Stream
+// TESTME: ConsoleStream
+// TODO: docs for 'ConsoleStream'
+class ConsoleStream final : public AbstractStream
 {
 public:
 
 	// Writes string to console.
 	//
-	// `text`: string to write.
+	// 'text': string to write.
 	inline void write(const std::string& text) override
 	{
 		std::cout << text;
 	}
 
-	// Forces `std::cout` to print a string.
+	// Forces 'std::cout' to print a string.
 	inline void flush() override
 	{
 		std::cout.flush();
@@ -75,7 +81,9 @@ public:
 	}
 };
 
-class FileStream : public Stream
+// TESTME: FileStream
+// TODO: docs for 'FileStream'
+class FileStream : public AbstractStream
 {
 private:
 
@@ -87,7 +95,7 @@ public:
 	// Creates file from given path with 'append' mode
 	// and opens it immediately.
 	//
-	// `fp`: path to file.
+	// 'fp': path to file.
 	explicit FileStream(const std::string& fp)
 	{
 		this->_file = std::make_shared<File>(fp, File::OpenMode::AppendReadWrite);
@@ -101,7 +109,13 @@ public:
 	}
 
 	// Writes string to file.
-	void write(const std::string& text) override;
+	inline void write(const std::string& text) override
+	{
+		if (this->_file->is_open())
+		{
+			this->_file->write(text);
+		}
+	}
 
 	// Indicates that this is a file stream.
 	[[nodiscard]]
@@ -116,175 +130,190 @@ public:
 		this->_file->flush();
 	}
 
-	// Returns `true` if file is initialized and open,
-	// `false` otherwise.
+	// Returns 'true' if file is initialized and open,
+	// 'false' otherwise.
 	inline bool is_valid()
 	{
 		return this->_file && this->_file->is_open();
 	}
 };
 
-class Config final
-{
-private:
-
-	// Indicates whether console stream is added or not.
-	bool _has_cout = false;
-
-public:
-	bool enable_info = true;
-	bool enable_debug = true;
-	bool enable_warning = true;
-	bool enable_error = true;
-	bool enable_fatal = true;
-	bool enable_trace = true;
-	bool enable_print = true;
-
-	// A vector of streams to log into.
-	std::vector<std::shared_ptr<Stream>> streams;
-
-	// Appends console stream.
-	void add_console_stream();
-
-	// Appends a file stream with given file path.
-	void add_file_stream(const std::string& fp);
-};
-
-// An interface for logger.
-class ILogger
+// TESTME: Level
+// TODO: docs for 'Level'
+class Level final
 {
 public:
-	enum class Color
+	struct Data
 	{
-		Default,
-		Black,
-		Red,
-		Green,
-		Yellow,
-		Blue,
-		Magenta,
-		Cyan,
-		White,
-		BoldBlack,
-		BoldRed,
-		BoldGreen,
-		BoldYellow,
-		BoldBlue,
-		BoldMagenta,
-		BoldCyan,
-		BoldWhite,
+		std::string name;
+		abc::Logger::Color color;
 	};
 
-	// Set indicator whether to use colours in console or not.
-	virtual void use_colors(bool use) = 0;
+	enum Value
+	{
+		Info = 0, Debug, Warning, Error, Trace, Print
+	};
 
-	// Default destructor.
-	virtual ~ILogger() = default;
+	Level() = default;
 
-	// Logs given text, line, function name and file name with
-	// 'info' logging level if it is enabled in config.
-	virtual void info(const std::string& msg, int line, const char* function, const char* file) = 0;
+	constexpr inline Level(Value value) : _value(value)
+	{
+	}
 
-	// Logs given text with 'info' logging level if it is enabled in config.
-	virtual void info(const std::string& msg) = 0;
+	inline operator Value() const
+	{
+		return this->_value;
+	}
 
-	// Logs given text, line, function name and file name with
-	// 'debug' logging level if it is enabled in config.
-	virtual void debug(const std::string& msg, int line, const char* function, const char* file) = 0;
+	explicit operator bool() = delete;
 
-	// Logs given text with 'debug' logging level if it is enabled in config.
-	virtual void debug(const std::string& msg) = 0;
+	constexpr inline bool operator== (Level a) const
+	{
+		return this->_value == a._value;
+	}
 
-	// Logs given text, line, function name and file name with
-	// `warning` logging level if it is enabled in config.
-	virtual void warning(const std::string& msg, int line, const char* function, const char* file) = 0;
+	constexpr inline bool operator!= (Level a) const
+	{
+		return this->_value != a._value;
+	}
 
-	// Logs given text with `warning` logging level if it is enabled in config.
-	virtual void warning(const std::string& msg) = 0;
+	[[nodiscard]]
+	Data data() const
+	{
+		switch (this->_value)
+		{
+			case Level::Info:
+				return {"info", abc::Logger::Color::Cyan};
+			case Level::Debug:
+				return {"debug", abc::Logger::Color::Magenta};
+			case Level::Warning:
+				return {"warning", abc::Logger::Color::Yellow};
+			case Level::Error:
+				return {"error", abc::Logger::Color::Red};
+			case Level::Trace:
+				return {"trace", abc::Logger::Color::BoldRed};
+			case Level::Print:
+				return {"print", abc::Logger::Color::Default};
+			default:
+				throw ValueError("invalid 'Level' option", _ERROR_DETAILS_);
+		}
+	}
 
-	// Logs given text, line, function name and file name with
-	// `error` logging level if it is enabled in config.
-	virtual void error(const std::string& msg, int line, const char* function, const char* file) = 0;
-
-	// Logs given text with `error` logging level if it is enabled in config.
-	virtual void error(const std::string& msg) = 0;
-
-	// Logs given text, line, function name and file name with
-	// `fatal` logging level if it is enabled in config.
-	virtual void fatal(const std::string& msg, int line, const char* function, const char* file) = 0;
-
-	// Logs given text with `fatal` logging level if it is enabled in config.
-	virtual void fatal(const std::string& msg) = 0;
-
-	// Logs given text, line, function name and file name with
-	// `trace` logging level if it is enabled in config.
-	virtual void trace(const std::string& msg, int line, const char* function, const char* file) = 0;
-
-	// Logs given text with `trace` logging level if it is enabled in config.
-	virtual void trace(const std::string& msg) = 0;
-
-	// Logs text with custom colour and ending if it is enable in config.
-	virtual void print(const std::string& msg, Color colour, char end) = 0;
-
-	// Logs text with custom colour if it is enable in config.
-	virtual void print(const std::string& msg, Color colour) = 0;
-
-	// Logs text if it is enable in config.
-	virtual void print(const std::string& msg) = 0;
-
-	// Logs exception with `info` logging level if it is enabled in config.
-	virtual void info(const BaseException& exc) = 0;
-
-	// Logs exception with `debug` logging level if it is enabled in config.
-	virtual void debug(const BaseException& exc) = 0;
-
-	// Logs exception with `warning` logging level if it is enabled in config.
-	virtual void warning(const BaseException& exc) = 0;
-
-	// Logs exception with `error` logging level if it is enabled in config.
-	virtual void error(const BaseException& exc) = 0;
-
-	// Logs exception with `fatal` logging level if it is enabled in config.
-	virtual void fatal(const BaseException& exc) = 0;
-
-	// Sets a config for logger.
-	virtual void set_config(const Config& config) = 0;
+private:
+	Value _value;
 };
 
-// An implementation of simple logger.
-class Logger : public ILogger
+// TESTME: Config
+// TODO: docs for 'Config'
+class Config final
 {
-protected:
-
-	// Indicates whether to use colourful output in
-	// console stream.
-	bool use_output_colors;
-
 public:
+	// Used only for console stream.
+	bool use_colors = false;
 
-	// Initializes thread pool with one thread.
-	inline explicit Logger(Config cfg) : use_output_colors(false), _config(std::move(cfg))
+	// A vector of streams to log into.
+	std::vector<std::shared_ptr<AbstractStream>> streams;
+
+	void enable(Level level)
 	{
-		this->_thread_pool = std::make_shared<ThreadPool>("logger", 1);
+		this->_levels_holder |= (1 << (int)level);
 	}
 
-	// Sets colour mode for console stream.
-	inline void use_colors(bool use) override
+	void enable_all_levels()
 	{
-		this->use_output_colors = use;
+		this->_levels_holder = (char)0x00111111;
 	}
 
-	// Finishes all log tasks in thred pool.
+	void disable(Level level)
+	{
+		this->_levels_holder &= ~(1 << (int)level);
+	}
+
+	void disable_all_levels()
+	{
+		this->_levels_holder = '\0';
+	}
+
+	[[nodiscard]]
+	bool is_enabled(Level level) const
+	{
+		return (this->_levels_holder >> (int)level) & 1;
+	}
+
+	[[nodiscard]]
+	bool has_eny_level() const
+	{
+		return this->_levels_holder != '\0';
+	}
+
+	[[nodiscard]]
+	bool has_all_levels() const
+	{
+		return this->_levels_holder == (char)0x00111111;
+	}
+
+	// Appends console stream.
+	void add_console_stream()
+	{
+		if (!this->_has_console_stream)
+		{
+			this->streams.push_back(std::make_shared<ConsoleStream>());
+			this->_has_console_stream = true;
+		}
+	}
+
+	// Appends a file stream with given file path.
+	void add_file_stream(const std::string& filepath)
+	{
+		auto file_stream = std::make_shared<FileStream>(filepath);
+		if (file_stream->is_valid())
+		{
+			this->streams.push_back(file_stream);
+		}
+	}
+
+	void add_stream(std::shared_ptr<AbstractStream> stream)
+	{
+		this->streams.push_back(std::move(stream));
+	}
+
+private:
+	bool _has_console_stream = false;
+
+	// Sequence 00111111 holds logging levels in left to right order:
+	// empty, empty, Print, Trace, Error, Warning, Debug, Info
+	//
+	// When bit is set to 1, level is enabled, disabled otherwise.
+	char _levels_holder = '\0';
+};
+
+// TESTME: Logger
+// TODO: docs for 'Logger'
+class Logger : public abc::Logger
+{
+public:
+	explicit Logger(Config cfg);
+
+	inline void enable_colors() override
+	{
+		this->_config.use_colors = true;
+	}
+
+	inline void disable_colors() override
+	{
+		this->_config.use_colors = false;
+	}
+
 	inline ~Logger() override
 	{
-		this->_thread_pool->wait();
+		this->_worker->stop();
 	}
 
 	// Logs given text, line, function name and file name with
 	// 'info' logging level if it is enabled in config.
 	inline void info(const std::string& msg, int line, const char* function, const char* file) override
 	{
-		this->_log(msg, line, function, file, Logger::LogLevel::Info);
+		this->_log(msg, line, function, file, Level::Info);
 	}
 
 	// Logs given text with 'info' logging level if it is enabled in config.
@@ -297,7 +326,7 @@ public:
 	// 'debug' logging level if it is enabled in config.
 	inline void debug(const std::string& msg, int line, const char* function, const char* file) override
 	{
-		this->_log(msg, line, function, file, Logger::LogLevel::Debug);
+		this->_log(msg, line, function, file, Level::Debug);
 	}
 
 	// Logs given text with 'debug' logging level if it is enabled in config.
@@ -310,7 +339,7 @@ public:
 	// 'warning' logging level if it is enabled in config.
 	inline void warning(const std::string& msg, int line, const char* function, const char* file) override
 	{
-		this->_log(msg, line, function, file, Logger::LogLevel::Warning);
+		this->_log(msg, line, function, file, Level::Warning);
 	}
 
 	// Logs given text with 'warning' logging level if it is enabled in config.
@@ -323,7 +352,7 @@ public:
 	// 'error' logging level if it is enabled in config.
 	inline void error(const std::string& msg, int line, const char* function, const char* file) override
 	{
-		this->_log(msg, line, function, file, Logger::LogLevel::Error);
+		this->_log(msg, line, function, file, Level::Error);
 	}
 
 	// Logs given text with 'error' logging level if it is enabled in config.
@@ -333,23 +362,10 @@ public:
 	}
 
 	// Logs given text, line, function name and file name with
-	// 'fatal' logging level if it is enabled in config.
-	inline void fatal(const std::string& msg, int line, const char* function, const char* file) override
-	{
-		this->_log(msg, line, function, file, Logger::LogLevel::Fatal);
-	}
-
-	// Logs given text with 'fatal' logging level if it is enabled in config.
-	inline void fatal(const std::string& msg) override
-	{
-		this->fatal(msg, 0, "", "");
-	}
-
-	// Logs given text, line, function name and file name with
 	// 'trace' logging level if it is enabled in config.
 	inline void trace(const std::string& msg, int line, const char* function, const char* file) override
 	{
-		this->_log(msg, line, function, file, Logger::LogLevel::Trace);
+		this->_log(msg, line, function, file, Level::Trace);
 	}
 
 	// Logs given text with 'trace' logging level if it is enabled in config.
@@ -361,7 +377,7 @@ public:
 	// Logs text with custom colour and ending if it is enable in config.
 	inline void print(const std::string& msg, Color colour, char end) override
 	{
-		if (this->_config.enable_print)
+		if (this->_config.is_enabled(Level::Print))
 		{
 			this->_write_to_stream(msg, colour, end);
 		}
@@ -379,47 +395,36 @@ public:
 		this->print(msg, Color::Default, '\n');
 	}
 
-	// Logs exception with `info` logging level if it is enabled in config.
+	// Logs exception with 'info' logging level if it is enabled in config.
 	inline void info(const BaseException& exc) override
 	{
 		this->info(exc.get_message(), exc.line(), exc.function(), exc.file());
 	}
 
-	// Logs exception with `debug` logging level if it is enabled in config.
+	// Logs exception with 'debug' logging level if it is enabled in config.
 	inline void debug(const BaseException& exc) override
 	{
 		this->debug(exc.get_message(), exc.line(), exc.function(), exc.file());
 	}
 
-	// Logs exception with `warning` logging level if it is enabled in config.
+	// Logs exception with 'warning' logging level if it is enabled in config.
 	inline void warning(const BaseException& exc) override
 	{
 		this->warning(exc.get_message(), exc.line(), exc.function(), exc.file());
 	}
 
-	// Logs exception with `error` logging level if it is enabled in config.
+	// Logs exception with 'error' logging level if it is enabled in config.
 	inline void error(const BaseException& exc) override
 	{
 		this->error(exc.get_message(), exc.line(), exc.function(), exc.file());
 	}
 
-	// Logs exception with `fatal` logging level if it is enabled in config.
-	inline void fatal(const BaseException& exc) override
-	{
-		this->fatal(exc.get_message(), exc.line(), exc.function(), exc.file());
-	}
-
-	// Sets a config for logger.
-	inline void set_config(const Config& config) override
-	{
-		this->_config = config;
-	}
-
 private:
-#if defined(__unix__) || defined(__linux__)
+	static inline const size_t THREADS_COUNT = 1;
 
+#if defined(__unix__) || defined(__linux__)
 	// Colours for nice output to a console stream.
-	std::map<Color, const char*> _colors = {
+	const std::map<Color, const char*> _colors = {
 		{Color::Default, "\033[0m"},
 		{Color::Black, "\033[30m"},
 		{Color::Red, "\033[31m"},
@@ -440,30 +445,28 @@ private:
 	};
 #endif
 
-	// Supported logging levels.
-	enum class LogLevel
-	{
-		Info, Debug, Warning, Error, Fatal, Trace
-	};
-
-	// Logger configuration.
 	Config _config;
 
-	// Thread pool which is used for asynchronous logging.
-	std::shared_ptr<ThreadPool> _thread_pool;
+	// Worker for non-blocking logging.
+	std::unique_ptr<ThreadedWorker> _worker;
 
-private:
+	void _log(const std::string& message, int line, const char* function, const char* file, Level level);
 
-	// Logs message with given parameters.
-	void _log(
-		const std::string& msg, int line, const char* function, const char* file, Logger::LogLevel level
-	);
+	// Writes message to all streams one by one.
+	void _write_to_stream(const std::string& message, Color colour, char end='\n');
 
-	// Writes message to all given streams.
-	void _write_to_stream(const std::string& msg, Color colour, char end='\n');
+	// Sets the color only for console stream.
+	void _set_color(Color colour, bool is_console_stream) const;
+};
 
-	// Sets new colour for console stream.
-	void _set_colour(Color colour) const;
+struct LogTask : public AbstractWorker::Task
+{
+public:
+	Level level;
+	std::string message;
+	int line;
+	const char* function;
+	const char* file;
 };
 
 __LOG_END__

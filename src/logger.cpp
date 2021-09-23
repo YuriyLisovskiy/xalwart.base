@@ -15,133 +15,78 @@
 
 __LOG_BEGIN__
 
-void FileStream::write(const std::string& text)
+Logger::Logger(Config cfg) : _config(std::move(cfg))
 {
-	if (this->_file->is_open())
+	this->_worker = std::make_unique<ThreadedWorker>(THREADS_COUNT);
+	this->_worker->AbstractWorker::add_task_listener<LogTask>([this](AbstractWorker*, LogTask& task)
 	{
-		this->_file->write(text);
-	}
-}
-
-void Config::add_console_stream()
-{
-	if (!this->_has_cout)
-	{
-		this->streams.push_back(std::make_shared<ConsoleStream>());
-		this->_has_cout = true;
-	}
-}
-
-void Config::add_file_stream(const std::string& fp)
-{
-	auto fs = std::make_shared<FileStream>(fp);
-	if (fs->is_valid())
-	{
-		this->streams.push_back(fs);
-	}
-}
-
-void Logger::_log(
-	const std::string& msg, int line, const char* function, const char* file, Logger::LogLevel level
-)
-{
-	this->_thread_pool->push([this, level, line, file, function, msg]() -> void {
-		std::string level_name;
-		bool is_enabled;
-		Color colour;
-		switch (level)
+		auto level_data = task.level.data();
+		std::string full_message;
+		if (task.line != 0 && std::strlen(task.file) > 0 && std::strlen(task.function) > 0)
 		{
-			case Logger::LogLevel::Warning:
-				level_name = "[warning]";
-				is_enabled = this->_config.enable_warning;
-				colour = Color::Yellow;
-				break;
-			case Logger::LogLevel::Error:
-				level_name = "[error]";
-				is_enabled = this->_config.enable_error;
-				colour = Color::Red;
-				break;
-			case Logger::LogLevel::Debug:
-				level_name = "[debug]";
-				is_enabled = this->_config.enable_debug;
-				colour = Color::Magenta;
-				break;
-			case Logger::LogLevel::Fatal:
-				level_name = "[fatal]";
-				is_enabled = this->_config.enable_fatal;
-				colour = Color::BoldRed;
-				break;
-			case Logger::LogLevel::Trace:
-				level_name = "[trace]";
-				is_enabled = this->_config.enable_trace;
-				colour = Color::BoldRed;
-				break;
-			default:
-				level_name = "[info]";
-				is_enabled = this->_config.enable_info;
-				colour = Color::Cyan;
-				break;
-		}
-
-		if (!is_enabled)
-		{
-			return;
-		}
-
-		std::string full_msg;
-		if (line != 0 && std::strlen(file) > 0 && std::strlen(function) > 0)
-		{
-			full_msg = "\n\tFile \"" + std::string(file) + "\", line "
-				+ std::to_string(line) + ", in "
-				+ std::string(function) + "\n" + msg;
+			full_message = "\n\tFile \"" + std::string(task.file) + "\", line "
+				+ std::to_string(task.line) + ", in "
+				+ std::string(task.function) + "\n" + task.message;
 		}
 		else
 		{
-			full_msg = " " + msg;
+			full_message = " " + task.message;
 		}
 
 		std::string result;
-		if (level != LogLevel::Trace)
+		if (task.level.operator!=(Level::Trace))
 		{
 			result = "[" + dt::Datetime::now().strftime("%F %T") + "] ";
 		}
 
-		result += level_name + ":" + full_msg;
-		this->_write_to_stream(result, colour);
+		result += "[" + level_data.name + "]:" + full_message;
+		this->_write_to_stream(result, level_data.color);
 	});
 }
 
-void Logger::_write_to_stream(const std::string& msg, Color colour, char end)
+void Logger::_log(
+	const std::string& message, int line, const char* function, const char* file, Level level
+)
 {
+	if (!this->_config.has_eny_level())
+	{
+		return;
+	}
+
+	this->_worker->AbstractWorker::inject_task<LogTask>(LogTask{
+		.level = level, .message = message, .line = line, .function = function, .file = file
+	});
+}
+
+void Logger::_write_to_stream(const std::string& message, Color color, char end)
+{
+	auto full_message = message + (end != '\0' ? std::string(1, end) : "");
 	for (auto& stream : this->_config.streams)
 	{
 		auto is_console = stream->is_console();
-		if (is_console)
-		{
-			this->_set_colour(colour);
-		}
-
-		stream->write(msg + (end != '\0' ? std::string(1, end) : ""));
-		if (is_console)
-		{
-			this->_set_colour(Color::Default);
-		}
-
+		this->_set_color(color, is_console);
+		stream->write(full_message);
+		this->_set_color(Color::Default, is_console);
 		stream->flush();
 	}
 }
 
-void Logger::_set_colour(Color colour) const
+void Logger::_set_color(Color color, bool is_console_stream) const
 {
-#if defined(__unix__) || defined(__linux__)
-	if (this->use_output_colors)
+	if (!is_console_stream)
 	{
-		if (this->_colors.find(colour) == this->_colors.end())
+		return;
+	}
+
+#if defined(__unix__) || defined(__linux__)
+	if (this->_config.use_colors)
+	{
+		if (this->_colors.find(color) == this->_colors.end())
 		{
-			colour = Color::Default;
+			color = Color::Default;
 		}
 
-		std::cout << this->_colors.at(colour);
+		std::cout << this->_colors.at(color);
 	}
 #endif
 }

@@ -28,7 +28,7 @@ class YAMLLoggerComponent : public AbstractComponent<YAML::Node>
 {
 public:
 	explicit YAMLLoggerComponent(
-		std::string base_directory, std::shared_ptr<log::ILogger>& logger
+		std::string base_directory, std::shared_ptr<abc::Logger>& logger
 	) : base_directory(std::move(base_directory)), logger(logger)
 	{
 	}
@@ -39,9 +39,11 @@ public:
 
 protected:
 	std::string base_directory;
-	std::shared_ptr<log::ILogger>& logger;
+	std::shared_ptr<abc::Logger>& logger;
 
-	virtual void initialize_levels(log::Config& logger_config, const YAML::Node& levels) const;
+	virtual void initialize_levels(log::Config& config, const YAML::Node& levels) const;
+
+	virtual void initialize_level(log::Config& config, const YAML::Node& node, log::Level level) const;
 
 	virtual void initialize_out_files(log::Config& config, const YAML::Node& files, const std::string& base_dir) const;
 
