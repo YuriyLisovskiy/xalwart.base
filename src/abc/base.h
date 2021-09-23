@@ -14,11 +14,11 @@
 
 __ABC_BEGIN__
 
-class IStringSerializable
+class StringSerializable
 {
 public:
 	[[nodiscard]]
-	std::string to_string() const = 0;
+	virtual std::string to_string() const = 0;
 };
 
 __ABC_END__
