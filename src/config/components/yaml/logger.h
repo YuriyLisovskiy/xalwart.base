@@ -16,8 +16,8 @@
 
 // Base libraries.
 #include "../../component.h"
-#include "../../../logger.h"
-#include "../../../yaml/yaml-cpp/yaml.h"
+#include "../../../abc/base.h"
+#include "../../../vendor/yaml/yaml-cpp/yaml.h"
 
 
 __CONFIG_BEGIN__
@@ -40,16 +40,6 @@ public:
 protected:
 	std::string base_directory;
 	std::shared_ptr<abc::Logger>& logger;
-
-	virtual void initialize_levels(log::Config& config, const YAML::Node& levels) const;
-
-	virtual void initialize_level(log::Config& config, const YAML::Node& node, log::Level level) const;
-
-	virtual void initialize_out_files(log::Config& config, const YAML::Node& files, const std::string& base_dir) const;
-
-	virtual void initialize_out(log::Config& config, const YAML::Node& out, const std::string& base_dir) const;
-
-	virtual void overwrite_out(const YAML::Node& from_out, YAML::Node& to_out) const;
 };
 
 __CONFIG_END__

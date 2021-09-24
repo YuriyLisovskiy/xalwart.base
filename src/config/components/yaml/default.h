@@ -18,7 +18,7 @@
 // Base libraries.
 #include "../../component.h"
 #include "../../../exceptions.h"
-#include "../../../yaml/yaml-cpp/yaml.h"
+#include "../../../vendor/yaml/yaml-cpp/yaml.h"
 
 
 __CONFIG_BEGIN__

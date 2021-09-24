@@ -1,11 +1,10 @@
 /**
- * kwargs.h
+ * options.h
  *
  * Copyright (c) 2021 Yuriy Lisovskiy
  *
- * Contains keyword-arguments based on 'std::map'.
- * Mostly used for virtual functions with variable arguments
- * count.
+ * Wrapper for Contains keyword-arguments based on 'std::map'.
+ * Can be used for functions with optional arguments of built-in types.
  */
 
 #pragma once
@@ -13,7 +12,7 @@
 // C++ libraries.
 #include <map>
 #include <string>
-#include <iostream>
+#include <exception>
 
 // Module definitions.
 #include "./_def_.h"
@@ -24,15 +23,16 @@
 
 __MAIN_NAMESPACE_BEGIN__
 
-class Kwargs final
+// TODO: docs for 'Options'
+class Options final
 {
 private:
 	std::map<std::string, std::string> _map;
 
 public:
-	Kwargs() = default;
+	Options() = default;
 
-	inline explicit Kwargs(std::map<std::string, std::string> src) : _map(std::move(src))
+	inline Options(std::map<std::string, std::string> src) : _map(std::move(src))
 	{
 	}
 
@@ -67,7 +67,7 @@ public:
 	[[nodiscard]]
 	inline bool contains(const std::string& key) const
 	{
-		return this->_map.find(key) != this->_map.end();
+		return this->_map.contains(key);
 	}
 };
 
