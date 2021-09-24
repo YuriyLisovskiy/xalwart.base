@@ -13,7 +13,7 @@
 
 __UNICODE_BEGIN__
 
-wchar_t simple_fold(wchar_t c)
+uint32_t simple_fold(uint32_t c)
 {
 	if (c < 0 || c > MAX_WCHAR_T)
 	{
@@ -59,7 +59,7 @@ wchar_t simple_fold(wchar_t c)
 	return to_upper(c);
 }
 
-std::pair<wchar_t, bool> _to(Case case_, wchar_t c, const std::vector<CaseRange>& case_range)
+std::pair<uint32_t, bool> _to(Case case_, uint32_t c, const std::vector<CaseRange>& case_range)
 {
 	if ((int)case_ < 0 || Case::Max <= case_)
 	{
@@ -107,13 +107,13 @@ std::pair<wchar_t, bool> _to(Case case_, wchar_t c, const std::vector<CaseRange>
 	return {c, false};
 }
 
-wchar_t to(Case case_, wchar_t c)
+uint32_t to(Case case_, uint32_t c)
 {
 	auto [r, _] = _to(case_, c, CASE_RANGES);
 	return r;
 }
 
-wchar_t to_upper(wchar_t c)
+uint32_t to_upper(uint32_t c)
 {
 	if (c <= MAX_ASCII)
 	{
@@ -128,7 +128,7 @@ wchar_t to_upper(wchar_t c)
 	return to(Case::Upper, c);
 }
 
-wchar_t to_lower(wchar_t c)
+uint32_t to_lower(uint32_t c)
 {
 	if (c <= MAX_ASCII)
 	{

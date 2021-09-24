@@ -39,20 +39,20 @@ __UNICODE_BEGIN__
 //
 //	simple_fold(-2) = -2
 //
-extern wchar_t simple_fold(wchar_t c);
+extern uint32_t simple_fold(uint32_t c);
 
 // TESTME: _to
-extern std::pair<wchar_t, bool> _to(Case case_, wchar_t c, const std::vector<CaseRange>& case_range);
+extern std::pair<uint32_t, bool> _to(Case case_, uint32_t c, const std::vector<CaseRange>& case_range);
 
 // TESTME: to
-extern wchar_t to(Case case_, wchar_t c);
+extern uint32_t to(Case case_, uint32_t c);
 
 // TESTME: to_upper
 // Maps the wide char to upper case.
-extern wchar_t to_upper(wchar_t c);
+extern uint32_t to_upper(uint32_t c);
 
 // TESTME: to_lower
 // Maps the wide char to lower case.
-extern wchar_t to_lower(wchar_t c);
+extern uint32_t to_lower(uint32_t c);
 
 __UNICODE_END__

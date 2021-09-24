@@ -8,15 +8,24 @@
 
 #pragma once
 
+// C++ libraries.
+#include <vector>
+
 #include "../_def_.h"
 
 // xw::unicode
 #define __UNICODE_BEGIN__ __MAIN_NAMESPACE_BEGIN__ namespace unicode {
 #define __UNICODE_END__ } __MAIN_NAMESPACE_END__
 
+// xw::unicode::utf8
+#define __UNICODE_UTF8_BEGIN__ __UNICODE_BEGIN__ namespace utf8 {
+#define __UNICODE_UTF8_END__ } __UNICODE_END__
+
 __UNICODE_BEGIN__
 
-// Characters below RuneSelf are represented as themselves in a single byte.
+// Characters below BYTE_SELF are represented as themselves in a single byte.
+static inline constexpr const uint16_t UNICODE_ERROR = 0xfffd;
+
 static inline constexpr const uint32_t BYTE_SELF = 0x80;
 
 static inline constexpr const int32_t MAX_WCHAR_T = 0x10ffff;

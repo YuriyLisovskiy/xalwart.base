@@ -13,6 +13,7 @@
 
 // Base libraries.
 #include "./unicode/letter.h"
+#include "./unicode/utf8.h"
 
 
 __STR_BEGIN__
@@ -323,32 +324,36 @@ std::string make_text_list(const std::vector<std::string>& list, const std::stri
 	return join(", ", list.begin(), list.end() - 1) + " " + last + " " + *(list.end() - 1);
 }
 
-bool equal_fold(std::wstring s, std::wstring t)
+bool equal_fold(std::string s, std::string t)
 {
 	while (!s.empty() && !t.empty())
 	{
 		// Extract first byte from each string.
-		wchar_t sr, tr;
-		if (s[0] < unicode::BYTE_SELF)
+		uint32_t sr, tr;
+		auto s0 = (uint32_t)(unsigned char)s[0];
+		if (s0 < unicode::BYTE_SELF)
 		{
-			sr = s[0];
+			sr = s0;
 			s = s.substr(1);
 		}
 		else
 		{
-			// r, size := utf8.DecodeRuneInString(s)
-			// sr, s = r, s[size:]
+			auto [r, size] = unicode::utf8::decode_symbol(s);
+			sr = r;
+			s = s.substr(size);
 		}
 
-		if (t[0] < unicode::BYTE_SELF)
+		auto t0 = (uint32_t)(unsigned char)t[0];
+		if (t0 < unicode::BYTE_SELF)
 		{
-			tr = t[0];
+			tr = t0;
 			t = t.substr(1);
 		}
 		else
 		{
-			// r, size := utf8.DecodeRuneInString(t)
-			// tr, t = r, t[size:]
+			auto [r, size] = unicode::utf8::decode_symbol(t);
+			tr = r;
+			t = t.substr(size);
 		}
 
 		// If they match, keep going; if not, return false.

@@ -438,6 +438,6 @@ constexpr inline bool is_end_position(size_t position)
 
 // TESTME: equal_fold
 // TODO: docs for 'equal_fold'
-extern bool equal_fold(std::wstring s, std::wstring t);
+extern bool equal_fold(std::string s, std::string t);
 
 __STR_END__
