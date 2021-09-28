@@ -19,6 +19,10 @@
 #define __ABC_BASE_BEGIN__ __ABC_BEGIN__ namespace base {
 #define __ABC_BASE_END__ } __ABC_END__
 
+// xw::abc::orm
+#define __ABC_ORM_BEGIN__ __ABC_BEGIN__ namespace orm {
+#define __ABC_ORM_END__ } __ABC_END__
+
 // xw::abc::render
 #define __ABC_RENDER_BEGIN__ __ABC_BEGIN__ namespace render {
 #define __ABC_RENDER_END__ } __ABC_END__

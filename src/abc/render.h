@@ -15,9 +15,6 @@
 #include <map>
 #include <optional>
 
-// Base libraries.
-#include <xalwart.base/object/object.h>
-
 // Module definitions.
 #include "./_def_.h"
 

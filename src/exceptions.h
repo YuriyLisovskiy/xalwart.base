@@ -69,6 +69,18 @@ public:
 	{
 	}
 
+	inline BaseException(const BaseException& other) noexcept
+	{
+		if (this != &other)
+		{
+			this->_exception_type = other._exception_type;
+			this->_message = other._message;
+			this->_line = other._line;
+			this->_function = other._function;
+			this->_file = other._file;
+		}
+	}
+
 	// Default destructor.
 	~BaseException() noexcept override = default;
 
