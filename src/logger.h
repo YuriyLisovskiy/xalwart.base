@@ -146,7 +146,7 @@ public:
 	struct Data
 	{
 		std::string name;
-		abc::Logger::Color color;
+		abc::ILogger::Color color;
 	};
 
 	enum Value
@@ -183,17 +183,17 @@ public:
 		switch (this->_value)
 		{
 			case Level::Info:
-				return {"info", abc::Logger::Color::Cyan};
+				return {"info", abc::ILogger::Color::Cyan};
 			case Level::Debug:
-				return {"debug", abc::Logger::Color::Magenta};
+				return {"debug", abc::ILogger::Color::Magenta};
 			case Level::Warning:
-				return {"warning", abc::Logger::Color::Yellow};
+				return {"warning", abc::ILogger::Color::Yellow};
 			case Level::Error:
-				return {"error", abc::Logger::Color::Red};
+				return {"error", abc::ILogger::Color::Red};
 			case Level::Trace:
-				return {"trace", abc::Logger::Color::BoldRed};
+				return {"trace", abc::ILogger::Color::BoldRed};
 			case Level::Print:
-				return {"print", abc::Logger::Color::Default};
+				return {"print", abc::ILogger::Color::Default};
 			default:
 				throw ValueError("invalid 'Level' option", _ERROR_DETAILS_);
 		}
@@ -289,7 +289,7 @@ private:
 
 // TESTME: Logger
 // TODO: docs for 'Logger'
-class Logger : public abc::Logger
+class Logger : public abc::ILogger
 {
 public:
 	explicit Logger(Config cfg);

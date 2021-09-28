@@ -21,8 +21,8 @@
 
 __ABC_BEGIN__
 
-// TODO: docs for 'Logger'
-class Logger
+// TODO: docs for 'ILogger'
+class ILogger
 {
 public:
 	enum class Color
@@ -49,7 +49,7 @@ public:
 	virtual void enable_colors() = 0;
 	virtual void disable_colors() = 0;
 
-	virtual ~Logger() = default;
+	virtual ~ILogger() = default;
 
 	// Logs given text, line, function name and file name with 'info' logging level.
 	virtual void info(const std::string& msg, int line, const char* function, const char* file) = 0;
@@ -99,7 +99,7 @@ public:
 };
 
 // TODO: docs for 'StringSerializable'
-class StringSerializable
+class IStringSerializable
 {
 public:
 	[[nodiscard]]
@@ -107,7 +107,7 @@ public:
 };
 
 // TODO: docs for 'JsonSerializable'
-class JsonSerializable
+class IJsonSerializable
 {
 public:
 	[[nodiscard]]

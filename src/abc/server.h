@@ -1,9 +1,9 @@
 /**
- * net/abc.h
+ * abc/server.h
  *
- * Copyright (c) 2020-2021 Yuriy Lisovskiy
+ * Copyright (c) 2021 Yuriy Lisovskiy
  *
- * Abstract base classes for 'net' module.
+ * Abstract base classes related to server.
  */
 
 #pragma once
@@ -16,13 +16,13 @@
 #include "./_def_.h"
 
 // Base libraries.
-#include "./request_context.h"
+#include "../net/request_context.h"
 
 
-__NET_ABC_BEGIN__
+__SERVER_ABC_BEGIN__
 
 // Base class (interface) for server implementation.
-class Server
+class IServer
 {
 public:
 	// Binds socket.
@@ -49,4 +49,4 @@ protected:
 	virtual void initialize_environment() = 0;
 };
 
-__NET_ABC_END__
+__SERVER_ABC_END__

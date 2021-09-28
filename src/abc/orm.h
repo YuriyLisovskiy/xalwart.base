@@ -19,13 +19,13 @@
 #include "./_def_.h"
 
 
-__ABC_ORM_BEGIN__
+__ORM_ABC_BEGIN__
 
-// TODO: docs for 'DatabaseConnection'
-class DatabaseConnection
+// TODO: docs for 'IDatabaseConnection'
+class IDatabaseConnection
 {
 public:
-	virtual ~DatabaseConnection() = default;
+	virtual ~IDatabaseConnection() = default;
 
 	[[nodiscard]]
 	virtual std::string dbms_name() const = 0;
@@ -60,25 +60,25 @@ public:
 	virtual void rollback_transaction() const = 0;
 };
 
-// TODO: docs for 'Backend'
+// TODO: docs for 'IBackend'
 // Manages database connection pool.
-class Backend
+class IBackend
 {
 public:
-	virtual ~Backend() = default;
+	virtual ~IBackend() = default;
 
 	virtual void create_pool() = 0;
 
 	// Provides a free connection from pool to access the database.
 	// If there is not any connection available, waits for it.
 	// This is a blocking operation.
-	virtual std::shared_ptr<DatabaseConnection> get_connection() = 0;
+	virtual std::shared_ptr<IDatabaseConnection> get_connection() = 0;
 
 	// Returns used connection to pool.
 	// The code that requested a connection, ALWAYS should return
 	// it back after using it, otherwise this connection will be
 	// lost.
-	virtual void release_connection(const std::shared_ptr<DatabaseConnection>& connection) = 0;
+	virtual void release_connection(const std::shared_ptr<IDatabaseConnection>& connection) = 0;
 
 	[[nodiscard]]
 	virtual std::string dbms_name() const = 0;
@@ -87,4 +87,4 @@ public:
 	virtual std::vector<std::string> get_table_names() = 0;
 };
 
-__ABC_ORM_END__
+__ORM_ABC_END__

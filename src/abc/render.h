@@ -22,7 +22,7 @@
 #include "../object/object.h"
 
 
-__ABC_RENDER_BEGIN__
+__RENDER_ABC_BEGIN__
 
 // TODO: docs for 'IContext'
 class IContext
@@ -134,4 +134,4 @@ concept library_type = std::is_base_of_v<ILibrary, T>;
 template <typename T>
 concept loader_type = std::is_base_of_v<ILoader, T>;
 
-__ABC_RENDER_END__
+__RENDER_ABC_END__

@@ -15,14 +15,14 @@
 #define __ABC_BEGIN__ __MAIN_NAMESPACE_BEGIN__ namespace abc {
 #define __ABC_END__ } __MAIN_NAMESPACE_END__
 
-// xw::abc::base
-#define __ABC_BASE_BEGIN__ __ABC_BEGIN__ namespace base {
-#define __ABC_BASE_END__ } __ABC_END__
+// xw::orm::abc
+#define __ORM_ABC_BEGIN__ __MAIN_NAMESPACE_BEGIN__ namespace orm::abc {
+#define __ORM_ABC_END__ } __MAIN_NAMESPACE_END__
 
-// xw::abc::orm
-#define __ABC_ORM_BEGIN__ __ABC_BEGIN__ namespace orm {
-#define __ABC_ORM_END__ } __ABC_END__
+// xw::render::abc
+#define __RENDER_ABC_BEGIN__ __MAIN_NAMESPACE_BEGIN__ namespace render::abc {
+#define __RENDER_ABC_END__ } __MAIN_NAMESPACE_END__
 
-// xw::abc::render
-#define __ABC_RENDER_BEGIN__ __ABC_BEGIN__ namespace render {
-#define __ABC_RENDER_END__ } __ABC_END__
+// xw::server::abc
+#define __SERVER_ABC_BEGIN__ __MAIN_NAMESPACE_BEGIN__ namespace server::abc {
+#define __SERVER_ABC_END__ } __MAIN_NAMESPACE_END__

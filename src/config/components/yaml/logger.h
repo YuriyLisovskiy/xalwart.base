@@ -28,7 +28,7 @@ class YAMLLoggerComponent : public AbstractComponent<YAML::Node>
 {
 public:
 	explicit YAMLLoggerComponent(
-		std::string base_directory, std::shared_ptr<abc::Logger>& logger
+		std::string base_directory, std::shared_ptr<abc::ILogger>& logger
 	) : base_directory(std::move(base_directory)), logger(logger)
 	{
 	}
@@ -39,7 +39,7 @@ public:
 
 protected:
 	std::string base_directory;
-	std::shared_ptr<abc::Logger>& logger;
+	std::shared_ptr<abc::ILogger>& logger;
 };
 
 __CONFIG_END__
