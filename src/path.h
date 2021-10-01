@@ -29,12 +29,21 @@
 
 #ifdef __mac__
 
-#error "Path utilities is not supported on Mac"
+#include "./_path/mac.h"
 
 #endif // __mac__
 
 
 __PATH_BEGIN__
+
+// Split a path in root and extension.
+// The extension is everything starting at the last dot in the last
+// pathname component; the root is everything before that.
+// It is always true that `root + ext == p`.
+inline void split_text(const std::string& full_path, std::string& root_out, std::string& ext_out)
+{
+	return _split_text(full_path, path_sep, alt_sep, ext_sep, root_out, ext_out);
+}
 
 // TESTME: prefix_and_suffix
 // 'prefix_and_suffix' splits pattern by the last wildcard "*", if applicable,

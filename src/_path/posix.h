@@ -34,15 +34,6 @@ inline const char* def_path = "/bin:/usr/bin";
 inline const char alt_sep = '\0';
 inline const char* dev_null = "/dev/null";
 
-// Split a path in root and extension.
-// The extension is everything starting at the last dot in the last
-// pathname component; the root is everything before that.
-// It is always true that `root + ext == p`.
-inline void split_text(const std::string& full_path, std::string& root_out, std::string& ext_out)
-{
-	_split_text(full_path, path::path_sep, path::alt_sep, path::ext_sep, root_out, ext_out);
-}
-
 // `p`: path to check.
 //
 // Returns `true` if path exists, `false` otherwise.
