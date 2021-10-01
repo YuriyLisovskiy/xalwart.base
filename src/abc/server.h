@@ -25,6 +25,8 @@ __SERVER_ABC_BEGIN__
 class IServer
 {
 public:
+	virtual ~IServer() = default;
+
 	// Binds socket.
 	virtual void bind(const std::string& address, uint16_t port) = 0;
 

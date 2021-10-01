@@ -8,13 +8,10 @@
 
 #pragma once
 
-// C++ libraries.
+// STL libraries.
 #include <fstream>
 #include <vector>
-
-#if defined(__unix__) || defined(__linux__)
 #include <sys/stat.h>
-#endif
 
 #ifndef _WIN32
 #include <unistd.h>

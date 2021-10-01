@@ -8,8 +8,9 @@
 
 #pragma once
 
-// C++ libraries.
+// STL libraries.
 #include <string>
+#include <sys/stat.h>
 
 // Module definitions.
 #include "../_def_.h"

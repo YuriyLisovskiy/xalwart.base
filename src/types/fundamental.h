@@ -8,6 +8,9 @@
 
 #pragma once
 
+// STL libraries.
+// TODO
+
 // Module definitions.
 #include "./_def_.h"
 
@@ -369,13 +372,13 @@ public:
 		return in >> obj.internal_value;
 	}
 
-	template <std::integral IntegralConstantT>
+	template <xw::integral IntegralConstantT>
 	inline friend Fundamental<InternalT> operator<<(const Fundamental<InternalT>& value, IntegralConstantT ic)
 	{
 		return Fundamental<InternalT>(value.internal_value << ic);
 	}
 
-	template <std::integral IntegralConstantT>
+	template <xw::integral IntegralConstantT>
 	inline friend Fundamental<InternalT> operator>>(const Fundamental<InternalT>& value, IntegralConstantT ic)
 	{
 		return Fundamental<InternalT>(value.internal_value >> ic);
@@ -503,14 +506,14 @@ public:
 		return *this;
 	}
 
-	template <std::integral IntegralConstantT>
+	template <xw::integral IntegralConstantT>
 	inline Fundamental<InternalT>& operator<<=(const IntegralConstantT& ic)
 	{
 		this->internal_value <<= ic;
 		return *this;
 	}
 
-	template <std::integral IntegralConstantT>
+	template <xw::integral IntegralConstantT>
 	inline Fundamental<InternalT>& operator>>=(const IntegralConstantT& ic)
 	{
 		this->internal_value >>= ic;

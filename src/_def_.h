@@ -141,4 +141,7 @@ inline T* require_non_null(T* p, int line=0, const char* function="", const char
 	);
 }
 
+template <class T>
+concept integral = std::is_integral_v<T>;
+
 __MAIN_NAMESPACE_END__

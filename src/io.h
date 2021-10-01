@@ -20,6 +20,8 @@ __IO_BEGIN__
 class IReader
 {
 public:
+	virtual ~IReader() = default;
+
 	/**
 	 * Reads all bytes from stream before `\r\n` sequence.
 	 *
@@ -45,6 +47,8 @@ public:
 class IWriter
 {
 public:
+	virtual ~IWriter() = default;
+
 	/**
 	 * Writes `count` bytes to stream.
 	 *
@@ -64,6 +68,8 @@ public:
 class ILimiter
 {
 public:
+	virtual ~ILimiter() = default;
+
 	/**
 	 * Negative limit means that reader has no limit.
 	 */
@@ -77,6 +83,8 @@ public:
 class IBuffer
 {
 public:
+	virtual ~IBuffer() = default;
+
 	virtual ssize_t peek(std::string& buffer, size_t max_count) = 0;
 
 	[[nodiscard]]

@@ -63,6 +63,7 @@ template <typename... PartT>
 inline std::string join(const std::string& a, const PartT&... p)
 {
 	// TODO:
+	return "";
 }
 
 // Returns current working directory.
