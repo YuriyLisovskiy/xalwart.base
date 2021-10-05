@@ -65,32 +65,28 @@ jobs:
                           bash /app/scripts/linux/test.sh ${{ matrix.os.name }} ${{ matrix.compiler }} ${{ matrix.compiler_version }}
   macos-build:
     name: Build the library for macOS and upload it to artifacts
-    if: ${{ matrix.os_version != '10.15' || matrix.compiler.cc != 'clang' }}
-    runs-on: ${{ matrix.os_name }}-${{ matrix.os_version }}
+    runs-on: ${{ matrix.os_name }}-${{ matrix.step.os_version }}
     strategy:
       fail-fast: false
       matrix:
         os_name: [ macos ]
-        os_version: [ 10.14, 10.15, 11 ]
-        compiler:
-          - cc: gcc-10
-            cxx: g++-10
-          - cc: clang
-            cxx: clang++
+        step:
+          - compiler:
+              cc: gcc-10
+              cxx: g++-10
+            os_version: [ 10.14, 10.15, 11 ]
+          - compiler:
+              cc: clang
+              cxx: clang++
+            os_version: [ 10.14, 11 ]
     steps:
       - uses: actions/checkout@v2
-      - name: Configure with CMake (clang)
-        if: ${{ matrix.compiler == 'clang' }}
-        run: |
-          mkdir build
-          cd build
-          cmake -D CMAKE_BUILD_TYPE=Release ..
       - name: Build the Library
         run: |
           mkdir build && cd build
           cmake -D CMAKE_BUILD_TYPE=Release \
-                -D CMAKE_C_COMPILER=${{ matrix.compiler.cc }} \
-                -D CMAKE_CXX_COMPILER=${{ matrix.compiler.cxx }} \
+                -D CMAKE_C_COMPILER=${{ matrix.step.compiler.cc }} \
+                -D CMAKE_CXX_COMPILER=${{ matrix.step.compiler.cxx }} \
                 ..
           sudo mkdir -p /usr/local/include && sudo mkdir -p /usr/local/lib
           make xalwart.base && sudo make install
@@ -101,24 +97,26 @@ jobs:
       - name: Upload the Artifact
         uses: actions/upload-artifact@v2
         with:
-          name: xalwart.base-${{ matrix.os_name }}-${{ matrix.os_version }}-${{ matrix.compiler.cc }}
+          name: xalwart.base-${{ matrix.os_name }}-${{ matrix.step.os_version }}-${{ matrix.step.compiler.cc }}
           path: target-build
           retention-days: 60
   macos-test:
-    name: "${{ matrix.os_name }}-${{ matrix.os_version }} [${{ matrix.compiler.cc }}]"
-    if: ${{ matrix.os_version != '10.15' || matrix.compiler.cc != 'clang' }}
+    name: "${{ matrix.os_name }}-${{ matrix.step.os_version }} [${{ matrix.step.compiler.cc }}]"
     needs: [ macos-build ]
-    runs-on: ${{ matrix.os_name }}-${{ matrix.os_version }}
+    runs-on: ${{ matrix.os_name }}-${{ matrix.step.os_version }}
     strategy:
       fail-fast: false
       matrix:
         os_name: [ macos ]
-        os_version: [ 10.14, 10.15, 11 ]
-        compiler:
-          - cc: gcc-10
-            cxx: g++-10
-          - cc: clang
-            cxx: clang++
+        step:
+          - compiler:
+              cc: gcc-10
+              cxx: g++-10
+            os_version: [ 10.14, 10.15, 11 ]
+          - compiler:
+              cc: clang
+              cxx: clang++
+            os_version: [ 10.14, 11 ]
     steps:
       - uses: actions/checkout@v2
       - name: Install Required Software
@@ -130,13 +128,13 @@ jobs:
       - name: Download the Artifact
         uses: actions/download-artifact@v2
         with:
-          name: xalwart.base-${{ matrix.os_name }}-${{ matrix.os_version }}-${{ matrix.compiler.cc }}
+          name: xalwart.base-${{ matrix.os_name }}-${{ matrix.step.os_version }}-${{ matrix.step.compiler.cc }}
           path: /usr/local
       - name: Build and Run Tests
         run: |
           mkdir build && cd build
-          cmake -D CMAKE_C_COMPILER=${{ matrix.compiler.cc }} \
-                -D CMAKE_CXX_COMPILER=${{ matrix.compiler.cxx }} \
+          cmake -D CMAKE_C_COMPILER=${{ matrix.step.compiler.cc }} \
+                -D CMAKE_CXX_COMPILER=${{ matrix.step.compiler.cxx }} \
                 -D CMAKE_BUILD_TYPE=Release \
                 -D XW_BUILD_LIB=OFF \
                 -D XW_BUILD_TESTS=ON \
