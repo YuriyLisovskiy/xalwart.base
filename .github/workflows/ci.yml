@@ -96,7 +96,7 @@ jobs:
           cd && mkdir target-build && cd target-build
           mkdir -p include && mkdir -p lib && cd
           cp -r /usr/local/include/xalwart.base target-build/include
-          cp -r /usr/local/lib/xalwart.base* target-build/lib
+          cp -r /usr/local/lib/libxalwart.base* target-build/lib
       - name: Upload the Artifact
         uses: actions/upload-artifact@v2
         with:
