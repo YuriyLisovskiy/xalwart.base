@@ -65,12 +65,13 @@ jobs:
                           bash /app/scripts/linux/test.sh ${{ matrix.os.name }} ${{ matrix.compiler }} ${{ matrix.compiler_version }}
   macos-build:
     name: Build the library for macOS and upload it to artifacts
+    if: !(${{ matrix.os_version == '10.15' && matrix.compiler.cc == 'clang' }})
     runs-on: ${{ matrix.os_name }}-${{ matrix.os_version }}
     strategy:
       fail-fast: false
       matrix:
         os_name: [ macos ]
-        os_version: [ 10.15, 11 ]
+        os_version: [ 10.14, 10.15, 11 ]
         compiler:
           - cc: gcc-10
             cxx: g++-10
@@ -105,13 +106,14 @@ jobs:
           retention-days: 60
   macos-test:
     name: "${{ matrix.os_name }}-${{ matrix.os_version }} [${{ matrix.compiler.cc }}]"
+    if: !(${{ matrix.os_version == '10.15' && matrix.compiler.cc == 'clang' }})
     needs: [ macos-build ]
     runs-on: ${{ matrix.os_name }}-${{ matrix.os_version }}
     strategy:
       fail-fast: false
       matrix:
         os_name: [ macos ]
-        os_version: [ 10.15, 11 ]
+        os_version: [ 10.14, 10.15, 11 ]
         compiler:
           - cc: gcc-10
             cxx: g++-10

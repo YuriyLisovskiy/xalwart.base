@@ -15,7 +15,6 @@
 #include <locale>
 #include <codecvt>
 #include <algorithm>
-#include <concepts>
 
 // Module definitions.
 #include "./_def_.h"
