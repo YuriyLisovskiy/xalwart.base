@@ -17,6 +17,7 @@
 #include "./_def_.h"
 
 // Base libraries.
+#include "./sys.h"
 #include "./exceptions.h"
 #include "./file.h"
 #include "./abc/base.h"
@@ -216,17 +217,17 @@ public:
 
 	void enable(Level level)
 	{
-		this->_levels_holder |= (1 << (int)level);
+		this->_levels_holder |= (1UL << (unsigned long)level);
 	}
 
 	void enable_all_levels()
 	{
-		this->_levels_holder = (char)0x00111111;
+		this->_levels_holder = (unsigned char)0x11111111;
 	}
 
 	void disable(Level level)
 	{
-		this->_levels_holder &= ~(1 << (int)level);
+		this->_levels_holder &= ~(1UL << (unsigned long)level);
 	}
 
 	void disable_all_levels()
@@ -237,7 +238,10 @@ public:
 	[[nodiscard]]
 	bool is_enabled(Level level) const
 	{
-		return (this->_levels_holder >> (int)level) & 1;
+		auto pos = 1U << (int)level;
+		return ((this->_levels_holder >> pos) & 1U);
+		// (number >> n) & 1U
+//		return (this->_levels_holder >> (int)level) & 1;
 	}
 
 	[[nodiscard]]
@@ -249,7 +253,7 @@ public:
 	[[nodiscard]]
 	bool has_all_levels() const
 	{
-		return this->_levels_holder == (char)0x00111111;
+		return this->_levels_holder == (unsigned char)0x11111111;
 	}
 
 	// Appends console stream.
@@ -284,7 +288,7 @@ private:
 	// empty, empty, Print, Trace, Error, Warning, Debug, Info
 	//
 	// When bit is set to 1, level is enabled, disabled otherwise.
-	char _levels_holder = '\0';
+	unsigned char _levels_holder = '\0';
 };
 
 // TESTME: Logger
@@ -292,7 +296,7 @@ private:
 class Logger : public abc::ILogger
 {
 public:
-	explicit Logger(Config cfg);
+	Logger(Config cfg);
 
 	inline void enable_colors() override
 	{
@@ -432,7 +436,7 @@ protected:
 
 	static inline const size_t THREADS_COUNT = 1;
 
-#if defined(__unix__) || defined(__linux__)
+#if defined(__linux__) || defined(__mac__)
 	// Colours for nice output to a console stream.
 	const std::map<Color, const char*> _colors = {
 		{Color::Default, "\033[0m"},
@@ -453,12 +457,12 @@ protected:
 		{Color::BoldCyan, "\033[1m\033[36m"},
 		{Color::BoldWhite, "\033[1m\033[37m"},
 	};
-#endif
+#endif // __linux__ || __mac__
 
 	Config config;
 
 	// Worker for non-blocking logging.
-	std::unique_ptr<ThreadedWorker> worker;
+	std::shared_ptr<ThreadedWorker> worker;
 
 private:
 	void _log(const std::string& message, int line, const char* function, const char* file, Level level);

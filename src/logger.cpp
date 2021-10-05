@@ -78,7 +78,7 @@ void Logger::_set_color(Color color, bool is_console_stream) const
 		return;
 	}
 
-#if defined(__unix__) || defined(__linux__)
+#if defined(__linux__) || defined(__mac__)
 	if (this->config.use_colors)
 	{
 		if (this->_colors.find(color) == this->_colors.end())
@@ -88,7 +88,7 @@ void Logger::_set_color(Color color, bool is_console_stream) const
 
 		std::cout << this->_colors.at(color);
 	}
-#endif
+#endif // __linux__ || __mac__
 }
 
 __LOG_END__

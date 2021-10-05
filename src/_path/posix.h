@@ -10,17 +10,14 @@
 
 #include "../sys.h"
 
-#ifdef __unix__
+#if defined(__linux__) || defined(__mac__)
 
 // C++ libraries.
 #include <string>
-#include <vector>
+#include <filesystem>
 
 // Module definitions.
 #include "../_def_.h"
-
-// Base libraries.
-#include "./generic.h"
 
 
 __PATH_BEGIN__
@@ -33,21 +30,6 @@ inline const char path_list_sep = ':';
 inline const char* def_path = "/bin:/usr/bin";
 inline const char alt_sep = '\0';
 inline const char* dev_null = "/dev/null";
-
-// `p`: path to check.
-//
-// Returns `true` if path exists, `false` otherwise.
-extern bool exists(const std::string& p);
-
-// `p`: path to analyze.
-//
-// Returns the final component of a path name.
-extern std::string basename(const std::string& p);
-
-// `p`: path to analyze.
-//
-// Returns the directory component of a path name.
-extern std::string dirname(const std::string& p);
 
 template <typename... PartT>
 void _join(std::string& out, const std::string& b, const PartT&... p)
@@ -90,19 +72,11 @@ std::string join(const std::string& a, const PartT&... p)
 	return result_path;
 }
 
-// Returns current working directory.
-extern std::string cwd();
-
-// Test whether a path is absolute.
-//
-// `p`: path to check.
-//
-// Returns `true` if path is absolute, `false` otherwise.
-inline bool is_absolute(const std::string& p)
+inline std::string working_directory()
 {
-	return p.starts_with(path::path_sep);
+	return std::filesystem::current_path();
 }
 
 __PATH_END__
 
-#endif // __unix__
+#endif // __linux__ || __mac__

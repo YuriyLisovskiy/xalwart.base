@@ -12,6 +12,9 @@
 
 #if defined(__windows__)
 
+// STL libraries.
+#include <filesystem>
+
 // Module definitions.
 #include "../_def_.h"
 
@@ -36,27 +39,6 @@ inline const char* dev_null = "nul";
 // join(head, tail) == p holds.
 // The resulting head won't end in '/' unless it is the root.
 extern std::pair<std::string, std::string> split(const std::string& p);
-
-// `p`: path to check.
-//
-// Returns `true` if path exists, `false` otherwise.
-extern bool exists(const std::string& p);
-
-// `p`: path to analyze.
-//
-// Returns the final component of a path name.
-inline std::string basename(const std::string& p)
-{
-	return split(p).second;
-}
-
-// `p`: path to analyze.
-//
-// Returns the directory component of a path name.
-inline std::string dirname(const std::string& p)
-{
-	return split(p).first;
-}
 
 // Split a path in a drive specification (a drive letter followed by a
 // colon) and the path specification.
@@ -148,17 +130,10 @@ std::string join(const std::string& a, const PartT&... p)
 	return result_drive + result_path;
 }
 
-// Returns current working directory.
-extern std::string cwd();
-
-// Test whether a path is absolute.
-//
-// `p`: path to check.
-//
-// For Windows it is absolute if it starts with a slash or backslash (current
-// volume), or if a pathname after the volume-letter-and-colon or UNC-resource
-// starts with a slash or backslash.
-extern bool is_absolute(const std::string& p);
+inline std::string working_directory()
+{
+	return std::filesystem::current_path().string();
+}
 
 __PATH_END__
 
