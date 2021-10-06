@@ -65,20 +65,19 @@ jobs:
                           bash /app/scripts/linux/test.sh ${{ matrix.os.name }} ${{ matrix.compiler }} ${{ matrix.compiler_version }}
   macos-build:
     name: Build the library for macOS and upload it to artifacts
-    runs-on: ${{ matrix.os_name }}-${{ matrix.step.os_version }}
+    runs-on: ${{ matrix.os_name }}-${{ matrix.os_version }}
     strategy:
       fail-fast: false
       matrix:
         os_name: [ macos ]
+        os_version: [ 11 ]
         step:
           - compiler:
               cc: gcc-10
               cxx: g++-10
-            os_version: [ 11 ]
           - compiler:
               cc: clang
               cxx: clang++
-            os_version: [ 11 ]
     steps:
       - uses: actions/checkout@v2
       - name: Build the Library
@@ -97,26 +96,25 @@ jobs:
       - name: Upload the Artifact
         uses: actions/upload-artifact@v2
         with:
-          name: xalwart.base-${{ matrix.os_name }}-${{ matrix.step.os_version }}-${{ matrix.step.compiler.cc }}
+          name: xalwart.base-${{ matrix.os_name }}-${{ matrix.os_version }}-${{ matrix.step.compiler.cc }}
           path: target-build
           retention-days: 60
   macos-test:
-    name: "${{ matrix.os_name }}-${{ matrix.step.os_version }} [${{ matrix.step.compiler.cc }}]"
+    name: "${{ matrix.os_name }}-${{ matrix.os_version }} [${{ matrix.step.compiler.cc }}]"
     needs: [ macos-build ]
-    runs-on: ${{ matrix.os_name }}-${{ matrix.step.os_version }}
+    runs-on: ${{ matrix.os_name }}-${{ matrix.os_version }}
     strategy:
       fail-fast: false
       matrix:
         os_name: [ macos ]
+        os_version: [ 11 ]
         step:
           - compiler:
               cc: gcc-10
               cxx: g++-10
-            os_version: [ 11 ]
           - compiler:
               cc: clang
               cxx: clang++
-            os_version: [ 11 ]
     steps:
       - uses: actions/checkout@v2
       - name: Install Required Software
@@ -128,7 +126,7 @@ jobs:
       - name: Download the Artifact
         uses: actions/download-artifact@v2
         with:
-          name: xalwart.base-${{ matrix.os_name }}-${{ matrix.step.os_version }}-${{ matrix.step.compiler.cc }}
+          name: xalwart.base-${{ matrix.os_name }}-${{ matrix.os_version }}-${{ matrix.step.compiler.cc }}
           path: /usr/local
       - name: Build and Run Tests
         run: |
