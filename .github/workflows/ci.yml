@@ -74,11 +74,11 @@ jobs:
           - compiler:
               cc: gcc-10
               cxx: g++-10
-            os_version: [ 10.14, 10.15, 11 ]
+            os_version: [ 11 ]
           - compiler:
               cc: clang
               cxx: clang++
-            os_version: [ 10.14, 11 ]
+            os_version: [ 11 ]
     steps:
       - uses: actions/checkout@v2
       - name: Build the Library
@@ -112,11 +112,11 @@ jobs:
           - compiler:
               cc: gcc-10
               cxx: g++-10
-            os_version: [ 10.14, 10.15, 11 ]
+            os_version: [ 11 ]
           - compiler:
               cc: clang
               cxx: clang++
-            os_version: [ 10.14, 11 ]
+            os_version: [ 11 ]
     steps:
       - uses: actions/checkout@v2
       - name: Install Required Software
