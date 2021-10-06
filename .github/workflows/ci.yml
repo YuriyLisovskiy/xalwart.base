@@ -8,7 +8,7 @@ on:
       - release
 jobs:
   linux-build:
-    name: Build the library and upload it to artifacts
+    name: Build the library for Linux and upload it to artifacts
     runs-on: ubuntu-18.04
     strategy:
       fail-fast: false
@@ -35,7 +35,7 @@ jobs:
           path: xalwart.base-${{ matrix.os.name }}-${{ matrix.compiler }}-${{ matrix.compiler_version }}
           retention-days: 60
   linux-test:
-    name: "${{ matrix.os.name }}-${{ matrix.os.version }} [${{ matrix.compiler }}-${{ matrix.compiler_version }}]"
+    name: "Testing: ${{ matrix.os.name }}-${{ matrix.os.version }} [${{ matrix.compiler }}-${{ matrix.compiler_version }}]"
     needs: [ linux-build ]
     runs-on: ubuntu-18.04
     strategy:
@@ -100,7 +100,7 @@ jobs:
           path: target-build
           retention-days: 60
   macos-test:
-    name: "${{ matrix.os_name }}-${{ matrix.os_version }} [${{ matrix.step.compiler.cc }}]"
+    name: "Testing: ${{ matrix.os_name }}-${{ matrix.os_version }} [${{ matrix.step.compiler.cc }}]"
     needs: [ macos-build ]
     runs-on: ${{ matrix.os_name }}-${{ matrix.os_version }}
     strategy:
