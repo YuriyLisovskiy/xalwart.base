@@ -35,7 +35,7 @@ jobs:
           path: xalwart.base-${{ matrix.os.name }}-${{ matrix.compiler }}-${{ matrix.compiler_version }}
           retention-days: 60
   linux-test:
-    name: "Testing: ${{ matrix.os.name }}-${{ matrix.os.version }} [${{ matrix.compiler }}-${{ matrix.compiler_version }}]"
+    name: "Testing for ${{ matrix.os.name }}-${{ matrix.os.version }} [${{ matrix.compiler }}-${{ matrix.compiler_version }}]"
     needs: [ linux-build ]
     runs-on: ubuntu-18.04
     strategy:
@@ -100,7 +100,7 @@ jobs:
           path: target-build
           retention-days: 60
   macos-test:
-    name: "Testing: ${{ matrix.os_name }}-${{ matrix.os_version }} [${{ matrix.step.compiler.cc }}]"
+    name: "Testing for ${{ matrix.os_name }}-${{ matrix.os_version }} [${{ matrix.step.compiler.cc }}]"
     needs: [ macos-build ]
     runs-on: ${{ matrix.os_name }}-${{ matrix.os_version }}
     strategy:
