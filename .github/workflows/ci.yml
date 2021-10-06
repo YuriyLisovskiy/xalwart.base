@@ -70,7 +70,7 @@ jobs:
       fail-fast: false
       matrix:
         os_name: [ macos ]
-        os_version: [ 11 ]
+        os_version: [ 10.14, 10.15, 11 ]
         step:
           - compiler:
               cc: gcc-10
@@ -107,7 +107,7 @@ jobs:
       fail-fast: false
       matrix:
         os_name: [ macos ]
-        os_version: [ 11 ]
+        os_version: [ 10.14, 10.15, 11 ]
         step:
           - compiler:
               cc: gcc-10
@@ -117,9 +117,13 @@ jobs:
               cxx: clang++
     steps:
       - uses: actions/checkout@v2
-      - name: Install Required Software
+      - name: Install Valgrind
         run: |
-          brew install valgrind
+          brew tap LouisBrunner/valgrind
+          brew install --HEAD LouisBrunner/valgrind/valgrind
+      - name: Install Google Test Framework
+        run: |
+          brew install googletest
       - name: Create Target Directories
         run: |
           sudo mkdir -p /usr/local
