@@ -107,14 +107,7 @@ jobs:
       fail-fast: false
       matrix:
         os_name: [ macos ]
-        os_version: [ 11 ]
-        step:
-          - compiler:
-              cc: gcc-10
-              cxx: g++-10
-          - compiler:
-              cc: clang
-              cxx: clang++
+        os_version: [ 10.14, 10.15, 11 ]
     steps:
       - uses: actions/checkout@v2
       - name: Install Valgrind
@@ -135,9 +128,7 @@ jobs:
       - name: Build and Run Tests
         run: |
           mkdir build && cd build
-          cmake -D CMAKE_C_COMPILER=${{ matrix.step.compiler.cc }} \
-                -D CMAKE_CXX_COMPILER=${{ matrix.step.compiler.cxx }} \
-                -D CMAKE_BUILD_TYPE=Release \
+          cmake -D CMAKE_BUILD_TYPE=Release \
                 -D XW_BUILD_LIB=OFF \
                 -D XW_BUILD_TESTS=ON \
                 ..
