@@ -90,7 +90,7 @@ jobs:
           path: ~/target-build
           retention-days: 60
   macos-test:
-    name: "Testing for ${{ matrix.os_name }}-${{ matrix.os_version }} [${{ matrix.step.compiler.cc }}]"
+    name: "Testing for ${{ matrix.os_name }}-${{ matrix.os_version }} [clang]"
     needs: [ macos-build ]
     runs-on: ${{ matrix.os_name }}-${{ matrix.os_version }}
     strategy:
