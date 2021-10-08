@@ -29,7 +29,7 @@ void _initialize_levels(log::Config& config, const YAML::Node& levels)
 {
 	if (levels)
 	{
-		if (levels.as<std::string>("") == "*")
+		if (levels.IsSequence() && levels.size() == 1 && (*levels.begin()).as<std::string>("") == "*")
 		{
 			config.enable_all_levels();
 		}
@@ -59,7 +59,8 @@ void _initialize_out_files(
 				auto file_path = node.as<std::string>("");
 				if (!file_path.empty())
 				{
-					auto full_path = path::is_absolute(file_path) ? file_path : path::join(base_dir, file_path);
+					auto full_path = path::Path(file_path).is_absolute() ?
+						file_path : path::join(base_dir, file_path);
 					config.add_file_stream(full_path);
 				}
 			}

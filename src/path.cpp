@@ -1,11 +1,10 @@
 #include "./path.h"
 
-// C++ libraries.
+// STL libraries.
 #include <filesystem>
 #include <random>
 
 // Base libraries.
-#include "./exceptions.h"
 #include "./string_utils.h"
 #include "./datetime.h"
 
@@ -58,7 +57,7 @@ std::unique_ptr<File> temp_file(std::string dir, const std::string& pattern, boo
 	for (size_t i = 0; i < 100000; i++)
 	{
 		auto file_path = join(dir, prefix.append(next_random()).append(suffix));
-		if (path::exists(file_path))
+		if (std::filesystem::exists(file_path))
 		{
 			continue;
 		}

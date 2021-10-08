@@ -10,28 +10,20 @@
 
 // C++ libraries.
 #include <memory>
+#include <filesystem>
 
 // Base libraries.
 #include "./sys.h"
 #include "./file.h"
+#include "./abc/base.h"
 
-#ifdef __unix__
-
+#if defined(__linux__) || defined(__mac__)
 #include "./_path/posix.h"
-
-#endif // __unix__
+#endif // __linux__ || __mac__
 
 #ifdef __windows__
-
 #include "./_path/nt.h"
-
 #endif // __windows__
-
-#ifdef __mac__
-
-#error "Path utilities is not supported on Mac"
-
-#endif // __mac__
 
 
 __PATH_BEGIN__
@@ -61,5 +53,68 @@ extern std::string next_random();
 // to find the pathname of the file. It is the caller's responsibility
 // to remove the file when no longer needed.
 extern std::unique_ptr<File> temp_file(std::string dir, const std::string& pattern, bool is_binary);
+
+// `p`: path to access.
+//
+// Returns file size in bytes.
+inline size_t get_size(const std::string& p)
+{
+	return file_stat(p).st_size;
+}
+
+// TESTME: Path
+// TODO: docs for 'Path'
+class Path : public abc::IStringSerializable
+{
+public:
+	inline Path(const std::string& p) : p(p)
+	{
+	}
+
+	[[nodiscard]]
+	inline std::string to_string() const override
+	{
+		return this->p.string();
+	}
+
+	[[nodiscard]]
+	inline std::string to_std_path() const
+	{
+		return this->p;
+	}
+
+	inline Path& operator/ (const Path& other)
+	{
+		this->p = std::filesystem::path(join(this->p.string(), other.p.string()));
+		return *this;
+	}
+
+	[[nodiscard]]
+	inline bool is_absolute() const
+	{
+		return this->p.is_absolute();
+	}
+
+	[[nodiscard]]
+	inline std::string dirname() const
+	{
+		return this->p.parent_path().string();
+	}
+
+	[[nodiscard]]
+	inline std::string basename() const
+	{
+		return this->p.filename().string();
+	}
+
+	[[nodiscard]]
+	inline bool exists() const
+	{
+		return std::filesystem::exists(this->p);
+	}
+
+protected:
+	std::filesystem::path p;
+};
 
 __PATH_END__

@@ -2,6 +2,9 @@ set(CMAKE_CXX_FLAGS "-pthread")
 
 set(BINARY unittests)
 
+#find_library(LIB_GTEST gtest)
+#find_library(LIB_STDC_FS stdc++fs)
+
 function(add_tests SUB_DIR SUB_NAME)
     set(TESTS_DIR ${PROJECT_SOURCE_DIR}/tests/${SUB_DIR})
     file(GLOB_RECURSE SOURCES LIST_DIRECTORIES true ${TESTS_DIR}*.cpp)
@@ -16,7 +19,7 @@ function(add_tests SUB_DIR SUB_NAME)
     if (WIN32)
         target_link_libraries(${FULL_BIN} PUBLIC gtest_main)
     endif()
-    target_link_libraries(${FULL_BIN} PUBLIC gtest stdc++fs ${LIBRARY_NAME})
+    target_link_libraries(${FULL_BIN} PUBLIC gtest ${LIBRARY_NAME})
 endfunction()
 
 function(add_sub_tests SUB_NAME)

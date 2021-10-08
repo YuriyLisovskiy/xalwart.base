@@ -9,11 +9,6 @@
 #if defined(__windows__)
 
 // C++ libraries.
-#include <filesystem>
-
-#ifndef _MSC_VER
-#include <sys/stat.h>
-#endif
 
 // Base libraries.
 #include "../exceptions.h"
@@ -44,27 +39,6 @@ std::pair<std::string, std::string> split(const std::string& s)
 	}
 
 	return {d + new_head, tail};
-}
-
-bool exists(const std::string& p)
-{
-	struct stat buf{};
-	auto ret = stat(p.c_str(), &buf);
-	if (ret != 0)
-	{
-		if (ret == ENOENT)
-		{
-			return false;
-		}
-
-		auto err_code = errno;
-		throw FileError(
-			"failed with " + std::to_string(err_code) + " error code, unable to obtain file information of '" + p + "'",
-			_ERROR_DETAILS_
-		);
-	}
-
-	return true;
 }
 
 std::pair<std::string, std::string> split_drive(const std::string& p)
@@ -111,24 +85,6 @@ std::pair<std::string, std::string> split_drive(const std::string& p)
 	}
 
 	return {"", p};
-}
-
-std::string cwd()
-{
-	return std::filesystem::current_path().string();
-}
-
-bool is_absolute(const std::string& p)
-{
-	// Paths beginning with \\?\ are always absolute, but do not
-	// necessarily contain a drive.
-	if (str::replace(p, "/", "\\").starts_with(R"(\\?\)"))
-	{
-		return true;
-	}
-
-	auto s = split_drive(p).second;
-	return !s.empty() && str::contains("\\/", s[0]);
 }
 
 std::pair<std::string, std::string> prefix_and_suffix(const std::string& pattern)
