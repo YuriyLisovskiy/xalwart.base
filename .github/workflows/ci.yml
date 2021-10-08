@@ -89,15 +89,15 @@ jobs:
                 ..
           sudo mkdir -p /usr/local/include && sudo mkdir -p /usr/local/lib
           make xalwart.base && sudo make install
-          cd && mkdir target-build && cd target-build
-          mkdir -p include && mkdir -p lib && cd
-          cp -r /usr/local/include/xalwart.base target-build/include
-          cp -r /usr/local/lib/libxalwart.base* target-build/lib
+          cd && mkdir /tmp/target-build && cd /tmp/target-build
+          sudo mkdir -p include && mkdir -p lib && cd
+          cp -r /usr/local/include/xalwart.base /tmp/target-build/include
+          cp -r /usr/local/lib/libxalwart.base* /tmp/target-build/lib
       - name: Upload the Artifact
         uses: actions/upload-artifact@v2
         with:
           name: xalwart.base-${{ matrix.os_name }}-${{ matrix.os_version }}-${{ matrix.step.compiler.cc }}
-          path: target-build
+          path: /tmp/target-build
           retention-days: 60
   macos-test:
     name: "Testing for ${{ matrix.os_name }}-${{ matrix.os_version }} [${{ matrix.step.compiler.cc }}]"
