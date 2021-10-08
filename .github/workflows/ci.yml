@@ -86,7 +86,7 @@ jobs:
       - name: Upload the Artifact
         uses: actions/upload-artifact@v2
         with:
-          name: xalwart.base-${{ matrix.os_name }}-${{ matrix.os_version }}-${{ matrix.step.compiler.cc }}
+          name: xalwart.base-${{ matrix.os_name }}-${{ matrix.os_version }}
           path: ~/target-build
           retention-days: 60
   macos-test:
@@ -113,7 +113,7 @@ jobs:
       - name: Download the Artifact
         uses: actions/download-artifact@v2
         with:
-          name: xalwart.base-${{ matrix.os_name }}-${{ matrix.os_version }}-${{ matrix.step.compiler.cc }}
+          name: xalwart.base-${{ matrix.os_name }}-${{ matrix.os_version }}
           path: /usr/local
       - name: Build and Run Tests
         run: |
