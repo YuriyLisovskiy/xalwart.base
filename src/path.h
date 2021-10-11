@@ -62,6 +62,29 @@ inline size_t get_size(const std::string& p)
 	return file_stat(p).st_size;
 }
 
+// TESTME: _split_text
+// Split a path in root and extension.
+// The extension is everything starting at the last dot in the last
+// pathname component; the root is everything before that.
+// It is always true that root + ext == p.
+//
+// Generic implementation of splitext, to be parametrized with
+// the separators.
+extern void _split_text(
+	const std::string& full_path, char sep, char alt_separator,
+	char ext_separator, std::string& root_out, std::string& ext_out
+);
+
+// TESTME: split_text
+// Split a path in root and extension.
+// The extension is everything starting at the last dot in the last
+// pathname component; the root is everything before that.
+// It is always true that `root + ext == p`.
+inline void split_text(const std::string& full_path, std::string& root_out, std::string& ext_out)
+{
+	_split_text(full_path, path::path_sep, path::alt_sep, path::ext_sep, root_out, ext_out);
+}
+
 // TESTME: Path
 // TODO: docs for 'Path'
 class Path : public abc::IStringSerializable
