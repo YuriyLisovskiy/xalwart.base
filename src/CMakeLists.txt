@@ -14,6 +14,10 @@ option(BUILD_SHARED_LIBS "Build shared libraries (DLLs)." ON)
 # Add the library.
 add_library(${LIBRARY_NAME} ${VENDOR_SOURCES} ${SOURCES})
 
+if (NOT APPLE)
+    target_link_libraries(${BINARY} PUBLIC stdc++fs)
+endif()
+
 # Install the library.
 install(
     TARGETS ${LIBRARY_NAME}
