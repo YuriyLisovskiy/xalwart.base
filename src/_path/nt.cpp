@@ -109,6 +109,20 @@ std::pair<std::string, std::string> prefix_and_suffix(const std::string& pattern
 	return {prefix, suffix};
 }
 
+bool _is_absolute(const std::string& p)
+{
+	// Paths beginning with \\?\ are always absolute, but do not
+	// necessarily contain a drive.
+	if (str::replace(p, "/", "\\").starts_with(R"(\\?\)"))
+	{
+		return true;
+	}
+
+	auto s = split_drive(p).second;
+	return !s.empty() && str::contains("\\/", s[0]);
+}
+
+
 __PATH_END__
 
 #endif // __windows__

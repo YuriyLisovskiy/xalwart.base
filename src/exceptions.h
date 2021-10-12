@@ -159,7 +159,8 @@ DEF_EXCEPTION_WITH_BASE(CommandError, BaseException, "command error", "");
 // Redirect to scheme not in allowed list.
 DEF_EXCEPTION_WITH_BASE(EncodingError, BaseException, "encoding error", "");
 DEF_EXCEPTION_WITH_BASE(EscapeError, BaseException, "escape error", "");
-DEF_EXCEPTION_WITH_BASE(FileError, BaseException, "file error", "");
+DEF_EXCEPTION_WITH_BASE(PathError, BaseException, "path error", "");
+DEF_EXCEPTION_WITH_BASE(FileError, PathError, "file error", "");
 DEF_EXCEPTION_WITH_BASE(ImproperlyConfigured, BaseException, "improperly configured", "");
 
 // Used for handling execution interrupts.
