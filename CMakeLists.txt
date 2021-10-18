@@ -8,12 +8,16 @@ set(LIBRARY_VERSION "0.0.0")
 
 project(${LIBRARY_NAME})
 
-set(ROOT_DIR /usr/local)
-set(INCLUDE_DIR ${ROOT_DIR}/include)
-set(LIB_DIR ${ROOT_DIR}/lib)
+set(
+    DEFAULT_INCLUDE_PATHS
+        "/usr/local"
+        "/usr"
+)
 
-include_directories(${INCLUDE_DIR})
-link_directories(${LIB_DIR})
+foreach(ENTRY ${DEFAULT_INCLUDE_PATHS})
+    include_directories(${ENTRY}/include)
+    link_directories(${ENTRY}/lib)
+endforeach()
 
 option(XW_CONFIGURE_LIB "Configure the library." ON)
 if (${XW_CONFIGURE_LIB})
