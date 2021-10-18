@@ -102,6 +102,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: Install Valgrind
         run: |
+          xcode-select --install
           brew tap LouisBrunner/valgrind
           brew install --HEAD LouisBrunner/valgrind/valgrind
       - name: Install Google Test Framework
