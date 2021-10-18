@@ -9,6 +9,7 @@
 #pragma once
 
 // C++ libraries.
+#include <string>
 #include <memory>
 #include <filesystem>
 
@@ -87,57 +88,83 @@ inline void split_text(const std::string& full_path, std::string& root_out, std:
 
 // TESTME: Path
 // TODO: docs for 'Path'
-class Path : public abc::IStringSerializable
+class Path final : public abc::IStringSerializable
 {
 public:
-	inline Path(const std::string& p) : p(p)
+	inline Path() : _exists(false)
 	{
+	}
+
+	inline Path(std::string p) : _string_path(std::move(p))
+	{
+		this->_exists = std::filesystem::exists(this->_string_path);
 	}
 
 	[[nodiscard]]
 	inline std::string to_string() const override
 	{
-		return this->p.string();
+		return this->_string_path;
 	}
 
 	[[nodiscard]]
 	inline std::string to_std_path() const
 	{
-		return this->p;
+		if (!this->exists())
+		{
+			throw PathError("Path '" + this->_string_path + "' does not exist", _ERROR_DETAILS_);
+		}
+
+		return std::filesystem::path(this->_string_path);
 	}
 
-	inline Path& operator/ (const Path& other)
+	inline Path operator/ (const Path& other) const
 	{
-		this->p = std::filesystem::path(join(this->p.string(), other.p.string()));
-		return *this;
+		return {join(this->to_string(), other.to_string())};
+	}
+
+	inline Path operator/ (const std::string& other) const
+	{
+		return {join(this->to_string(), other)};
+	}
+
+	inline Path operator/ (const char* other) const
+	{
+		return {join(this->to_string(), other)};
 	}
 
 	[[nodiscard]]
 	inline bool is_absolute() const
 	{
-		return this->p.is_absolute();
+		return _is_absolute(this->_string_path);
 	}
 
 	[[nodiscard]]
 	inline std::string dirname() const
 	{
-		return this->p.parent_path().string();
+		return _dirname(this->_string_path);
 	}
 
 	[[nodiscard]]
 	inline std::string basename() const
 	{
-		return this->p.filename().string();
+		return _basename(this->_string_path);
 	}
 
 	[[nodiscard]]
 	inline bool exists() const
 	{
-		return std::filesystem::exists(this->p);
+		return this->_exists;
 	}
 
-protected:
-	std::filesystem::path p;
+	[[nodiscard]]
+	inline bool empty() const
+	{
+		return this->_string_path.empty();
+	}
+
+private:
+	bool _exists;
+	std::string _string_path;
 };
 
 __PATH_END__

@@ -8,20 +8,24 @@ set(LIBRARY_VERSION "0.0.0")
 
 project(${LIBRARY_NAME})
 
-set(ROOT_DIR /usr/local)
-set(INCLUDE_DIR ${ROOT_DIR}/include)
-set(LIB_DIR ${ROOT_DIR}/lib)
+set(
+    DEFAULT_INCLUDE_PATHS
+        "/usr/local"
+        "/usr"
+)
 
-include_directories(${INCLUDE_DIR})
-link_directories(${LIB_DIR})
+foreach(ENTRY ${DEFAULT_INCLUDE_PATHS})
+    include_directories(${ENTRY}/include)
+    link_directories(${ENTRY}/lib)
+endforeach()
 
-option(XW_BUILD_LIB "Build the library." ON)
-if (${XW_BUILD_LIB})
+option(XW_CONFIGURE_LIB "Configure the library." ON)
+if (${XW_CONFIGURE_LIB})
     add_subdirectory(src)
 endif()
 
-option(XW_BUILD_TESTS "Build the library." OFF)
-if (${XW_BUILD_TESTS})
+option(XW_CONFIGURE_TESTS "Configure tests." OFF)
+if (${XW_CONFIGURE_TESTS})
     enable_testing()
     add_subdirectory(tests)
 endif()

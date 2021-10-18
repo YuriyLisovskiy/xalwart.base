@@ -29,7 +29,10 @@ void _initialize_levels(log::Config& config, const YAML::Node& levels)
 {
 	if (levels)
 	{
-		if (levels.IsSequence() && levels.size() == 1 && (*levels.begin()).as<std::string>("") == "*")
+		if (
+			(levels.IsSequence() && levels.size() == 1 && (*levels.begin()).as<std::string>("") == "*")
+			|| (levels.IsScalar() && levels.as<std::string>("") == "*")
+		)
 		{
 			config.enable_all_levels();
 		}
@@ -72,11 +75,6 @@ void _initialize_out(log::Config& config, const YAML::Node& out, const std::stri
 {
 	if (out && out.IsMap())
 	{
-		if (out["console"].as<bool>(true))
-		{
-			config.add_console_stream();
-		}
-
 		_initialize_out_files(config, out["files"], base_dir);
 	}
 	else
@@ -94,12 +92,6 @@ void _overwrite_out(const YAML::Node& from_out, YAML::Node& to_out)
 
 	if (from_out && from_out.IsMap())
 	{
-		auto from_console = from_out["console"];
-		if (from_console && from_console.IsScalar())
-		{
-			to_out["console"] = from_console;
-		}
-
 		auto from_files = from_out["files"];
 		if (from_files && from_files.IsSequence())
 		{
@@ -134,7 +126,7 @@ void YAMLLoggerComponent::overwrite(const YAML::Node& from_component, YAML::Node
 	if (from_component && from_component.IsMap())
 	{
 		auto from_levels = from_component["levels"];
-		if (from_levels && (from_levels.IsScalar() || from_levels.IsMap()))
+		if (from_levels && (from_levels.IsSequence() || from_levels.IsScalar() || from_levels.IsMap()))
 		{
 			to_component["levels"] = from_levels;
 		}

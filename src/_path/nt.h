@@ -135,6 +135,31 @@ inline std::string working_directory()
 	return std::filesystem::current_path().string();
 }
 
+// Test whether a path is absolute.
+//
+// `p`: path to check.
+//
+// For Windows it is absolute if it starts with a slash or backslash (current
+// volume), or if a pathname after the volume-letter-and-colon or UNC-resource
+// starts with a slash or backslash.
+extern bool _is_absolute(const std::string& p);
+
+// `p`: path to analyze.
+//
+// Returns the final component of a path name.
+inline std::string _basename(const std::string& p)
+{
+	return split(p).second;
+}
+
+// `p`: path to analyze.
+//
+// Returns the directory component of a path name.
+inline std::string _dirname(const std::string& p)
+{
+	return split(p).first;
+}
+
 __PATH_END__
 
 #endif // __windows__

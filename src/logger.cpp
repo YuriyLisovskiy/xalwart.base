@@ -17,6 +17,7 @@ __LOG_BEGIN__
 
 Logger::Logger(Config cfg) : config(std::move(cfg))
 {
+	this->config.add_console_stream();
 	this->worker = std::make_unique<ThreadedWorker>(THREADS_COUNT);
 	this->worker->AbstractWorker::add_task_listener<LogTask>([this](AbstractWorker*, LogTask& task)
 	{
@@ -48,14 +49,12 @@ void Logger::_log(
 	const std::string& message, int line, const char* function, const char* file, Level level
 )
 {
-	if (!this->config.has_eny_level() || !this->config.is_enabled(level))
+	if (this->config.is_enabled(level))
 	{
-		return;
+		this->worker->AbstractWorker::inject_task<LogTask>(LogTask{
+			.level = level, .message = message, .line = line, .function = function, .file = file
+		});
 	}
-
-	this->worker->AbstractWorker::inject_task<LogTask>(LogTask{
-		.level = level, .message = message, .line = line, .function = function, .file = file
-	});
 }
 
 void Logger::_write_to_stream(const std::string& message, Color color, char end)

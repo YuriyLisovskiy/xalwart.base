@@ -77,6 +77,26 @@ inline std::string working_directory()
 	return std::filesystem::current_path();
 }
 
+// Test whether a path is absolute.
+//
+// `p`: path to check.
+//
+// Returns `true` if path is absolute, `false` otherwise.
+inline bool _is_absolute(const std::string& p)
+{
+	return p.starts_with(path::path_sep);
+}
+
+// `p`: path to analyze.
+//
+// Returns the final component of a path name.
+extern std::string _basename(const std::string& p);
+
+// `p`: path to analyze.
+//
+// Returns the directory component of a path name.
+extern std::string _dirname(const std::string& p);
+
 __PATH_END__
 
 #endif // __linux__ || __mac__

@@ -240,12 +240,10 @@ public:
 	{
 		auto pos = 1U << (int)level;
 		return ((this->_levels_holder >> pos) & 1U);
-		// (number >> n) & 1U
-//		return (this->_levels_holder >> (int)level) & 1;
 	}
 
 	[[nodiscard]]
-	bool has_eny_level() const
+	bool has_any_level() const
 	{
 		return this->_levels_holder != '\0';
 	}
