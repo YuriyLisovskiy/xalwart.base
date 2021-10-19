@@ -67,9 +67,6 @@ private:
 	// Indicates whether workers are running or not.
 	bool _is_finished;
 
-	// Guard for blocking queue when injecting new tasks.
-	std::mutex _task_queue_mutex;
-
 	// Queue of tasks which is waiting to be run.
 	std::queue<std::pair<std::unique_ptr<AbstractWorker::Task>, AbstractWorker::TaskListener>> _task_queue;
 
@@ -80,6 +77,9 @@ private:
 	std::map<std::type_index, std::list<AbstractWorker::TaskListener>> _task_listeners;
 
 	// Guard for blocking queue when injecting new tasks.
+	std::mutex _task_queue_mutex;
+
+	// Guard for blocking listeners when creating new task listener.
 	std::mutex _task_listeners_mutex;
 
 	void _join_threads();
