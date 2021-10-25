@@ -16,7 +16,7 @@
 // Base libraries.
 #include "./sys.h"
 #include "./file.h"
-#include "./abc/base.h"
+#include "./interfaces/base.h"
 
 #if defined(__linux__) || defined(__mac__)
 #include "./_path/posix.h"
@@ -88,7 +88,7 @@ inline void split_text(const std::string& full_path, std::string& root_out, std:
 
 // TESTME: Path
 // TODO: docs for 'Path'
-class Path final : public abc::IStringSerializable
+class Path final : public IStringSerializable
 {
 public:
 	inline Path() : _exists(false)

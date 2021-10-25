@@ -1,9 +1,9 @@
 /**
- * types/iterable.h
+ * types/abstract.h
  *
  * Copyright (c) 2021 Yuriy Lisovskiy
  *
- * Abstract base classes for `types` module.
+ * Abstract classes for `types` module.
  */
 
 #pragma once
@@ -15,7 +15,7 @@
 #include "../object/object.h"
 
 
-__TYPES_ABC_BEGIN__
+__TYPES_BEGIN__
 
 // Base class for iterable container.
 class Iterable
@@ -88,11 +88,6 @@ public:
 		const std::function<void(size_t, const obj::Object*, const obj::Object*)>& func, bool reversed
 	) const = 0;
 };
-
-__TYPES_ABC_END__
-
-
-__TYPES_BEGIN__
 
 template <typename T>
 concept object_based_type = std::is_base_of_v<obj::Object, T>;

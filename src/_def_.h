@@ -19,6 +19,18 @@
 #define __MAIN_NAMESPACE_BEGIN__ namespace xw {
 #define __MAIN_NAMESPACE_END__ }
 
+// xw::orm
+#define __ORM_BEGIN__ __MAIN_NAMESPACE_BEGIN__ namespace orm {
+#define __ORM_END__ } __MAIN_NAMESPACE_END__
+
+// xw::render
+#define __RENDER_BEGIN__ __MAIN_NAMESPACE_BEGIN__ namespace render {
+#define __RENDER_END__ } __MAIN_NAMESPACE_END__
+
+// xw::server
+#define __SERVER_BEGIN__ __MAIN_NAMESPACE_BEGIN__ namespace server {
+#define __SERVER_END__ } __MAIN_NAMESPACE_END__
+
 // xw::path
 #define __PATH_BEGIN__ __MAIN_NAMESPACE_BEGIN__ namespace path {
 #define __PATH_END__ } __MAIN_NAMESPACE_END__

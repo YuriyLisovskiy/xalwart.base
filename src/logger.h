@@ -20,7 +20,7 @@
 #include "./sys.h"
 #include "./exceptions.h"
 #include "./file.h"
-#include "./abc/base.h"
+#include "./interfaces/base.h"
 #include "./workers/threaded_worker.h"
 
 
@@ -147,7 +147,7 @@ public:
 	struct Data
 	{
 		std::string name;
-		abc::ILogger::Color color;
+		ILogger::Color color;
 	};
 
 	enum Value
@@ -184,17 +184,17 @@ public:
 		switch (this->_value)
 		{
 			case Level::Info:
-				return {"info", abc::ILogger::Color::Cyan};
+				return {"info", ILogger::Color::Cyan};
 			case Level::Debug:
-				return {"debug", abc::ILogger::Color::Magenta};
+				return {"debug", ILogger::Color::Magenta};
 			case Level::Warning:
-				return {"warning", abc::ILogger::Color::Yellow};
+				return {"warning", ILogger::Color::Yellow};
 			case Level::Error:
-				return {"error", abc::ILogger::Color::Red};
+				return {"error", ILogger::Color::Red};
 			case Level::Trace:
-				return {"trace", abc::ILogger::Color::BoldRed};
+				return {"trace", ILogger::Color::BoldRed};
 			case Level::Print:
-				return {"print", abc::ILogger::Color::Default};
+				return {"print", ILogger::Color::Default};
 			default:
 				throw ValueError("invalid 'Level' option", _ERROR_DETAILS_);
 		}
@@ -217,41 +217,58 @@ public:
 
 	void enable(Level level)
 	{
-		this->_levels_holder |= (1UL << (unsigned long)level);
+		this->_state[level] = true;
 	}
 
 	void enable_all_levels()
 	{
-		this->_levels_holder = (unsigned char)0x11111111;
+		this->enable(Level::Info);
+		this->enable(Level::Debug);
+		this->enable(Level::Warning);
+		this->enable(Level::Error);
+		this->enable(Level::Trace);
+		this->enable(Level::Print);
 	}
 
 	void disable(Level level)
 	{
-		this->_levels_holder &= ~(1UL << (unsigned long)level);
+		this->_state[level] = false;
 	}
 
 	void disable_all_levels()
 	{
-		this->_levels_holder = '\0';
+		this->disable(Level::Info);
+		this->disable(Level::Debug);
+		this->disable(Level::Warning);
+		this->disable(Level::Error);
+		this->disable(Level::Trace);
+		this->disable(Level::Print);
 	}
 
 	[[nodiscard]]
 	bool is_enabled(Level level) const
 	{
-		auto pos = 1U << (int)level;
-		return ((this->_levels_holder >> pos) & 1U);
+		return this->_state.contains(level) && this->_state.at(level);
 	}
 
 	[[nodiscard]]
 	bool has_any_level() const
 	{
-		return this->_levels_holder != '\0';
+		return std::any_of(this->_state.begin(),  this->_state.end(), [](const auto& item) -> bool
+		{
+			return item.second;
+		});
 	}
 
 	[[nodiscard]]
 	bool has_all_levels() const
 	{
-		return this->_levels_holder == (unsigned char)0x11111111;
+		return this->is_enabled(Level::Info) &&
+			this->is_enabled(Level::Debug) &&
+			this->is_enabled(Level::Warning) &&
+			this->is_enabled(Level::Error) &&
+			this->is_enabled(Level::Trace) &&
+			this->is_enabled(Level::Print);
 	}
 
 	// Appends console stream.
@@ -282,16 +299,12 @@ public:
 private:
 	bool _has_console_stream = false;
 
-	// Sequence 00111111 holds logging levels in left to right order:
-	// empty, empty, Print, Trace, Error, Warning, Debug, Info
-	//
-	// When bit is set to 1, level is enabled, disabled otherwise.
-	unsigned char _levels_holder = '\0';
+	std::map<Level, bool> _state;
 };
 
 // TESTME: Logger
 // TODO: docs for 'Logger'
-class Logger : public abc::ILogger
+class Logger : public ILogger
 {
 public:
 	Logger(Config cfg);

@@ -16,6 +16,8 @@ void ThreadedWorker::stop()
 		return;
 	}
 
+	std::this_thread::sleep_for(std::chrono::milliseconds(100));
+
 	// Signal to dispatch threads that it's time to wrap up.
 	{
 		std::unique_lock<std::mutex> lock(this->_task_queue_mutex);
@@ -23,8 +25,6 @@ void ThreadedWorker::stop()
 	}
 
 	this->_cond_var.notify_all();
-
-	std::this_thread::sleep_for(std::chrono::milliseconds(10));
 	this->_join_threads();
 
 	this->_is_finished = true;
@@ -42,7 +42,7 @@ void ThreadedWorker::inject_task(const std::type_index& task_type, std::unique_p
 		});
 	}
 
-	this->_cond_var.notify_all();
+	this->_cond_var.notify_one();
 }
 
 void ThreadedWorker::_join_threads()
@@ -64,7 +64,7 @@ void ThreadedWorker::_run()
 		std::unique_lock<std::mutex> guard(this->_task_queue_mutex);
 
 		// Wait until we have data or a quit signal.
-		this->_cond_var.wait(guard, [&]{
+		this->_cond_var.wait(guard, [this]{
 			return !this->_task_queue.empty() || this->_quit;
 		});
 		if (this->_quit)

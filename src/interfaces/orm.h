@@ -1,9 +1,9 @@
 /**
- * abc/orm.h
+ * interfaces/orm.h
  *
  * Copyright (c) 2021 Yuriy Lisovskiy
  *
- * Abstract base classes related to database access.
+ * Interfaces related to database access.
  */
 
 #pragma once
@@ -16,10 +16,10 @@
 #include <map>
 
 // Module definitions.
-#include "./_def_.h"
+#include "../_def_.h"
 
 
-__ORM_ABC_BEGIN__
+__ORM_BEGIN__
 
 // TODO: docs for 'IDatabaseConnection'
 class IDatabaseConnection
@@ -87,4 +87,4 @@ public:
 	virtual std::vector<std::string> get_table_names() = 0;
 };
 
-__ORM_ABC_END__
+__ORM_END__
