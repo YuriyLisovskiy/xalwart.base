@@ -16,7 +16,7 @@
 
 // Base libraries.
 #include "../../component.h"
-#include "../../../abc/base.h"
+#include "../../../interfaces/base.h"
 #include "../../../vendor/yaml/yaml-cpp/yaml.h"
 
 
@@ -28,7 +28,7 @@ class YAMLLoggerComponent : public AbstractComponent<YAML::Node>
 {
 public:
 	explicit YAMLLoggerComponent(
-		std::string base_directory, std::shared_ptr<abc::ILogger>& logger
+		std::string base_directory, std::shared_ptr<ILogger>& logger
 	) : base_directory(std::move(base_directory)), logger(logger)
 	{
 	}
@@ -39,7 +39,7 @@ public:
 
 protected:
 	std::string base_directory;
-	std::shared_ptr<abc::ILogger>& logger;
+	std::shared_ptr<ILogger>& logger;
 };
 
 __CONFIG_END__

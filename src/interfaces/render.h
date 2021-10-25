@@ -1,9 +1,9 @@
 /**
- * abc/render.h
+ * interfaces/render.h
  *
  * Copyright (c) 2021 Yuriy Lisovskiy
  *
- * Abstract base classes related to rendering templates.
+ * Interfaces related to rendering templates.
  */
 
 #pragma once
@@ -16,13 +16,13 @@
 #include <optional>
 
 // Module definitions.
-#include "./_def_.h"
+#include "../_def_.h"
 
 // Base libraries.
 #include "../object/object.h"
 
 
-__RENDER_ABC_BEGIN__
+__RENDER_BEGIN__
 
 // TODO: docs for 'IContext'
 class IContext
@@ -134,4 +134,4 @@ concept library_type = std::is_base_of_v<ILibrary, T>;
 template <typename T>
 concept loader_type = std::is_base_of_v<ILoader, T>;
 
-__RENDER_ABC_END__
+__RENDER_END__

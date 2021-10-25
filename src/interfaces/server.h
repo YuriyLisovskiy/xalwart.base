@@ -1,9 +1,9 @@
 /**
- * abc/server.h
+ * interfaces/server.h
  *
  * Copyright (c) 2021 Yuriy Lisovskiy
  *
- * Abstract base classes related to server.
+ * Interfaces related to server.
  */
 
 #pragma once
@@ -13,13 +13,13 @@
 #include <map>
 
 // Module definitions.
-#include "./_def_.h"
+#include "../_def_.h"
 
 // Base libraries.
 #include "../net/request_context.h"
 
 
-__SERVER_ABC_BEGIN__
+__SERVER_BEGIN__
 
 // Base class (interface) for server implementation.
 class IServer
@@ -51,4 +51,4 @@ protected:
 	virtual void initialize_environment() = 0;
 };
 
-__SERVER_ABC_END__
+__SERVER_END__

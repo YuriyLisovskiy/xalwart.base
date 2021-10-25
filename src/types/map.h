@@ -15,13 +15,13 @@
 #include "./_def_.h"
 
 // Base libraries.
-#include "./abc.h"
+#include "./abstract.h"
 
 
 __TYPES_BEGIN__
 
 template <object_based_type KeyT, object_based_type ValueT>
-class Map : public obj::Object, public abc::MapContainer
+class Map : public obj::Object, public MapContainer
 {
 public:
 	typedef KeyT key_type;
@@ -73,7 +73,7 @@ public:
 	}
 
 	// Constructs Sequence from initializer list.
-	inline explicit Map(std::initializer_list<std::pair<const key_type , value_type>> mp)
+	inline Map(std::initializer_list<std::pair<const key_type , value_type>> mp)
 	{
 		this->container = std::move(mp);
 	}

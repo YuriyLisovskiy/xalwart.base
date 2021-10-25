@@ -20,7 +20,7 @@
 #include "./sys.h"
 #include "./exceptions.h"
 #include "./file.h"
-#include "./abc/base.h"
+#include "./interfaces/base.h"
 #include "./workers/threaded_worker.h"
 
 
@@ -147,7 +147,7 @@ public:
 	struct Data
 	{
 		std::string name;
-		abc::ILogger::Color color;
+		ILogger::Color color;
 	};
 
 	enum Value
@@ -184,17 +184,17 @@ public:
 		switch (this->_value)
 		{
 			case Level::Info:
-				return {"info", abc::ILogger::Color::Cyan};
+				return {"info", ILogger::Color::Cyan};
 			case Level::Debug:
-				return {"debug", abc::ILogger::Color::Magenta};
+				return {"debug", ILogger::Color::Magenta};
 			case Level::Warning:
-				return {"warning", abc::ILogger::Color::Yellow};
+				return {"warning", ILogger::Color::Yellow};
 			case Level::Error:
-				return {"error", abc::ILogger::Color::Red};
+				return {"error", ILogger::Color::Red};
 			case Level::Trace:
-				return {"trace", abc::ILogger::Color::BoldRed};
+				return {"trace", ILogger::Color::BoldRed};
 			case Level::Print:
-				return {"print", abc::ILogger::Color::Default};
+				return {"print", ILogger::Color::Default};
 			default:
 				throw ValueError("invalid 'Level' option", _ERROR_DETAILS_);
 		}
@@ -304,7 +304,7 @@ private:
 
 // TESTME: Logger
 // TODO: docs for 'Logger'
-class Logger : public abc::ILogger
+class Logger : public ILogger
 {
 public:
 	Logger(Config cfg);

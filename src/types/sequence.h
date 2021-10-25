@@ -16,13 +16,13 @@
 #include "./_def_.h"
 
 // Base libraries.
-#include "./abc.h"
+#include "./abstract.h"
 
 
 __TYPES_BEGIN__
 
 template <object_based_type ValueT>
-class Sequence : public obj::Object, public abc::SequenceContainer
+class Sequence : public obj::Object, public SequenceContainer
 {
 public:
 	typedef ValueT value_type;
@@ -88,7 +88,7 @@ public:
 	}
 
 	// Constructs Sequence from initializer list.
-	inline explicit Sequence(std::initializer_list<value_type> list)
+	inline Sequence(std::initializer_list<value_type> list)
 	{
 		this->container = std::move(list);
 	}

@@ -1,9 +1,9 @@
 /**
- * abc/abc.h
+ * interfaces/base.h
  *
  * Copyright (c) 2021 Yuriy Lisovskiy
  *
- * Abstract base classes for 'base' library.
+ * Interfaces for 'base' library.
  */
 
 #pragma once
@@ -12,14 +12,14 @@
 #include <string>
 
 // Module definitions.
-#include "./_def_.h"
+#include "../_def_.h"
 
 // Base libraries.
 #include "../exceptions.h"
 #include "../vendor/nlohmann/json.h"
 
 
-__ABC_BEGIN__
+__MAIN_NAMESPACE_BEGIN__
 
 // TODO: docs for 'ILogger'
 class ILogger
@@ -114,4 +114,4 @@ public:
 	virtual nlohmann::json to_json() const = 0;
 };
 
-__ABC_END__
+__MAIN_NAMESPACE_END__
