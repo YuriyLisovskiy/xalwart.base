@@ -50,3 +50,6 @@ lib/
 Makefile
 venv/
 doc/
+
+# macOS files
+*.DS_Store
