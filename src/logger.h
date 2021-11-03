@@ -326,71 +326,71 @@ public:
 
 	// Logs given text, line, function name and file name with
 	// 'info' logging level if it is enabled in config.
-	inline void info(const std::string& msg, int line, const char* function, const char* file) override
+	inline void info(const std::string& msg, int line, const char* function, const char* file) const override
 	{
 		this->_log(msg, line, function, file, Level::Info);
 	}
 
 	// Logs given text with 'info' logging level if it is enabled in config.
-	inline void info(const std::string& msg) override
+	inline void info(const std::string& msg) const override
 	{
 		this->info(msg, 0, "", "");
 	}
 
 	// Logs given text, line, function name and file name with
 	// 'debug' logging level if it is enabled in config.
-	inline void debug(const std::string& msg, int line, const char* function, const char* file) override
+	inline void debug(const std::string& msg, int line, const char* function, const char* file) const override
 	{
 		this->_log(msg, line, function, file, Level::Debug);
 	}
 
 	// Logs given text with 'debug' logging level if it is enabled in config.
-	inline void debug(const std::string& msg) override
+	inline void debug(const std::string& msg) const override
 	{
 		this->debug(msg, 0, "", "");
 	}
 
 	// Logs given text, line, function name and file name with
 	// 'warning' logging level if it is enabled in config.
-	inline void warning(const std::string& msg, int line, const char* function, const char* file) override
+	inline void warning(const std::string& msg, int line, const char* function, const char* file) const override
 	{
 		this->_log(msg, line, function, file, Level::Warning);
 	}
 
 	// Logs given text with 'warning' logging level if it is enabled in config.
-	inline void warning(const std::string& msg) override
+	inline void warning(const std::string& msg) const override
 	{
 		this->warning(msg, 0, "", "");
 	}
 
 	// Logs given text, line, function name and file name with
 	// 'error' logging level if it is enabled in config.
-	inline void error(const std::string& msg, int line, const char* function, const char* file) override
+	inline void error(const std::string& msg, int line, const char* function, const char* file) const override
 	{
 		this->_log(msg, line, function, file, Level::Error);
 	}
 
 	// Logs given text with 'error' logging level if it is enabled in config.
-	inline void error(const std::string& msg) override
+	inline void error(const std::string& msg) const override
 	{
 		this->error(msg, 0, "", "");
 	}
 
 	// Logs given text, line, function name and file name with
 	// 'trace' logging level if it is enabled in config.
-	inline void trace(const std::string& msg, int line, const char* function, const char* file) override
+	inline void trace(const std::string& msg, int line, const char* function, const char* file) const override
 	{
 		this->_log(msg, line, function, file, Level::Trace);
 	}
 
 	// Logs given text with 'trace' logging level if it is enabled in config.
-	inline void trace(const std::string& msg) override
+	inline void trace(const std::string& msg) const override
 	{
 		this->trace(msg, 0, "", "");
 	}
 
 	// Logs text with custom colour and ending if it is enable in config.
-	inline void print(const std::string& msg, Color colour, char end) override
+	inline void print(const std::string& msg, Color colour, char end) const override
 	{
 		if (this->config.is_enabled(Level::Print))
 		{
@@ -399,37 +399,37 @@ public:
 	}
 
 	// Logs text with custom colour if it is enable in config.
-	inline void print(const std::string& msg, Color colour) override
+	inline void print(const std::string& msg, Color colour) const override
 	{
 		this->print(msg, colour, '\n');
 	}
 
 	// Logs text if it is enable in config.
-	inline void print(const std::string& msg) override
+	inline void print(const std::string& msg) const override
 	{
 		this->print(msg, Color::Default, '\n');
 	}
 
 	// Logs exception with 'info' logging level if it is enabled in config.
-	inline void info(const BaseException& exc) override
+	inline void info(const BaseException& exc) const override
 	{
 		this->info(exc.get_message(), exc.line(), exc.function(), exc.file());
 	}
 
 	// Logs exception with 'debug' logging level if it is enabled in config.
-	inline void debug(const BaseException& exc) override
+	inline void debug(const BaseException& exc) const override
 	{
 		this->debug(exc.get_message(), exc.line(), exc.function(), exc.file());
 	}
 
 	// Logs exception with 'warning' logging level if it is enabled in config.
-	inline void warning(const BaseException& exc) override
+	inline void warning(const BaseException& exc) const override
 	{
 		this->warning(exc.get_message(), exc.line(), exc.function(), exc.file());
 	}
 
 	// Logs exception with 'error' logging level if it is enabled in config.
-	inline void error(const BaseException& exc) override
+	inline void error(const BaseException& exc) const override
 	{
 		this->error(exc.get_message(), exc.line(), exc.function(), exc.file());
 	}
@@ -476,10 +476,12 @@ protected:
 	std::shared_ptr<ThreadedWorker> worker;
 
 private:
-	void _log(const std::string& message, int line, const char* function, const char* file, Level level);
+	void _log(
+		const std::string& message, int line, const char* function, const char* file, Level level
+	) const;
 
 	// Writes message to all streams one by one.
-	void _write_to_stream(const std::string& message, Color colour, char end='\n');
+	void _write_to_stream(const std::string& message, Color colour, char end='\n') const;
 
 	// Sets the color only for console stream.
 	void _set_color(Color colour, bool is_console_stream) const;

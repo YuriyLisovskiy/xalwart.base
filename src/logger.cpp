@@ -47,7 +47,7 @@ Logger::Logger(Config cfg) : config(std::move(cfg))
 
 void Logger::_log(
 	const std::string& message, int line, const char* function, const char* file, Level level
-)
+) const
 {
 	if (this->config.is_enabled(level))
 	{
@@ -57,7 +57,7 @@ void Logger::_log(
 	}
 }
 
-void Logger::_write_to_stream(const std::string& message, Color color, char end)
+void Logger::_write_to_stream(const std::string& message, Color color, char end) const
 {
 	auto full_message = message + (end != '\0' ? std::string(1, end) : "");
 	for (auto& stream : this->config.streams)
