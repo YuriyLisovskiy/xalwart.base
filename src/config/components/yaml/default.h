@@ -30,6 +30,10 @@ using YAMLComponent = AbstractComponent<YAML::Node>;
 class YAMLMapComponent : public YAMLComponent
 {
 public:
+	explicit inline YAMLMapComponent(bool overwrite_all=false) : overwrite_all(overwrite_all)
+	{
+	}
+
 	inline void initialize(const YAML::Node& node) const override
 	{
 		if (node && node.IsMap())
@@ -49,6 +53,8 @@ public:
 	}
 
 protected:
+	bool overwrite_all;
+
 	std::list<std::pair<std::string, std::unique_ptr<YAMLComponent>>> components;
 };
 

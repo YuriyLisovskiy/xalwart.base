@@ -11,6 +11,12 @@ __CONFIG_BEGIN__
 
 void YAMLMapComponent::overwrite(const YAML::Node& from_node, YAML::Node& to_node) const
 {
+	if (this->overwrite_all && from_node.IsMap())
+	{
+		to_node = from_node;
+		return;
+	}
+
 	if (!to_node)
 	{
 		to_node = YAML::Node(YAML::NodeType::Map);
