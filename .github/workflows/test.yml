@@ -1,11 +1,9 @@
-name: "ci"
+name: Test
 on:
   pull_request:
   push:
     branches:
-      - master
       - dev
-      - release
 jobs:
   linux-build:
     name: '[Linux] Build the library'
@@ -22,13 +20,13 @@ jobs:
         compiler_version: [ 10 ]
     steps:
       - uses: actions/checkout@v2
-      - name: Build the Library
+      - name: Build the library
         run: |
           sudo docker run -i \
                           -v ${{ github.workspace }}:/app \
                           xalwart/${{ matrix.compiler }}:${{ matrix.compiler_version }}-${{ matrix.os.name }}-${{ matrix.os.version }} \
                           bash /app/scripts/linux/build.sh ${{ matrix.os.name }} ${{ matrix.compiler }} ${{ matrix.compiler_version }}
-      - name: Upload the Artifact
+      - name: Upload the artifact
         uses: actions/upload-artifact@v2
         with:
           name: xalwart.base-${{ matrix.os.name }}-${{ matrix.compiler }}-${{ matrix.compiler_version }}
@@ -52,12 +50,12 @@ jobs:
         compiler_version: [ 10 ]
     steps:
       - uses: actions/checkout@v2
-      - name: Download the Artifact
+      - name: Download the artifact
         uses: actions/download-artifact@v2
         with:
           name: xalwart.base-${{ matrix.os.name }}-${{ matrix.compiler }}-${{ matrix.compiler_version }}
           path: xalwart.base-${{ matrix.os.name }}-${{ matrix.compiler }}-${{ matrix.compiler_version }}
-      - name: Build and Run Tests
+      - name: Build and run tests
         run: |
           sudo docker run -i \
                           -v ${{ github.workspace }}:/app \
@@ -73,7 +71,7 @@ jobs:
         os_version: [ 11 ]
     steps:
       - uses: actions/checkout@v2
-      - name: Build the Library
+      - name: Build the library
         run: |
           mkdir build && cd build
           cmake -D CMAKE_BUILD_TYPE=Release ..
@@ -83,7 +81,7 @@ jobs:
           mkdir -p include && mkdir -p lib && cd
           sudo cp -r /usr/local/include/xalwart.base ~/target-build/include
           sudo cp -r /usr/local/lib/libxalwart.base* ~/target-build/lib
-      - name: Upload the Artifact
+      - name: Upload the artifact
         uses: actions/upload-artifact@v2
         with:
           name: xalwart.base-${{ matrix.os_name }}-${{ matrix.os_version }}
@@ -100,7 +98,7 @@ jobs:
         os_version: [ 11 ]
     steps:
       - uses: actions/checkout@v2
-      - name: Install Valgrind
+      - name: Install valgrind
         run: |
           brew tap LouisBrunner/valgrind
           brew install --HEAD LouisBrunner/valgrind/valgrind
@@ -110,12 +108,12 @@ jobs:
       - name: Create Target Directories
         run: |
           sudo mkdir -p /usr/local
-      - name: Download the Artifact
+      - name: Download the artifact
         uses: actions/download-artifact@v2
         with:
           name: xalwart.base-${{ matrix.os_name }}-${{ matrix.os_version }}
           path: /usr/local
-      - name: Build and Run Tests
+      - name: Build and run tests
         run: |
           mkdir build && cd build
           cmake -D CMAKE_BUILD_TYPE=Release \
