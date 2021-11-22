@@ -83,8 +83,12 @@ public:
 	[[nodiscard]]
 	virtual std::string dbms_name() const = 0;
 
+	// Connection pointer is used when calls are performed during
+	// the transaction. Implementation can support or not this feature.
+	// In the second case, you need more than one connection pool size,
+	// for example, during migration the database.
 	[[nodiscard]]
-	virtual std::vector<std::string> get_table_names() = 0;
+	virtual std::vector<std::string> get_table_names(const IDatabaseConnection*) = 0;
 };
 
 __ORM_END__
