@@ -3,7 +3,7 @@
  *
  * Copyright (c) 2021 Yuriy Lisovskiy
  *
- * Definitions of `net` module.
+ * Definitions of 'net' module.
  */
 
 #pragma once
@@ -19,6 +19,10 @@
 #define __NET_META_BEGIN__ __NET_BEGIN__ namespace meta {
 #define __NET_META_END__ } __NET_END__
 
-// xw::net::abc
-#define __NET_ABC_BEGIN__ __NET_BEGIN__ namespace abc {
-#define __NET_ABC_END__ } __NET_END__
+__NET_BEGIN__
+
+using StatusCode = unsigned int;
+
+inline const static size_t DEFAULT_BUFFER_SIZE = 65535;
+
+__NET_END__

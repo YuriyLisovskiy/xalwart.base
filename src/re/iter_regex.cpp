@@ -41,8 +41,7 @@ bool IterRegex::search_next()
 	if (!this->_is_initialized)
 	{
 		throw RuntimeError(
-			"IterRegex instance is not initialized with string to search in",
-			_ERROR_DETAILS_
+			"IterRegex instance is not initialized with string to search in", _ERROR_DETAILS_
 		);
 	}
 

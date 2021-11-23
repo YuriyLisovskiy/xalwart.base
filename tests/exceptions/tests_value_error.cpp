@@ -1,7 +1,7 @@
 /**
  * tests/exceptions/tests_value_error.cpp
  *
- * Copyright (c) 2019 Yuriy Lisovskiy
+ * Copyright (c) 2019, 2021 Yuriy Lisovskiy
  */
 
 #include <gtest/gtest.h>
@@ -15,7 +15,7 @@ class ValueErrorTestCase : public ::testing::Test
 {
 public:
 	const char* WhatErrorMessage = "Test error message from ValueErrorTestCase";
-	const char* FullErrorMessage = "ValueError: Test error message from ValueErrorTestCase";
+	const char* FullErrorMessage = "xw::ValueError: Test error message from ValueErrorTestCase";
 	const char* ErrorFunction = "testFunc";
 	const char* ErrorFile = "test_file.cpp";
 	const size_t ErrorLine = 1;

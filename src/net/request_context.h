@@ -10,23 +10,53 @@
 
 // C++ libraries.
 #include <functional>
+#include <string>
+#include <map>
+#include <memory>
 
 // Module definitions.
 #include "./_def_.h"
 
 // Base libraries.
-#include "../collections/dict.h"
+#include "../io.h"
 
 
 __NET_BEGIN__
 
+struct ProtocolVersion
+{
+	unsigned short major{};
+	unsigned short minor{};
+
+	inline bool operator== (const ProtocolVersion& other) const
+	{
+		return this->major == other.major && this->minor == other.minor;
+	}
+
+	inline bool operator> (const ProtocolVersion& other) const
+	{
+		return this->major > other.major || (other.major <= this->major && this->minor > other.minor);
+	}
+
+	inline bool operator>= (const ProtocolVersion& other) const
+	{
+		return *this > other || *this == other;
+	}
+
+	inline bool operator< (const ProtocolVersion& other) const
+	{
+		return this->major < other.major || (other.major >= this->major && this->minor < other.minor);
+	}
+
+	inline bool operator<= (const ProtocolVersion& other) const
+	{
+		return *this < other || *this == other;
+	}
+};
+
 struct RequestContext
 {
-	// Major part of http protocol version.
-	size_t major_v{};
-
-	// Minor part of http protocol version.
-	size_t minor_v{};
+	ProtocolVersion protocol_version;
 
 	// Request's path.
 	std::string path;
@@ -42,10 +72,10 @@ struct RequestContext
 	bool keep_alive{};
 
 	// Contains body of http request.
-	std::string content;
+	std::shared_ptr<io::ILimitedBufferedStream> body;
 
 	// Accumulates request's headers.
-	collections::Dict<std::string, std::string> headers;
+	std::map<std::string, std::string> headers;
 
 	// Contains the size of request's content.
 	unsigned long long content_size{};
@@ -61,52 +91,7 @@ struct RequestContext
 	// Indicates whether request is chunked or not.
 	bool chunked{};
 
-	std::function<bool(const char* data, size_t n)> write;
-
-	// Checks if current protocol major and minor versions are equal to
-	// provided.
-	[[nodiscard]]
-	inline bool proto_v_eq_to(short major, short minor) const
-	{
-		return this->major_v == major && this->minor_v == minor;
-	}
-
-	// Checks if current protocol major and minor versions are greater
-	// than or equal to provided.
-	[[nodiscard]]
-	inline bool proto_v_gte(short major, short minor) const
-	{
-		return this->proto_v_eq_to(major, minor) || this->proto_v_gt(major, minor);
-	}
-
-	// Checks if current protocol major and minor versions are less
-	// than or equal to provided.
-	[[nodiscard]]
-	inline bool proto_v_lte(short major, short minor) const
-	{
-		return this->proto_v_eq_to(major, minor) || this->proto_v_lt(major, minor);
-	}
-
-	// Checks if current protocol major and minor versions are greater
-	// than provided.
-	[[nodiscard]]
-	inline bool proto_v_gt(short major, short minor) const
-	{
-		return this->major_v > major || (!(major > this->major_v) && this->minor_v > minor);
-	}
-
-	// Checks if current protocol major and minor versions are less
-	// than provided.
-	[[nodiscard]]
-	inline bool proto_v_lt(short major, short minor) const
-	{
-		return this->major_v < major || (!(major < this->major_v) && this->minor_v < minor);
-	}
+	std::shared_ptr<io::IWriter> response_writer;
 };
-
-// Function type that handles the request.
-typedef std::function<uint(
-	RequestContext*, collections::Dict<std::string, std::string>
-)> HandlerFunc;
 
 __NET_END__

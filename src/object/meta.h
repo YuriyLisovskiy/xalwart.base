@@ -19,7 +19,9 @@
 
 
 __OBJ_BEGIN__
+
 class Object;
+
 __OBJ_END__
 
 
@@ -68,7 +70,7 @@ public:
 template<typename T>
 inline std::string type_name()
 {
-	return util::demangle(typeid(T).name());
+	return demangle(typeid(T).name());
 }
 
 __OBJ_META_END__

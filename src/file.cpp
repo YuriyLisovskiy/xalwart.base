@@ -20,42 +20,42 @@
 
 __MAIN_NAMESPACE_BEGIN__
 
-File::File(const std::string& name, open_mode mode)
+File::File(const std::string& name, OpenMode mode)
 {
-	this->_default_chunk_size = 64 * std::pow(2, 10);
+	this->_default_chunk_size = 64 * (size_t)std::pow(2, 10);
 	this->_name = name;
 	switch (mode)
 	{
-		case open_mode::r:
+		case OpenMode::Read:
 			this->_mode = std::ios::in;
-			this->_file_mode = file_mode_enum::m_read_only;
+			this->_file_mode = FileMode::ReadOnly;
 			break;
-		case open_mode::rb:
-			this->_file_mode = file_mode_enum::m_read_only;
+		case OpenMode::ReadBinary:
+			this->_file_mode = FileMode::ReadOnly;
 			this->_mode = std::ios::in | std::ios::binary;
 			break;
-		case open_mode::rw:
-			this->_file_mode = file_mode_enum::m_both;
+		case OpenMode::ReadWrite:
+			this->_file_mode = FileMode::ReadWrite;
 			this->_mode = std::ios::out | std::ios::in;
 			break;
-		case open_mode::rwb:
-			this->_file_mode = file_mode_enum::m_both;
+		case OpenMode::ReadWriteBinary:
+			this->_file_mode = FileMode::ReadWrite;
 			this->_mode = std::ios::out | std::ios::in | std::ios::binary;
 			break;
-		case open_mode::w:
-			this->_file_mode = file_mode_enum::m_write_only;
+		case OpenMode::Write:
+			this->_file_mode = FileMode::WriteOnly;
 			this->_mode = std::ios::out;
 			break;
-		case open_mode::wb:
-			this->_file_mode = file_mode_enum::m_write_only;
+		case OpenMode::WriteBinary:
+			this->_file_mode = FileMode::WriteOnly;
 			this->_mode = std::ios::out | std::ios::binary;
 			break;
-		case open_mode::a:
-			this->_file_mode = file_mode_enum::m_write_only;
+		case OpenMode::AppendRead:
+			this->_file_mode = FileMode::WriteOnly;
 			this->_mode = std::ios::out | std::ios::app;
 			break;
-		case open_mode::arw:
-			this->_file_mode = file_mode_enum::m_both;
+		case OpenMode::AppendReadWrite:
+			this->_file_mode = FileMode::ReadWrite;
 			this->_mode = std::ios::out | std::ios::in | std::ios::app;
 			break;
 		default:
@@ -119,7 +119,7 @@ std::vector<unsigned char> File::read(size_t n)
 		throw FileError("read: file is not opened: " + this->_name, _ERROR_DETAILS_);
 	}
 
-	if (this->_file_mode == file_mode_enum::m_write_only)
+	if (this->_file_mode == FileMode::WriteOnly)
 	{
 		throw FileError("read: file is open only for writing: " + this->_name, _ERROR_DETAILS_);
 	}
@@ -143,7 +143,7 @@ std::vector<unsigned char> File::read(size_t n)
 std::string File::read_str(size_t n)
 {
 	std::vector<unsigned char> bytes = this->read(n);
-	return std::string(bytes.begin(), bytes.end());
+	return {bytes.begin(), bytes.end()};
 }
 
 void File::write(const std::vector<unsigned char>& bytes)
@@ -153,7 +153,7 @@ void File::write(const std::vector<unsigned char>& bytes)
 		throw FileError("write: file is not opened: " + this->_name, _ERROR_DETAILS_);
 	}
 
-	if (this->_file_mode == file_mode_enum::m_read_only)
+	if (this->_file_mode == FileMode::ReadOnly)
 	{
 		throw FileError("write: file is open only for reading: " + this->_name, _ERROR_DETAILS_);
 	}
@@ -193,7 +193,7 @@ void File::seek(size_t n, std::ios_base::seekdir seek_dir)
 		throw FileError("seek: file is not opened: " + this->_name, _ERROR_DETAILS_);
 	}
 
-	if (this->_file_mode == file_mode_enum::m_read_only)
+	if (this->_file_mode == FileMode::ReadOnly)
 	{
 		this->_file.seekg(n, seek_dir);
 	}
@@ -210,7 +210,7 @@ void File::seek(size_t n)
 		throw FileError("seek: file is not opened: " + this->_name, _ERROR_DETAILS_);
 	}
 
-	if (this->_file_mode == file_mode_enum::m_read_only)
+	if (this->_file_mode == FileMode::ReadOnly)
 	{
 		this->_file.seekg(n);
 	}
@@ -227,7 +227,7 @@ size_t File::tell()
 		throw FileError("tell: file is not opened: " + this->_name, _ERROR_DETAILS_);
 	}
 
-	if (this->_file_mode == file_mode_enum::m_read_only)
+	if (this->_file_mode == FileMode::ReadOnly)
 	{
 		return this->_file.tellg();
 	}
@@ -288,15 +288,10 @@ struct stat file_stat(const std::string& file_path)
 	{
 		if (ret == ENOENT)
 		{
-			throw FileError(
-				"file '" + file_path + "' does not exist", _ERROR_DETAILS_
-			);
+			throw FileError("file '" + file_path + "' does not exist", _ERROR_DETAILS_);
 		}
 
-		throw FileError(
-			"unable to obtain file information: '" + file_path + "'",
-			_ERROR_DETAILS_
-		);
+		throw FileError("unable to obtain file information: '" + file_path + "'", _ERROR_DETAILS_);
 	}
 
 	return buf;

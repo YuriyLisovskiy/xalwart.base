@@ -231,10 +231,8 @@ void _strptime(const char* _s, const char* _fmt, tm_tuple* _tp)
 #if defined(_WIN32) || defined(_WIN64)
 	std::stringstream ss(_s);
 	ss >> std::get_time(&t, _fmt);
-#elif defined(__unix__) || defined(__linux__)
-	::strptime(_s, _fmt, &t);
 #else
-#error Library is not supported on this platform
+	::strptime(_s, _fmt, &t);
 #endif
 
 //	auto res = ::strptime(_s, _fmt, &t);
@@ -253,11 +251,9 @@ void _strptime(const char* _s, const char* _fmt, tm_tuple* _tp)
 #if defined(_WIN32) || defined(_WIN64)
 	_tp->tm_gmtoff = 0;
 	_tp->tm_zone = "";
-#elif defined(__unix__) || defined(__linux__)
+#else
 	_tp->tm_gmtoff = t.tm_gmtoff;
 	_tp->tm_zone = t.tm_zone;
-#else
-#error Library is not supported on this platform
 #endif
 
 	_tp->tm_year += 1900;

@@ -3,7 +3,7 @@
  *
  * Copyright (c) 2021 Yuriy Lisovskiy
  *
- * Definitions of `re` module.
+ * Definitions of 're' module.
  */
 
 #pragma once

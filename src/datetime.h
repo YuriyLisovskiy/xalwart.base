@@ -107,11 +107,9 @@ struct tm_tuple
 #if defined(_WIN32) || defined(_WIN64)
 		this->tm_gmtoff = 0;
 		this->tm_zone = "";
-#elif defined(__unix__) || defined(__linux__)
+#else
 		this->tm_gmtoff = t->tm_gmtoff;
 		this->tm_zone = t->tm_zone;
-#else
-#error Library is not supported on this platform
 #endif
 	}
 };

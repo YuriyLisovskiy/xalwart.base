@@ -15,7 +15,7 @@ class KeyErrorTestCase : public ::testing::Test
 {
 public:
 	const char* WhatErrorMessage = "Test error message from KeyErrorTestCase";
-	const char* FullErrorMessage = "KeyError: Test error message from KeyErrorTestCase";
+	const char* FullErrorMessage = "xw::KeyError: Test error message from KeyErrorTestCase";
 	const char* ErrorFunction = "testFunc";
 	const char* ErrorFile = "test_file.cpp";
 	const size_t ErrorLine = 1;

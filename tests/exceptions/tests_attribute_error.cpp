@@ -1,7 +1,7 @@
 /**
  * tests/exceptions/tests_attribute_error.cpp
  *
- * Copyright (c) 2019 Yuriy Lisovskiy
+ * Copyright (c) 2019, 2021 Yuriy Lisovskiy
  */
 
 #include <gtest/gtest.h>
@@ -15,7 +15,7 @@ class AttributeErrorTestCase : public ::testing::Test
 {
 public:
 	const char* WhatErrorMessage = "Test error message from AttributeErrorTestCase";
-	const char* FullErrorMessage = "AttributeError: Test error message from AttributeErrorTestCase";
+	const char* FullErrorMessage = "xw::AttributeError: Test error message from AttributeErrorTestCase";
 	const char* ErrorFunction = "testFunc";
 	const char* ErrorFile = "test_file.cpp";
 	const size_t ErrorLine = 1;

@@ -1,7 +1,7 @@
 /**
  * tests/exceptions/tests_improperly_configured.cpp
  *
- * Copyright (c) 2019 Yuriy Lisovskiy
+ * Copyright (c) 2019, 2021 Yuriy Lisovskiy
  */
 
 #include <gtest/gtest.h>
@@ -15,7 +15,7 @@ class ImproperlyConfiguredTestCase : public ::testing::Test
 {
 public:
 	const char* WhatErrorMessage = "Test error message from ImproperlyConfiguredTestCase";
-	const char* FullErrorMessage = "ImproperlyConfigured: Test error message from ImproperlyConfiguredTestCase";
+	const char* FullErrorMessage = "xw::ImproperlyConfigured: Test error message from ImproperlyConfiguredTestCase";
 	const char* ErrorFunction = "testFunc";
 	const char* ErrorFile = "test_file.cpp";
 	const size_t ErrorLine = 1;

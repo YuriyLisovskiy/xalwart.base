@@ -49,7 +49,7 @@ TEST(TestCase_utility, index_of_NotFound)
 TEST(TestCase_utility, demangle_BuiltInType)
 {
 	std::string expected = "float";
-	auto actual = util::demangle(typeid(float).name());
+	auto actual = demangle(typeid(float).name());
 	ASSERT_EQ(expected, actual);
 }
 
@@ -59,7 +59,7 @@ TEST(TestCase_utility, demangle_CustomType)
 	{
 	};
 	std::string expected = "TestCase_utility_demangle_CustomType_Test::TestBody()::CustomType";
-	auto actual = util::demangle(typeid(CustomType).name());
+	auto actual = demangle(typeid(CustomType).name());
 	ASSERT_EQ(expected, actual);
 }
 
@@ -122,11 +122,76 @@ TEST(TestCase_utility, format_date_WithGMT)
 TEST(TestCase_utility, require_non_null_ThrowsNullPointerException)
 {
 	int* a = nullptr;
-	ASSERT_THROW(util::require_non_null(a), NullPointerException);
+	ASSERT_THROW(require_non_null(a), NullPointerException);
 }
 
 TEST(TestCase_utility, require_non_null_NotThrows)
 {
 	int a = 10;
-	ASSERT_NO_THROW(util::require_non_null(&a));
+	ASSERT_NO_THROW(require_non_null(&a));
+}
+
+TEST(TestCase_utility, as_short_int)
+{
+	ASSERT_EQ(util::as<short int>("-32766"), -32766);
+}
+
+TEST(TestCase_utility, as_unsigned_short_int)
+{
+	ASSERT_EQ(util::as<unsigned short int>("65530"), 65530);
+}
+
+TEST(TestCase_utility, as_unsigned_int)
+{
+	ASSERT_EQ(util::as<unsigned int>("4294967"), 4294967);
+}
+
+TEST(TestCase_utility, as_int)
+{
+	ASSERT_EQ(util::as<int>("-21474836"), -21474836);
+}
+
+TEST(TestCase_utility, as_long_int)
+{
+	ASSERT_EQ(util::as<long int>("2147483647"), 2147483647);
+}
+
+TEST(TestCase_utility, as_unsigned_long_int)
+{
+	ASSERT_EQ(util::as<unsigned long int>("4294967293"), 4294967293);
+}
+
+TEST(TestCase_utility, as_long_long_int)
+{
+	ASSERT_EQ(util::as<long long int>("4294972934294967293"), 4294972934294967293);
+}
+
+TEST(TestCase_utility, as_unsigned_long_long_int)
+{
+	ASSERT_EQ(util::as<unsigned long long int>("1844674407370955161"), 1844674407370955161);
+}
+
+TEST(TestCase_utility, as_float)
+{
+	ASSERT_EQ(util::as<float>("128.0f"), 128.0f);
+}
+
+TEST(TestCase_utility, as_double)
+{
+	ASSERT_EQ(util::as<double>("87654345.0"), 87654345.0);
+}
+
+TEST(TestCase_utility, as_long_double)
+{
+	ASSERT_EQ(util::as<long double>("45733"), (long double)45733);
+}
+
+TEST(TestCase_utility, as_std_string)
+{
+	ASSERT_EQ(util::as<std::string>("Hello, World"), std::string("Hello, World"));
+}
+
+TEST(TestCase_utility, as_std_c_string)
+{
+	ASSERT_EQ(util::as<const char*>("Hello, World"), "Hello, World");
 }

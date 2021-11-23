@@ -17,7 +17,7 @@
 
 __TEXT_BEGIN__
 
-const auto SMART_SPLIT_REGEX = re::IterRegex(
+const inline re::IterRegex SMART_SPLIT_REGEX(
 	R"((?:[^\s'"]*(?:(?:"(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*')[^\s'"]*)+)|\S+)",
 	std::regex_constants::optimize
 );

@@ -5,12 +5,13 @@
  *
  * 	- BaseException - main exception class
  *
- * Exception-based exceptions:
+ * List of exceptions:
  *	- AttributeError
  *	- ArgumentError
  *	- BadSignature
  *	- CommandError
  *	- EncodingError
+ *	- EscapeError
  *	- FileError
  *	- ImproperlyConfigured
  *	- InterruptException
@@ -30,12 +31,9 @@
 // C++ libraries.
 #include <string>
 
-// Module definitions.
-#include "./_def_.h"
 
-
-__MAIN_NAMESPACE_BEGIN__
-
+namespace xw
+{
 // Base exception which is used in framework.
 // Used to build new exception types.
 class BaseException : public std::exception
@@ -67,8 +65,20 @@ public:
 
 	// Initializes exception with type name.
 	inline BaseException(const char* message, int line, const char* function, const char* file)
-		: BaseException(message, line, function, file, "BaseException")
+		: BaseException(message, line, function, file, "xw::BaseException")
 	{
+	}
+
+	inline BaseException(const BaseException& other) noexcept
+	{
+		if (this != &other)
+		{
+			this->_exception_type = other._exception_type;
+			this->_message = other._message;
+			this->_line = other._line;
+			this->_function = other._function;
+			this->_file = other._file;
+		}
 	}
 
 	// Default destructor.
@@ -110,15 +120,48 @@ public:
 	}
 };
 
-DEF_EXCEPTION_WITH_BASE(AttributeError, BaseException, "attribute error");
-DEF_EXCEPTION_WITH_BASE(ArgumentError, BaseException, "argument error");
-DEF_EXCEPTION_WITH_BASE(BadSignature, BaseException, "bad signature error");
-DEF_EXCEPTION_WITH_BASE(CommandError, BaseException, "command error");
+// Declares exception's class with given base.
+#define DEF_EXCEPTION_WITH_BASE(name, base, default_message, additional_namespace_name)\
+class name : public base\
+{\
+protected:\
+	name(\
+		const char* message, int line, const char* function, const char* file, const char* type\
+	)\
+		: base(message, line, function, file, type)\
+	{\
+	}\
+\
+public:\
+	explicit name(\
+		const char* message = default_message,\
+		int line=0, const char* function="", const char* file=""\
+	) : name(\
+		message, line, function, file, ("xw::" + std::string(additional_namespace_name) + std::string(#name)).c_str() \
+	)\
+	{\
+	}\
+\
+	explicit name(\
+		const std::string& message = default_message,\
+		int line=0, const char* function="", const char* file=""\
+	)\
+		: name(message.c_str(), line, function, file)\
+	{\
+	}\
+}
+
+DEF_EXCEPTION_WITH_BASE(AttributeError, BaseException, "attribute error", "");
+DEF_EXCEPTION_WITH_BASE(ArgumentError, BaseException, "argument error", "");
+DEF_EXCEPTION_WITH_BASE(BadSignature, BaseException, "bad signature error", "");
+DEF_EXCEPTION_WITH_BASE(CommandError, BaseException, "command error", "");
 
 // Redirect to scheme not in allowed list.
-DEF_EXCEPTION_WITH_BASE(EncodingError, BaseException, "encoding error");
-DEF_EXCEPTION_WITH_BASE(FileError, BaseException, "file error");
-DEF_EXCEPTION_WITH_BASE(ImproperlyConfigured, BaseException, "improperly configured");
+DEF_EXCEPTION_WITH_BASE(EncodingError, BaseException, "encoding error", "");
+DEF_EXCEPTION_WITH_BASE(EscapeError, BaseException, "escape error", "");
+DEF_EXCEPTION_WITH_BASE(PathError, BaseException, "path error", "");
+DEF_EXCEPTION_WITH_BASE(FileError, PathError, "file error", "");
+DEF_EXCEPTION_WITH_BASE(ImproperlyConfigured, BaseException, "improperly configured", "");
 
 // Used for handling execution interrupts.
 class InterruptException : public BaseException
@@ -140,7 +183,7 @@ protected:
 public:
 	inline explicit InterruptException(
 		const char* message, int line=0, const char* function="", const char* file=""
-	) : InterruptException(message, line, function, file, "InterruptException")
+	) : InterruptException(message, line, function, file, "xw::InterruptException")
 	{
 	}
 
@@ -154,53 +197,58 @@ public:
 	static void initialize();
 };
 
-DEF_EXCEPTION_WITH_BASE(KeyError, BaseException, "key error");
-DEF_EXCEPTION_WITH_BASE(ParseError, BaseException, "parse error");
-DEF_EXCEPTION_WITH_BASE(RuntimeError, BaseException, "runtime error");
-DEF_EXCEPTION_WITH_BASE(MultiPartParserError, ParseError, "multipart parser error");
-DEF_EXCEPTION_WITH_BASE(NotImplementedException, BaseException, "not implemented");
-DEF_EXCEPTION_WITH_BASE(NullPointerException, BaseException, "null pointer exception");
+DEF_EXCEPTION_WITH_BASE(KeyError, BaseException, "key error", "");
+DEF_EXCEPTION_WITH_BASE(RuntimeError, BaseException, "runtime error", "");
+DEF_EXCEPTION_WITH_BASE(NotImplementedException, BaseException, "not implemented", "");
+DEF_EXCEPTION_WITH_BASE(NullPointerException, BaseException, "null pointer exception", "");
+DEF_EXCEPTION_WITH_BASE(ValueError, BaseException, "value error", "");
+DEF_EXCEPTION_WITH_BASE(TypeError, BaseException, "type error", "");
+DEF_EXCEPTION_WITH_BASE(IOError, BaseException, "io error", "");
+DEF_EXCEPTION_WITH_BASE(ReaderError, IOError, "reader error", "");
+DEF_EXCEPTION_WITH_BASE(WriterError, IOError, "writer error", "");
+DEF_EXCEPTION_WITH_BASE(ServerError, BaseException, "server error", "");
+DEF_EXCEPTION_WITH_BASE(ParseError, ServerError, "parse error", "");
+DEF_EXCEPTION_WITH_BASE(EntityTooLargeError, ServerError, "entity too large  error", "");
+DEF_EXCEPTION_WITH_BASE(EoF, BaseException, "EOF", "");
+DEF_EXCEPTION_WITH_BASE(UnexpectedEoF, EoF, "unexpected EOF", "");
+DEF_EXCEPTION_WITH_BASE(TemplateError, BaseException, "template error", "");
 
-// Socket exception representation.
-// Additionally holds number of socket error.
-class SocketError : public BaseException
+// TESTME: LineTooLongError
+// TODO: docs for 'LineTooLongError'
+class LineTooLongError : public ParseError
 {
-private:
-
-	// Number of socket error.
-	int _errno;
-
 protected:
-	inline SocketError(
-		int err_no, const char* message, int line, const char* function, const char* file, const char* type
-	) : BaseException(message, line, function, file, type), _errno(err_no)
+	inline LineTooLongError(
+		const char* message, int line, const char* function, const char* file, const char* type
+	) : ParseError(message, line, function, file, type)
 	{
 	}
 
 public:
-
-	// Initializes exception with type name.
-	inline explicit SocketError(
-		int err_no, const char* message, int line=0, const char* function="", const char* file=""
-	) : SocketError(err_no, message, line, function, file, "SocketError")
+	inline explicit LineTooLongError(
+		const std::string& message, int line=0, const char* function="", const char* file=""
+	) : LineTooLongError(message.c_str(), line, function, file, "xw::LineTooLongError")
 	{
-	}
-
-	inline explicit SocketError(
-		int err_no, const std::string& message, int line=0, const char* function="", const char* file=""
-	) : SocketError(err_no, message.c_str(), line, function, file)
-	{
-	}
-
-	// Returns number of socket error.
-	[[nodiscard]]
-	inline int err_no() const
-	{
-		return this->_errno;
 	}
 };
 
-DEF_EXCEPTION_WITH_BASE(ValueError, BaseException, "value error");
-DEF_EXCEPTION_WITH_BASE(TypeError, BaseException, "type error");
+// TESTME: TooMuchHeadersError
+// TODO: docs for 'TooMuchHeadersError'
+class TooMuchHeadersError : public ParseError
+{
+protected:
+	inline TooMuchHeadersError(
+		const char* message, int line, const char* function, const char* file, const char* type
+	) : ParseError(message, line, function, file, type)
+	{
+	}
 
-__MAIN_NAMESPACE_END__
+public:
+	inline explicit TooMuchHeadersError(
+		const std::string& message, int line=0, const char* function="", const char* file=""
+	) : TooMuchHeadersError(message.c_str(), line, function, file, "xw::TooMuchHeadersError")
+	{
+	}
+};
+
+} // namespace xw

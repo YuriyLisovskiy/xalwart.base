@@ -1,7 +1,7 @@
 /**
  * tests/exceptions/tests_null_pointer_exception.cpp
  *
- * Copyright (c) 2019 Yuriy Lisovskiy
+ * Copyright (c) 2019, 2021 Yuriy Lisovskiy
  */
 
 #include <gtest/gtest.h>
@@ -15,7 +15,7 @@ class NullPointerExceptionTestCase : public ::testing::Test
 {
 public:
 	const char* WhatErrorMessage = "Test error message from NullPointerExceptionTestCase";
-	const char* FullErrorMessage = "NullPointerException: Test error message from NullPointerExceptionTestCase";
+	const char* FullErrorMessage = "xw::NullPointerException: Test error message from NullPointerExceptionTestCase";
 	const char* ErrorFunction = "testFunc";
 	const char* ErrorFile = "test_file.cpp";
 	const size_t ErrorLine = 1;

@@ -38,8 +38,7 @@ public:
 	// Constructs regular expression from string.
 	//
 	// `expr`: regular expression pattern.
-	inline explicit IterRegex(const std::string& expr)
-		: _raw_expr(expr), _is_initialized(false)
+	inline explicit IterRegex(const std::string& expr) : _raw_expr(expr), _is_initialized(false)
 	{
 		this->_expr = std::regex(expr);
 	}
@@ -49,11 +48,10 @@ public:
 	//
 	// `expr`: regular expression pattern.
 	// `sot`: syntax options for regular expression.
-	explicit IterRegex(
-		const std::string& expr, std::regex_constants::syntax_option_type sot
-	) : _raw_expr(expr), _is_initialized(false)
+	inline explicit IterRegex(const std::string& expr, std::regex_constants::syntax_option_type type) :
+		_raw_expr(expr), _is_initialized(false)
 	{
-		this->_expr = std::regex(expr, sot);
+		this->_expr = std::regex(expr, type);
 	}
 
 	// Copy assignment operator.

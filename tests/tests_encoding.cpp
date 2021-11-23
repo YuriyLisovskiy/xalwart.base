@@ -15,18 +15,18 @@ using namespace xw;
 TEST(TestCase_encoding, _escape_char_NotReserved)
 {
 	std::ostringstream ss;
-	encoding::_escape_char(ss, 'A');
-	encoding::_escape_char(ss, 'b');
-	encoding::_escape_char(ss, '7');
-	encoding::_escape_char(ss, '-');
-	encoding::_escape_char(ss, '_');
-	encoding::_escape_char(ss, '.');
-	encoding::_escape_char(ss, '!');
-	encoding::_escape_char(ss, '~');
-	encoding::_escape_char(ss, '*');
-	encoding::_escape_char(ss, '\'');
-	encoding::_escape_char(ss, '(');
-	encoding::_escape_char(ss, ')');
+	encoding::escape_char(ss, 'A');
+	encoding::escape_char(ss, 'b');
+	encoding::escape_char(ss, '7');
+	encoding::escape_char(ss, '-');
+	encoding::escape_char(ss, '_');
+	encoding::escape_char(ss, '.');
+	encoding::escape_char(ss, '!');
+	encoding::escape_char(ss, '~');
+	encoding::escape_char(ss, '*');
+	encoding::escape_char(ss, '\'');
+	encoding::escape_char(ss, '(');
+	encoding::escape_char(ss, ')');
 	std::string expected = "Ab7-_.!~*'()";
 	auto actual = ss.str();
 	ASSERT_EQ(expected, actual);
@@ -35,19 +35,19 @@ TEST(TestCase_encoding, _escape_char_NotReserved)
 TEST(TestCase_encoding, _escape_char_Reserved)
 {
 	std::ostringstream ss;
-	encoding::_escape_char(ss, ';');
-	encoding::_escape_char(ss, ':');
-	encoding::_escape_char(ss, '@');
-	encoding::_escape_char(ss, '&');
-	encoding::_escape_char(ss, '=');
-	encoding::_escape_char(ss, '+');
-	encoding::_escape_char(ss, '$');
-	encoding::_escape_char(ss, ',');
-	encoding::_escape_char(ss, '/');
-	encoding::_escape_char(ss, '?');
-	encoding::_escape_char(ss, '#');
-	encoding::_escape_char(ss, '[');
-	encoding::_escape_char(ss, ']');
+	encoding::escape_char(ss, ';');
+	encoding::escape_char(ss, ':');
+	encoding::escape_char(ss, '@');
+	encoding::escape_char(ss, '&');
+	encoding::escape_char(ss, '=');
+	encoding::escape_char(ss, '+');
+	encoding::escape_char(ss, '$');
+	encoding::escape_char(ss, ',');
+	encoding::escape_char(ss, '/');
+	encoding::escape_char(ss, '?');
+	encoding::escape_char(ss, '#');
+	encoding::escape_char(ss, '[');
+	encoding::escape_char(ss, ']');
 	std::string expected = "%3B%3A%40%26%3D%2B%24%2C%2F%3F%23%5B%5D";
 	auto actual = ss.str();
 	ASSERT_EQ(expected, actual);
@@ -57,26 +57,10 @@ TEST(TestCase_encoding, _escape_char_Safe)
 {
 	std::string safe = "$";
 	std::ostringstream ss;
-	encoding::_escape_char(ss, ';', safe);
-	encoding::_escape_char(ss, '$', safe);
+	encoding::escape_char(ss, ';', safe);
+	encoding::escape_char(ss, '$', safe);
 	std::string expected = "%3B$";
 	auto actual = ss.str();
-	ASSERT_EQ(expected, actual);
-}
-
-TEST(TestCase_encoding, encode_url_WithSpecialSymbols)
-{
-	std::string expected("https://hostName/deepLinkAction.do?userName=peter%40nable.com&password=Hello%25There&method=defaultDashboard");
-	std::string to_encode("https://hostName/deepLinkAction.do?userName=peter@nable.com&password=Hello%There&method=defaultDashboard");
-	auto actual = encoding::encode_url(to_encode);
-	ASSERT_EQ(expected, actual);
-}
-
-TEST(TestCase_encoding, encode_url_Unicode)
-{
-	std::string expected = "https://www.google.com/?q=%E3%83%95%E3%82%A9%E3%83%BC%E3%83%87%E3%82%A3%E3%83%BC";
-	std::string to_encode = "https://www.google.com/?q=フォーディー";
-	auto actual = encoding::encode_url(to_encode);
 	ASSERT_EQ(expected, actual);
 }
 
@@ -103,14 +87,14 @@ TEST(TestCase_encoding, encode_ascii_StrictMode)
 		expected += (char)i;
 	}
 
-	auto actual = encoding::encode_ascii(expected, encoding::STRICT);
+	auto actual = encoding::encode_ascii(expected, encoding::Mode::Strict);
 	ASSERT_EQ(expected, actual);
 }
 
 TEST(TestCase_encoding, encode_ascii_StrictModeThrowEncodingErrorCharIsGreaterThan127)
 {
 	ASSERT_THROW(
-		encoding::encode_ascii(std::string(1, (char)128), encoding::STRICT),
+		encoding::encode_ascii(std::string(1, (char)128), encoding::Mode::Strict),
 		EncodingError
 	);
 }
@@ -118,7 +102,7 @@ TEST(TestCase_encoding, encode_ascii_StrictModeThrowEncodingErrorCharIsGreaterTh
 TEST(TestCase_encoding, encode_ascii_StrictModeThrowEncodingErrorCharIsLessThan0)
 {
 	ASSERT_THROW(
-		encoding::encode_ascii(std::string(1, (char)-1), encoding::STRICT),
+		encoding::encode_ascii(std::string(1, (char)-1), encoding::Mode::Strict),
 		EncodingError
 	);
 }
@@ -131,19 +115,19 @@ TEST(TestCase_encoding, encode_ascii_IgnoreMode)
 		expected += (char)i;
 	}
 
-	auto actual = encoding::encode_ascii(expected, encoding::IGNORE);
+	auto actual = encoding::encode_ascii(expected, encoding::Mode::Ignore);
 	ASSERT_EQ(expected, actual);
 }
 
 TEST(TestCase_encoding, encode_ascii_IgnoreModeCharIsGreaterThan127)
 {
-	auto actual = encoding::encode_ascii(std::string(1, (char)128), encoding::IGNORE);
+	auto actual = encoding::encode_ascii(std::string(1, (char)128), encoding::Mode::Ignore);
 	ASSERT_EQ("", actual);
 }
 
 TEST(TestCase_encoding, encode_ascii_IgnoreModeCharIsLessThan0)
 {
-	auto actual = encoding::encode_ascii(std::string(1, (char)-1), encoding::IGNORE);
+	auto actual = encoding::encode_ascii(std::string(1, (char)-1), encoding::Mode::Ignore);
 	ASSERT_EQ("", actual);
 }
 
@@ -155,19 +139,19 @@ TEST(TestCase_encoding, encode_ascii_ReplaceMode)
 		expected += (char)i;
 	}
 
-	auto actual = encoding::encode_ascii(expected, encoding::REPLACE);
+	auto actual = encoding::encode_ascii(expected, encoding::Mode::Replace);
 	ASSERT_EQ(expected, actual);
 }
 
 TEST(TestCase_encoding, encode_ascii_ReplaceModeCharIsGreaterThan127)
 {
-	auto actual = encoding::encode_ascii(std::string(1, (char)128), encoding::REPLACE);
+	auto actual = encoding::encode_ascii(std::string(1, (char)128), encoding::Mode::Replace);
 	ASSERT_EQ("?", actual);
 }
 
 TEST(TestCase_encoding, encode_ascii_ReplaceModeCharIsLessThan0)
 {
-	auto actual = encoding::encode_ascii(std::string(1, (char)-1), encoding::REPLACE);
+	auto actual = encoding::encode_ascii(std::string(1, (char)-1), encoding::Mode::Replace);
 	ASSERT_EQ("?", actual);
 }
 
@@ -178,14 +162,14 @@ TEST(TestCase_encoding, encode_iso_8859_1_StrictMode)
 	input = "\x01\x02\x03\x04\x05\x06\x07\x08\t\n\x0b\x0c\r\x0e\x0f\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~" + input;
 	expected = "\x01\x02\x03\x04\x05\x06\x07\x08\t\n\x0b\x0c\r\x0e\x0f\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~" + expected;
 
-	auto actual = encoding::encode_iso_8859_1(input, encoding::STRICT);
+	auto actual = encoding::encode_iso_8859_1(input, encoding::Mode::Strict);
 	ASSERT_EQ(expected, actual);
 }
 
 TEST(TestCase_encoding, encode_iso_8859_1_StrictModeThrowEncodingErrorCharIsGreaterThan255)
 {
 	ASSERT_THROW(
-		encoding::encode_iso_8859_1("Ž", encoding::STRICT),
+		encoding::encode_iso_8859_1("Ž", encoding::Mode::Strict),
 		EncodingError
 	);
 }
@@ -197,13 +181,13 @@ TEST(TestCase_encoding, encode_iso_8859_1_IgnoreMode)
 	input = "\x01\x02\x03\x04\x05\x06\x07\x08\t\n\x0b\x0c\r\x0e\x0f\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~" + input;
 	expected = "\x01\x02\x03\x04\x05\x06\x07\x08\t\n\x0b\x0c\r\x0e\x0f\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~" + expected;
 
-	auto actual = encoding::encode_iso_8859_1(input, encoding::IGNORE);
+	auto actual = encoding::encode_iso_8859_1(input, encoding::Mode::Ignore);
 	ASSERT_EQ(expected, actual);
 }
 
 TEST(TestCase_encoding, encode_iso_8859_1_IgnoreModeCharIsGreaterThan255)
 {
-	auto actual = encoding::encode_iso_8859_1("Ž", encoding::IGNORE);
+	auto actual = encoding::encode_iso_8859_1("Ž", encoding::Mode::Ignore);
 	ASSERT_EQ("", actual);
 }
 
@@ -214,30 +198,30 @@ TEST(TestCase_encoding, encode_iso_8859_1_ReplaceMode)
 	input = "\x01\x02\x03\x04\x05\x06\x07\x08\t\n\x0b\x0c\r\x0e\x0f\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~" + input;
 	expected = "\x01\x02\x03\x04\x05\x06\x07\x08\t\n\x0b\x0c\r\x0e\x0f\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~" + expected;
 
-	auto actual = encoding::encode_iso_8859_1(input, encoding::REPLACE);
+	auto actual = encoding::encode_iso_8859_1(input, encoding::Mode::Replace);
 	ASSERT_EQ(expected, actual);
 }
 
 TEST(TestCase_encoding, encode_iso_8859_1_ReplaceModeCharIsGreaterThan255)
 {
-	auto actual = encoding::encode_iso_8859_1("Ž", encoding::REPLACE);
+	auto actual = encoding::encode_iso_8859_1("Ž", encoding::Mode::Replace);
 	ASSERT_EQ("?", actual);
 }
 
 TEST(TestCase_encoding, encode_iso_8859_1_StrictModeZeroChar)
 {
-	auto actual = encoding::encode_iso_8859_1("\0", encoding::STRICT);
+	auto actual = encoding::encode_iso_8859_1("\0", encoding::Mode::Strict);
 	ASSERT_EQ("", actual);
 }
 
 TEST(TestCase_encoding, encode_iso_8859_1_IgnoreModeZeroChar)
 {
-	auto actual = encoding::encode_iso_8859_1("\0", encoding::IGNORE);
+	auto actual = encoding::encode_iso_8859_1("\0", encoding::Mode::Ignore);
 	ASSERT_EQ("", actual);
 }
 
 TEST(TestCase_encoding, encode_iso_8859_1_ReplaceModeZeroChar)
 {
-	auto actual = encoding::encode_iso_8859_1("\0", encoding::REPLACE);
+	auto actual = encoding::encode_iso_8859_1("\0", encoding::Mode::Replace);
 	ASSERT_EQ("", actual);
 }

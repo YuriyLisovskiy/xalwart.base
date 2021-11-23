@@ -10,12 +10,49 @@
 
 // C++ libraries.
 #include <string>
+#include <vector>
+#include <tuple>
 
 // Module definitions.
 #include "./_def_.h"
 
+// Base libraries.
+#include "./unicode/_def_.h"
+
 
 __ENCODING_BEGIN__
+
+// TESTME: _is16
+// Reports whether r is in the sorted vector of 16-bit ranges.
+//
+// The original implementation is in Golang 1.15.8: unicode/letter.go
+extern bool _is16(const std::vector<unicode::Range16>& ranges, uint16_t r);
+
+// TESTME: _is32
+// Reports whether r is in the sorted slice of 32-bit ranges.
+//
+// The original implementation is in Golang 1.15.8: unicode/letter.go
+extern bool _is32(const std::vector<unicode::Range32>& ranges, uint32_t r);
+
+// TESTME: _is_excluding_latin
+//
+// The original implementation is in Golang 1.15.8: unicode/letter.go
+extern bool _is_excluding_latin(const unicode::RangeTable& range_table, wchar_t c);
+
+// TESTME: is_space
+// Reports whether the wchar_t is a space character as defined
+// by Unicode's White Space property; in the Latin-1 space
+// this is
+//	'\t', '\n', '\v', '\f', '\r', ' ', U+0085 (NEL), U+00A0 (NBSP).
+//
+// The original implementation is in Golang 1.15.8: unicode/graphic.go
+bool is_space(unsigned char c);
+
+// TESTME: is_hex
+extern bool is_hex(unsigned char c);
+
+// TESTME: unhex
+extern unsigned char unhex(unsigned char c);
 
 // Converts character to percent-encoded character and writes it to stream.
 //
@@ -28,29 +65,26 @@ __ENCODING_BEGIN__
 // `stream`: target stream.
 // `c`: char to write.
 // `safe`: characters which should be ignored.
-extern void _escape_char(std::ostringstream& stream, char c, const std::string& safe="");
+extern void escape_char(std::ostringstream& stream, char c, const std::string& safe="");
 
-// Encodes url using percent-encoding.
-extern std::string encode_url(const std::string& url);
-
-// Encodes string to hex using `_escape_char(...)`.
+// Encodes string to hex using `escape_char(...)`.
 //
 // `s`: input string.
 // `safe`: characters which should be ignored.
 extern std::string quote(const std::string& s, const std::string& safe="");
 
 // Supported encodings.
-enum encoding
+enum class Encoding
 {
-	ascii, latin_1, iso_8859_1, utf_8
+	ASCII, Latin_1, ISO_8859_1, Utf_8
 };
 
 // Supported modes.
-enum Mode
+enum class Mode
 {
-	STRICT, // throw EncodingError if string violates encoding rules;
-	IGNORE, // remove offending symbols from string;
-	REPLACE // replace offending symbols by question mark ('?').
+	Strict, // throw EncodingError if string violates encoding rules;
+	Ignore, // remove offending symbols from string;
+	Replace // replace offending symbols by question mark ('?').
 };
 
 // Encodes string to ASCII string.
@@ -85,6 +119,18 @@ extern std::string encode_utf_8(const std::string& s, Mode mode);
 // `mode`: target mode.
 //
 // Returns encoded copy input string.
-extern std::string encode(const std::string& s, encoding enc, Mode mode=Mode::STRICT);
+extern std::string encode(const std::string& s, Encoding enc, Mode mode=Mode::Strict);
+
+// TESTME: decode2231
+// TODO: docs for 'decode2231'
+//
+// The original implementation is in Golang 1.15.8: mime/mediatype.go
+extern std::tuple<std::wstring, bool> decode2231(const std::wstring& s);
+
+// TESTME: percent_hex_unescape
+// TODO: docs for 'percent_hex_unescape'
+//
+// The original implementation is in Golang 1.15.8: mime/mediatype.go
+extern std::string percent_hex_unescape(std::string s);
 
 __ENCODING_END__

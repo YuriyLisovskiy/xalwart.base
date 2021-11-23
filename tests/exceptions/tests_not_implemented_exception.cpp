@@ -1,7 +1,7 @@
 /**
  * tests/exceptions/tests_not_implemented_exception.cpp
  *
- * Copyright (c) 2019 Yuriy Lisovskiy
+ * Copyright (c) 2019, 2021 Yuriy Lisovskiy
  */
 
 #include <gtest/gtest.h>
@@ -15,7 +15,7 @@ class NotImplementedExceptionTestCase : public ::testing::Test
 {
 public:
 	const char* WhatErrorMessage = "Test error message from NotImplementedExceptionTestCase";
-	const char* FullErrorMessage = "NotImplementedException: Test error message from NotImplementedExceptionTestCase";
+	const char* FullErrorMessage = "xw::NotImplementedException: Test error message from NotImplementedExceptionTestCase";
 	const char* ErrorFunction = "testFunc";
 	const char* ErrorFile = "test_file.cpp";
 	const size_t ErrorLine = 1;

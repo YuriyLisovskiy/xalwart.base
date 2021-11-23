@@ -12,6 +12,9 @@
 
 #if defined(__windows__)
 
+// STL libraries.
+#include <filesystem>
+
 // Module definitions.
 #include "../_def_.h"
 
@@ -25,8 +28,8 @@ __PATH_BEGIN__
 inline const char current_dir = '.';
 inline const char* parent_dir = "..";
 inline const char ext_sep = '.';
-inline const char sep = '\\';
-inline const char path_sep = ';';
+inline const char path_sep = '\\';
+inline const char path_list_sep = ';';
 inline const char alt_sep = '/';
 inline const char* def_path = ".;C:\\bin";
 inline const char* dev_null = "nul";
@@ -36,36 +39,6 @@ inline const char* dev_null = "nul";
 // join(head, tail) == p holds.
 // The resulting head won't end in '/' unless it is the root.
 extern std::pair<std::string, std::string> split(const std::string& p);
-
-// Split a path in root and extension.
-// The extension is everything starting at the last dot in the last
-// pathname component; the root is everything before that.
-// It is always true that `root + ext == p`.
-inline void split_text(const std::string& full_path, std::string& root_out, std::string& ext_out)
-{
-	_split_text(full_path, path::sep, path::alt_sep, path::ext_sep, root_out, ext_out);
-}
-
-// `p`: path to check.
-//
-// Returns `true` if path exists, `false` otherwise.
-extern bool exists(const std::string& p);
-
-// `p`: path to analyze.
-//
-// Returns the final component of a path name.
-inline std::string basename(const std::string& p)
-{
-	return split(p).second;
-}
-
-// `p`: path to analyze.
-//
-// Returns the directory component of a path name.
-inline std::string dirname(const std::string& p)
-{
-	return split(p).first;
-}
 
 // Split a path in a drive specification (a drive letter followed by a
 // colon) and the path specification.
@@ -97,7 +70,7 @@ void _join(
 	}
 	else if (!p_drive.empty() && p_drive != result_drive)
 	{
-		if (str::lower(p_drive) != str::lower(result_drive))
+		if (str::to_lower(p_drive) != str::to_lower(result_drive))
 		{
 			// Different drives => ignore the first path entirely
 			result_drive = p_drive;
@@ -117,7 +90,7 @@ void _join(
 	// Second path is relative to the first
 	if (!result_path.empty() && !str::contains(seps, *result_path.end()))
 	{
-		result_path = result_path + sep;
+		result_path = result_path + path_sep;
 	}
 
 	result_path = result_path + p_path;
@@ -127,7 +100,7 @@ void _join(
 	}
 }
 
-// Join two or more pathname components, inserting 'path::sep'
+// Join two or more pathname components, inserting 'path::path_sep'
 // as needed. If any component is an absolute path, all previous path
 // components will be discarded. An empty last part will result in a path
 // that ends with a separator.
@@ -151,14 +124,16 @@ std::string join(const std::string& a, const PartT&... p)
 		!result_drive.empty() && *result_drive.end() != colon
 	)
 	{
-		return result_drive + sep + result_path;
+		return result_drive + path_sep + result_path;
 	}
 
 	return result_drive + result_path;
 }
 
-// Returns current working directory.
-extern std::string cwd();
+inline std::string working_directory()
+{
+	return std::filesystem::current_path().string();
+}
 
 // Test whether a path is absolute.
 //
@@ -167,7 +142,23 @@ extern std::string cwd();
 // For Windows it is absolute if it starts with a slash or backslash (current
 // volume), or if a pathname after the volume-letter-and-colon or UNC-resource
 // starts with a slash or backslash.
-extern bool is_absolute(const std::string& p);
+extern bool _is_absolute(const std::string& p);
+
+// `p`: path to analyze.
+//
+// Returns the final component of a path name.
+inline std::string _basename(const std::string& p)
+{
+	return split(p).second;
+}
+
+// `p`: path to analyze.
+//
+// Returns the directory component of a path name.
+inline std::string _dirname(const std::string& p)
+{
+	return split(p).first;
+}
 
 __PATH_END__
 

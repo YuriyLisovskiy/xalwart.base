@@ -3,36 +3,33 @@
  *
  * Copyright (c) 2019-2021 Yuriy Lisovskiy
  *
- * Definitions of `base` module.
+ * Definitions of the main module.
  */
 
 #pragma once
 
 // C++ libraries.
+#include <string>
 #include <iterator>
 
-#ifdef _MSC_VER
-#include <string>
-#endif
-
-using uint = unsigned int;
+// Base libraries.
+#include "./exceptions.h"
 
 // xw
 #define __MAIN_NAMESPACE_BEGIN__ namespace xw {
 #define __MAIN_NAMESPACE_END__ }
 
-__MAIN_NAMESPACE_BEGIN__
+// xw::orm
+#define __ORM_BEGIN__ __MAIN_NAMESPACE_BEGIN__ namespace orm {
+#define __ORM_END__ } __MAIN_NAMESPACE_END__
 
-namespace base::v
-{
-const uint major = 0;
-const uint minor = 1;
-const uint patch = 0;
+// xw::render
+#define __RENDER_BEGIN__ __MAIN_NAMESPACE_BEGIN__ namespace render {
+#define __RENDER_END__ } __MAIN_NAMESPACE_END__
 
-const std::string version = std::to_string(major) + "." + std::to_string(minor) + "." + std::to_string(patch);
-};
-
-__MAIN_NAMESPACE_END__
+// xw::server
+#define __SERVER_BEGIN__ __MAIN_NAMESPACE_BEGIN__ namespace server {
+#define __SERVER_END__ } __MAIN_NAMESPACE_END__
 
 // xw::path
 #define __PATH_BEGIN__ __MAIN_NAMESPACE_BEGIN__ namespace path {
@@ -70,6 +67,10 @@ __MAIN_NAMESPACE_END__
 #define __LOG_BEGIN__ __MAIN_NAMESPACE_BEGIN__ namespace log {
 #define __LOG_END__ } __MAIN_NAMESPACE_END__
 
+// xw::io
+#define __IO_BEGIN__ __MAIN_NAMESPACE_BEGIN__ namespace io {
+#define __IO_END__ } __MAIN_NAMESPACE_END__
+
 // Required parameters for built-in logger.
 #ifdef _MSC_VER
 #define _ERROR_DETAILS_ __LINE__, __FUNCTION__, __FILE__
@@ -77,39 +78,82 @@ __MAIN_NAMESPACE_END__
 #define _ERROR_DETAILS_ __LINE__, __PRETTY_FUNCTION__, __FILE__
 #endif
 
-// Declares exception's class with given base.
-#define DEF_EXCEPTION_WITH_BASE(name, base, default_message)\
-class name : public base\
-{\
-protected:\
-	name(\
-		const char* message, int line, const char* function, const char* file, const char* type\
-	)\
-		: base(message, line, function, file, type)\
-	{\
-	}\
-\
-public:\
-	explicit name(\
-		const char* message = default_message,\
-		int line=0, const char* function="", const char* file=""\
-	)\
-		: name(message, line, function, file, #name)\
-	{\
-	}\
-\
-	explicit name(\
-		const std::string& message = default_message,\
-		int line=0, const char* function="", const char* file=""\
-	)\
-		: name(message.c_str(), line, function, file)\
-	{\
-	}\
-}
+using uint = unsigned int;
+
 
 __MAIN_NAMESPACE_BEGIN__
 
 template <typename T>
 using iterator_v_type = typename std::iterator_traits<T>::value_type;
+
+struct Version
+{
+	uint major;
+	uint minor;
+	uint patch;
+
+	explicit Version(const std::string& v);
+	Version(uint major, uint minor, uint patch);
+
+	[[nodiscard]]
+	std::string to_string() const;
+
+	bool operator< (const Version& other) const;
+	bool operator<= (const Version& other) const;
+	bool operator> (const Version& other) const;
+	bool operator>= (const Version& other) const;
+	bool operator== (const Version& other) const;
+	bool operator!= (const Version& other) const;
+
+	bool operator< (const char* v) const;
+	bool operator<= (const char* v) const;
+	bool operator> (const char* v) const;
+	bool operator>= (const char* v) const;
+	bool operator== (const char* v) const;
+	bool operator!= (const char* v) const;
+
+	friend std::ostream& operator<< (std::ostream& stream, const Version& v);
+};
+
+namespace base::v
+{
+static inline const auto version = Version("0.0.0");
+}
+
+// Converts type name to full name.
+//
+// `name`: result of 'typeid(...).name()' call.
+//
+// Returns full name.
+extern std::string demangle(const char* name);
+
+template <typename T>
+inline T* require_non_null(T* p, const char* message, int line=0, const char* function="", const char* file="")
+{
+	if (p == nullptr)
+	{
+		throw NullPointerException(message, line, function, file);
+	}
+
+	return p;
+}
+
+template <typename T>
+inline T* require_non_null(T* p, const std::string& message, int line=0, const char* function="", const char* file="")
+{
+	return require_non_null(p, message.c_str(), line, function, file);
+}
+
+template <typename T>
+inline T* require_non_null(T* p, int line=0, const char* function="", const char* file="")
+{
+	return require_non_null<T>(
+		p, ("pointer to object of type '" + demangle(typeid(T).name()) + "' is nullptr").c_str(),
+		line, function, file
+	);
+}
+
+template <class T>
+concept integral = std::is_integral_v<T>;
 
 __MAIN_NAMESPACE_END__

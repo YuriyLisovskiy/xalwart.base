@@ -16,13 +16,13 @@
 #include "./_def_.h"
 
 // Base libraries.
-#include "./abc.h"
+#include "./abstract.h"
 
 
 __TYPES_BEGIN__
 
-template <object_based_type_c ValueT>
-class Sequence : public obj::Object, public abc::SequenceContainer
+template <object_based_type ValueT>
+class Sequence : public obj::Object, public SequenceContainer
 {
 public:
 	typedef ValueT value_type;
@@ -37,8 +37,7 @@ protected:
 	// Used for `__str__()` and `__repr__()` methods.
 	[[nodiscard]]
 	virtual inline std::string aggregate(
-		const std::string& separator,
-		const std::function<std::string(const obj::Object*)>& func
+		const std::string& separator, const std::function<std::string(const obj::Object*)>& func
 	) const
 	{
 		auto begin = this->container.begin();
@@ -68,8 +67,7 @@ protected:
 	// `func`: function which handles an item and it's index.
 	template <typename IteratorT>
 	inline void look_through(
-		IteratorT begin, IteratorT end,
-		const std::function<void(size_t, const obj::Object*)>& func
+		IteratorT begin, IteratorT end, const std::function<void(size_t, const obj::Object*)>& func
 	) const
 	{
 		size_t i = 0;
@@ -90,7 +88,7 @@ public:
 	}
 
 	// Constructs Sequence from initializer list.
-	inline explicit Sequence(std::initializer_list<value_type> list)
+	inline Sequence(std::initializer_list<value_type> list)
 	{
 		this->container = std::move(list);
 	}
@@ -151,7 +149,8 @@ public:
 		}
 
 		throw TypeError(
-			"'__cmp__' not supported between instances of '" + this->__type__().name() + "' and '" + other->__type__().name() + "'",
+			"'__cmp__' not supported between instances of '" + this->__type__().name() +
+			"' and '" + other->__type__().name() + "'",
 			_ERROR_DETAILS_
 		);
 	}
@@ -161,8 +160,7 @@ public:
 	inline std::string __str__() const override
 	{
 		return "{" + this->aggregate(
-			", ",
-			[](const obj::Object* item) -> std::string { return item ? item->__repr__() : "nullptr"; }
+			", ", [](const obj::Object* item) -> std::string { return item ? item->__repr__() : "nullptr"; }
 		) + "}";
 	}
 
@@ -172,8 +170,7 @@ public:
 	inline std::string __repr__() const override
 	{
 		return "{" + this->aggregate(
-			", ",
-			[](const obj::Object* item) -> std::string { return item ? item->__repr__() : "'nullptr'"; }
+			", ", [](const obj::Object* item) -> std::string { return item ? item->__repr__() : "'nullptr'"; }
 		) + "}";
 	}
 };

@@ -1,7 +1,7 @@
 /**
  * tests/exceptions/tests_bad_signature.cpp
  *
- * Copyright (c) 2019 Yuriy Lisovskiy
+ * Copyright (c) 2019, 2021 Yuriy Lisovskiy
  */
 
 #include <gtest/gtest.h>
@@ -15,7 +15,7 @@ class BadSignatureTestCase : public ::testing::Test
 {
 public:
 	const char* WhatErrorMessage = "Test error message from BadSignatureTestCase";
-	const char* FullErrorMessage = "BadSignature: Test error message from BadSignatureTestCase";
+	const char* FullErrorMessage = "xw::BadSignature: Test error message from BadSignatureTestCase";
 	const char* ErrorFunction = "testFunc";
 	const char* ErrorFile = "test_file.cpp";
 	const size_t ErrorLine = 1;

@@ -4,54 +4,28 @@ set(CMAKE_CXX_STANDARD 20)
 
 set(FRAMEWORK_NAME "xalwart")
 set(LIBRARY_NAME "${FRAMEWORK_NAME}.base")
-set(LIBRARY_VERSION "0.1.0")
+set(LIBRARY_VERSION "0.0.0")
 
 project(${LIBRARY_NAME})
 
-set(GNU_INCLUDE_DIR /usr/local/include)
-set(GNU_LIB_DIR /usr/local/lib)
+set(
+    DEFAULT_INCLUDE_PATHS
+        "/usr/local"
+        "/usr"
+)
 
-function(print SRC_LIST)
-    foreach(entry ${SRC_LIST})
-        message(${entry})
-    endforeach(entry)
-endfunction(print)
-
-set(LIB_SRC_DIR ${PROJECT_SOURCE_DIR}/src)
-file(GLOB_RECURSE SOURCES LIST_DIRECTORIES true ${LIB_SRC_DIR}/*.h ${LIB_SRC_DIR}/*.cpp)
-foreach(entry ${SOURCES})
-    if (IS_DIRECTORY ${entry})
-        list(REMOVE_ITEM SOURCES ${entry})
-    endif()
+foreach(ENTRY ${DEFAULT_INCLUDE_PATHS})
+    include_directories(${ENTRY}/include)
+    link_directories(${ENTRY}/lib)
 endforeach()
-list(LENGTH SOURCES SOURCES_COUNT)
-message(STATUS "[INFO] Sources found: ${SOURCES_COUNT}")
 
-# Build shared library.
-if (NOT LIB_SHARED)
-    set(LIB_SHARED no)
+option(XW_CONFIGURE_LIB "Configure the library." ON)
+if (${XW_CONFIGURE_LIB})
+    add_subdirectory(src)
 endif()
 
-if (${LIB_SHARED})
-    add_library(${LIBRARY_NAME} SHARED ${SOURCES})
-else()
-    add_library(${LIBRARY_NAME} STATIC ${SOURCES})
-endif()
-
-# Install library.
-install(
-    TARGETS ${LIBRARY_NAME}
-    ARCHIVE DESTINATION ${GNU_LIB_DIR}
-    LIBRARY DESTINATION ${GNU_LIB_DIR}
-)
-
-install(
-    DIRECTORY "${LIB_SRC_DIR}/"
-    DESTINATION ${GNU_INCLUDE_DIR}/${LIBRARY_NAME}
-    FILES_MATCHING
-    PATTERN "*.h"
-)
-
-if ("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
+option(XW_CONFIGURE_TESTS "Configure tests." OFF)
+if (${XW_CONFIGURE_TESTS})
+    enable_testing()
     add_subdirectory(tests)
 endif()

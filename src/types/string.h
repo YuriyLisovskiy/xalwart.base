@@ -112,6 +112,6 @@ public:
 	}
 };
 
-typedef String string;
+using string = String;
 
 __TYPES_END__

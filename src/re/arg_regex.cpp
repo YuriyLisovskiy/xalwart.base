@@ -28,13 +28,16 @@ bool ArgRegex::search(const std::string& s)
 {
 	auto is_found = std::regex_search(s, this->_matches, this->_rgx);
 	this->_groups.clear();
+	this->_list_groups.clear();
 	if (is_found)
 	{
 		for (size_t i = 1; i < this->_matches.size(); i++)
 		{
 			if (this->_matches[i].matched)
 			{
-				this->_groups[this->_keys[i - 1]] = this->_matches[i].str();
+				auto str_match = this->_matches[i].str();
+				this->_groups[this->_keys[i - 1]] = str_match;
+				this->_list_groups.push_back(str_match);
 			}
 		}
 	}
@@ -55,20 +58,20 @@ std::string ArgRegex::arg(const std::string& key, const std::string& default_val
 std::string ArgRegex::_parse(const std::string& pattern)
 {
 	std::string new_pattern, part, arg_name;
-	ArgRegex::state_enum st = ArgRegex::state_enum::s_str;
+	ArgRegex::StateEnum state = ArgRegex::StateEnum::Str;
 	for (char ch : pattern)
 	{
-		switch (st)
+		switch (state)
 		{
-			case ArgRegex::state_enum::s_str:
+			case ArgRegex::StateEnum::Str:
 				if (ch == '<')
 				{
-					st = ArgRegex::state_enum::s_check_if_arg;
+					state = ArgRegex::StateEnum::CheckIfArg;
 					continue;
 				}
 				else if (ch == '(')
 				{
-					st = ArgRegex::state_enum::s_regex;
+					state = ArgRegex::StateEnum::Regex;
 				}
 				else if (ch == '/')
 				{
@@ -82,25 +85,25 @@ std::string ArgRegex::_parse(const std::string& pattern)
 
 				new_pattern += ch;
 				break;
-			case ArgRegex::state_enum::s_check_if_arg:
+			case ArgRegex::StateEnum::CheckIfArg:
 				if (ch == '<')
 				{
 					part += "<<";
 					new_pattern += "<<";
-					st = ArgRegex::state_enum::s_str;
+					state = ArgRegex::StateEnum::Str;
 				}
 				else
 				{
-					st = ArgRegex::state_enum::s_arg_name;
+					state = ArgRegex::StateEnum::ArgName;
 					this->_pattern_parts.push_back(part);
 					part.clear();
 					arg_name += ch;
 				}
 				break;
-			case ArgRegex::state_enum::s_arg_name:
+			case ArgRegex::StateEnum::ArgName:
 				if (ch == '>')
 				{
-					st = ArgRegex::state_enum::s_str;
+					state = ArgRegex::StateEnum::Str;
 					this->_keys.push_back(arg_name);
 					arg_name.clear();
 				}
@@ -109,10 +112,10 @@ std::string ArgRegex::_parse(const std::string& pattern)
 					arg_name += ch;
 				}
 				break;
-			case ArgRegex::state_enum::s_regex:
+			case ArgRegex::StateEnum::Regex:
 				if (ch == ')')
 				{
-					st = ArgRegex::state_enum::s_str;
+					state = ArgRegex::StateEnum::Str;
 				}
 
 				new_pattern += ch;

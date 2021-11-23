@@ -189,14 +189,14 @@ TEST(TestCase_string_utils, contains_False)
 TEST(TestCase_string_utils, lower)
 {
 	std::string expected = "hello, world!!1!!!111";
-	auto actual = str::lower("HeLlO, WorlD!!1!!!111");
+	auto actual = str::to_lower("HeLlO, WorlD!!1!!!111");
 	ASSERT_EQ(expected, actual);
 }
 
 TEST(TestCase_string_utils, upper)
 {
 	std::string expected = "HELLO, WORLD!!1!!!111$$$&";
-	auto actual = str::upper("hello, WoRlD!!1!!!111$$$&");
+	auto actual = str::to_upper("hello, WoRlD!!1!!!111$$$&");
 	ASSERT_EQ(expected, actual);
 }
 
@@ -439,22 +439,6 @@ TEST(TestCase_string_utils, trim_CustomChars)
 	std::string expected = ", World";
 	std::string actual = str::trim(" -- Hello, World -- ", "-Hello ");
 	ASSERT_EQ(actual, expected);
-}
-
-TEST(TestCase_string_utils, count_Found)
-{
-	std::string s = "Hello, World!";
-	size_t expected = 3;
-	auto actual = str::count(s, 'l');
-	ASSERT_EQ(expected, actual);
-}
-
-TEST(TestCase_string_utils, count_NotFound)
-{
-	std::string s = "Hello, World!";
-	size_t expected = 0;
-	auto actual = str::count(s, 'w');
-	ASSERT_EQ(expected, actual);
 }
 
 TEST(TestCase_string_utils, cut_edges_LeftOnly)

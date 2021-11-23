@@ -9,11 +9,6 @@
 #if defined(__windows__)
 
 // C++ libraries.
-#include <filesystem>
-
-#ifndef _MSC_VER
-#include <sys/stat.h>
-#endif
 
 // Base libraries.
 #include "../exceptions.h"
@@ -46,32 +41,11 @@ std::pair<std::string, std::string> split(const std::string& s)
 	return {d + new_head, tail};
 }
 
-bool exists(const std::string& p)
-{
-	struct stat buf{};
-	auto ret = stat(p.c_str(), &buf);
-	if (ret != 0)
-	{
-		if (ret == ENOENT)
-		{
-			return false;
-		}
-
-		auto err_code = errno;
-		throw FileError(
-			"failed with " + std::to_string(err_code) + " error code, unable to obtain file information of '" + p + "'",
-			_ERROR_DETAILS_
-		);
-	}
-
-	return true;
-}
-
 std::pair<std::string, std::string> split_drive(const std::string& p)
 {
 	if (p.size() > 2)
 	{
-		std::string s_sep = std::string(1, sep),
+		std::string s_sep = std::string(1, path_sep),
 			s_alt_sep = std::string(1, alt_sep),
 			colon = ":";
 		auto norm_p = str::replace(p, s_alt_sep, s_sep);
@@ -113,12 +87,29 @@ std::pair<std::string, std::string> split_drive(const std::string& p)
 	return {"", p};
 }
 
-std::string cwd()
+std::pair<std::string, std::string> prefix_and_suffix(const std::string& pattern)
 {
-	return std::filesystem::current_path().string();
+	if (str::contains(pattern, path_sep))
+	{
+		throw ArgumentError("pattern contains path separator", _ERROR_DETAILS_);
+	}
+
+	std::string prefix, suffix;
+	auto pos = pattern.find_last_of('*');
+	if (pos != std::string::npos)
+	{
+		prefix = pattern.substr(0, pos);
+		suffix = pattern.substr(pos + 1);
+	}
+	else
+	{
+		prefix = pattern;
+	}
+
+	return {prefix, suffix};
 }
 
-bool is_absolute(const std::string& p)
+bool _is_absolute(const std::string& p)
 {
 	// Paths beginning with \\?\ are always absolute, but do not
 	// necessarily contain a drive.
@@ -130,6 +121,7 @@ bool is_absolute(const std::string& p)
 	auto s = split_drive(p).second;
 	return !s.empty() && str::contains("\\/", s[0]);
 }
+
 
 __PATH_END__
 

@@ -45,11 +45,10 @@ public:
 	//
 	// `expr`: regular expression pattern.
 	// `sot`: syntax options for regular expression.
-	inline explicit Regex(
-		const std::string& expr, std::regex_constants::syntax_option_type sot
-	) : _raw_expr(expr)
+	inline explicit Regex(const std::string& expr, std::regex_constants::syntax_option_type type) :
+		_raw_expr(expr)
 	{
-		this->_expr = std::regex(expr, sot);
+		this->_expr = std::regex(expr, type);
 	}
 
 	// Copy assignment operator.
@@ -60,7 +59,11 @@ public:
 	// `s`: string to match.
 	//
 	// Returns `true` if string is matched, `false` otherwise.
-	bool match(const std::string& s);
+	[[nodiscard]]
+	inline bool match(const std::string& s) const
+	{
+		return std::regex_match(s, this->_expr);
+	}
 
 	// Searches for substrings in given string.
 	//

@@ -15,7 +15,7 @@ class TypeErrorTestCase : public ::testing::Test
 {
 public:
 	const char* WhatErrorMessage = "Test error message from TypeErrorTestCase";
-	const char* FullErrorMessage = "TypeError: Test error message from TypeErrorTestCase";
+	const char* FullErrorMessage = "xw::TypeError: Test error message from TypeErrorTestCase";
 	const char* ErrorFunction = "testFunc";
 	const char* ErrorFile = "test_file.cpp";
 	const size_t ErrorLine = 1;

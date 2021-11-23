@@ -6,10 +6,14 @@
 
 #include "./string_utils.h"
 
-#ifdef _MSC_VER
 // C++ libraries.
+#ifdef _MSC_VER
 #include <algorithm>
 #endif
+
+// Base libraries.
+#include "./unicode/letter.h"
+#include "./unicode/utf8.h"
 
 
 __STR_BEGIN__
@@ -68,25 +72,7 @@ void url_split_type(const std::string& url, std::string& scheme, std::string& da
 	}
 }
 
-std::string lower(const std::string& s)
-{
-	std::string res(s);
-	std::transform(res.begin(), res.end(), res.begin(), [](auto c) -> auto {
-		return std::tolower(c);
-	});
-	return res;
-}
-
-std::string upper(const std::string& s)
-{
-	std::string res(s);
-	std::transform(res.begin(), res.end(), res.begin(), [](auto c) -> auto {
-		return std::toupper(c);
-	});
-	return res;
-}
-
-std::vector<std::string> split(const std::string& s, char delimiter, long n)
+std::vector<std::wstring> split(const std::wstring& s, wchar_t delimiter, long n)
 {
 	bool count_splits = true;
 	if (n < 0)
@@ -100,8 +86,8 @@ std::vector<std::string> split(const std::string& s, char delimiter, long n)
 	}
 
 	auto size = s.size();
-	std::vector<std::string> result;
-	std::string current;
+	std::vector<std::wstring> result;
+	std::wstring current;
 	size_t counter = 0;
 	size_t i;
 	for (i = 0; i < size && (!count_splits || counter < n); i++)
@@ -188,24 +174,6 @@ std::string rtrim(const std::string& s, char c)
 	return s.substr(0, pos + 1);
 }
 
-std::string trim(const std::string& s, char c)
-{
-	size_t l_pos = 0;
-	size_t n = s.size();
-	while (l_pos < n && s.at(l_pos) == c)
-	{
-		l_pos++;
-	}
-
-	long long r_pos = (long long)n - 1;
-	while (r_pos >= 0 && s.at(r_pos) == c)
-	{
-		r_pos--;
-	}
-
-	return s.substr(l_pos, r_pos - l_pos + 1);
-}
-
 std::string ltrim(const std::string& s, const std::string& chars)
 {
 	size_t pos = 0;
@@ -229,17 +197,17 @@ std::string rtrim(const std::string& s, const std::string& chars)
 	return s.substr(0, pos + 1);
 }
 
-std::string trim(const std::string& s, const std::string& chars)
+std::wstring trim(const std::wstring& s, wchar_t c)
 {
 	size_t l_pos = 0;
 	size_t n = s.size();
-	while (l_pos < n && chars.find(s[l_pos]) != std::string::npos)
+	while (l_pos < n && s.at(l_pos) == c)
 	{
 		l_pos++;
 	}
 
 	long long r_pos = (long long)n - 1;
-	while (r_pos >= 0 && chars.find(s[r_pos]) != std::string::npos)
+	while (r_pos >= 0 && s.at(r_pos) == c)
 	{
 		r_pos--;
 	}
@@ -247,23 +215,55 @@ std::string trim(const std::string& s, const std::string& chars)
 	return s.substr(l_pos, r_pos - l_pos + 1);
 }
 
-size_t count(const std::string& s, char ch)
+std::wstring trim(const std::wstring& s, const std::wstring& chars)
 {
-	size_t res = 0;
-	for (const auto& c : s)
+	size_t l_pos = 0;
+	size_t n = s.size();
+	while (l_pos < n && chars.find(s[l_pos]) != std::wstring::npos)
 	{
-		if (c == ch)
-		{
-			res++;
-		}
+		l_pos++;
 	}
 
-	return res;
+	long long r_pos = (long long)n - 1;
+	while (r_pos >= 0 && chars.find(s[r_pos]) != std::wstring::npos)
+	{
+		r_pos--;
+	}
+
+	return s.substr(l_pos, r_pos - l_pos + 1);
 }
 
-std::string cut_edges(
-	std::string s, size_t left_n, size_t right_n, bool trim_whitespace
-)
+std::wstring trim_left_func(const std::wstring& s, const std::function<bool(wchar_t)>& func)
+{
+	size_t pos = 0;
+	size_t n = s.size();
+	while (pos < n && func(s[pos]))
+	{
+		pos++;
+	}
+
+	return s.substr(pos);
+}
+
+std::wstring trim_func(const std::wstring& s, const std::function<bool(wchar_t)>& func)
+{
+	size_t l_pos = 0;
+	size_t n = s.size();
+	while (l_pos < n && func(s[l_pos]))
+	{
+		l_pos++;
+	}
+
+	long long r_pos = (long long)n - 1;
+	while (r_pos >= 0 && func(s[r_pos]))
+	{
+		r_pos--;
+	}
+
+	return s.substr(l_pos, r_pos - l_pos + 1);
+}
+
+std::string cut_edges(std::string s, size_t left_n, size_t right_n, bool trim_whitespace)
 {
 	if (s.size() >= left_n + right_n)
 	{
@@ -286,9 +286,7 @@ std::string cut_edges(
 	return s;
 }
 
-std::string replace(
-	std::string src, const std::string& old_sub, const std::string& new_sub
-)
+std::string replace(std::string src, const std::string& old_sub, const std::string& new_sub)
 {
 	if (src.empty() || old_sub.empty())
 	{
@@ -311,9 +309,7 @@ std::string replace(
 	return src;
 }
 
-std::string make_text_list(
-	const std::vector<std::string>& list, const std::string& last
-)
+std::string make_text_list(const std::vector<std::string>& list, const std::string& last)
 {
 	if (list.empty())
 	{
@@ -326,6 +322,84 @@ std::string make_text_list(
 	}
 
 	return join(", ", list.begin(), list.end() - 1) + " " + last + " " + *(list.end() - 1);
+}
+
+bool equal_fold(std::string s, std::string t)
+{
+	while (!s.empty() && !t.empty())
+	{
+		// Extract first byte from each string.
+		uint32_t sr, tr;
+		auto s0 = (uint32_t)(unsigned char)s[0];
+		if (s0 < unicode::BYTE_SELF)
+		{
+			sr = s0;
+			s = s.substr(1);
+		}
+		else
+		{
+			auto [r, size] = unicode::utf8::decode_symbol(s);
+			sr = r;
+			s = s.substr(size);
+		}
+
+		auto t0 = (uint32_t)(unsigned char)t[0];
+		if (t0 < unicode::BYTE_SELF)
+		{
+			tr = t0;
+			t = t.substr(1);
+		}
+		else
+		{
+			auto [r, size] = unicode::utf8::decode_symbol(t);
+			tr = r;
+			t = t.substr(size);
+		}
+
+		// If they match, keep going; if not, return false.
+
+		// Easy case.
+		if (tr == sr)
+		{
+			continue;
+		}
+
+		// Make sr < tr to simplify what follows.
+		if (tr < sr)
+		{
+			std::swap(tr, sr);
+		}
+
+		// Fast check for ASCII.
+		if (tr < unicode::BYTE_SELF)
+		{
+			// ASCII only, sr/tr must be upper/lower case
+			if ('A' <= sr && sr <= 'Z' && tr == sr + 'a' - 'A')
+			{
+				continue;
+			}
+
+			return false;
+		}
+
+		// General case; `simple_fold(x)` returns the next equivalent byte > x
+		// or wraps around to smaller values.
+		auto r = unicode::simple_fold(sr);
+		while (r != sr && r < tr)
+		{
+			r = unicode::simple_fold(sr);
+		}
+
+		if (r == tr)
+		{
+			continue;
+		}
+
+		return false;
+	}
+
+	// One string is empty. Are both?
+	return s == t;
 }
 
 __STR_END__

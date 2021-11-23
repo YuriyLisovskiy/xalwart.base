@@ -23,7 +23,7 @@ using byte = unsigned char;
 
 std::vector<byte> strToBytes(const std::string& s)
 {
-	return std::vector<byte>(s.cbegin(), s.cend());
+	return {s.cbegin(), s.cend()};
 }
 
 void removeFile(const std::string& path)
@@ -38,7 +38,7 @@ void removeFile(const std::string& path)
 class ReadFileTestCase : public ::testing::Test
 {
 protected:
-	const std::string testReadFilePath = path::cwd() + "/TestReadFile.txt";
+	const std::string testReadFilePath = path::working_directory() + "/TestReadFile.txt";
 	File fileToRead = File(this->testReadFilePath);
 
 	void SetUp() override
@@ -93,7 +93,7 @@ TEST_F(ReadFileTestCase, TestReadString)
 
 TEST_F(ReadFileTestCase, TestReadBinaryMode)
 {
-	File f(this->testReadFilePath, File::rb);
+	File f(this->testReadFilePath, File::OpenMode::ReadBinary);
 	f.open();
 
 	ASSERT_TRUE(f.is_open());
@@ -175,8 +175,8 @@ TEST_F(ReadFileTestCase, TestMultipleChunksTrue)
 class WriteFileTestCase : public ::testing::Test
 {
 protected:
-	const std::string testFilePath = path::cwd() + "/TestWriteFile.txt";
-	File file = File(this->testFilePath, File::w);
+	const std::string testFilePath = path::working_directory() + "/TestWriteFile.txt";
+	File file = File(this->testFilePath, File::OpenMode::Write);
 
 	void SetUp() override
 	{
@@ -243,7 +243,7 @@ TEST_F(WriteFileTestCase, TestWriteString)
 
 TEST_F(WriteFileTestCase, TestWriteBinaryMode)
 {
-	File f(this->testFilePath, File::wb);
+	File f(this->testFilePath, File::OpenMode::WriteBinary);
 	f.open();
 
 	ASSERT_TRUE(f.is_open());

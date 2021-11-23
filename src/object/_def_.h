@@ -3,7 +3,7 @@
  *
  * Copyright (c) 2019-2021 Yuriy Lisovskiy
  *
- * Definitions of `object` module.
+ * Definitions of 'object' module.
  */
 
 #pragma once

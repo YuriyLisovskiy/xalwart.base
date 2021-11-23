@@ -11,8 +11,6 @@
 
 #ifdef _MSC_VER
 #include <stdexcept>
-#else
-#include <cxxabi.h>
 #endif
 
 // Base libraries.
@@ -21,29 +19,7 @@
 
 __UTILITY_BEGIN__
 
-// Statuses:
-// 0 - operation succeeded
-// 1 - a memory allocation failure occurred
-// 2 - mangled_name is not a valid name under the C++ ABI mangling rules
-// 3 - one of the arguments is invalid
-std::string demangle(const char* name)
-{
-#ifdef _MSC_VER
-	return str::ltrim(name, "class");
-#else
-	int status = -4;
-	std::unique_ptr<char, void(*)(void*)> res {
-		abi::__cxa_demangle(name, nullptr, nullptr, &status),
-		std::free
-	};
-
-	return status == 0 ? res.get() : name;
-#endif
-}
-
-std::string format_datetime(
-	const dt::Datetime* dt, bool use_gmt
-)
+std::string format_datetime(const dt::Datetime* dt, bool use_gmt)
 {
 	assert(dt != nullptr);
 	auto now = dt->time_tuple();
@@ -69,9 +45,7 @@ std::string format_datetime(
 	return _format_timetuple_and_zone(&now, zone);
 }
 
-std::string format_date(
-	time_t time_val, bool local_time, bool use_gmt
-)
+std::string format_date(time_t time_val, bool local_time, bool use_gmt)
 {
 	// Note: we cannot use strftime() because that honors the locale and RFC
 	// 2822 requires that day and month names be the English abbreviations.
@@ -84,16 +58,12 @@ std::string format_date(
 	if (local_time || use_gmt)
 	{
 		dt = std::make_shared<dt::Datetime>(
-			dt::Datetime::from_timestamp(
-				time_val, std::make_shared<dt::Timezone>(dt::Timezone::UTC)
-			)
+			dt::Datetime::from_timestamp(time_val, std::make_shared<dt::Timezone>(dt::Timezone::UTC))
 		);
 	}
 	else
 	{
-		dt = std::make_shared<dt::Datetime>(
-			dt::Datetime::utc_from_timestamp(time_val)
-		);
+		dt = std::make_shared<dt::Datetime>(dt::Datetime::utc_from_timestamp(time_val));
 	}
 
 	if (local_time)
@@ -105,9 +75,7 @@ std::string format_date(
 	return format_datetime(dt.get(), use_gmt);
 }
 
-std::string _format_timetuple_and_zone(
-	dt::tm_tuple* time_tuple, const std::string& zone
-)
+std::string _format_timetuple_and_zone(dt::tm_tuple* time_tuple, const std::string& zone)
 {
 	return dt::_DAY_NAMES[time_tuple->tm_wday+1] + ", " +
 		dt::_lf(time_tuple->tm_mday) + " " +
