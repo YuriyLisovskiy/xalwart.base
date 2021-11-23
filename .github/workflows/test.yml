@@ -73,7 +73,7 @@ jobs:
         os_version: [ 11 ]
     steps:
       - uses: actions/checkout@v2
-      - name: Build the Library
+      - name: Build the library
         run: |
           mkdir build && cd build
           cmake -D CMAKE_BUILD_TYPE=Release ..
