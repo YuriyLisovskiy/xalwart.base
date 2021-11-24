@@ -25,11 +25,6 @@ macOS:
 
 To build the library from source CMake 3.12 or later is required.
 
-## Download
-Development build of the library can be downloaded from the latest
-[asset](https://github.com/YuriyLisovskiy/xalwart.base/actions?query=branch%3Amaster)
-of action results.
-
 ## Compile from Source
 * `BUILD_SHARED_LIBS`: build shared or static library (`ON` by default).
 * `LIBRARY_ROOT`: installation directory root (`/usr/local` by default).
